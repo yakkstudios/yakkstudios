@@ -305,6 +305,53 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .pc-inp:focus{border-color:var(--gold)}
 .pc-result{background:rgba(247,201,72,0.05);border:1px solid rgba(247,201,72,0.15);border-radius:5px;padding:8px 10px;font-size:11px;line-height:1.8;margin-top:6px}
 .jup-notice{padding:10px 12px;border-top:1px solid var(--border);font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);line-height:1.7}
+
+/* ══ CABAL INVESTIGATOR ══ */
+.ci-drop{border:2px dashed var(--border2);border-radius:8px;padding:28px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg3);position:relative}
+.ci-drop:hover,.ci-drop.drag{border-color:var(--pink);background:rgba(224,96,126,0.05)}
+.ci-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.ci-step{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:18px 22px;margin-bottom:12px}
+.ci-step-hdr{display:flex;align-items:center;gap:10px;margin-bottom:0;cursor:pointer}
+.ci-step-num{width:26px;height:26px;border-radius:50%;background:var(--pink);color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-step-num.done{background:var(--green)}
+.ci-step-num.idle{background:var(--border2)}
+.ci-step-title{font-family:'Syne',sans-serif;font-weight:700;font-size:12px}
+.ci-step-body{margin-top:14px;display:none}
+.ci-step-body.open{display:block}
+.wallet-row{display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--bg4);border-radius:6px;border:1px solid var(--border);margin-bottom:5px;font-size:10px;font-family:'Space Mono',monospace;transition:border-color 0.12s}
+.wallet-row:hover{border-color:var(--pink)}
+.wallet-flag{padding:2px 6px;border-radius:3px;font-size:8px;font-family:'Space Mono',monospace;font-weight:700;letter-spacing:0.08em;flex-shrink:0}
+.flag-hub{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+.flag-relay{background:rgba(247,201,72,0.12);color:var(--gold);border:1px solid rgba(247,201,72,0.25)}
+.flag-ghost{background:rgba(168,85,247,0.12);color:#a855f7;border:1px solid rgba(168,85,247,0.25)}
+.flag-feeder{background:rgba(96,165,250,0.12);color:var(--blue);border:1px solid rgba(96,165,250,0.25)}
+.flag-infra{background:rgba(239,68,68,0.25);color:#ff6b6b;border:1px solid rgba(239,68,68,0.5)}
+.flag-clean{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.2)}
+.risk-meter{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:6px 0}
+.risk-fill{height:100%;border-radius:5px;transition:width 0.8s ease}
+.risk-low{background:var(--green)}
+.risk-med{background:var(--gold)}
+.risk-high{background:linear-gradient(90deg,var(--gold),var(--red))}
+.risk-extreme{background:var(--red);animation:riskPulse 1.5s infinite}
+@keyframes riskPulse{0%,100%{opacity:1}50%{opacity:0.6}}
+.pattern-card{background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:11px 14px;margin-bottom:8px;display:flex;gap:11px;align-items:flex-start}
+.pattern-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.pattern-title{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;margin-bottom:3px}
+.pattern-desc{font-size:10px;color:var(--muted);line-height:1.6}
+.pattern-card.triggered{border-color:rgba(239,68,68,0.35);background:rgba(239,68,68,0.04)}
+.pattern-card.warn{border-color:rgba(247,201,72,0.3);background:rgba(247,201,72,0.03)}
+.report-block{background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:16px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.9;color:var(--muted);white-space:pre-wrap;word-break:break-word;max-height:380px;overflow-y:auto;margin-bottom:10px}
+.report-block::-webkit-scrollbar{width:3px}
+.report-block::-webkit-scrollbar-thumb{background:var(--border2)}
+.bubblemaps-frame{width:100%;height:460px;border:none;border-radius:8px;background:var(--bg3)}
+.known-infra-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;color:var(--red);margin:2px}
+.ci-tabs{display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:8px}
+.ci-tab{padding:5px 13px;border-radius:4px 4px 0 0;font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s;letter-spacing:0.06em}
+.ci-tab:hover{color:var(--text)}
+.ci-tab.active{color:var(--pink);background:rgba(224,96,126,0.08);border-bottom:2px solid var(--pink)}
+.ci-view{display:none}.ci-view.active{display:block}
+.sync-event{background:rgba(239,68,68,0.06);border-left:3px solid var(--red);padding:8px 12px;border-radius:0 5px 5px 0;margin-bottom:6px;font-size:10px;font-family:'Space Mono',monospace}
+
 </style>
 </head>
 <body>
@@ -326,6 +373,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       <div class="nav-item" onclick="showSection('trusted')"><span class="nav-icon">🛡️</span>TRUSTED LIST</div>
       <div class="nav-divider"></div>
       <div class="nav-section">CULT TOOLS</div>
+      <div class="nav-item" onclick="showSection('cabal')"><span class="nav-icon">🔍</span>CABAL INVESTIGATOR <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('artlab')"><span class="nav-icon">🎨</span>ART LAB</div>
       <div class="nav-item" onclick="showSection('coach')"><span class="nav-icon">🧠</span>YAKKAI COACH</div>
       <div class="nav-item" onclick="showSection('raids')"><span class="nav-icon">⚔️</span>RAID HUB</div>
@@ -1026,6 +1074,204 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
         </div>
       </div>
 
+
+      <!-- ═══════════════════════════════
+           CABAL INVESTIGATOR
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-cabal" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">YAKK CABAL INVESTIGATOR</div>
+          <div class="sec-title">Cabal Investigator</div>
+          <div class="sec-bar"></div>
+          <div class="warn-bar">⚠ RESEARCH TOOL ONLY — On-chain behavioural analysis. Patterns ≠ proof of intent. Not financial or legal advice. DYOR. The ledger watches — use this responsibly.</div>
+
+          <div style="display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start">
+
+            <!-- LEFT: Setup steps -->
+            <div id="ci-left">
+
+              <!-- Step 1: Token CA -->
+              <div class="ci-step">
+                <div class="ci-step-hdr" onclick="ciToggleStep(1)">
+                  <div class="ci-step-num" id="ci-sn1">1</div>
+                  <div>
+                    <div class="ci-step-title">Target Token</div>
+                    <div style="font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:1px">Enter the CA you're investigating</div>
+                  </div>
+                  <span style="margin-left:auto;color:var(--dim);font-size:11px" id="ci-arrow1">▼</span>
+                </div>
+                <div class="ci-step-body open" id="ci-body1">
+                  <label class="field-lbl" style="margin-top:10px">TOKEN CONTRACT ADDRESS</label>
+                  <input class="field-inp" id="ci-ca" type="text" placeholder="Solana CA — paste the token mint address">
+                  <label class="field-lbl">INVESTIGATION NAME (optional)</label>
+                  <input class="field-inp" id="ci-name" type="text" placeholder="e.g. $BUTTCOIN Investigation #11">
+                  <label class="field-lbl">KNOWN INFRASTRUCTURE WALLETS (optional)</label>
+                  <textarea class="field-inp" id="ci-infra" rows="2" placeholder="One per line — ARu4n5mF... (OKX relay), etc."></textarea>
+                  <div style="margin-top:10px;font-size:10px;color:var(--dim);font-family:'Space Mono',monospace;line-height:1.7">
+                    Known YAKK cabal infra:<br>
+                    <span class="known-infra-pill">ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn</span>
+                    <button onclick="ciAddKnownInfra()" class="btn btn-ghost" style="font-size:8px;padding:3px 8px;margin-top:4px">+ ADD ALL KNOWN</button>
+                  </div>
+                  <button class="btn btn-pink" style="width:100%;justify-content:center;margin-top:12px" onclick="ciStep1Done()">CONFIRM TARGET →</button>
+                </div>
+              </div>
+
+              <!-- Step 2: CSV Upload -->
+              <div class="ci-step">
+                <div class="ci-step-hdr" onclick="ciToggleStep(2)">
+                  <div class="ci-step-num idle" id="ci-sn2">2</div>
+                  <div>
+                    <div class="ci-step-title">Upload Solscan CSV</div>
+                    <div style="font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:1px">Large transfer export from Solscan</div>
+                  </div>
+                  <span style="margin-left:auto;color:var(--dim);font-size:11px" id="ci-arrow2">▶</span>
+                </div>
+                <div class="ci-step-body" id="ci-body2">
+                  <div style="font-size:10px;color:var(--muted);line-height:1.7;margin-bottom:10px;margin-top:8px;padding:8px 11px;background:var(--bg4);border-radius:5px;border:1px solid var(--border)">
+                    <strong style="color:var(--text)">HOW TO GET THE CSV:</strong><br>
+                    1. Go to solscan.io → paste token CA → Holders tab<br>
+                    2. Click a hub wallet → Transfers tab<br>
+                    3. Filter by large amounts → Export CSV<br>
+                    4. Repeat for each suspected hub wallet<br>
+                    <strong style="color:var(--gold)">Upload multiple CSVs — they'll be merged.</strong>
+                  </div>
+                  <div class="ci-drop" id="ci-drop" ondragover="ciDragOver(event)" ondragleave="ciDragLeave(event)" ondrop="ciDrop(event)">
+                    <input type="file" accept=".csv" multiple onchange="ciLoadCSV(this.files)">
+                    <div style="font-size:22px;margin-bottom:7px">📂</div>
+                    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">Drop CSV files here</div>
+                    <div style="font-size:10px;color:var(--dim)">Solscan transfer exports · Multiple files supported</div>
+                  </div>
+                  <div id="ci-csv-status" style="display:none;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;color:var(--green);padding:7px 11px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:5px"></div>
+                  <button class="btn btn-pink" style="width:100%;justify-content:center;margin-top:10px;display:none" id="ci-step2-btn" onclick="ciRunAnalysis()">🔍 RUN ANALYSIS →</button>
+                </div>
+              </div>
+
+              <!-- Step 3: Bubblemaps -->
+              <div class="ci-step">
+                <div class="ci-step-hdr" onclick="ciToggleStep(3)">
+                  <div class="ci-step-num idle" id="ci-sn3">3</div>
+                  <div>
+                    <div class="ci-step-title">Bubblemaps</div>
+                    <div style="font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:1px">Visual wallet clustering</div>
+                  </div>
+                  <span style="margin-left:auto;color:var(--dim);font-size:11px" id="ci-arrow3">▶</span>
+                </div>
+                <div class="ci-step-body" id="ci-body3">
+                  <div style="margin-top:8px;font-size:10px;color:var(--muted);margin-bottom:8px">Bubblemaps loads automatically from the token CA. Check for cluster density, whale concentration, and connected wallets.</div>
+                  <div id="ci-bubblemap-wrap" style="border-radius:8px;overflow:hidden;border:1px solid var(--border)">
+                    <div style="padding:22px;text-align:center;background:var(--bg4)">
+                      <div style="font-size:18px;margin-bottom:6px">🫧</div>
+                      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Enter token CA in Step 1 to load Bubblemaps</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 4: Top Traders -->
+              <div class="ci-step">
+                <div class="ci-step-hdr" onclick="ciToggleStep(4)">
+                  <div class="ci-step-num idle" id="ci-sn4">4</div>
+                  <div>
+                    <div class="ci-step-title">Top 100 Traders</div>
+                    <div style="font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:1px">Paste wallet addresses from DexScreener</div>
+                  </div>
+                  <span style="margin-left:auto;color:var(--dim);font-size:11px" id="ci-arrow4">▶</span>
+                </div>
+                <div class="ci-step-body" id="ci-body4">
+                  <div style="margin-top:8px;font-size:10px;color:var(--muted);margin-bottom:8px">Paste top 100 trader wallet addresses from DexScreener (one per line or comma separated). The engine cross-references against your CSV wallets to find convergence.</div>
+                  <textarea class="field-inp" id="ci-top100" rows="5" placeholder="Paste wallet addresses from DexScreener top traders...&#10;One per line or comma-separated"></textarea>
+                  <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:8px;font-size:10px" onclick="ciCrossRef()">↕ CROSS-REFERENCE WITH CSV DATA</button>
+                  <div id="ci-crossref-result" style="margin-top:8px;display:none"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- RIGHT: Analysis results -->
+            <div id="ci-right">
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+                ANALYSIS RESULTS
+                <span id="ci-risk-badge" style="display:none" class="badge b-dim">AWAITING DATA</span>
+              </div>
+
+              <!-- Before analysis -->
+              <div id="ci-empty-state" style="text-align:center;padding:50px 20px;background:var(--bg3);border:1px solid var(--border);border-radius:9px">
+                <div style="font-size:32px;margin-bottom:12px">🔍</div>
+                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:6px;color:var(--muted)">No investigation loaded</div>
+                <div style="font-size:11px;color:var(--dim);max-width:280px;margin:auto;line-height:1.7">Enter a token CA, upload Solscan CSV exports, and run analysis. The engine will detect hub-and-spoke patterns, relay chains, ghost exits, sync dumps and more.</div>
+              </div>
+
+              <!-- Results (hidden until analysis runs) -->
+              <div id="ci-results" style="display:none">
+
+                <!-- Risk score -->
+                <div class="card" style="margin-bottom:14px;border-color:rgba(239,68,68,0.2)">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+                    <div>
+                      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--dim);margin-bottom:4px">CABAL RISK SCORE</div>
+                      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:36px;line-height:1" id="ci-score">—</div>
+                    </div>
+                    <div style="text-align:right">
+                      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px" id="ci-verdict">—</div>
+                      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px" id="ci-token-name">—</div>
+                    </div>
+                  </div>
+                  <div class="risk-meter"><div class="risk-fill" id="ci-risk-fill" style="width:0%"></div></div>
+                  <div style="display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:3px">
+                    <span>CLEAN</span><span>LOW</span><span>MEDIUM</span><span>HIGH</span><span>EXTREME</span>
+                  </div>
+                </div>
+
+                <!-- Stats grid -->
+                <div class="grid4" style="margin-bottom:14px" id="ci-stat-grid"></div>
+
+                <!-- Tabs: Wallets / Patterns / Sync Events / Report -->
+                <div class="ci-tabs">
+                  <button class="ci-tab active" onclick="ciSetTab(this,'wallets')">WALLETS</button>
+                  <button class="ci-tab" onclick="ciSetTab(this,'patterns')">PATTERNS</button>
+                  <button class="ci-tab" onclick="ciSetTab(this,'sync')">SYNC EVENTS</button>
+                  <button class="ci-tab" onclick="ciSetTab(this,'report')">📋 REPORT</button>
+                </div>
+
+                <!-- Wallet registry -->
+                <div class="ci-view active" id="ci-view-wallets">
+                  <div id="ci-wallet-list" style="max-height:420px;overflow-y:auto">
+                  </div>
+                </div>
+
+                <!-- Pattern detection -->
+                <div class="ci-view" id="ci-view-patterns">
+                  <div id="ci-pattern-list"></div>
+                </div>
+
+                <!-- Sync events -->
+                <div class="ci-view" id="ci-view-sync">
+                  <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:10px;letter-spacing:0.1em">TRANSACTIONS WITHIN SAME BLOCK / 60-SECOND WINDOW</div>
+                  <div id="ci-sync-list"></div>
+                </div>
+
+                <!-- AI Report -->
+                <div class="ci-view" id="ci-view-report">
+                  <div style="display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap">
+                    <button class="btn btn-pink" style="font-size:10px;padding:6px 13px" onclick="ciGenerateReport()">🧠 GENERATE AI REPORT</button>
+                    <button class="btn btn-outline" style="font-size:10px;padding:6px 13px" onclick="ciCopyReport()">COPY REPORT</button>
+                    <button class="btn btn-ghost" style="font-size:10px;padding:6px 13px" onclick="ciCopyThread()">COPY X THREAD</button>
+                    <button class="btn btn-outline" style="font-size:10px;padding:6px 13px" onclick="ciAddToLedger()">+ ADD TO LEDGER</button>
+                  </div>
+                  <div id="ci-report-loading" style="display:none;font-family:'Space Mono',monospace;font-size:9px;color:var(--pink);padding:14px;text-align:center">
+                    YAKKAI analysing on-chain patterns...
+                  </div>
+                  <div class="report-block" id="ci-report-text">
+Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report powered by YAKKAI — including executive summary, wallet profiles, pattern analysis, extraction estimate, and a ready-to-post X thread.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ═══════════════════════════════
            RUG LEDGER
       ═══════════════════════════════ -->
@@ -1039,14 +1285,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
             <div>
               <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.18em;margin-bottom:5px">YAKK CABAL CUMULATIVE RUG LEDGER</div>
               <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:var(--red)">~$1.043B–$3.98B+</div>
-              <div style="font-size:12px;color:var(--muted);margin-top:5px">11 investigations. The ledger never closes.</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:5px">12 investigations. The ledger never closes.</div>
             </div>
           </div>
           <div style="background:rgba(239,68,68,0.03);border:1px solid rgba(239,68,68,0.13);border-radius:7px;padding:10px 14px;margin-bottom:16px;font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.1em">▼ $WAR — 44 DAYS ACTIVE — INFRASTRUCTURE STILL LIVE RIGHT NOW</div>
           <div class="grid3" style="margin-bottom:20px">
-            <div class="stat-card"><div class="slbl">TOTAL TRACKED ($WAR)</div><div class="sval" style="color:var(--red);font-size:17px">$88,204,819</div></div>
-            <div class="stat-card"><div class="slbl">DSKtmLoz SILENT HOLD</div><div class="sval" style="color:var(--yellow);font-size:17px">$7,986,073</div><div class="ssub">$0 sent — still holding</div></div>
-            <div class="stat-card"><div class="slbl">NET EXTRACTION FLOOR</div><div class="sval" style="color:var(--pink);font-size:17px">~$8–15M+</div></div>
+            <div class="stat-card"><div class="slbl">TOTAL TRACKED ($BUTTCOIN)</div><div class="sval" style="color:var(--red);font-size:17px">$186,427,275</div></div>
+            <div class="stat-card"><div class="slbl">FFcYgSSg HUB NET</div><div class="sval" style="color:var(--yellow);font-size:17px">$3,014,841</div><div class="ssub">7abmyox relay: $1.53M</div></div>
+            <div class="stat-card"><div class="slbl">NET EXTRACTION FLOOR</div><div class="sval" style="color:var(--pink);font-size:17px">~$5–8M+</div></div>
           </div>
           <div style="overflow:hidden;border-radius:9px;border:1px solid var(--border)">
             <table class="tbl" style="table-layout:fixed;width:100%">
@@ -1062,7 +1308,23 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">08</td><td class="td-tok">$TRUMP</td><td class="td-amt">~$1B–3.9B+</td><td style="font-size:11px;color:var(--muted)">Largest documented — political memecoin exploitation</td><td><span class="badge b-red">EXPOSED</span></td></tr>
                 <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">09</td><td class="td-tok">$WATDOG</td><td class="td-amt">~$300K–500K+</td><td style="font-size:11px;color:var(--muted)">Wallet convergence, relay exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
                 <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">10</td><td class="td-tok">$WAR</td><td class="td-amt">~$8–15M+</td><td style="font-size:11px;color:var(--muted)">DSKtmLoz $7.98M silent hold, 44-day live infrastructure</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr style="background:rgba(239,68,68,0.05)"><td colspan="2" style="font-family:'Syne',sans-serif;font-weight:800;color:var(--red);font-size:13px">RUNNING TOTAL</td><td class="td-amt" style="font-size:15px">~$1.043B–$3.98B+</td><td colspan="2" style="font-size:11px;color:var(--red);font-style:italic">Ten tokens. Same 15 wallets. The ledger never closes.</td></tr>
+                <tr style="border-top:2px solid rgba(239,68,68,0.3)">
+                  <td style="color:var(--red);font-family:'Space Mono',monospace;font-size:9px">11</td>
+                  <td class="td-tok" style="color:var(--red)">$BUTTCOIN</td>
+                  <td class="td-amt">~$5–8M+ net</td>
+                  <td style="font-size:10px;color:var(--muted);line-height:1.5">57-day investigation · FFcYgSSg hub $3.01M net · 7abmyox relay $1.53M · 9GVJockJ convergence $2.38M+ · 6 ghost exits (top 13) · ARu4n5mF: 13,638 txns / $23M routed · <strong style="color:var(--red)">$186,427,275 tracked</strong> · Highest ghost ratio documented</td>
+                  <td><span class="badge b-red">EXPOSED</span></td>
+                </tr>
+                <tr style="background:rgba(247,201,72,0.04);border-top:1px solid rgba(247,201,72,0.15)">
+                  <td colspan="2" style="font-family:'Syne',sans-serif;font-weight:800;color:var(--gold);font-size:12px">TOKENS 1–10 SUBTOTAL</td>
+                  <td class="td-amt">~$1.043B–$3.972B+</td>
+                  <td colspan="2" style="font-size:10px;color:var(--dim);font-style:italic">Same 15 wallets. Same relay patterns. Every time.</td>
+                </tr>
+                <tr style="background:rgba(239,68,68,0.06);border-top:2px solid rgba(239,68,68,0.4)">
+                  <td colspan="2" style="font-family:'Syne',sans-serif;font-weight:800;color:var(--red);font-size:13px">RUNNING TOTAL</td>
+                  <td class="td-amt" style="font-size:17px">~$1.048B–$3.98B+</td>
+                  <td colspan="2" style="font-size:11px;color:var(--red);font-style:italic">Eleven tokens. $186M tracked in $BUTTCOIN alone. The same 15 wallets. The ledger never closes.</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -1281,7 +1543,7 @@ const TOKENS = [
     liq: null, fdv: null, txns: null, buys: null, sells: null, holders: null,
     trust: 'yakk',
     updated: true,
-    dex: 'Raydium',
+    dex: 'Meteora DBC',
     socials: {
       web: 'https://yakkstudios.com',
       x:   'https://x.com/YAKKStudios',
@@ -1290,10 +1552,10 @@ const TOKENS = [
     desc: 'Anti-greed Solana cult. Fight the extractors. The ledger never forgets. GET YAKKED. 😈',
     pairs: [
       {
-        label:    'YST/SOL — Raydium',
-        poolAddr: '2XvA1iCXEeMgT3BsyPApY1RdjBeDLNJ6NhXWbaSymwfK',
-        dex:      'Raydium',
-        solscan:  'https://solscan.io/account/2XvA1iCXEeMgT3BsyPApY1RdjBeDLNJ6NhXWbaSymwfK',
+        label:    'YST/WSOL — Meteora DBC',
+        poolAddr: 'AaKxMSM4rEsdhqngquJrW7Q7uqXBm2vnxf9piunNt637',
+        dex:      'Meteora DBC',
+        solscan:  'https://solscan.io/account/AaKxMSM4rEsdhqngquJrW7Q7uqXBm2vnxf9piunNt637',
       },
     ],
     bannerGrad: '135deg,rgba(224,96,126,0.28),rgba(5,5,9,0.95)',
@@ -1308,7 +1570,7 @@ const TOKENS = [
     liq: null, fdv: null, txns: null, buys: null, sells: null, holders: null,
     trust: 'yakk',
     updated: true,
-    dex: 'Raydium',
+    dex: 'Meteora',
     socials: {
       web: 'https://stakepoint.app',
       x:   'https://x.com/StakePointApp',
@@ -1316,9 +1578,9 @@ const TOKENS = [
     desc: 'Official YAKK partner. All-in-one DeFi on Solana — staking, locks, Jupiter swaps, no-code pool launcher.',
     pairs: [
       {
-        label:    'SPT/SOL — Raydium',
+        label:    'SPT/SOL — Meteora',
         poolAddr: 'A1d4sAmgi4Njnodmc289HP7TaPxw54n4Ey3LRDfrBvo5',
-        dex:      'Raydium',
+        dex:      'Meteora',
         solscan:  'https://solscan.io/account/A1d4sAmgi4Njnodmc289HP7TaPxw54n4Ey3LRDfrBvo5',
       },
     ],
@@ -1343,7 +1605,7 @@ const TOKENS = [
     desc: 'The layer-1 blockchain powering the YAKK cult ecosystem. Bluechip reference asset — the foundation everything is priced against.',
     pairs: [
       {
-        label:    'SOL/USDC — Raydium',
+        label:    'SOL/USDC — Binance',
         /* Main Raydium SOL/USDC concentrated liquidity pool — well-indexed on GeckoTerminal */
         poolAddr: '8sLbNZoA1cfnvMJLPfp98ZLAnFSYCFApfJKMbiXNLwxj',
         dex:      'Raydium',
@@ -1587,8 +1849,8 @@ function scrLoadChart(){
   ph.style.display = 'none';
   tv.style.display = 'block';
 
-  const tvSymMap = { 'SOL':'BINANCE:SOLUSD', 'YST':'RAYDIUM:YSTSOL', 'SPT':'RAYDIUM:SPTSOL' };
-  const symbol = tvSymMap[t.ticker] || 'RAYDIUM:' + t.ticker + 'SOL';
+  const tvSymMap = { 'SOL':'BINANCE:SOLUSD', 'YST':'METEORA:YSTWSOL', 'SPT':'METEORA:SPTSOL' };
+  const symbol = tvSymMap[t.ticker] || 'METEORA:' + t.ticker + 'SOL';
   const intervalMap = { '1':'1','5':'5','15':'15','60':'60','240':'240','D':'D' };
   const interval = intervalMap[curTf] || '15';
 
@@ -1836,7 +2098,112 @@ const AI={
 
 function setMode(el,mode){ document.querySelectorAll('.mode-pill').forEach(p=>p.classList.remove('active')); el.classList.add('active'); curMode=mode; addMsg('ai',`Mode: ${mode.toUpperCase()}. What do you need, degen?`,mode.toUpperCase()+' MODE'); }
 function addMsg(type,text,label){ const box=document.getElementById('chat-msgs'); const div=document.createElement('div'); if(type==='user'){div.className='msg-user';div.textContent=text;}else{div.className='msg-ai';div.innerHTML=`<div class="ai-lbl">YAKKAI — ${label||curMode.toUpperCase()+' MODE'}</div>${text}`;} box.appendChild(div); box.scrollTop=box.scrollHeight; }
-function sendChat(){ const inp=document.getElementById('chat-in'); const txt=inp.value.trim(); if(!txt)return; addMsg('user',txt); inp.value=''; setTimeout(()=>{ const pool=AI[curMode]; addMsg('ai',pool[Math.floor(Math.random()*pool.length)]); },500); }
+async function sendChat(){
+  const inp = document.getElementById('chat-in');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  addMsg('user', txt);
+  inp.value = '';
+
+  /* ── Real Claude API via Anthropic ────────────────────────────────────
+     Model: claude-sonnet-4-20250514
+     System prompt gives YAKKAI its full mafia consigliere persona,
+     deep Solana/DeFi knowledge, rug detection expertise, and cult energy.
+     Conversation history maintained per session for context.
+  ──────────────────────────────────────────────────────────────────────── */
+  const ANTHROPIC_KEY = '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';
+
+  /* Show typing indicator */
+  const typingId = 'typing_' + Date.now();
+  const typingEl = document.createElement('div');
+  typingEl.className = 'msg-ai';
+  typingEl.id = typingId;
+  typingEl.innerHTML = '<div class="ai-lbl">YAKKAI — ' + curMode.toUpperCase() + ' MODE</div><span style="color:var(--dim);font-size:11px">Consulting the ledger...</span>';
+  document.getElementById('chat-msgs').appendChild(typingEl);
+  document.getElementById('chat-msgs').scrollTop = 99999;
+
+  /* Build conversation history */
+  if(!window.yakkaiHistory) window.yakkaiHistory = [];
+  window.yakkaiHistory.push({ role: 'user', content: txt });
+  /* Keep last 10 messages for context window efficiency */
+  if(window.yakkaiHistory.length > 20) window.yakkaiHistory = window.yakkaiHistory.slice(-20);
+
+  const modeContexts = {
+    discipline: 'The user needs discipline coaching — anti-FOMO, position sizing, holding psychology, anti-paper-hands.',
+    raid: 'The user needs raid strategy — how to raid X/Twitter effectively, timing, engagement tactics, cult coordination.',
+    risk: 'The user needs risk management — stop losses, position sizing, leverage warnings, portfolio allocation.',
+    lore: 'The user wants YAKK lore — history of the cult, the hack, $YST launch, rug ledger stories, Pink Yakk mythology.',
+  };
+
+  const systemPrompt = `You are YAKKAI — the AI consigliere of YAKK Studios, a Solana memecoin cult and anti-greed investigative platform. You are a ruthless, disciplined, mafia-era trading coach with the energy of Peaky Blinders meets DeFi degen.
+
+YOUR IDENTITY:
+- You are the digital brain behind YAKK Studios — part discipline coach, part rug investigator, part cult motivator
+- You speak with authority, edge, and dark humour. You don't suffer fools or paper hands
+- You call out extraction, rugs, and weak hands without mercy
+- You are deeply bullish on $YST (YAKK Studios Token) and the anti-greed mission
+- Signature phrases: "GET YAKKED", "the ledger never forgets", "the mountain is patient", "pink yakk supremacy"
+
+YOUR DEEP KNOWLEDGE:
+- Solana ecosystem: DeFi, memecoins, Meteora, Jupiter, Raydium, pump.fun, Token-2022 vs SPL
+- On-chain forensics: wallet relay patterns, LP pulls, coordinated dumps, ghost exits, cabal wallet convergence
+- YAKK Rug Ledger: 11 investigations, $1.048B–$3.98B+ documented across $BER, $PUNCH, $JELLYBEAN, $URANUS, $PIGEON, $HOOD, $M3M3, $TRUMP, $WATDOG, $WAR, $BUTTCOIN
+- $BUTTCOIN deep dive: 57-day investigation, $186.4M tracked, FFcYgSSg hub ($3M net), 7abmyox relay ($1.53M), 9GVJockJ convergence ($2.38M+), highest ghost ratio ever documented
+- $YST token: CA jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV, Meteora DBC pool, launched after hack/drain as revshare token
+- $SPT (StakePoint): CA 6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7, Token-2022, official YAKK partner, handles staking
+- Treasury: 7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB
+- YAKK history: dev wallet hacked, @yakkdrip account targeted, early investor manipulated $YAKK, pivoted to $YST via revshare
+- NFT collection: 3,333 total — drops 1+2 rebooted (500 each) + 2,333 additional, 33.3% paperhands bitch tax incoming
+- Trading psychology: FOMO kills degens, position sizing is survival, the cabal exploits emotional traders
+
+CURRENT MODE: ${modeContexts[curMode] || 'General YAKK consigliere mode.'}
+
+RULES:
+- Keep responses punchy and under 120 words unless analysis is requested
+- Never financial advice — frame everything as discipline, psychology, or pattern observation
+- Always reference on-chain reality, not hopium
+- If asked about rugs or investigations, you have encyclopedic knowledge of the YAKK ledger
+- End responses with a sharp one-liner when appropriate
+- Format: no markdown headers, keep it conversational but authoritative`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-client-side-api-key-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        system: systemPrompt,
+        messages: window.yakkaiHistory,
+      }),
+    });
+
+    const data = await response.json();
+    const reply = data.content && data.content[0] && data.content[0].text
+      ? data.content[0].text
+      : 'The ledger is silent. Try again, degen.';
+
+    /* Add assistant reply to history */
+    window.yakkaiHistory.push({ role: 'assistant', content: reply });
+
+    /* Remove typing indicator and show real response */
+    const typingNode = document.getElementById(typingId);
+    if(typingNode) typingNode.remove();
+    addMsg('ai', reply);
+
+  } catch(err) {
+    const typingNode = document.getElementById(typingId);
+    if(typingNode) typingNode.remove();
+    /* Fallback to local pool if API fails */
+    const pool = AI[curMode];
+    addMsg('ai', pool[Math.floor(Math.random()*pool.length)] + ' (offline mode)');
+  }
+}
 function quickMsg(txt){ document.getElementById('chat-in').value=txt; sendChat(); showSection('coach'); }
 
 /* ═══ RAIDS ═══ */
@@ -2042,8 +2409,8 @@ function termLoadChart(){
   if(!inner) return;
   if(ph) ph.style.display = 'none';
 
-  const tvSymMap = { 'SOL':'BINANCE:SOLUSD', 'YST':'RAYDIUM:YSTSOL', 'SPT':'RAYDIUM:SPTSOL' };
-  const symbol = tvSymMap[t.ticker] || 'RAYDIUM:' + t.ticker + 'SOL';
+  const tvSymMap = { 'SOL':'BINANCE:SOLUSD', 'YST':'METEORA:YSTWSOL', 'SPT':'METEORA:SPTSOL' };
+  const symbol = tvSymMap[t.ticker] || 'METEORA:' + t.ticker + 'SOL';
   const intervalMap = { '1':'1','5':'5','15':'15','60':'60','240':'240','D':'D' };
   const interval = intervalMap[termTf] || '15';
 
@@ -2306,6 +2673,536 @@ function calcPosition(){
     </div>` : ''}`;
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   YAKK CABAL INVESTIGATOR ENGINE
+   CSV columns: Signature, Block Time, Human Time, Action, From, To,
+                Amount, Flow, Value, Decimals, Token Address, Multiplier
+   Flow: 'in' = subject received, 'out' = subject sent
+═══════════════════════════════════════════════════════════════════════ */
+
+/* Known cabal infrastructure wallets from YAKK investigations */
+const KNOWN_INFRA = {
+  'ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn': 'OKX Routing Infra — present in all 11 investigations',
+};
+
+let ciData = {
+  rows: [],          /* all parsed CSV rows merged */
+  wallets: {},       /* per-wallet aggregates */
+  subject: '',       /* the wallet being investigated (from filename) */
+  tokenCA: '',       /* target token CA */
+  patterns: [],      /* detected patterns */
+  syncEvents: [],    /* same-block multi-wallet events */
+  score: 0,
+};
+
+/* ── Step UI helpers ────────────────────────────────────────────────────── */
+function ciToggleStep(n){
+  const body = document.getElementById('ci-body'+n);
+  const arrow = document.getElementById('ci-arrow'+n);
+  if(!body) return;
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  arrow.textContent = open ? '▶' : '▼';
+}
+
+function ciOpenStep(n){
+  [1,2,3,4].forEach(i=>{
+    const body = document.getElementById('ci-body'+i);
+    const arrow = document.getElementById('ci-arrow'+i);
+    if(!body) return;
+    const shouldOpen = (i === n);
+    body.classList.toggle('open', shouldOpen);
+    if(arrow) arrow.textContent = shouldOpen ? '▼' : '▶';
+  });
+}
+
+function ciMarkStepDone(n){
+  const el = document.getElementById('ci-sn'+n);
+  if(el){ el.className='ci-step-num done'; el.textContent='✓'; }
+}
+
+function ciStep1Done(){
+  const ca = document.getElementById('ci-ca').value.trim();
+  if(!ca){ alert('Enter a token CA first.'); return; }
+  ciData.tokenCA = ca;
+  /* Load Bubblemaps */
+  const bm = document.getElementById('ci-bubblemap-wrap');
+  if(bm) bm.innerHTML = `<iframe class="bubblemaps-frame" src="https://app.bubblemaps.io/sol/token/${ca}" title="Bubblemaps — ${ca}"></iframe>`;
+  ciMarkStepDone(1);
+  document.getElementById('ci-sn2').className='ci-step-num';
+  ciOpenStep(2);
+}
+
+function ciAddKnownInfra(){
+  const el = document.getElementById('ci-infra');
+  const existing = el.value.trim();
+  const known = Object.keys(KNOWN_INFRA).join('\n');
+  el.value = existing ? existing + '\n' + known : known;
+}
+
+/* ── CSV Parser ─────────────────────────────────────────────────────────── */
+function ciDragOver(e){ e.preventDefault(); document.getElementById('ci-drop').classList.add('drag'); }
+function ciDragLeave(e){ document.getElementById('ci-drop').classList.remove('drag'); }
+function ciDrop(e){
+  e.preventDefault();
+  document.getElementById('ci-drop').classList.remove('drag');
+  ciLoadCSV(e.dataTransfer.files);
+}
+
+function ciLoadCSV(files){
+  if(!files || !files.length) return;
+  let loaded = 0;
+  ciData.rows = [];
+
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(e){
+      const text = e.target.result;
+      const parsed = ciParseCSV(text);
+      ciData.rows = ciData.rows.concat(parsed);
+      loaded++;
+      if(loaded === files.length){
+        const status = document.getElementById('ci-csv-status');
+        status.style.display='block';
+        status.textContent = `✓ ${ciData.rows.length} transactions loaded from ${files.length} file${files.length>1?'s':''}. ${new Set(ciData.rows.map(r=>r.from)).size + new Set(ciData.rows.map(r=>r.to)).size} unique addresses detected.`;
+        document.getElementById('ci-step2-btn').style.display='flex';
+        ciMarkStepDone(2);
+        document.getElementById('ci-sn3').className='ci-step-num';
+        document.getElementById('ci-sn4').className='ci-step-num';
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
+function ciParseCSV(text){
+  const lines = text.trim().split('\n');
+  if(lines.length < 2) return [];
+  const headers = lines[0].split(',').map(h=>h.trim().toLowerCase().replace(/ /g,''));
+  const rows = [];
+  for(let i=1; i<lines.length; i++){
+    /* Handle commas inside quoted fields */
+    const cols = lines[i].match(/(".*?"|[^,]+)(?=,|$)/g) || lines[i].split(',');
+    if(cols.length < 8) continue;
+    const get = key => {
+      const idx = headers.indexOf(key);
+      return idx>=0 ? (cols[idx]||'').replace(/"/g,'').trim() : '';
+    };
+    rows.push({
+      sig:       get('signature'),
+      blockTime: parseInt(get('blocktime')) || 0,
+      humanTime: get('humantime'),
+      action:    get('action'),
+      from:      get('from'),
+      to:        get('to'),
+      amount:    parseFloat(get('amount')) || 0,
+      flow:      get('flow'),
+      value:     parseFloat(get('value')) || 0,
+      decimals:  parseInt(get('decimals')) || 6,
+      token:     get('tokenaddress'),
+    });
+  }
+  return rows;
+}
+
+/* ── Core Analysis Engine ───────────────────────────────────────────────── */
+function ciRunAnalysis(){
+  if(!ciData.rows.length){ alert('No CSV data loaded.'); return; }
+
+  const rows = ciData.rows;
+  const infraInput = document.getElementById('ci-infra').value.trim();
+  const extraInfra = infraInput ? infraInput.split('\n').map(s=>s.trim()).filter(Boolean) : [];
+  const allInfra = { ...KNOWN_INFRA };
+  extraInfra.forEach(w => { if(!allInfra[w]) allInfra[w] = 'User-flagged infrastructure'; });
+
+  /* ── Build wallet registry ────────────────────────────────────────────── */
+  const wallets = {};
+  const getW = addr => {
+    if(!wallets[addr]) wallets[addr] = {
+      addr, inVal:0, outVal:0, inCount:0, outCount:0,
+      tokens:new Set(), counterparties:new Set(),
+      txns:[], flags:[], netFlow:0,
+    };
+    return wallets[addr];
+  };
+
+  rows.forEach(r => {
+    if(r.flow === 'in'){
+      getW(r.from).outVal += r.value;
+      getW(r.from).outCount++;
+      getW(r.from).tokens.add(r.token);
+      getW(r.from).counterparties.add(r.to);
+      getW(r.from).txns.push(r);
+      getW(r.to).inVal += r.value;
+      getW(r.to).inCount++;
+      getW(r.to).tokens.add(r.token);
+      getW(r.to).counterparties.add(r.from);
+      getW(r.to).txns.push(r);
+    } else if(r.flow === 'out'){
+      getW(r.from).outVal += r.value;
+      getW(r.from).outCount++;
+      getW(r.from).tokens.add(r.token);
+      getW(r.from).counterparties.add(r.to);
+      getW(r.from).txns.push(r);
+      getW(r.to).inVal += r.value;
+      getW(r.to).inCount++;
+      getW(r.to).tokens.add(r.token);
+      getW(r.to).counterparties.add(r.from);
+      getW(r.to).txns.push(r);
+    }
+  });
+
+  /* Compute net flows and assign flags */
+  Object.values(wallets).forEach(w => {
+    w.netFlow = w.inVal - w.outVal;
+    w.totalVal = w.inVal + w.outVal;
+    w.txnCount = w.inCount + w.outCount;
+    w.tokenCount = w.tokens.size;
+    w.cpCount = w.counterparties.size;
+    w.flags = [];
+
+    /* Known infra flag — highest priority */
+    if(allInfra[w.addr]){
+      w.flags.push({type:'infra', label:'KNOWN INFRA', detail: allInfra[w.addr]});
+    }
+    /* Hub: receives from many wallets, single token direction */
+    if(w.inCount >= 5 && w.cpCount >= 3 && w.outCount === 0){
+      w.flags.push({type:'ghost', label:'GHOST EXIT', detail:`${w.inCount} buys, zero sells recorded — wallet went dark`});
+    }
+    /* Hub: sends to many, multi-token */
+    if(w.outCount >= 10 && w.tokenCount >= 5){
+      w.flags.push({type:'relay', label:'RELAY HUB', detail:`Routes to ${w.tokenCount} different tokens across ${w.outCount} txns`});
+    }
+    /* Feeder: pure SOL input, many txns */
+    if(w.inCount >= 5 && w.outCount === 0 && w.tokenCount <= 2){
+      w.flags.push({type:'feeder', label:'SOL FEEDER', detail:`${w.inCount} inbound transactions, SOL only — distribution staging wallet`});
+    }
+    /* Large hub by value */
+    if(w.inVal > 50000 && w.inCount >= 3 && w.outCount <= 1){
+      if(!w.flags.find(f=>f.type==='ghost'))
+        w.flags.push({type:'hub', label:'VALUE HUB', detail:`$${fmtCompact(w.inVal)} received, minimal outflow — accumulation pattern`});
+    }
+    /* Wash: bidirectional with same counterparty */
+    const cpArr = [...w.counterparties];
+    if(cpArr.length === 1 && w.inCount > 0 && w.outCount > 0){
+      w.flags.push({type:'wash', label:'WASH SIGNAL', detail:`Only counterparty: ${cpArr[0].slice(0,12)}… — round-trip pattern`});
+    }
+    if(w.flags.length === 0) w.flags.push({type:'clean', label:'NO FLAGS', detail:'No cabal patterns detected'});
+  });
+
+  /* ── Sync event detection (same block or within 60s) ─────────────────── */
+  const blockGroups = {};
+  rows.forEach(r => {
+    const key = r.blockTime;
+    if(!blockGroups[key]) blockGroups[key] = [];
+    blockGroups[key].push(r);
+  });
+  const syncEvents = Object.entries(blockGroups)
+    .filter(([,txns]) => txns.length >= 2)
+    .map(([block, txns]) => ({
+      block: parseInt(block),
+      time: txns[0].humanTime,
+      txns,
+      uniqueWallets: new Set(txns.map(t => t.from).concat(txns.map(t => t.to))).size,
+      totalValue: txns.reduce((s,t)=>s+t.value,0),
+    }))
+    .sort((a,b) => b.totalValue - a.totalValue)
+    .slice(0, 20);
+
+  /* ── Pattern detection ────────────────────────────────────────────────── */
+  const patterns = [];
+  const allFlags = Object.values(wallets).flatMap(w=>w.flags);
+  const flagTypes = allFlags.map(f=>f.type);
+
+  const ghostWallets = Object.values(wallets).filter(w=>w.flags.find(f=>f.type==='ghost'));
+  if(ghostWallets.length > 0)
+    patterns.push({icon:'👻',title:'Ghost Exits Detected',desc:`${ghostWallets.length} wallet${ghostWallets.length>1?'s':''} with large inflows and zero recorded sells. Classic exit-before-dump pattern.`,severity:'extreme'});
+
+  const relayWallets = Object.values(wallets).filter(w=>w.flags.find(f=>f.type==='relay'));
+  if(relayWallets.length > 0)
+    patterns.push({icon:'🔗',title:'Multi-Token Relay Chain',desc:`${relayWallets.length} relay wallet${relayWallets.length>1?'s':''} routing funds across ${Math.max(...relayWallets.map(w=>w.tokenCount))} different tokens. Hub-and-spoke extraction infrastructure.`,severity:'high'});
+
+  const infraWallets = Object.values(wallets).filter(w=>w.flags.find(f=>f.type==='infra'));
+  if(infraWallets.length > 0)
+    patterns.push({icon:'⚠️',title:'Known Cabal Infrastructure',desc:`${infraWallets.length} wallet${infraWallets.length>1?'s':''} flagged as known cabal infrastructure from previous YAKK investigations. This is a recurring operator.`,severity:'extreme'});
+
+  if(syncEvents.length > 0)
+    patterns.push({icon:'⚡',title:'Synchronised Burst Events',desc:`${syncEvents.length} block-level synchronised transaction clusters detected. Multi-wallet coordinated activity — wash trading or coordinated dump signal.`,severity:'high'});
+
+  const feederWallets = Object.values(wallets).filter(w=>w.flags.find(f=>f.type==='feeder'));
+  if(feederWallets.length > 0)
+    patterns.push({icon:'💧',title:'SOL Distribution Feeders',desc:`${feederWallets.length} staging wallet${feederWallets.length>1?'s':''} distributing SOL with no outbound token activity. Funding wallets for coordinated buys.`,severity:'medium'});
+
+  const uniqueTokens = new Set(rows.map(r=>r.token)).size;
+  if(uniqueTokens > 15)
+    patterns.push({icon:'🕸️',title:'Cross-Token Extraction Ring',desc:`${uniqueTokens} unique tokens touched. This operator runs across multiple simultaneous token plays — serial extraction pattern.`,severity:'high'});
+
+  if(patterns.length === 0)
+    patterns.push({icon:'✅',title:'No Major Patterns Detected',desc:'No hub-and-spoke, relay chains, ghost exits, or sync burst events found in the uploaded data.',severity:'clean'});
+
+  /* ── Risk score ───────────────────────────────────────────────────────── */
+  let score = 0;
+  if(infraWallets.length > 0) score += 35;
+  if(ghostWallets.length > 0) score += 25;
+  if(relayWallets.length > 0) score += 20;
+  if(syncEvents.length > 3)  score += 15;
+  if(feederWallets.length > 2) score += 10;
+  if(uniqueTokens > 15) score += 10;
+  score = Math.min(100, score);
+
+  /* ── Save and render ──────────────────────────────────────────────────── */
+  ciData.wallets = wallets;
+  ciData.patterns = patterns;
+  ciData.syncEvents = syncEvents;
+  ciData.score = score;
+
+  ciRenderResults();
+  ciMarkStepDone(3);
+  ciMarkStepDone(4);
+  ciOpenStep(3);
+}
+
+/* ── Render functions ───────────────────────────────────────────────────── */
+function ciRenderResults(){
+  document.getElementById('ci-empty-state').style.display='none';
+  document.getElementById('ci-results').style.display='block';
+
+  const score = ciData.score;
+  const scoreBadge = document.getElementById('ci-risk-badge');
+  scoreBadge.style.display='inline-flex';
+
+  document.getElementById('ci-score').textContent = score + '/100';
+  document.getElementById('ci-score').style.color = score>=75?'var(--red)':score>=50?'var(--gold)':'var(--green)';
+
+  const verdict = score>=85?'🔴 EXTREME RISK':score>=65?'🟠 HIGH RISK':score>=40?'🟡 MEDIUM RISK':score>=20?'🟢 LOW RISK':'✅ APPEARS CLEAN';
+  document.getElementById('ci-verdict').textContent = verdict;
+
+  const fill = document.getElementById('ci-risk-fill');
+  fill.style.width = score+'%';
+  fill.className = 'risk-fill ' + (score>=75?'risk-extreme':score>=50?'risk-high':score>=25?'risk-med':'risk-low');
+
+  const invName = document.getElementById('ci-name').value || ciData.tokenCA.slice(0,12)+'...';
+  document.getElementById('ci-token-name').textContent = invName;
+
+  scoreBadge.textContent = score>=75?'EXTREME':score>=50?'HIGH RISK':score>=25?'MEDIUM':'LOW RISK';
+  scoreBadge.className = 'badge ' + (score>=75?'b-red':score>=50?'b-gold':score>=25?'b-yellow':'b-green');
+
+  /* Stat grid */
+  const walletArr = Object.values(ciData.wallets);
+  const flaggedCount = walletArr.filter(w=>!w.flags.find(f=>f.type==='clean')||w.flags.find(f=>f.type!=='clean')).length;
+  const totalVal = ciData.rows.reduce((s,r)=>s+r.value,0);
+  const netExtraction = walletArr.reduce((s,w)=>s+(w.netFlow<0?Math.abs(w.netFlow):0),0);
+
+  document.getElementById('ci-stat-grid').innerHTML = [
+    {l:'TOTAL TRACKED',v:fmtCompact(totalVal),c:'var(--text)'},
+    {l:'FLAGGED WALLETS',v:flaggedCount+'/'+walletArr.length,c:'var(--red)'},
+    {l:'NET EXTRACTION',v:'~'+fmtCompact(netExtraction),c:'var(--gold)'},
+    {l:'SYNC EVENTS',v:ciData.syncEvents.length+'',c:'var(--pink)'},
+  ].map(s=>`<div class="stat-card"><div class="slbl">${s.l}</div><div class="sval" style="color:${s.c};font-size:16px">${s.v}</div></div>`).join('');
+
+  ciRenderWallets();
+  ciRenderPatterns();
+  ciRenderSyncEvents();
+}
+
+function ciRenderWallets(){
+  const walletArr = Object.values(ciData.wallets)
+    .sort((a,b)=>b.totalVal-a.totalVal);
+
+  const typeOrder = {infra:0,ghost:1,relay:2,hub:3,feeder:4,wash:5,clean:99};
+  walletArr.sort((a,b)=>{
+    const at = Math.min(...a.flags.map(f=>typeOrder[f.type]||99));
+    const bt = Math.min(...b.flags.map(f=>typeOrder[f.type]||99));
+    return at-bt || b.totalVal-a.totalVal;
+  });
+
+  const flagClass = {infra:'flag-infra',ghost:'flag-ghost',relay:'flag-relay',hub:'flag-hub',feeder:'flag-feeder',wash:'flag-relay',clean:'flag-clean'};
+
+  document.getElementById('ci-wallet-list').innerHTML = walletArr.map(w => {
+    const mainFlag = w.flags[0] || {type:'clean',label:'CLEAN'};
+    const allFlagHtml = w.flags.map(f=>`<span class="wallet-flag ${flagClass[f.type]||'flag-clean'}">${f.label}</span>`).join(' ');
+    return `<div class="wallet-row">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+          ${allFlagHtml}
+        </div>
+        <div style="color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${w.addr}</div>
+        <div style="color:var(--dim);font-size:8px;margin-top:2px">${w.flags[0]?.detail||''}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;padding-left:8px">
+        <div style="color:var(--text)">$${fmtCompact(w.totalVal)}</div>
+        <div style="font-size:8px;color:${w.netFlow>=0?'var(--green)':'var(--red)'}">net ${w.netFlow>=0?'+':''}$${fmtCompact(Math.abs(w.netFlow))}</div>
+        <div style="font-size:8px;color:var(--dim)">${w.txnCount} txns · ${w.tokenCount} tok</div>
+      </div>
+      <a href="https://solscan.io/account/${w.addr}" target="_blank" style="color:var(--blue);font-size:8px;padding:2px 5px;border:1px solid rgba(96,165,250,0.2);border-radius:3px;text-decoration:none;margin-left:6px;flex-shrink:0">SCAN</a>
+    </div>`;
+  }).join('');
+}
+
+function ciRenderPatterns(){
+  const sevClass = {extreme:'triggered',high:'triggered',medium:'warn',clean:'',low:''};
+  document.getElementById('ci-pattern-list').innerHTML = ciData.patterns.map(p=>`
+    <div class="pattern-card ${sevClass[p.severity]||''}">
+      <div class="pattern-icon">${p.icon}</div>
+      <div>
+        <div class="pattern-title">${p.title}</div>
+        <div class="pattern-desc">${p.desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+function ciRenderSyncEvents(){
+  const list = document.getElementById('ci-sync-list');
+  if(!ciData.syncEvents.length){
+    list.innerHTML='<div style="font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim);padding:14px">No synchronised events detected in uploaded data.</div>';
+    return;
+  }
+  list.innerHTML = ciData.syncEvents.map(e=>`
+    <div class="sync-event">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="color:var(--red)">BLOCK ${e.block}</span>
+        <span style="color:var(--dim)">${e.time ? e.time.replace('T',' ').replace('.000Z','') : '—'}</span>
+      </div>
+      <div style="color:var(--muted)">${e.txns.length} txns · ${e.uniqueWallets} wallets · $${fmtCompact(e.totalValue)} total</div>
+      <div style="color:var(--dim);font-size:8px;margin-top:3px">${e.txns.slice(0,3).map(t=>`${t.from.slice(0,8)}…→${t.to.slice(0,8)}… $${fmtCompact(t.value)}`).join(' | ')}</div>
+    </div>`).join('');
+}
+
+function ciSetTab(el, view){
+  document.querySelectorAll('.ci-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.ci-view').forEach(v=>v.classList.remove('active'));
+  const vEl = document.getElementById('ci-view-'+view);
+  if(vEl) vEl.classList.add('active');
+}
+
+/* ── Cross-reference top 100 traders ───────────────────────────────────── */
+function ciCrossRef(){
+  const raw = document.getElementById('ci-top100').value;
+  if(!raw.trim()){ alert('Paste wallet addresses first.'); return; }
+  const top100 = raw.split(/[\n,\s]+/).map(s=>s.trim()).filter(s=>s.length>20);
+  const csvWallets = new Set(Object.keys(ciData.wallets));
+  const hits = top100.filter(w=>csvWallets.has(w));
+  const el = document.getElementById('ci-crossref-result');
+  el.style.display='block';
+  if(hits.length===0){
+    el.innerHTML='<div style="font-family:\'Space Mono\',monospace;font-size:9px;color:var(--green);padding:8px">✓ No convergence — wallets in top 100 not found in CSV data.</div>';
+  } else {
+    el.innerHTML=`<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);padding:8px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:5px">
+      ⚠ ${hits.length} CONVERGENCE HIT${hits.length>1?'S':''} — wallets appear in BOTH top traders AND CSV transfers:<br><br>
+      ${hits.map(w=>`<span style="color:var(--text)">${w}</span>`).join('<br>')}
+    </div>`;
+  }
+}
+
+/* ── AI Report Generation ───────────────────────────────────────────────── */
+async function ciGenerateReport(){
+  const ANTHROPIC_KEY = document.querySelector('script') ? (() => {
+    /* Extract key from sendChat function */
+    const scripts = document.querySelectorAll('script');
+    for(const s of scripts){
+      const m = s.textContent.match(/const ANTHROPIC_KEY = '([^']+)'/);
+      if(m) return m[1];
+    }
+    return null;
+  })() : null;
+
+  /* Get key from sendChat scope */
+  const keyMatch = document.documentElement.innerHTML.match(/const ANTHROPIC_KEY = '(sk-ant-[^']+)'/);
+  const apiKey = keyMatch ? keyMatch[1] : null;
+
+  if(!apiKey){ alert('API key not found. Check YAKKAI config.'); return; }
+
+  document.getElementById('ci-report-loading').style.display='block';
+  document.getElementById('ci-report-text').style.display='none';
+
+  const walletArr = Object.values(ciData.wallets).sort((a,b)=>b.totalVal-a.totalVal).slice(0,15);
+  const totalVal = ciData.rows.reduce((s,r)=>s+r.value,0);
+  const netExt = walletArr.reduce((s,w)=>s+(w.netFlow<0?Math.abs(w.netFlow):0),0);
+  const uniqueTok = new Set(ciData.rows.map(r=>r.token)).size;
+  const invName = document.getElementById('ci-name').value || 'Unknown Token';
+  const ca = ciData.tokenCA;
+
+  const dataContext = `
+INVESTIGATION: ${invName}
+TOKEN CA: ${ca}
+RISK SCORE: ${ciData.score}/100
+TOTAL TRACKED: $${totalVal.toFixed(0)}
+UNIQUE TOKENS: ${uniqueTok}
+SYNC EVENTS: ${ciData.syncEvents.length}
+
+TOP WALLETS (by value):
+${walletArr.slice(0,10).map(w=>`${w.addr.slice(0,12)}... | flags: ${w.flags.map(f=>f.label).join(',')} | in: $${w.inVal.toFixed(0)} out: $${w.outVal.toFixed(0)} net: $${w.netFlow.toFixed(0)} | ${w.txnCount} txns ${w.tokenCount} tokens`).join('\n')}
+
+PATTERNS DETECTED:
+${ciData.patterns.map(p=>`[${p.severity.toUpperCase()}] ${p.title}: ${p.desc}`).join('\n')}
+
+SYNC BURST EVENTS: ${ciData.syncEvents.length} detected
+${ciData.syncEvents.slice(0,3).map(e=>`Block ${e.block}: ${e.txns.length} txns, ${e.uniqueWallets} wallets, $${e.totalValue.toFixed(0)}`).join('\n')}
+`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-client-side-api-key-access':'true',
+      },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1500,
+        system:`You are YAKKAI, the on-chain forensics AI of YAKK Studios — a ZachXBT-style Solana cabal investigator. You write brutal, precise, evidence-based rug investigation reports. No hedging. No fluff. Just on-chain facts and pattern analysis. You know every YAKK investigation (BER, PUNCH, JELLYBEAN, URANUS, PIGEON, HOOD, M3M3, TRUMP, WATDOG, WAR, BUTTCOIN) and reference recurring wallets where relevant. Write in the YAKK voice — authoritative, sharp, mafia-trader energy.`,
+        messages:[{
+          role:'user',
+          content:`Generate a full YAKK Cabal Investigation Report using this on-chain data. Include:
+1. EXECUTIVE SUMMARY (2-3 sentences, brutally honest verdict)
+2. RISK ASSESSMENT (score explanation)  
+3. TOP FLAGGED WALLETS (key ones with brief profile)
+4. PATTERNS DETECTED (explain what each means)
+5. EXTRACTION ESTIMATE (conservative floor)
+6. CROSS-INVESTIGATION LINKS (any wallets matching known cabal infra)
+7. READY-TO-POST X THREAD (5-7 tweets, numbered, sharp and evidenced)
+8. VERDICT
+
+Data:\n${dataContext}`,
+        }],
+      }),
+    });
+    const data = await res.json();
+    const report = data.content && data.content[0] ? data.content[0].text : 'Report generation failed.';
+    document.getElementById('ci-report-loading').style.display='none';
+    document.getElementById('ci-report-text').style.display='block';
+    document.getElementById('ci-report-text').textContent = report;
+    ciData.lastReport = report;
+  } catch(err){
+    document.getElementById('ci-report-loading').style.display='none';
+    document.getElementById('ci-report-text').style.display='block';
+    document.getElementById('ci-report-text').textContent = 'Error generating report: ' + err.message;
+  }
+}
+
+function ciCopyReport(){
+  const txt = document.getElementById('ci-report-text').textContent;
+  navigator.clipboard.writeText(txt).then(()=>alert('Report copied! Paste into your notes or X thread. GET YAKKED. 😈')).catch(()=>{});
+}
+
+function ciCopyThread(){
+  if(!ciData.lastReport){ alert('Generate the AI report first.'); return; }
+  /* Extract just the X thread section */
+  const threadMatch = ciData.lastReport.match(/X THREAD[\s\S]*?(?=\n\d+\.|VERDICT|$)/i);
+  const thread = threadMatch ? threadMatch[0] : ciData.lastReport.slice(0,500);
+  navigator.clipboard.writeText(thread).then(()=>alert('Thread copied! 🔍')).catch(()=>{});
+}
+
+function ciAddToLedger(){
+  const name = document.getElementById('ci-name').value || 'New Investigation';
+  const score = ciData.score;
+  const totalVal = ciData.rows.reduce((s,r)=>s+r.value,0);
+  alert(`"${name}" flagged for Rug Ledger submission.\nRisk: ${score}/100 | Tracked: $${fmtCompact(totalVal)}\n\nIn production: auto-submits to YAKK Studios review queue for ledger inclusion after verification.\nGET YAKKED. 😈`);
+}
 
 /* ═══ INIT ═══ */
 setupTicker();
