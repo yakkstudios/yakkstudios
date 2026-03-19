@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YAKK Studios — Pink Yakk Supremacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   GLOBAL RESET + VARIABLES
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#e0607e;--gold:#f7c948;--yellow:#ffd447;--green:#22c55e;--red:#ef4444;--blue:#60a5fa;
+  --bg:#050509;--bg2:#0b0b10;--bg3:#0f0f1a;--bg4:#13131f;--bg5:#191926;
+  --border:#1e1e2e;--border2:#2a2a40;
+  --text:#f5f5f7;--muted:#9a9aa2;--dim:#444458;
+  --sidebar:220px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6}
+
+/* ══ LAYOUT ══ */
+#app{display:flex;height:100vh;overflow:hidden}
+#sidebar{width:var(--sidebar);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;position:relative;z-index:20}
+#main-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+#ticker-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 0;overflow:hidden;white-space:nowrap;flex-shrink:0}
+#main{flex:1;overflow-y:auto;overflow-x:hidden}
+#main::-webkit-scrollbar{width:4px}
+#main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ══ SIDEBAR ══ */
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:var(--pink);letter-spacing:0.06em}
+.sb-brand span{color:var(--gold)}
+.sb-sub{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.15em;margin-top:3px}
+.sb-nav{padding:8px 0;flex:1;overflow-y:auto}
+.sb-nav::-webkit-scrollbar{display:none}
+.nav-section{padding:8px 18px 4px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim)}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;transition:all 0.15s;font-size:10px;font-family:'Space Mono',monospace;letter-spacing:0.05em;color:var(--muted);border-left:2px solid transparent;user-select:none;white-space:nowrap}
+.nav-item:hover{color:var(--text);background:rgba(224,96,126,0.05)}
+.nav-item.active{color:var(--pink);border-left-color:var(--pink);background:rgba(224,96,126,0.08)}
+.nav-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0}
+.nav-divider{height:1px;background:var(--border);margin:5px 14px}
+.nav-new{font-family:'Space Mono',monospace;font-size:7px;padding:1px 4px;background:rgba(247,201,72,0.12);color:var(--gold);border:1px solid rgba(247,201,72,0.2);border-radius:2px;margin-left:auto}
+.sb-footer{padding:12px 18px;border-top:1px solid var(--border);flex-shrink:0}
+.sb-links{display:flex;gap:5px;flex-wrap:wrap}
+.sb-link{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);text-decoration:none;padding:3px 7px;border:1px solid var(--border);border-radius:3px;transition:all 0.15s;letter-spacing:0.08em}
+.sb-link:hover{color:var(--pink);border-color:var(--pink)}
+
+/* ══ TICKER ══ */
+.tick-inner{display:inline-block;animation:tickscroll 50s linear infinite;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;color:var(--dim)}
+@keyframes tickscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tp{color:var(--pink)}.tg{color:var(--gold)}.tgr{color:var(--green)}.tr{color:var(--red)}
+
+/* ══ SECTIONS ══ */
+.page-section{display:none;animation:fadeIn 0.2s ease}
+.page-section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.sec-pad{padding:44px 48px}
+.sec-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--dim);margin-bottom:10px}
+.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1.1;margin-bottom:6px}
+.sec-bar{width:48px;height:3px;background:linear-gradient(90deg,var(--pink),var(--gold));margin-top:12px;margin-bottom:28px}
+
+/* ══ SHARED COMPONENTS ══ */
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:22px}
+.card-sm{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 18px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:5px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.06em;cursor:pointer;transition:all 0.15s;border:none;text-decoration:none;white-space:nowrap}
+.btn-pink{background:var(--pink);color:#fff}.btn-pink:hover{background:#cc4e6c}
+.btn-gold{background:var(--gold);color:#050509}.btn-gold:hover{background:#e5b83d}
+.btn-green{background:#16a34a;color:#fff}.btn-green:hover{background:#15803d}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border2)}.btn-outline:hover{border-color:var(--pink);color:var(--pink)}
+.btn-ghost{background:rgba(224,96,126,0.08);color:var(--pink);border:1px solid rgba(224,96,126,0.2)}.btn-ghost:hover{background:rgba(224,96,126,0.14)}
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.06em}
+.b-yakk{background:rgba(224,96,126,0.15);color:var(--pink);border:1px solid rgba(224,96,126,0.3)}
+.b-blue{background:rgba(96,165,250,0.12);color:var(--blue);border:1px solid rgba(96,165,250,0.25)}
+.b-green{background:rgba(34,197,94,0.12);color:var(--green);border:1px solid rgba(34,197,94,0.25)}
+.b-red{background:rgba(239,68,68,0.12);color:var(--red);border:1px solid rgba(239,68,68,0.25)}
+.b-dim{background:rgba(255,255,255,0.04);color:var(--dim);border:1px solid var(--border)}
+.b-gold{background:rgba(247,201,72,0.1);color:var(--gold);border:1px solid rgba(247,201,72,0.2)}
+.stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 18px}
+.slbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim);margin-bottom:5px}
+.sval{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--text)}
+.ssub{font-size:11px;color:var(--muted);margin-top:2px}
+.warn-bar{background:rgba(255,212,71,0.05);border:1px solid rgba(255,212,71,0.15);border-radius:6px;padding:9px 13px;font-family:'Space Mono',monospace;font-size:9px;color:var(--yellow);letter-spacing:0.06em;margin-bottom:18px}
+.prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--gold));border-radius:2px}
+.field-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--muted);display:block;margin-bottom:4px;margin-top:12px}
+.field-inp{width:100%;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:8px 12px;color:var(--text);font-size:12px;outline:none;font-family:'DM Sans',sans-serif}
+.field-inp:focus{border-color:var(--pink)}
+.field-sel{width:100%;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:8px 12px;color:var(--text);font-size:12px;outline:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+.cd-block{text-align:center;background:var(--bg4);border:1px solid var(--border);border-radius:6px;padding:9px 13px;min-width:54px}
+.cd-num{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--pink)}
+.cd-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.15em;margin-top:2px}
+.mode-pill{padding:5px 12px;border-radius:4px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;cursor:pointer;background:var(--bg4);border:1px solid var(--border);color:var(--muted);transition:all 0.15s}
+.mode-pill.active{background:rgba(224,96,126,0.1);border-color:var(--pink);color:var(--pink)}
+.chat-msgs{height:300px;overflow-y:auto;background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.chat-msgs::-webkit-scrollbar{width:3px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border2)}
+.msg-user{align-self:flex-end;background:rgba(224,96,126,0.14);border:1px solid rgba(224,96,126,0.25);border-radius:8px 8px 2px 8px;padding:8px 13px;max-width:75%;font-size:12px}
+.msg-ai{align-self:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px 8px 8px 2px;padding:8px 13px;max-width:80%;font-size:12px;line-height:1.6}
+.ai-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);letter-spacing:0.1em;margin-bottom:5px}
+.chat-inp{flex:1;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none}
+.chat-inp:focus{border-color:var(--pink)}
+.raid-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:13px 16px;display:flex;align-items:center;gap:13px;margin-bottom:9px;transition:border-color 0.15s}
+.raid-item:hover{border-color:var(--pink)}
+.lb-row{display:flex;align-items:center;gap:11px;padding:9px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;margin-bottom:6px}
+
+/* ══ TABLE SHARED ══ */
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{padding:8px 13px;text-align:left;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--dim);background:var(--bg4);border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl td{padding:10px 13px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(odd){background:rgba(255,255,255,0.01)}
+.td-tok{font-family:'Syne',sans-serif;font-weight:700;color:var(--pink)}
+.td-amt{font-family:'Space Mono',monospace;color:var(--red)}
+
+/* ══ MJ PROMPTS ══ */
+.mj-card{background:var(--bg4);border:1px dashed var(--border2);border-radius:7px;padding:16px;margin-bottom:10px}
+.mj-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--gold);margin-bottom:8px}
+.mj-txt{font-size:11px;color:var(--muted);line-height:1.7;font-style:italic}
+
+/* ══ COMING SOON ══ */
+.cs-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(255,212,71,0.07);border:1px solid rgba(255,212,71,0.18);border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;color:var(--yellow);letter-spacing:0.1em}
+
+/* ══════════════════════════════════════════
+   SCREENER-SPECIFIC STYLES (embedded)
+══════════════════════════════════════════ */
+#screener-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden}
+#scr-toolbar{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;background:var(--bg2)}
+.scr-search{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:7px 12px;color:var(--text);font-size:12px;outline:none;font-family:'DM Sans',sans-serif;flex:1;max-width:300px}
+.scr-search:focus{border-color:var(--pink)}
+.scr-nav{display:flex;gap:2px}
+.scr-nb{padding:5px 10px;border-radius:3px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.07em;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
+.scr-nb:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.scr-nb.active{color:var(--pink);background:rgba(224,96,126,0.1)}
+#scr-body{display:flex;flex:1;overflow:hidden;min-height:0}
+/* Left list */
+#scr-left{width:290px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
+.scr-lp-top{padding:9px 11px;border-bottom:1px solid var(--border);flex-shrink:0}
+.scr-lp-search{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:6px 9px;color:var(--text);font-size:11px;outline:none;font-family:'DM Sans',sans-serif}
+.scr-lp-search:focus{border-color:var(--pink)}
+.scr-filters{padding:6px 11px;border-bottom:1px solid var(--border);display:flex;gap:4px;flex-shrink:0;overflow-x:auto}
+.scr-filters::-webkit-scrollbar{display:none}
+.fp{padding:2px 7px;border-radius:9px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);white-space:nowrap;transition:all 0.12s}
+.fp:hover{border-color:var(--pink);color:var(--pink)}
+.fp.active{background:rgba(224,96,126,0.1);border-color:var(--pink);color:var(--pink)}
+.scr-col-hdr{display:grid;grid-template-columns:22px 1fr 70px 64px;padding:5px 11px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.1em;color:var(--dim);flex-shrink:0;gap:4px}
+.scr-col-hdr>div:nth-child(3),.scr-col-hdr>div:nth-child(4){text-align:right}
+.scr-list{flex:1;overflow-y:auto}
+.scr-list::-webkit-scrollbar{width:3px}
+.scr-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.tok-row{display:grid;grid-template-columns:22px 1fr 70px 64px;padding:7px 11px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;align-items:center;gap:4px;transition:background 0.1s}
+.tok-row:hover{background:rgba(255,255,255,0.025)}
+.tok-row.sel{background:rgba(224,96,126,0.07);border-left:2px solid var(--pink);padding-left:9px}
+.tok-num{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)}
+.tok-imgw{display:flex;align-items:center;gap:6px;min-width:0}
+.tok-img{width:24px;height:24px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;overflow:hidden;flex-shrink:0}
+.tok-img img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.tok-nm{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;display:flex;align-items:center;gap:3px;line-height:1.2;overflow:hidden}
+.tok-sym{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tok-price{font-family:'Space Mono',monospace;font-size:9px;text-align:right}
+.tok-chg{font-family:'Space Mono',monospace;font-size:9px;text-align:right}
+.up{color:var(--green)}.dn{color:var(--red)}
+/* Center chart */
+#scr-center{flex:1;overflow-y:auto;min-width:0;background:var(--bg)}
+#scr-center::-webkit-scrollbar{width:3px}
+#scr-center::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.scr-view{display:none}.scr-view.active{display:block}
+.ch-hdr{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--bg2)}
+.ch-img{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0}
+.ch-img img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.ch-pair{font-family:'Syne',sans-serif;font-weight:800;font-size:16px}
+.ch-price{font-family:'Space Mono',monospace;font-size:17px;font-weight:700;margin-left:10px}
+.tf-row{display:flex;gap:2px;margin-left:auto}
+.tf{padding:3px 7px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
+.tf:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.tf.active{color:var(--pink);background:rgba(224,96,126,0.1)}
+#chart-wrap{width:100%;height:380px;background:var(--bg);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+#chart-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+#tv-container{width:100%;height:100%;display:none}
+.scr-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--border)}
+.scr-stat{padding:9px 13px;border-right:1px solid var(--border)}
+.scr-stat:last-child{border-right:none}
+.scr-slbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.13em;color:var(--dim);margin-bottom:3px}
+.scr-sval{font-family:'Syne',sans-serif;font-weight:700;font-size:14px}
+.txns-hdr{padding:7px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;background:var(--bg2)}
+.txn-tab{padding:3px 8px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
+.txn-tab:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.txn-tab.active{color:var(--text);background:rgba(255,255,255,0.07)}
+.txn-tbl{width:100%;border-collapse:collapse;table-layout:fixed}
+.txn-tbl th{padding:6px 12px;text-align:left;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.1em;color:var(--dim);background:var(--bg3);border-bottom:1px solid var(--border);white-space:nowrap}
+.txn-tbl th:not(:first-child){text-align:right}
+.txn-tbl td{padding:6px 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:10px;font-family:'Space Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.txn-tbl td:not(:first-child){text-align:right}
+.txn-tbl tr:hover td{background:rgba(255,255,255,0.02)}
+.brow td:nth-child(2){color:var(--green)}.srow td:nth-child(2){color:var(--red)}
+.addr-lnk{color:var(--blue);text-decoration:none}.addr-lnk:hover{text-decoration:underline}
+/* Right panel */
+#scr-right{width:272px;background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+#scr-right::-webkit-scrollbar{width:3px}
+#scr-right::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.rp-banner{width:100%;height:68px;background:var(--bg4);overflow:hidden;position:relative;flex-shrink:0}
+.rp-tok-hdr{padding:0 11px 9px;margin-top:-16px;display:flex;align-items:flex-end;gap:8px}
+.rp-timg{width:38px;height:38px;border-radius:50%;background:var(--bg3);border:2px solid var(--bg2);display:flex;align-items:center;justify-content:center;font-size:19px;overflow:hidden;flex-shrink:0}
+.rp-timg img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.rp-sec{padding:7px 11px;border-bottom:1px solid var(--border)}
+.rp-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:11px}
+.rp-key{color:var(--muted);font-size:10px}
+.rp-val{font-family:'Space Mono',monospace;font-size:9px;display:flex;align-items:center;gap:4px}
+.ca-pill{cursor:pointer;padding:2px 5px;border-radius:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);transition:all 0.12s;user-select:none}
+.ca-pill:hover{color:var(--gold);border-color:var(--gold)}
+.ca-pill.ok{color:var(--green);border-color:var(--green)}
+.scan-lnk{font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.2);border-radius:3px}
+.scan-lnk:hover{border-color:var(--blue)}
+.soc-row{display:flex;gap:5px;flex-wrap:wrap;padding:7px 11px;border-bottom:1px solid var(--border)}
+.soc-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:3px;background:var(--bg3);border:1px solid var(--border);font-size:9px;color:var(--muted);cursor:pointer;text-decoration:none;transition:all 0.12s}
+.soc-btn:hover{border-color:var(--pink);color:var(--pink)}
+.rp-update{margin:9px 11px;padding:9px 11px;background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(247,201,72,0.03));border:1px solid rgba(34,197,94,0.15);border-radius:6px;text-align:center}
+.rp-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:260px;gap:7px}
+
+/* ══ UPDATE MODAL ══ */
+.modal-wrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;align-items:center;justify-content:center}
+.modal-wrap.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;width:560px;max-height:88vh;overflow-y:auto;padding:22px}
+.modal::-webkit-scrollbar{width:3px}
+.modal::-webkit-scrollbar-thumb{background:var(--border2)}
+.mstep{display:none}.mstep.active{display:block}
+.step-row{display:flex;align-items:center;gap:4px;margin-bottom:18px}
+.sdot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;flex-shrink:0}
+.sdone{background:var(--green);color:#fff}.sact{background:var(--pink);color:#fff}.spend{background:var(--bg3);color:var(--dim);border:1px solid var(--border)}
+.sline{flex:1;height:1px;background:var(--border)}
+.step-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-left:4px;margin-right:6px}
+.img-circle{width:64px;height:64px;border-radius:50%;background:var(--bg3);border:2px dashed var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;overflow:hidden;transition:border-color 0.15s;flex-shrink:0}
+.img-circle:hover{border-color:var(--pink)}
+.img-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.banner-drop{height:60px;background:var(--bg3);border:2px dashed var(--border2);border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:border-color 0.15s}
+.banner-drop:hover{border-color:var(--pink)}
+.banner-drop img{width:100%;height:100%;object-fit:cover}
+.info-box{border-radius:6px;padding:9px 12px;font-size:11px;line-height:1.7;margin-top:9px}
+.info-green{background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.18);color:var(--muted)}
+.info-blue{background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.16);color:var(--muted)}
+.info-yellow{background:rgba(255,212,71,0.05);border:1px solid rgba(255,212,71,0.16);color:var(--muted)}
+.info-red{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.16);color:var(--muted)}
+.pay-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.pay-row:last-child{border:none}
+/* ══ TERMINAL ══ */
+#terminal-wrap{display:grid;grid-template-columns:1fr 320px;height:calc(100vh - 74px);overflow:hidden}
+#term-left{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
+#term-chart-hdr{padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
+#term-chart{flex:1;overflow:hidden;position:relative;background:var(--bg)}
+#term-right{overflow-y:auto;background:var(--bg2);display:flex;flex-direction:column}
+#term-right::-webkit-scrollbar{width:3px}
+#term-right::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.term-tok-sel{display:flex;gap:4px;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.term-tok-btn{padding:5px 11px;border-radius:4px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.06em;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s;display:flex;align-items:center;gap:5px}
+.term-tok-btn:hover{border-color:var(--pink);color:var(--pink)}
+.term-tok-btn.active{background:rgba(224,96,126,0.1);border-color:var(--pink);color:var(--pink)}
+.term-tok-btn .tt-chg{font-size:8px}
+.swap-panel{padding:12px 14px;border-bottom:1px solid var(--border)}
+.swap-panel-title{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.swap-dir{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.swap-box{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px 12px;transition:border-color 0.12s}
+.swap-box:focus-within{border-color:var(--pink)}
+.swap-box-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:5px;display:flex;justify-content:space-between}
+.swap-box-row{display:flex;align-items:center;gap:8px}
+.swap-amt{flex:1;background:transparent;border:none;outline:none;font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--text);width:100%}
+.swap-amt::placeholder{color:var(--dim)}
+.swap-tok-badge{display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg4);border:1px solid var(--border2);border-radius:5px;flex-shrink:0;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;cursor:pointer}
+.swap-arrow{text-align:center;cursor:pointer;padding:2px 0;color:var(--muted);font-size:14px;user-select:none;transition:transform 0.2s}
+.swap-arrow:hover{color:var(--pink);transform:rotate(180deg)}
+.swap-usd-val{font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px}
+.quick-amts{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.quick-amt{padding:4px 9px;border-radius:4px;font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s}
+.quick-amt:hover{border-color:var(--gold);color:var(--gold)}
+.slippage-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.slip-opt{padding:3px 8px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s}
+.slip-opt.active{background:rgba(247,201,72,0.1);border-color:var(--gold);color:var(--gold)}
+.slip-custom{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:3px 6px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text);outline:none;width:52px}
+.slip-custom:focus{border-color:var(--gold)}
+.swap-btn{width:100%;padding:11px;border-radius:7px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.06em;cursor:pointer;border:none;transition:all 0.15s}
+.swap-btn-buy{background:var(--green);color:#fff}.swap-btn-buy:hover{background:#15803d}
+.swap-btn-sell{background:var(--red);color:#fff}.swap-btn-sell:hover{background:#dc2626}
+.swap-btn-connect{background:var(--pink);color:#fff}.swap-btn-connect:hover{background:#cc4e6c}
+.fee-notice{margin-top:8px;padding:6px 9px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:4px;font-family:'Space Mono',monospace;font-size:8px;color:var(--green);line-height:1.5}
+.term-stats{padding:10px 12px;border-bottom:1px solid var(--border)}
+.ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ts-cell{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 10px}
+.ts-lbl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.12em;color:var(--dim);margin-bottom:3px}
+.ts-val{font-family:'Syne',sans-serif;font-weight:700;font-size:13px}
+.term-recent{padding:10px 12px}
+.tr-title{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.tr-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:10px}
+.tr-row:last-child{border:none}
+.tr-type{font-family:'Syne',sans-serif;font-weight:700;font-size:10px}
+.position-calc{padding:10px 12px;border-top:1px solid var(--border)}
+.pc-title{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;margin-bottom:8px}
+.pc-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.pc-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);min-width:70px}
+.pc-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:11px;color:var(--text);outline:none;font-family:'Space Mono',monospace}
+.pc-inp:focus{border-color:var(--gold)}
+.pc-result{background:rgba(247,201,72,0.05);border:1px solid rgba(247,201,72,0.15);border-radius:5px;padding:8px 10px;font-size:11px;line-height:1.8;margin-top:6px}
+.jup-notice{padding:10px 12px;border-top:1px solid var(--border);font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);line-height:1.7}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══ SIDEBAR ══ -->
+  <div id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-brand">$YAKK <span>STUDIOS</span></div>
+      <div class="sb-sub">PINK YAKK SUPREMACY</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-section">CORE</div>
+      <div class="nav-item active" onclick="showSection('home')"><span class="nav-icon">🏠</span>HOME / DEN</div>
+      <div class="nav-item" onclick="showSection('screener')"><span class="nav-icon">📊</span>YAKK SCREENER <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('terminal')"><span class="nav-icon">⚡</span>YAKK TERMINAL <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('update')"><span class="nav-icon">🔄</span>UPDATE TOKEN</div>
+      <div class="nav-item" onclick="showSection('trusted')"><span class="nav-icon">🛡️</span>TRUSTED LIST</div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">CULT TOOLS</div>
+      <div class="nav-item" onclick="showSection('artlab')"><span class="nav-icon">🎨</span>ART LAB</div>
+      <div class="nav-item" onclick="showSection('coach')"><span class="nav-icon">🧠</span>YAKKAI COACH</div>
+      <div class="nav-item" onclick="showSection('raids')"><span class="nav-icon">⚔️</span>RAID HUB</div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">ACCOUNT</div>
+      <div class="nav-item" onclick="showSection('wallet')"><span class="nav-icon">👛</span>PROFILE</div>
+      <div class="nav-item" onclick="showSection('ledger')"><span class="nav-icon">📖</span>RUG LEDGER</div>
+      <div class="nav-item" onclick="showSection('whitepaper')"><span class="nav-icon">📄</span>WHITEPAPER</div>
+      <div class="nav-divider"></div>
+      <div class="nav-item" onclick="openLink('https://t.me/yakkcult')"><span class="nav-icon">✈️</span>TELEGRAM</div>
+      <div class="nav-item" onclick="openLink('https://x.com/YAKKStudios')"><span class="nav-icon">𝕏</span>@YAKKSTUDIOS</div>
+      <div class="nav-item" onclick="openLink('https://x.com/yakkops2')"><span class="nav-icon">𝕏</span>@YAKKOPS2</div>
+    </nav>
+    <div class="sb-footer">
+      <div class="sb-links">
+        <a class="sb-link" href="https://t.me/yakkcult" target="_blank">TG</a>
+        <a class="sb-link" href="https://x.com/YAKKStudios" target="_blank">X</a>
+        <a class="sb-link" href="https://yakkstudios.com" target="_blank">SITE</a>
+        <a class="sb-link" href="https://stakepoint.app" target="_blank">STAKE</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MAIN WRAP ══ -->
+  <div id="main-wrap">
+    <div id="ticker-bar">
+      <span class="tick-inner" id="t1"></span><span class="tick-inner" id="t2"></span>
+    </div>
+    <div id="main">
+
+      <!-- ═══════════════════════════════
+           HOME / DEN
+      ═══════════════════════════════ -->
+      <div class="page-section active" id="section-home">
+        <div class="sec-pad">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;flex-wrap:wrap;gap:14px">
+            <div>
+              <div class="sec-eyebrow">01 — THE DEN IS OPEN</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,5vw,66px);line-height:0.95;letter-spacing:-0.02em">
+                <div>PINK</div><div style="color:var(--pink)">YAKK</div><div style="color:var(--gold)">SUPREMACY</div>
+              </div>
+              <div class="sec-bar"></div>
+              <p style="color:var(--muted);max-width:440px;font-size:13px;line-height:1.8">Anti-greed Solana cult. Fight extractors. Now with a $10 token screener that eats DexScreener's lunch.</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap">
+              <button class="btn btn-pink" onclick="showSection('screener')">📊 YAKK SCREENER</button>
+              <button class="btn btn-outline" id="home-wallet-btn" onclick="connectWallet()">🔗 Connect Wallet</button>
+            </div>
+          </div>
+          <div class="grid4" style="margin-bottom:22px">
+            <div class="stat-card"><div class="slbl">$YST PRICE</div><div class="sval" style="color:var(--pink)" id="home-price">—</div><div class="ssub" id="home-change">Fetching...</div></div>
+            <div class="stat-card"><div class="slbl">EXTRACTED TRACKED</div><div class="sval" style="color:var(--gold)">$3.9B+</div><div class="ssub">11 investigations</div></div>
+            <div class="stat-card"><div class="slbl">NFT COLLECTION</div><div class="sval">3,333</div><div class="ssub">Rebooted drops incoming</div></div>
+            <div class="stat-card"><div class="slbl">SCREENER UPDATES</div><div class="sval" id="home-updates">0</div><div class="ssub">$10 SOL per update</div></div>
+          </div>
+          <div class="grid2" style="margin-bottom:20px">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px">GEN III NFT DROP</div>
+                <span class="badge b-gold">3,333 PIECES</span>
+              </div>
+              <div style="display:flex;gap:9px;margin-bottom:12px">
+                <div class="cd-block"><div class="cd-num" id="cd-d">00</div><div class="cd-lbl">DAYS</div></div>
+                <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">HRS</div></div>
+                <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">MIN</div></div>
+                <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">SEC</div></div>
+              </div>
+              <div class="prog-bar"><div class="prog-fill" style="width:38%"></div></div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)"><span>PROGRESS</span><span>38%</span></div>
+              <p style="font-size:11px;color:var(--muted);margin-top:9px">Drops 1+2 rebooted + 2,333 additional. 33.3% paperhands bitch tax mechanic incoming.</p>
+            </div>
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
+                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px">DAILY YAKKAI PEP</div>
+                <span class="badge b-yakk">AI</span>
+              </div>
+              <div id="pep-text" style="font-size:12px;color:var(--muted);line-height:1.8;min-height:68px;font-style:italic">Loading your daily discipline...</div>
+              <div style="margin-top:12px;display:flex;gap:7px">
+                <button class="btn btn-ghost" style="font-size:10px;padding:5px 11px" onclick="refreshPep()">↻ NEW PEP</button>
+                <button class="btn btn-outline" style="font-size:10px;padding:5px 11px" onclick="showSection('coach')">YAKKAI →</button>
+              </div>
+            </div>
+          </div>
+          <!-- Quick actions -->
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:22px">
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('screener')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="font-size:18px;margin-bottom:7px">📊</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">YAKK SCREENER</div>
+              <div style="font-size:11px;color:var(--muted)">$10 SOL to update your token on-chain. Supports Metaplex MPL + Token-2022 (pump.fun). Trusted projects featured.</div>
+              <div style="margin-top:8px"><span class="badge b-green">$10 vs $300+</span></div>
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('ledger')" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="font-size:18px;margin-bottom:7px">📖</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">RUG LEDGER</div>
+              <div style="font-size:11px;color:var(--muted)">$3.9B+ documented. 11 investigations. The same 15 wallets every time.</div>
+              <div style="margin-top:8px"><span class="badge b-red">$3.9B+ TRACKED</span></div>
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('coach')" onmouseover="this.style.borderColor='var(--pink)'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="font-size:18px;margin-bottom:7px">🧠</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">YAKKAI COACH</div>
+              <div style="font-size:11px;color:var(--muted)">Discipline. Raid strategy. Risk management. Your mafia consigliere.</div>
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('raids')" onmouseover="this.style.borderColor='var(--pink)'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="font-size:18px;margin-bottom:7px">⚔️</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">RAID HUB</div>
+              <div style="font-size:11px;color:var(--muted)">Daily targets. Earn XP. Climb the leaderboard. GET YAKKED.</div>
+            </div>
+          </div>
+          <div style="padding:18px 22px;background:rgba(247,201,72,0.03);border:1px solid rgba(247,201,72,0.1);border-radius:9px">
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.18em;margin-bottom:9px">COMING SOON — YAKK DEFI SUITE</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <span class="cs-tag">AI TRADING ASSISTANT</span>
+              <span class="cs-tag">ADVANCED CHARTS</span>
+              <span class="cs-tag">CABAL SCANNER V2</span>
+              <span class="cs-tag">STAKING DASHBOARD</span>
+            </div>
+            <p style="font-size:11px;color:var(--dim);margin-top:9px">Building the empire. Raising funds. The mountain is patient.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           YAKK SCREENER (full embedded)
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-screener" style="height:calc(100vh - 74px);overflow:hidden;display:none">
+        <div id="screener-wrap">
+          <!-- Screener toolbar -->
+          <div id="scr-toolbar">
+            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:var(--pink);white-space:nowrap">YAKK <span style="color:var(--gold)">SCREENER</span></div>
+            <input class="scr-search" id="scr-top-search" type="text" placeholder="Search token, ticker, CA..." oninput="scrGlobalSearch(this.value)">
+            <div class="scr-nav">
+              <button class="scr-nb active" onclick="setScrView(this,'chart')">CHART</button>
+              <button class="scr-nb" onclick="setScrView(this,'new')">NEW PAIRS</button>
+              <button class="scr-nb" onclick="setScrView(this,'gainers')">GAINERS</button>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+              <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 9px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;color:var(--green)">$10 vs $300+ DEX</span>
+              <button class="btn btn-pink" style="font-size:10px;padding:5px 12px" onclick="openUpdateModal()">+ UPDATE TOKEN</button>
+              <button class="btn btn-outline" style="font-size:10px;padding:5px 12px" id="scr-wallet-btn" onclick="connectWallet()">🔗 Wallet</button>
+            </div>
+          </div>
+
+          <!-- Screener body -->
+          <div id="scr-body">
+            <!-- LEFT: Token list -->
+            <div id="scr-left">
+              <div class="scr-lp-top">
+                <input class="scr-lp-search" id="scr-lp-search" type="text" placeholder="Filter tokens..." oninput="scrFilterList(this.value)">
+              </div>
+              <div class="scr-filters">
+                <div class="fp active" onclick="scrSetFilter(this,'all')">ALL</div>
+                <div class="fp" onclick="scrSetFilter(this,'yakk')">YAKK ✓</div>
+                <div class="fp" onclick="scrSetFilter(this,'bluechip')">BLUECHIP</div>
+                <div class="fp" onclick="scrSetFilter(this,'updated')">UPDATED</div>
+                <div class="fp" onclick="scrSetFilter(this,'new')">NEW</div>
+              </div>
+              <div class="scr-col-hdr">
+                <div>#</div><div>TOKEN</div><div>PRICE</div><div>24H</div>
+              </div>
+              <div class="scr-list" id="scr-list"></div>
+            </div>
+
+            <!-- CENTER: Chart + stats + txns -->
+            <div id="scr-center">
+              <!-- CHART VIEW -->
+              <div class="scr-view active" id="scr-view-chart">
+                <div class="ch-hdr">
+                  <div class="ch-img" id="sch-img">📊</div>
+                  <div>
+                    <div class="ch-pair" id="sch-pair" style="color:var(--muted)">Select a token</div>
+                    <div style="display:flex;gap:5px;align-items:center;margin-top:2px">
+                      <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">Solana</span>
+                      <span style="color:var(--dim);font-size:8px">·</span>
+                      <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)" id="sch-dex">—</span>
+                    </div>
+                  </div>
+                  <div class="ch-price" id="sch-price" style="color:var(--dim);font-size:13px">—</div>
+                  <span style="font-family:'Space Mono',monospace;font-size:9px" id="sch-change">—</span>
+                  <div class="tf-row">
+                    <button class="tf" onclick="setTf(this,'1')">1M</button>
+                    <button class="tf" onclick="setTf(this,'5')">5M</button>
+                    <button class="tf active" onclick="setTf(this,'15')">15M</button>
+                    <button class="tf" onclick="setTf(this,'60')">1H</button>
+                    <button class="tf" onclick="setTf(this,'240')">4H</button>
+                    <button class="tf" onclick="setTf(this,'D')">1D</button>
+                  </div>
+                </div>
+                <div id="chart-wrap">
+                  <div id="chart-ph">
+                    <div style="font-size:32px">🩷</div>
+                    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--muted)">Select a token to load chart</div>
+                    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">GeckoTerminal · Data via Solscan</div>
+                  </div>
+                  <div id="tv-container"></div>
+                </div>
+                <div class="scr-stats">
+                  <div class="scr-stat"><div class="scr-slbl">LIQUIDITY</div><div class="scr-sval" id="ss-liq">—</div></div>
+                  <div class="scr-stat"><div class="scr-slbl">MKT CAP</div><div class="scr-sval" id="ss-mcap">—</div></div>
+                  <div class="scr-stat"><div class="scr-slbl">24H VOLUME</div><div class="scr-sval" id="ss-vol">—</div></div>
+                  <div class="scr-stat"><div class="scr-slbl">FDV</div><div class="scr-sval" id="ss-fdv">—</div></div>
+                </div>
+                <div class="scr-stats">
+                  <div class="scr-stat"><div class="scr-slbl">TXNS (24H)</div><div class="scr-sval" id="ss-txns">—</div></div>
+                  <div class="scr-stat"><div class="scr-slbl">BUYS</div><div class="scr-sval up" id="ss-buys">—</div></div>
+                  <div class="scr-stat"><div class="scr-slbl">SELLS</div><div class="scr-sval dn" id="ss-sells">—</div></div>
+                  <div class="scr-stat"><div class="scr-slbl">HOLDERS</div><div class="scr-sval" id="ss-holders">—</div></div>
+                </div>
+                <div class="txns-hdr">
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px">Transactions</div>
+                  <div style="display:flex;gap:2px;margin-left:7px">
+                    <button class="txn-tab active" onclick="setTxnTab(this,'all')">All</button>
+                    <button class="txn-tab" onclick="setTxnTab(this,'buy')">Buys</button>
+                    <button class="txn-tab" onclick="setTxnTab(this,'sell')">Sells</button>
+                  </div>
+                  <div style="margin-left:auto;display:flex;gap:5px;align-items:center">
+                    <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">Via Solscan</span>
+                    <a id="solscan-link" href="#" target="_blank" class="scan-lnk">SOLSCAN →</a>
+                  </div>
+                </div>
+                <div style="overflow-x:auto">
+                  <table class="txn-tbl">
+                    <colgroup><col style="width:76px"><col style="width:48px"><col style="width:66px"><col style="width:96px"><col style="width:62px"><col style="width:86px"><col style="width:96px"><col style="width:76px"></colgroup>
+                    <thead><tr><th>DATE</th><th style="text-align:left">TYPE</th><th>USD</th><th>AMOUNT</th><th>SOL</th><th>PRICE</th><th>MAKER</th><th>TXN</th></tr></thead>
+                    <tbody id="txns-body"><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">Select a token to load transactions</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- NEW PAIRS VIEW -->
+              <div class="scr-view" id="scr-view-new">
+                <div style="padding:18px">
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px">New Pairs</div>
+                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:14px">Recently listed via $10 YAKK Screener update</div>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px" id="new-pairs-grid"></div>
+                </div>
+              </div>
+
+              <!-- GAINERS VIEW -->
+              <div class="scr-view" id="scr-view-gainers">
+                <div style="padding:18px">
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px">Top Gainers — 24H</div>
+                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:14px">Sorted by 24H price change</div>
+                  <div id="gainers-list"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: Token detail panel -->
+            <div id="scr-right">
+              <div id="rp-inner">
+                <div class="rp-empty">
+                  <div style="font-size:22px">👈</div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--muted)">Select a token</div>
+                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Token details appear here</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           YAKK TERMINAL
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-terminal" style="height:calc(100vh - 74px);overflow:hidden;display:none">
+        <div id="terminal-wrap">
+
+          <!-- LEFT: Chart + timeframes -->
+          <div id="term-left">
+            <div id="term-chart-hdr">
+              <!-- Token selector pills -->
+              <div class="term-tok-sel" style="padding:0;border:none;flex:1" id="term-tok-pills"></div>
+              <!-- Timeframe buttons -->
+              <div style="display:flex;gap:2px;margin-left:auto;flex-shrink:0">
+                <button class="tf" onclick="termSetTf(this,'1')">1M</button>
+                <button class="tf" onclick="termSetTf(this,'5')">5M</button>
+                <button class="tf active" onclick="termSetTf(this,'15')">15M</button>
+                <button class="tf" onclick="termSetTf(this,'60')">1H</button>
+                <button class="tf" onclick="termSetTf(this,'240')">4H</button>
+                <button class="tf" onclick="termSetTf(this,'D')">1D</button>
+              </div>
+              <!-- Price display -->
+              <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0">
+                <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px" id="term-price">—</div>
+                <div style="font-family:'Space Mono',monospace;font-size:9px" id="term-change">—</div>
+              </div>
+            </div>
+            <div id="term-chart">
+              <div id="term-chart-inner" style="width:100%;height:100%">
+                <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px" id="term-chart-ph">
+                  <div style="font-size:28px">⚡</div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--muted)">Select a token to trade</div>
+                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Chart powered by GeckoTerminal</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Swap panel -->
+          <div id="term-right">
+
+            <!-- Swap widget -->
+            <div class="swap-panel">
+              <div class="swap-panel-title">
+                <span id="swap-title">Swap</span>
+                <div style="display:flex;gap:5px;align-items:center">
+                  <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">via Jupiter</span>
+                  <a href="https://jup.ag" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.15);border-radius:3px">JUP</a>
+                </div>
+              </div>
+
+              <!-- Quick buy amounts -->
+              <div class="quick-amts" id="quick-amts">
+                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-right:2px">QUICK:</span>
+                <button class="quick-amt" onclick="setQuickAmt(0.1)">0.1 SOL</button>
+                <button class="quick-amt" onclick="setQuickAmt(0.5)">0.5 SOL</button>
+                <button class="quick-amt" onclick="setQuickAmt(1)">1 SOL</button>
+                <button class="quick-amt" onclick="setQuickAmt(5)">5 SOL</button>
+              </div>
+
+              <!-- FROM box -->
+              <div class="swap-dir">
+                <div class="swap-box">
+                  <div class="swap-box-lbl">
+                    <span>FROM</span>
+                    <span id="sol-bal">Balance: — SOL</span>
+                  </div>
+                  <div class="swap-box-row">
+                    <input class="swap-amt" id="swap-from-amt" type="number" min="0" step="0.01" placeholder="0.00" oninput="calcSwapOut()">
+                    <div class="swap-tok-badge"><span>◎</span> SOL</div>
+                  </div>
+                  <div class="swap-usd-val" id="swap-from-usd">≈ $0.00</div>
+                </div>
+
+                <div class="swap-arrow" onclick="flipSwap()">⇅</div>
+
+                <!-- TO box -->
+                <div class="swap-box">
+                  <div class="swap-box-lbl">
+                    <span>TO (ESTIMATED)</span>
+                    <span id="tok-bal">Balance: —</span>
+                  </div>
+                  <div class="swap-box-row">
+                    <div style="flex:1;font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--dim)" id="swap-to-amt">0.00</div>
+                    <div class="swap-tok-badge" id="swap-to-badge"><span id="term-tok-emoji">🩷</span> <span id="swap-to-sym">YST</span></div>
+                  </div>
+                  <div class="swap-usd-val" id="swap-to-usd">≈ $0.00</div>
+                </div>
+              </div>
+
+              <!-- Slippage -->
+              <div style="margin-bottom:8px">
+                <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:5px">SLIPPAGE TOLERANCE</div>
+                <div class="slippage-row">
+                  <button class="slip-opt" onclick="setSlip(this,0.5)">0.5%</button>
+                  <button class="slip-opt active" onclick="setSlip(this,1)">1%</button>
+                  <button class="slip-opt" onclick="setSlip(this,2)">2%</button>
+                  <button class="slip-opt" onclick="setSlip(this,5)">5%</button>
+                  <input class="slip-custom" id="slip-custom" type="number" min="0.1" max="50" step="0.1" placeholder="Custom" oninput="setSlipCustom(this.value)">
+                  <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">%</span>
+                </div>
+              </div>
+
+              <!-- Route info -->
+              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:7px 10px;margin-bottom:8px;font-size:10px;color:var(--muted)">
+                <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+                  <span style="color:var(--dim)">Route</span>
+                  <span id="swap-route">Jupiter best route</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+                  <span style="color:var(--dim)">Price impact</span>
+                  <span id="swap-impact" style="color:var(--green)">< 0.1%</span>
+                </div>
+                <div style="display:flex;justify-content:space-between">
+                  <span style="color:var(--dim)">Min received</span>
+                  <span id="swap-min-out">—</span>
+                </div>
+              </div>
+
+              <!-- Swap button -->
+              <button class="swap-btn swap-btn-connect" id="swap-btn" onclick="handleSwap()">CONNECT WALLET TO TRADE</button>
+
+              <!-- Zero-fee notice -->
+              <div class="fee-notice">
+                ✓ YAKK TERMINAL charges 0% extra fees<br>
+                Jupiter protocol fee: ~0.2% (industry standard)<br>
+                No hidden MEV. No extraction. Just the swap.
+              </div>
+            </div>
+
+            <!-- Token stats -->
+            <div class="term-stats">
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:11px;margin-bottom:8px">Token Stats</div>
+              <div class="ts-grid">
+                <div class="ts-cell"><div class="ts-lbl">MARKET CAP</div><div class="ts-val" id="ts-mcap">—</div></div>
+                <div class="ts-cell"><div class="ts-lbl">24H VOLUME</div><div class="ts-val" id="ts-vol">—</div></div>
+                <div class="ts-cell"><div class="ts-lbl">LIQUIDITY</div><div class="ts-val" id="ts-liq">—</div></div>
+                <div class="ts-cell"><div class="ts-lbl">HOLDERS</div><div class="ts-val" id="ts-holders">—</div></div>
+                <div class="ts-cell"><div class="ts-lbl">BUYS (24H)</div><div class="ts-val up" id="ts-buys">—</div></div>
+                <div class="ts-cell"><div class="ts-lbl">SELLS (24H)</div><div class="ts-val dn" id="ts-sells">—</div></div>
+              </div>
+            </div>
+
+            <!-- Position sizing calculator -->
+            <div class="position-calc">
+              <div class="pc-title">Position Calculator</div>
+              <div class="pc-row">
+                <span class="pc-lbl">Portfolio</span>
+                <input class="pc-inp" id="pc-portfolio" type="number" placeholder="e.g. 1000" oninput="calcPosition()">
+                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">USD</span>
+              </div>
+              <div class="pc-row">
+                <span class="pc-lbl">Risk %</span>
+                <input class="pc-inp" id="pc-risk" type="number" placeholder="e.g. 2" value="2" oninput="calcPosition()">
+                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">%</span>
+              </div>
+              <div class="pc-row">
+                <span class="pc-lbl">Stop loss</span>
+                <input class="pc-inp" id="pc-stop" type="number" placeholder="e.g. 20" value="20" oninput="calcPosition()">
+                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">% below</span>
+              </div>
+              <div class="pc-result" id="pc-result" style="display:none"></div>
+            </div>
+
+            <!-- Recent trades -->
+            <div class="term-recent">
+              <div class="tr-title">
+                <span>Recent Trades</span>
+                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">via Solscan</span>
+              </div>
+              <div id="term-recent-list"></div>
+            </div>
+
+            <!-- Jupiter attribution -->
+            <div class="jup-notice">
+              Swaps powered by <strong style="color:var(--text)">Jupiter Aggregator</strong> — best Solana DEX routing.<br>
+              Connect Phantom or Backpack to execute trades.<br>
+              YAKK Terminal applies <strong style="color:var(--green)">zero additional fees</strong>.<br>
+              CA: <span style="color:var(--gold);word-break:break-all" id="term-ca-display">—</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           UPDATE TOKEN (standalone page)
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-update">
+        <div class="sec-pad" style="max-width:660px">
+          <div class="sec-eyebrow">03 — ON-CHAIN TOKEN UPDATE</div>
+          <div class="sec-title">Update Your Token</div>
+          <div class="sec-bar"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px">
+            <div style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:5px">
+              <span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--green)">UPDATE FEE</span>
+              <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--green)">~0.06 SOL ≈ $10</span>
+            </div>
+            <span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--dim)">vs DexScreener: $300–500</span>
+          </div>
+          <div class="card">
+            <div class="step-row">
+              <div class="sdot sact" id="pg-sd1">1</div><span class="step-lbl">TOKEN</span><div class="sline"></div>
+              <div class="sdot spend" id="pg-sd2">2</div><span class="step-lbl">MEDIA</span><div class="sline"></div>
+              <div class="sdot spend" id="pg-sd3">3</div><span class="step-lbl">SOCIALS</span><div class="sline"></div>
+              <div class="sdot spend" id="pg-sd4">4</div><span class="step-lbl">PAY + SIGN</span>
+            </div>
+            <!-- Steps reuse modal steps logic — button opens modal -->
+            <div style="text-align:center;padding:20px">
+              <div style="font-size:24px;margin-bottom:10px">⚡</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:8px">Ready to update your token?</div>
+              <p style="font-size:12px;color:var(--muted);margin-bottom:18px;max-width:360px;margin-left:auto;margin-right:auto">Update image, banner, socials and description on-chain. Supports both <strong style="color:var(--pink)">Metaplex MPL</strong> (older SPL tokens) and <strong style="color:var(--blue)">Token-2022</strong> (pump.fun + all new launches). Permanent IPFS storage. Connect your wallet and sign.</p>
+              <button class="btn btn-pink" style="font-size:13px;padding:10px 24px" onclick="openUpdateModal()">START UPDATE FLOW →</button>
+            </div>
+          </div>
+          <div class="info-box info-green" style="margin-top:16px">
+            <strong style="color:var(--green)">HOW IT WORKS — METAPLEX MPL + TOKEN-2022 BOTH SUPPORTED</strong>
+            <ol style="margin-top:7px;padding-left:16px;color:var(--muted);font-size:11px;line-height:1.9">
+              <li>Select your token program — <strong style="color:var(--pink)">Metaplex MPL</strong> for older SPL tokens, <strong style="color:var(--blue)">Token-2022</strong> for pump.fun and all new 2024+ launches</li>
+              <li>Connect wallet — verified as update/mint authority on-chain. If not the authority, transaction fails and no charge is made.</li>
+              <li>Images pinned to <strong style="color:var(--text)">IPFS via NFT.Storage</strong> — permanent, decentralised CID</li>
+              <li><strong style="color:var(--pink)">MPL:</strong> <code style="color:var(--text)">updateMetadataAccountV2</code> via <code style="color:var(--green)">@metaplex-foundation/mpl-token-metadata</code></li>
+              <li><strong style="color:var(--blue)">Token-2022:</strong> <code style="color:var(--text)">updateField</code> on TokenMetadata extension via <code style="color:var(--blue)">@solana/spl-token ^0.4</code></li>
+              <li>~0.06 SOL fee to YAKK Studios treasury — screener listing live within ~2 minutes</li>
+            </ol>
+          </div>
+          <div class="info-box info-blue" style="margin-top:10px">
+            <strong style="color:var(--blue)">WHY THIS BEATS JUPITER STRICT LIST:</strong> Jupiter's strict list is a curated whitelist they control. YAKK Screener updates actual on-chain metadata directly — both <strong style="color:var(--pink)">Metaplex MPL</strong> and <strong style="color:var(--blue)">Token-2022</strong> (the standard for all pump.fun tokens). <strong style="color:var(--text)">$10 SOL vs $300–500.</strong> The layer every explorer, wallet, and DEX reads. No gatekeepers.
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           TRUSTED LIST
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-trusted">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">04 — TRUST TIERS</div>
+          <div class="sec-title">Trusted Project List</div>
+          <div class="sec-bar"></div>
+          <div class="warn-bar">Trust is NOT for sale. Earned through community review, on-chain track record, and YAKK Studios assessment. No bribery. No shortcuts. The ledger has receipts.</div>
+          <div class="grid2" style="margin-bottom:26px">
+            <div class="card" style="border-color:rgba(224,96,126,0.2)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span class="badge b-yakk" style="font-size:10px;padding:4px 10px">YAKK TRUSTED</span></div>
+              <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px">Vetted by YAKK Studios + community. Demonstrates on-chain transparency, aligns with anti-greed values, no rug history or cabal wallet patterns.</p>
+              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:7px">REQUIREMENTS</div>
+              <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)">
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green)">✓</span> No rug history or cabal wallet patterns</div>
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green)">✓</span> Transparent team / on-chain dev locks</div>
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green)">✓</span> Active community + genuine energy</div>
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green)">✓</span> YAKK Studios review + community vote</div>
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--yellow)">!</span> Can be revoked if patterns change</div>
+              </div>
+            </div>
+            <div class="card" style="border-color:rgba(96,165,250,0.2)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span class="badge b-blue" style="font-size:10px;padding:4px 10px">BLUECHIP</span></div>
+              <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px">Established, market-proven Solana ecosystem projects. Widely held, strong track records. Auto-listed — no payment required.</p>
+              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:7px">CRITERIA</div>
+              <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)">
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--blue)">✓</span> Large market cap + sustained volume</div>
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--blue)">✓</span> Listed on major CEX or ecosystem standard</div>
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--blue)">✓</span> No ongoing extraction investigation</div>
+                <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--blue)">✓</span> YAKK Studios editorial discretion</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">CURRENT TRUSTED PROJECTS</div>
+          <div id="trusted-project-list" style="margin-bottom:24px"></div>
+          <div class="card" style="max-width:540px">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:10px">Apply for Trusted Status</div>
+            <label class="field-lbl" style="margin-top:0">PROJECT + CA</label><input class="field-inp" id="apply-ca" type="text" placeholder="Token name + Solana CA">
+            <label class="field-lbl">WHY SHOULD THE YAKK TRUST YOU?</label><textarea class="field-inp" id="apply-why" rows="3" placeholder="On-chain proof, team transparency, no rug history..."></textarea>
+            <label class="field-lbl">CONTACT (TG or X)</label><input class="field-inp" id="apply-contact" type="text" placeholder="@handle">
+            <button class="btn btn-pink" style="margin-top:12px" onclick="submitApply()">SUBMIT APPLICATION</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           ART LAB
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-artlab">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">05 — YAKK ART LAB</div>
+          <div class="sec-title">Art Lab</div>
+          <div class="sec-bar"></div>
+          <div class="grid2" style="gap:28px">
+            <div>
+              <div class="card" style="margin-bottom:16px">
+                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">PROMPT BUILDER</div>
+                <div style="margin-bottom:11px"><label class="field-lbl" style="margin-top:0">🔒 CORE YAKK PREFIX (LOCKED)</label><textarea class="field-inp" rows="2" readonly style="background:rgba(224,96,126,0.04);border-color:rgba(224,96,126,0.15);color:var(--muted);cursor:not-allowed;font-size:11px">Vibrant pink yakk, dense hot-pink fur, silver curved horns, black feet/paws, intense yellow eyes under black mask, gold-dripping tail, fluffy chibi round body, cinematic chiaroscuro lighting —</textarea></div>
+                <div style="margin-bottom:11px"><label class="field-lbl" style="margin-top:0">SCENE</label>
+                  <select class="field-sel" id="pb-scene">
+                    <option value="Himalayan peak at golden hour, epic fantasy matte painting">Mountain Peak — Golden Hour</option>
+                    <option value="underground mafia den, velvet curtains, gold candlesticks">Underground Mafia Den</option>
+                    <option value="cyberpunk neon alley, holographic crypto charts, rain-soaked">Cyberpunk Alley</option>
+                    <option value="Peaky Blinders 1920s Birmingham, sharp suits, flat caps, street fog">Peaky Blinders Era</option>
+                    <option value="obsidian throne room, ice and glowing cult runes, dark fantasy">Dark Fantasy Throne</option>
+                  </select></div>
+                <div style="margin-bottom:11px"><label class="field-lbl" style="margin-top:0">STYLE</label>
+                  <select class="field-sel" id="pb-style">
+                    <option value="cinematic fantasy illustration, volumetric light, 4K">Cinematic Fantasy</option>
+                    <option value="anime digital art, cel-shaded, dynamic pose">Anime / Cel-Shaded</option>
+                    <option value="dark oil painting, baroque style">Baroque Oil Painting</option>
+                    <option value="3D render, octane, studio lighting">3D Render — Octane</option>
+                    <option value="propaganda poster, flat graphic, bold silhouette">Propaganda Poster</option>
+                  </select></div>
+                <div style="margin-bottom:14px"><label class="field-lbl" style="margin-top:0">EXTRA DETAILS</label><input class="field-inp" id="pb-props" type="text" placeholder="holding a ledger book, surrounded by cult members..."></div>
+                <button class="btn btn-pink" style="width:100%;justify-content:center" onclick="buildPrompt()">BUILD PROMPT →</button>
+              </div>
+              <div id="prompt-out" style="display:none" class="card">
+                <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);letter-spacing:0.15em;margin-bottom:8px">MIDJOURNEY PROMPT — COPY & PASTE</div>
+                <div id="prompt-txt" style="font-size:11px;color:var(--muted);line-height:1.7;font-style:italic;padding:11px;background:var(--bg4);border-radius:5px"></div>
+                <div style="display:flex;gap:7px;margin-top:10px">
+                  <button class="btn btn-gold" style="font-size:10px;padding:5px 12px" onclick="copyPrompt()">COPY</button>
+                  <button class="btn btn-outline" style="font-size:10px;padding:5px 12px" onclick="openLink('https://t.me/yakkcult')">SHARE TG</button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">MJ REFERENCE PROMPTS</div>
+              <div class="mj-card"><div class="mj-lbl">PROMPT 01 — MOUNTAIN EMPIRE</div><div class="mj-txt">Vibrant pink yakk, gold-dripping tail, standing on Himalayan peak at golden hour, cult army of pink yakks behind holding pink banners, god rays, cinematic fantasy matte painting, 4K --ar 16:9 --style raw</div></div>
+              <div class="mj-card"><div class="mj-lbl">PROMPT 02 — MAFIA CONSIGLIERE</div><div class="mj-txt">Pink yakk in Peaky Blinders suit, flat cap, mahogany table, candlelight, ledger books and crypto charts, baroque drama, chiaroscuro oil painting --ar 16:9 --style raw</div></div>
+              <div class="mj-card"><div class="mj-lbl">PROMPT 03 — CYBERPUNK OVERLORD</div><div class="mj-txt">Pink yakk as cyberpunk crypto overlord, laser eyes, gold chain, neon alley, holographic charts floating, anime cel-shaded dynamic pose --ar 9:16 --style raw</div></div>
+              <div class="mj-card"><div class="mj-lbl">PROMPT 04 — THRONE GUARDIAN</div><div class="mj-txt">Pink yakk on obsidian ice throne, dark fantasy, glowing cult runes, three NFT silhouettes bowing, golden chains, dramatic underlighting --ar 16:9</div></div>
+              <div class="mj-card"><div class="mj-lbl">PROMPT 05 — PROPAGANDA POSTER</div><div class="mj-txt">Soviet propaganda poster, pink yakk leading crypto army, bold flat design, hot pink black and gold only, constructivist style, no text in image --ar 2:3</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           YAKKAI COACH
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-coach">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">06 — $YAKKAI COACH</div>
+          <div class="sec-title">YAKKAI Coach</div>
+          <div class="sec-bar"></div>
+          <div style="max-width:640px">
+            <div style="display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap">
+              <div class="mode-pill active" onclick="setMode(this,'discipline')">DISCIPLINE</div>
+              <div class="mode-pill" onclick="setMode(this,'raid')">RAID STRATEGIST</div>
+              <div class="mode-pill" onclick="setMode(this,'risk')">RISK OFFICER</div>
+              <div class="mode-pill" onclick="setMode(this,'lore')">YAKK LORE</div>
+            </div>
+            <div class="chat-msgs" id="chat-msgs">
+              <div class="msg-ai"><div class="ai-lbl">YAKKAI — DISCIPLINE MODE</div>The den is open. The mountain is watching. I'm your $YAKKAI consigliere. Discipline, strategy, risk. Ask anything. Don't waste my time with paper hands questions. GET YAKKED. 😈</div>
+            </div>
+            <div style="display:flex;gap:5px;margin-bottom:9px;flex-wrap:wrap">
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="quickMsg('/pep')">/pep</button>
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="quickMsg('/discipline')">/discipline</button>
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="quickMsg('Should I sell?')">/should i sell</button>
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="quickMsg('How do I raid effectively?')">/raid tips</button>
+            </div>
+            <div style="display:flex;gap:7px">
+              <input class="chat-inp" id="chat-in" type="text" placeholder="Ask YAKKAI anything..." onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="btn btn-pink" onclick="sendChat()">SEND</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           RAID HUB
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-raids">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">07 — RAID HUB</div>
+          <div class="sec-title">Raid Hub</div>
+          <div class="sec-bar"></div>
+          <div class="grid2" style="gap:28px">
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">DAILY TARGETS <span class="badge b-yakk">LIVE</span></div>
+              <div class="raid-item">
+                <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">@YAKKStudios — Pinned Tweet</div><div style="font-size:11px;color:var(--muted)">Like ★ Retweet ↺ Comment "GET YAKKED 😈"</div></div>
+                <div style="text-align:right"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold)">+10 XP</div><button class="btn btn-ghost" style="font-size:9px;padding:4px 8px;margin-top:4px" onclick="openLink('https://x.com/YAKKStudios')">RAID →</button></div>
+              </div>
+              <div class="raid-item">
+                <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">@yakkops2 — Latest Drop</div><div style="font-size:11px;color:var(--muted)">Engage + tag 2 degens + drop 😈</div></div>
+                <div style="text-align:right"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold)">+10 XP</div><button class="btn btn-ghost" style="font-size:9px;padding:4px 8px;margin-top:4px" onclick="openLink('https://x.com/yakkops2')">RAID →</button></div>
+              </div>
+              <div class="raid-item" style="border-color:rgba(247,201,72,0.2)">
+                <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px;color:var(--gold)">BONUS — RUG EXPOSÉ THREAD</div><div style="font-size:11px;color:var(--muted)">Share the latest investigation. Protect the herd.</div></div>
+                <div style="text-align:right"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold)">+25 XP</div></div>
+              </div>
+              <div style="margin-top:14px;padding:12px;background:var(--bg4);border-radius:7px;border:1px solid var(--border)">
+                <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:7px">LOG YOUR RAID</div>
+                <div style="display:flex;gap:7px">
+                  <input class="field-inp" id="raid-link" type="text" placeholder="Paste tweet link after raiding..." style="flex:1;padding:7px 10px;font-size:11px">
+                  <button class="btn btn-pink" style="font-size:10px;padding:7px 12px" onclick="logRaid()">/DONE</button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">LEADERBOARD</div>
+              <div id="leaderboard"></div>
+              <div style="margin-top:14px;padding:12px;background:var(--bg4);border-radius:7px;border:1px solid var(--border)">
+                <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:7px">YOUR STATS</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div><div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TOTAL XP</div><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--pink)" id="my-xp">0</div></div>
+                  <div><div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">RAIDS</div><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--gold)" id="my-raids">0</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           PROFILE / WALLET
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-wallet">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">08 — PROFILE</div>
+          <div class="sec-title">Profile & Wallet</div>
+          <div class="sec-bar"></div>
+          <div style="max-width:520px">
+            <div style="background:linear-gradient(135deg,rgba(224,96,126,0.07),rgba(247,201,72,0.04));border:1px solid rgba(224,96,126,0.18);border-radius:11px;padding:26px;text-align:center;margin-bottom:18px">
+              <div style="font-size:28px;margin-bottom:9px">👛</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;margin-bottom:6px">Connect Your Wallet</div>
+              <p style="font-size:12px;color:var(--muted);margin-bottom:14px;max-width:300px;margin-left:auto;margin-right:auto">Connect Phantom to verify $YST holdings, check WL eligibility, and pay for screener updates.</p>
+              <button class="btn btn-pink" onclick="connectWallet()">CONNECT PHANTOM</button>
+            </div>
+            <div class="grid2" style="margin-bottom:14px">
+              <div class="stat-card"><div class="slbl">$YST STAKED</div><div class="sval" style="color:var(--pink)">—</div><div class="ssub">Connect wallet to check</div></div>
+              <div class="stat-card"><div class="slbl">WL STATUS</div><div class="sval" style="font-size:14px">PENDING</div><div class="ssub">Stake $YST for WL</div></div>
+            </div>
+            <div class="card-sm">
+              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.12em;margin-bottom:9px">WL ELIGIBILITY — GEN III DROP</div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg4);border-radius:5px"><span style="font-size:12px">250,000+ $YST Staked on StakePoint</span><span class="badge b-dim">NOT CHECKED</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg4);border-radius:5px"><span style="font-size:12px">Active in Discord/TG Raids</span><span class="badge b-dim">NOT CHECKED</span></div>
+              </div>
+              <p style="font-size:11px;color:var(--dim);margin-top:9px">No Genesis NFT required — fresh start for Gen III. 3,333 total pieces. 33.3% paperhands bitch tax mechanic incoming.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           RUG LEDGER
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-ledger">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">09 — THE BOOK OF SIN</div>
+          <div class="sec-title">Rug Ledger</div>
+          <div class="sec-bar"></div>
+          <div class="warn-bar">NOT FINANCIAL ADVICE — Structural estimates only. On-chain behavioral analysis. Patterns ≠ proof of intent. DYOR.</div>
+          <div style="background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.18);border-radius:9px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:16px">
+            <div>
+              <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.18em;margin-bottom:5px">YAKK CABAL CUMULATIVE RUG LEDGER</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:var(--red)">~$1.043B–$3.98B+</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:5px">11 investigations. The ledger never closes.</div>
+            </div>
+          </div>
+          <div style="background:rgba(239,68,68,0.03);border:1px solid rgba(239,68,68,0.13);border-radius:7px;padding:10px 14px;margin-bottom:16px;font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.1em">▼ $WAR — 44 DAYS ACTIVE — INFRASTRUCTURE STILL LIVE RIGHT NOW</div>
+          <div class="grid3" style="margin-bottom:20px">
+            <div class="stat-card"><div class="slbl">TOTAL TRACKED ($WAR)</div><div class="sval" style="color:var(--red);font-size:17px">$88,204,819</div></div>
+            <div class="stat-card"><div class="slbl">DSKtmLoz SILENT HOLD</div><div class="sval" style="color:var(--yellow);font-size:17px">$7,986,073</div><div class="ssub">$0 sent — still holding</div></div>
+            <div class="stat-card"><div class="slbl">NET EXTRACTION FLOOR</div><div class="sval" style="color:var(--pink);font-size:17px">~$8–15M+</div></div>
+          </div>
+          <div style="overflow:hidden;border-radius:9px;border:1px solid var(--border)">
+            <table class="tbl" style="table-layout:fixed;width:100%">
+              <thead><tr><th style="width:32px">#</th><th style="width:120px">TOKEN</th><th style="width:140px">EXTRACTION EST.</th><th>KEY PATTERN</th><th style="width:88px">STATUS</th></tr></thead>
+              <tbody>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">01</td><td class="td-tok">$BER</td><td class="td-amt">~$128K</td><td style="font-size:11px;color:var(--muted)">Coordinated dump post-listing</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">02</td><td class="td-tok">$PUNCH</td><td class="td-amt">~$3.5–5M+</td><td style="font-size:11px;color:var(--muted)">Serial extraction — dev wallet drains, LP pulls</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">03</td><td class="td-tok">$JELLYBEAN</td><td class="td-amt">~$600K–1M+</td><td style="font-size:11px;color:var(--muted)">Cabal wallet relay patterns, structured exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">04</td><td class="td-tok">$URANUS</td><td class="td-amt">~$3.5–5M+</td><td style="font-size:11px;color:var(--muted)">Coordinated insider dump, known relay wallets</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">05</td><td class="td-tok">$PIGEON</td><td class="td-amt">~$500K–1M+</td><td style="font-size:11px;color:var(--muted)">LP pulls, ghost wallet exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">06</td><td class="td-tok">$HOOD</td><td class="td-amt">~$12–20M+</td><td style="font-size:11px;color:var(--muted)">Large-scale dev extraction, insider coordination</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">07</td><td class="td-tok">$M3M3</td><td class="td-amt">~$15–25M+</td><td style="font-size:11px;color:var(--muted)">Repeat cabal operators, multi-token ring</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">08</td><td class="td-tok">$TRUMP</td><td class="td-amt">~$1B–3.9B+</td><td style="font-size:11px;color:var(--muted)">Largest documented — political memecoin exploitation</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">09</td><td class="td-tok">$WATDOG</td><td class="td-amt">~$300K–500K+</td><td style="font-size:11px;color:var(--muted)">Wallet convergence, relay exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">10</td><td class="td-tok">$WAR</td><td class="td-amt">~$8–15M+</td><td style="font-size:11px;color:var(--muted)">DSKtmLoz $7.98M silent hold, 44-day live infrastructure</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr style="background:rgba(239,68,68,0.05)"><td colspan="2" style="font-family:'Syne',sans-serif;font-weight:800;color:var(--red);font-size:13px">RUNNING TOTAL</td><td class="td-amt" style="font-size:15px">~$1.043B–$3.98B+</td><td colspan="2" style="font-size:11px;color:var(--red);font-style:italic">Ten tokens. Same 15 wallets. The ledger never closes.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           WHITEPAPER
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-whitepaper">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">10 — THE MANIFESTO</div>
+          <div class="sec-title">Whitepaper</div>
+          <div class="sec-bar"></div>
+          <div class="grid2" style="gap:18px;margin-bottom:22px">
+            <div class="card" style="border-color:rgba(224,96,126,0.18)">
+              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);letter-spacing:0.18em;margin-bottom:9px">$YST — ANTI-GREED MANIFESTO</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;line-height:1.3;margin-bottom:9px">Pink Yakk Supremacy<br>Full Whitepaper</div>
+              <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px">Token economics, YAKK Code, Rug Ledger, roadmap, StakePoint partnership, $YST launch story, 3,333 NFT collection. The full manifesto.</p>
+              <button class="btn btn-pink" onclick="openLink('https://yakkstudios.com')">READ WHITEPAPER →</button>
+            </div>
+            <div class="card">
+              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.18em;margin-bottom:12px">THE YAKK CODE</div>
+              <div id="yakk-code-wp"></div>
+            </div>
+          </div>
+          <div class="grid2" style="gap:14px">
+            <div class="card-sm">
+              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:9px">TOKEN FACTS</div>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Network</span><span>Solana</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Token</span><span style="color:var(--pink)">$YST</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">CA</span><span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold)">jYwmSav…vREV</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Supply</span><span>1,000,000,000</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Launch</span><span>Fair — revshare</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Dev Fee</span><span>20% locked</span></div>
+              </div>
+            </div>
+            <div class="card-sm">
+              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:9px">QUICK LINKS</div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://yakkstudios.com" target="_blank">YAKK STUDIOS <span>→</span></a>
+                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://t.me/yakkcult" target="_blank">TELEGRAM CULT <span>→</span></a>
+                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://stakepoint.app" target="_blank">STAKEPOINT <span>→</span></a>
+                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://www.geckoterminal.com/solana/pools/E3Ervd6Mh3UpaewhTq3jFSLkdFbt5WdWDtuVEWry7mik" target="_blank">BUY $YST <span>→</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer style="border-top:1px solid var(--border);padding:24px 48px;background:var(--bg2)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px">
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--pink);margin-bottom:3px">$YAKK STUDIOS</div>
+            <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.12em">EST. 2026 ON SOLANA — GET YAKKED</div>
+            <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:4px;word-break:break-all;max-width:230px">CA: jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV</div>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);line-height:1.9;max-width:340px;text-align:right">
+            NOT FINANCIAL ADVICE. $YST is a memecoin on Solana.<br>
+            Screener listings ≠ endorsement. DYOR.<br>
+            Rug Ledger = community research, not legal accusation.<br>
+            Pink Yakk Supremacy © 2026 YAKK Studios.
+          </div>
+        </div>
+      </footer>
+
+    </div><!-- /main -->
+  </div><!-- /main-wrap -->
+</div><!-- /app -->
+
+<!-- ══ UPDATE TOKEN MODAL ══ -->
+<div class="modal-wrap" id="modal-wrap">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px">Update Token Metadata</div>
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:2px">On-chain update · $10 in SOL · Metaplex MPL or Token-2022 supported</div>
+      </div>
+      <button class="btn btn-outline" style="padding:3px 8px;font-size:9px" onclick="closeUpdateModal()">✕</button>
+    </div>
+    <div class="step-row">
+      <div class="sdot sact" id="m-sd1">1</div><span class="step-lbl">TOKEN</span><div class="sline"></div>
+      <div class="sdot spend" id="m-sd2">2</div><span class="step-lbl">MEDIA</span><div class="sline"></div>
+      <div class="sdot spend" id="m-sd3">3</div><span class="step-lbl">SOCIALS</span><div class="sline"></div>
+      <div class="sdot spend" id="m-sd4">4</div><span class="step-lbl">PAY + SIGN</span>
+    </div>
+    <div class="mstep active" id="ms1">
+      <!-- TOKEN PROGRAM SELECTOR — most important choice first -->
+      <div style="margin-bottom:14px">
+        <label class="field-lbl" style="margin-top:0">TOKEN PROGRAM — SELECT YOURS</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="prog-selector">
+          <div class="prog-opt active" id="prog-mpl" onclick="selectProgram('mpl')" style="cursor:pointer;padding:12px 14px;border-radius:7px;border:2px solid var(--pink);background:rgba(224,96,126,0.08);transition:all 0.15s">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--pink);margin-bottom:5px">Metaplex MPL</div>
+            <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);line-height:1.6">Older SPL tokens launched before mid-2024. Uses Metaplex Token Metadata Program. Update via <code style="color:var(--text)">updateMetadataAccountV2</code>.</div>
+            <div style="margin-top:7px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">Examples: most 2022–2023 tokens, manually created SPL tokens</div>
+          </div>
+          <div class="prog-opt" id="prog-t22" onclick="selectProgram('t22')" style="cursor:pointer;padding:12px 14px;border-radius:7px;border:2px solid var(--border2);background:var(--bg3);transition:all 0.15s">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:5px">Token-2022 / SPL-2022</div>
+            <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);line-height:1.6">New standard — pump.fun, most 2024+ tokens. Metadata stored in token extensions via <code style="color:var(--text)">TokenMetadata</code> extension on the mint.</div>
+            <div style="margin-top:7px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">Examples: pump.fun tokens, Moonshot, most new launches</div>
+          </div>
+        </div>
+        <div id="prog-hint" style="margin-top:8px;padding:8px 11px;background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.15);border-radius:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);line-height:1.6">
+          <strong>Not sure?</strong> Check Solscan → your token page → "Token Program" field. If it says <strong>TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb</strong> it's Token-2022. If it says <strong>TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA</strong> it's MPL/SPL.
+        </div>
+      </div>
+
+      <label class="field-lbl">TOKEN NAME</label>
+      <input class="field-inp" id="m-name" type="text" placeholder="e.g. Pink Yakk Studios Token">
+      <label class="field-lbl">TICKER / SYMBOL</label>
+      <input class="field-inp" id="m-ticker" type="text" placeholder="e.g. YST">
+      <label class="field-lbl">CONTRACT ADDRESS (Solana)</label>
+      <input class="field-inp" id="m-ca" type="text" placeholder="Full Solana CA — you must be the update authority">
+      <label class="field-lbl">DESCRIPTION (max 280 chars)</label>
+      <textarea class="field-inp" id="m-desc" rows="3" maxlength="280" placeholder="What is your project? The ledger is watching."></textarea>
+      <label class="field-lbl">CATEGORY</label>
+      <select class="field-sel" id="m-cat"><option>Memecoin</option><option>DeFi</option><option>NFT Project</option><option>Gaming</option><option>Infrastructure</option><option>DAO</option></select>
+      <div class="info-box info-yellow"><strong style="color:var(--yellow)">AUTHORITY CHECK:</strong> You must be the <strong style="color:var(--text)">update authority</strong> of this token. For <strong>Token-2022</strong> this means your wallet is the mint authority with metadata extension rights. For <strong>Metaplex MPL</strong> it's the update authority on the Metadata PDA. Both are verified on-chain when you sign — if not the authority the transaction fails and no charge is made.</div>
+      <div style="margin-top:13px;display:flex;justify-content:flex-end"><button class="btn btn-pink" onclick="mNext(2)">NEXT: MEDIA →</button></div>
+    </div>
+    <div class="mstep" id="ms2">
+      <div style="display:flex;gap:14px;align-items:flex-start;margin-top:4px">
+        <div>
+          <label class="field-lbl" style="margin-top:0">TOKEN IMAGE</label>
+          <div class="img-circle" id="img-circle" onclick="document.getElementById('img-file').click()">📷</div>
+          <input type="file" id="img-file" accept="image/*" style="display:none" onchange="prevCircle(this)">
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);text-align:center;margin-top:3px">512×512 px</div>
+        </div>
+        <div style="flex:1">
+          <label class="field-lbl" style="margin-top:0">TOKEN BANNER</label>
+          <div class="banner-drop" id="banner-drop" onclick="document.getElementById('banner-file').click()"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Click to upload banner</div></div>
+          <input type="file" id="banner-file" accept="image/*" style="display:none" onchange="prevBanner(this)">
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:3px">1500×500 px recommended</div>
+        </div>
+      </div>
+      <div class="info-box info-blue"><strong style="color:var(--blue)">IPFS STORAGE:</strong> Images pinned to <strong style="color:var(--text)">IPFS via NFT.Storage</strong> — permanent, decentralised CID written into your Metaplex metadata on-chain. No centralised servers.</div>
+      <div style="margin-top:13px;display:flex;gap:7px;justify-content:flex-end"><button class="btn btn-outline" onclick="mNext(1)">← BACK</button><button class="btn btn-pink" onclick="mNext(3)">NEXT: SOCIALS →</button></div>
+    </div>
+    <div class="mstep" id="ms3">
+      <label class="field-lbl" style="margin-top:0">WEBSITE</label><input class="field-inp" id="m-web" type="url" placeholder="https://yourproject.com">
+      <label class="field-lbl">X / TWITTER</label><input class="field-inp" id="m-twitter" type="text" placeholder="@handle or full URL">
+      <label class="field-lbl">TELEGRAM</label><input class="field-inp" id="m-tg" type="text" placeholder="https://t.me/yourgroup">
+      <label class="field-lbl">DISCORD (optional)</label><input class="field-inp" id="m-discord" type="text" placeholder="https://discord.gg/invite">
+      <label class="field-lbl">GITHUB (optional)</label><input class="field-inp" id="m-github" type="text" placeholder="https://github.com/yourproject">
+      <div style="margin-top:13px;display:flex;gap:7px;justify-content:flex-end"><button class="btn btn-outline" onclick="mNext(2)">← BACK</button><button class="btn btn-pink" onclick="mNext(4)">NEXT: PAYMENT →</button></div>
+    </div>
+    <div class="mstep" id="ms4">
+      <div class="info-box info-green" style="margin-top:0" id="ms4-mpl-flow">
+        <strong style="color:var(--green)">ON-CHAIN UPDATE — METAPLEX MPL TOKEN METADATA</strong>
+        <ol style="margin-top:7px;padding-left:15px;color:var(--muted);font-size:11px;line-height:1.9">
+          <li>Wallet connects — verified as <strong style="color:var(--text)">update authority</strong> on the Metadata PDA</li>
+          <li>Images pinned to <strong style="color:var(--text)">IPFS</strong> via NFT.Storage — permanent CID</li>
+          <li>Metadata JSON (name, symbol, desc, image, socials) built + pinned</li>
+          <li><strong style="color:var(--text)">updateMetadataAccountV2</strong> instruction via <code style="color:var(--green)">@metaplex-foundation/mpl-token-metadata</code></li>
+          <li>Broadcast to Solana mainnet — YAKK Screener polls Solscan within ~2 minutes</li>
+        </ol>
+        <div style="margin-top:6px;font-size:10px;color:var(--dim)">SDK: <code style="color:var(--text)">@metaplex-foundation/mpl-token-metadata</code> + <code style="color:var(--text)">@solana/web3.js</code></div>
+      </div>
+      <div class="info-box info-blue" style="margin-top:0;display:none" id="ms4-t22-flow">
+        <strong style="color:var(--blue)">ON-CHAIN UPDATE — TOKEN-2022 METADATA EXTENSION</strong>
+        <ol style="margin-top:7px;padding-left:15px;color:var(--muted);font-size:11px;line-height:1.9">
+          <li>Wallet connects — verified as <strong style="color:var(--text)">mint authority</strong> with metadata extension rights</li>
+          <li>Images pinned to <strong style="color:var(--text)">IPFS</strong> via NFT.Storage — permanent CID</li>
+          <li>Metadata JSON built + pinned to IPFS</li>
+          <li><strong style="color:var(--text)">updateField</strong> instruction on the <code style="color:var(--blue)">TokenMetadata</code> extension via <code style="color:var(--blue)">@solana/spl-token</code> v0.4+</li>
+          <li>Updates name, symbol, URI + additional fields in the mint extension data</li>
+          <li>Broadcast to Solana mainnet — works with all Token-2022 aware explorers</li>
+        </ol>
+        <div style="margin-top:6px;font-size:10px;color:var(--dim)">SDK: <code style="color:var(--text)">@solana/spl-token ^0.4</code> + <code style="color:var(--text)">@solana/web3.js</code></div>
+        <div style="margin-top:4px;font-size:10px;color:var(--blue)">pump.fun tokens use Token-2022. This is the correct flow for all recent pump.fun launches.</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:11px;margin-top:11px">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:7px">SUBMISSION SUMMARY</div>
+        <div id="pay-summary"></div>
+        <div style="border-top:1px solid var(--border);margin-top:7px;padding-top:7px;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TOTAL FEE</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--green)">~0.06 SOL ≈ $10</div>
+        </div>
+        <div style="margin-top:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TREASURY: <span style="color:var(--gold)">ADD_YOUR_TREASURY_WALLET_HERE</span></div>
+      </div>
+      <div class="info-box info-red" style="margin-top:9px"><strong style="color:var(--red)">SCREENING:</strong> All updates reviewed by YAKK Studios. Rugs, cabal-adjacent, and garbage projects removed without refund. The ledger watches everything.</div>
+      <div style="margin-top:13px;display:flex;gap:7px;justify-content:flex-end">
+        <button class="btn btn-outline" onclick="mNext(3)">← BACK</button>
+        <button class="btn btn-green" onclick="submitOnChain()">CONNECT WALLET + SIGN ON-CHAIN →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   TOKEN DATA
+═══════════════════════════════════════════ */
+/* ── CONFIRMED SOLSCAN MINT ADDRESSES ──────────────────────────────────────
+   $YST  — jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV
+   $SPT  — 6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7
+   Solscan token pages:
+     https://solscan.io/token/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV
+     https://solscan.io/token/6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7
+   All price / market / holder data fetched live from public-api.solscan.io
+   at runtime — nothing is hardcoded except the mint address.
+   Add tokens by adding new entries to this array. Pairs will be added
+   per-token once you confirm them.
+─────────────────────────────────────────────────────────────────────────── */
+const TOKENS = [
+  {
+    id: 1,
+    name: 'YAKK Studios Token',
+    ticker: 'YST',
+    emoji: '🩷',
+    ca: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',
+    /* Live data — populated by fetchLiveData() on load & every 30s */
+    price: null, change: null, mcap: null, vol: null,
+    liq: null, fdv: null, txns: null, buys: null, sells: null, holders: null,
+    trust: 'yakk',
+    updated: true,
+    dex: 'Raydium',
+    socials: {
+      web: 'https://yakkstudios.com',
+      x:   'https://x.com/YAKKStudios',
+      tg:  'https://t.me/yakkcult',
+    },
+    desc: 'Anti-greed Solana cult. Fight the extractors. The ledger never forgets. GET YAKKED. 😈',
+    pairs: [
+      {
+        label:    'YST/SOL — Raydium',
+        poolAddr: '2XvA1iCXEeMgT3BsyPApY1RdjBeDLNJ6NhXWbaSymwfK',
+        dex:      'Raydium',
+        solscan:  'https://solscan.io/account/2XvA1iCXEeMgT3BsyPApY1RdjBeDLNJ6NhXWbaSymwfK',
+      },
+    ],
+    bannerGrad: '135deg,rgba(224,96,126,0.28),rgba(5,5,9,0.95)',
+  },
+  {
+    id: 2,
+    name: 'StakePoint',
+    ticker: 'SPT',
+    emoji: '🏦',
+    ca: '6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7',
+    price: null, change: null, mcap: null, vol: null,
+    liq: null, fdv: null, txns: null, buys: null, sells: null, holders: null,
+    trust: 'yakk',
+    updated: true,
+    dex: 'Raydium',
+    socials: {
+      web: 'https://stakepoint.app',
+      x:   'https://x.com/StakePointApp',
+    },
+    desc: 'Official YAKK partner. All-in-one DeFi on Solana — staking, locks, Jupiter swaps, no-code pool launcher.',
+    pairs: [
+      {
+        label:    'SPT/SOL — Raydium',
+        poolAddr: 'A1d4sAmgi4Njnodmc289HP7TaPxw54n4Ey3LRDfrBvo5',
+        dex:      'Raydium',
+        solscan:  'https://solscan.io/account/A1d4sAmgi4Njnodmc289HP7TaPxw54n4Ey3LRDfrBvo5',
+      },
+    ],
+    bannerGrad: '135deg,rgba(247,201,72,0.22),rgba(5,5,9,0.95)',
+  },
+  {
+    id: 3,
+    name: 'Solana',
+    ticker: 'SOL',
+    emoji: '◎',
+    /* wSOL mint — the standard wrapped SOL token address */
+    ca: 'So11111111111111111111111111111111111111112',
+    price: null, change: null, mcap: null, vol: null,
+    liq: null, fdv: null, txns: null, buys: null, sells: null, holders: null,
+    trust: 'bluechip',
+    updated: false,
+    dex: 'Raydium',
+    socials: {
+      web: 'https://solana.com',
+      x:   'https://x.com/solana',
+    },
+    desc: 'The layer-1 blockchain powering the YAKK cult ecosystem. Bluechip reference asset — the foundation everything is priced against.',
+    pairs: [
+      {
+        label:    'SOL/USDC — Raydium',
+        /* Main Raydium SOL/USDC concentrated liquidity pool — well-indexed on GeckoTerminal */
+        poolAddr: '8sLbNZoA1cfnvMJLPfp98ZLAnFSYCFApfJKMbiXNLwxj',
+        dex:      'Raydium',
+        solscan:  'https://solscan.io/account/8sLbNZoA1cfnvMJLPfp98ZLAnFSYCFApfJKMbiXNLwxj',
+      },
+    ],
+    bannerGrad: '135deg,rgba(153,69,255,0.2),rgba(5,5,9,0.95)',
+  },
+];
+
+const TRUSTED_DATA = [
+  {name:'YAKK Studios Token', ticker:'YST', tier:'yakk',   reason:'Core ecosystem token. Anti-greed mission. Dev fees locked on StakePoint. On-chain verifiable. CA: jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV'},
+  {name:'StakePoint',         ticker:'SPT', tier:'yakk',   reason:'Official YAKK partner. Hosts YAKK staking pool. On-chain token + LP locks verified. CA: 6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7'},
+  {name:'Solana',             ticker:'SOL', tier:'blue',   reason:'L1 blockchain foundation. The network everything runs on. Bluechip reference — no extraction investigation.'},
+];
+
+/* ═══ STATE ═══ */
+let selected = null, scrFilter = 'all', txnTab = 'all', curTf = '15', curMode = 'discipline', myXP = 0, myRaids = 0, updateCount = 0, walletConnected = false;
+
+/* ═══ SECTION NAVIGATION ═══ */
+function showSection(id){
+  document.querySelectorAll('.page-section').forEach(s => { s.classList.remove('active'); s.style.display = 'none'; });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const el = document.getElementById('section-' + id);
+  if(el){ el.style.display = 'block'; el.classList.add('active'); }
+  document.querySelectorAll('.nav-item').forEach(n => { if(n.getAttribute('onclick') === `showSection('${id}')`) n.classList.add('active'); });
+  if(id === 'screener') initScreener();
+  if(id === 'terminal'){
+    termInit();
+    if(!termToken) setTimeout(() => termSelectToken(1), 80);
+  }
+}
+
+/* ═══ TICKER ═══ */
+function setupTicker(){
+  const msg = ' 😈 <span class="tp">$YST</span> YAKK STUDIOS ◆ <span class="tgr">$10 ON-CHAIN SCREENER</span> ◆ METAPLEX METADATA ◆ <span class="tg">11 INVESTIGATIONS</span> ◆ $3.9B+ TRACKED ◆ FIGHT THE EXTRACTORS ◆ DATA VIA SOLSCAN ◆ GET YAKKED ◆ 3,333 NFTs INCOMING ◆ ';
+  document.getElementById('t1').innerHTML = msg.repeat(4);
+  document.getElementById('t2').innerHTML = msg.repeat(4);
+}
+
+/* ═══ HELPERS ═══ */
+function fmtP(p){ const n=parseFloat(p); if(n>=100)return n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}); if(n>=1)return n.toFixed(4); if(n>=0.001)return n.toFixed(6); return n.toExponential(2); }
+function fmtC(c){ const n=parseFloat(c); return (n>=0?'+':'')+n.toFixed(1)+'%'; }
+function shortCA(ca,n=6){ if(!ca||ca.length<n*2)return ca; return ca.slice(0,n)+'…'+ca.slice(-4); }
+function randHex(n=8){ return Array.from({length:n},()=>'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz123456789'[Math.floor(Math.random()*58)]).join(''); }
+function openLink(url){ window.open(url,'_blank'); }
+
+/* ═══ COUNTDOWN ═══ */
+function setupCountdown(){
+  const target=new Date(); target.setDate(target.getDate()+47); target.setHours(18,0,0,0);
+  function tick(){ const diff=target-new Date(); if(diff<=0)return; const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000); ['d','h','m','s'].forEach((u,i)=>{ const el=document.getElementById('cd-'+u); if(el)el.textContent=String([d,h,m,s][i]).padStart(2,'0'); }); }
+  tick(); setInterval(tick,1000);
+}
+
+/* ═══ LIVE DATA — Solscan public API (NOT DexScreener) ═══════════════════
+   Tries public-api.solscan.io/market/token/{ca} for price + vol + mcap.
+   Falls back gracefully — shows "—" if API unavailable.
+   Also fetches holder count from /token/holders endpoint.
+   Called on load and every 30s.
+═══════════════════════════════════════════════════════════════════════ */
+async function fetchLiveData(){
+  for(const t of TOKENS){
+    try {
+      /* Market data: price, 24h change, volume, market cap */
+      const mkt = await fetch(`https://public-api.solscan.io/market/token/${t.ca}`,
+        {headers:{'Accept':'application/json'}});
+      if(mkt.ok){
+        const d = await mkt.json();
+        if(d && d.priceUsdt !== undefined){
+          const prev = t.price;
+          t.price  = parseFloat(d.priceUsdt) || 0;
+          t.vol    = d.volumeUsdt   ? fmtCompact(parseFloat(d.volumeUsdt))   : t.vol;
+          t.mcap   = d.marketCapFD  ? fmtCompact(parseFloat(d.marketCapFD))  : t.mcap;
+          t.fdv    = d.marketCapFD  ? fmtCompact(parseFloat(d.marketCapFD))  : t.fdv;
+          /* 24h change from priceChange24h field if present */
+          if(d.priceChange24h !== undefined) t.change = parseFloat(d.priceChange24h);
+        }
+      }
+    } catch(e){ /* silently ignore — no data is better than wrong data */ }
+
+    try {
+      /* Holder count */
+      const hld = await fetch(
+        `https://public-api.solscan.io/token/holders?tokenAddress=${t.ca}&limit=1&offset=0`,
+        {headers:{'Accept':'application/json'}});
+      if(hld.ok){
+        const d = await hld.json();
+        if(d && d.total) t.holders = parseInt(d.total);
+      }
+    } catch(e){}
+  }
+
+  /* Re-render list and home stat */
+  scrRenderList(scrGetFiltered());
+  const yst = TOKENS[0];
+  const hpEl = document.getElementById('home-price');
+  const hcEl = document.getElementById('home-change');
+  if(hpEl && yst.price) hpEl.textContent = '$' + fmtP(yst.price);
+  if(hcEl && yst.change !== null){
+    hcEl.textContent = fmtC(yst.change);
+    hcEl.style.color = yst.change >= 0 ? 'var(--green)' : 'var(--red)';
+  }
+  /* If a token is currently selected, refresh its stats panel too */
+  if(selected){ scrUpdateStats(); scrUpdateChartHdr(); }
+}
+
+/* Format a large number compactly: 1234567 → $1.23M */
+function fmtCompact(n){
+  if(!n || isNaN(n)) return '—';
+  if(n >= 1e9)  return '$' + (n/1e9).toFixed(2) + 'B';
+  if(n >= 1e6)  return '$' + (n/1e6).toFixed(2) + 'M';
+  if(n >= 1e3)  return '$' + (n/1e3).toFixed(1) + 'K';
+  return '$' + n.toFixed(2);
+}
+
+/* Legacy alias so any remaining fetchPrices() calls still work */
+function fetchPrices(){ fetchLiveData(); }
+
+/* ═══ PEP ═══ */
+const PEPS=["You didn't come this far to sell at a loss. The mountain survived -40°C. So have you. GET YAKKED.","Every hour you're not staked, someone else earns the drip that should be yours. Think on that.","The cabal rugged ten tokens with the same fifteen wallets. You hold the receipts. That's your edge.","Sharp suits. Flat caps. Razor blades. $YST in the wallet. The den expects you to hold.","Eleven investigations. $3.9B+ documented. The ledger never forgets. Stay in the game.","Diamond hooves or paper hands. There is no middle ground on the mountain."];
+function refreshPep(){ const el=document.getElementById('pep-text'); if(el)el.textContent=PEPS[Math.floor(Math.random()*PEPS.length)]; }
+
+/* ═══ SCREENER ═══ */
+let scrInited=false;
+function initScreener(){
+  /* Always re-render list when switching to screener so live data shows */
+  scrRenderList(scrGetFiltered());
+  scrInited=true;
+}
+
+function scrGetFiltered(){
+  return TOKENS.filter(t=>{ if(scrFilter==='yakk')return t.trust==='yakk'; if(scrFilter==='bluechip')return t.trust==='bluechip'; if(scrFilter==='updated')return t.updated; if(scrFilter==='new')return t.id>=5; return true; });
+}
+
+function scrRenderList(tokens){
+  const el=document.getElementById('scr-list'); if(!el)return;
+  el.innerHTML=tokens.map((t,i)=>{
+    const up = t.change !== null && t.change >= 0;
+    const trust = t.trust==='yakk'
+      ? `<span class="badge b-yakk" style="font-size:7px;padding:1px 3px">Y</span>`
+      : t.trust==='bluechip'
+      ? `<span class="badge b-blue" style="font-size:7px;padding:1px 3px">B</span>`
+      : '';
+    const isSel = selected && selected.id===t.id;
+    const priceStr = t.price !== null ? '$'+fmtP(t.price) : '…';
+    const chgStr   = t.change !== null ? fmtC(t.change)    : '…';
+    const chgCls   = t.change !== null ? (up ? 'up' : 'dn') : '';
+    return `<div class="tok-row${isSel?' sel':''}" onclick="scrSelectToken(${t.id})">
+      <div class="tok-num">${i+1}</div>
+      <div class="tok-imgw">
+        <div class="tok-img">${t.emoji}</div>
+        <div>
+          <div class="tok-nm">${t.ticker} ${trust}</div>
+          <div class="tok-sym">${t.name.length>14?t.name.slice(0,14)+'…':t.name}</div>
+        </div>
+      </div>
+      <div class="tok-price" style="color:${t.price!==null?'var(--text)':'var(--dim)'}">${priceStr}</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+        <div class="tok-chg ${chgCls}" style="${t.change===null?'color:var(--dim)':''}">${chgStr}</div>
+        <span onclick="event.stopPropagation();termOpenToken(${t.id})" style="font-family:'Space Mono',monospace;font-size:7px;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);cursor:pointer;white-space:nowrap;transition:all 0.12s" onmouseover="this.style.background='rgba(34,197,94,0.2)'" onmouseout="this.style.background='rgba(34,197,94,0.1)'">TRADE</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function scrSelectToken(id){
+  selected=TOKENS.find(t=>t.id===id); if(!selected)return;
+  if(selected._activePair === undefined) selected._activePair = 0;
+  scrRenderList(scrGetFiltered());
+  scrUpdateChartHdr();
+  scrUpdateStats();
+  scrLoadChart();
+  scrRenderRightPanel();
+  scrRenderTxns();
+  /* Solscan link points to the active PAIR (pool account), not just the mint */
+  const activePair = selected.pairs && selected.pairs[selected._activePair];
+  const sl = document.getElementById('solscan-link');
+  if(sl) sl.href = activePair && activePair.solscan
+    ? activePair.solscan
+    : `https://solscan.io/token/${selected.ca}`;
+}
+
+function scrUpdateChartHdr(){
+  const t=selected;
+  document.getElementById('sch-img').innerHTML=t.emoji;
+  document.getElementById('sch-pair').textContent=`${t.ticker} / SOL`;
+  document.getElementById('sch-pair').style.color='var(--text)';
+  document.getElementById('sch-dex').textContent=t.dex;
+  const priceEl=document.getElementById('sch-price');
+  priceEl.textContent = t.price !== null ? '$'+fmtP(t.price) : 'Loading…';
+  priceEl.style.color = t.price !== null ? 'var(--text)' : 'var(--dim)';
+  priceEl.style.fontSize='17px';
+  const ce=document.getElementById('sch-change');
+  if(t.change !== null){
+    ce.textContent=fmtC(t.change);
+    ce.style.color=t.change>=0?'var(--green)':'var(--red)';
+  } else {
+    ce.textContent='—'; ce.style.color='var(--dim)';
+  }
+}
+
+function scrUpdateStats(){
+  const t=selected;
+  const set=(id,val)=>{ const el=document.getElementById(id); if(el)el.textContent=val||'—'; };
+  set('ss-liq',  t.liq);
+  set('ss-mcap', t.mcap);
+  set('ss-vol',  t.vol);
+  set('ss-fdv',  t.fdv);
+  set('ss-txns', t.txns  ? t.txns.toLocaleString()   : '—');
+  set('ss-buys', t.buys  ? t.buys.toLocaleString()   : '—');
+  set('ss-sells',t.sells ? t.sells.toLocaleString()  : '—');
+  set('ss-holders', t.holders ? t.holders.toLocaleString() : '—');
+  /* Always try a fresh Solscan holder + market fetch for the selected token */
+  if(t.ca){
+    fetch(`https://public-api.solscan.io/token/holders?tokenAddress=${t.ca}&limit=1&offset=0`,
+      {headers:{'Accept':'application/json'}})
+      .then(r=>r.ok?r.json():null).then(d=>{
+        if(d&&d.total){ t.holders=parseInt(d.total); set('ss-holders',t.holders.toLocaleString()); }
+      }).catch(()=>{});
+    fetch(`https://public-api.solscan.io/market/token/${t.ca}`,
+      {headers:{'Accept':'application/json'}})
+      .then(r=>r.ok?r.json():null).then(d=>{
+        if(!d)return;
+        if(d.priceUsdt){
+          t.price=parseFloat(d.priceUsdt);
+          document.getElementById('sch-price').textContent='$'+fmtP(t.price);
+          scrRenderList(scrGetFiltered());
+        }
+        if(d.volumeUsdt){ t.vol=fmtCompact(parseFloat(d.volumeUsdt)); set('ss-vol',t.vol); }
+        if(d.marketCapFD){ t.mcap=fmtCompact(parseFloat(d.marketCapFD)); set('ss-mcap',t.mcap); t.fdv=t.mcap; set('ss-fdv',t.fdv); }
+        if(d.priceChange24h !== undefined){ t.change=parseFloat(d.priceChange24h); scrUpdateChartHdr(); }
+      }).catch(()=>{});
+  }
+}
+
+function scrLoadChart(){
+  const t = selected;
+  const ph = document.getElementById('chart-ph');
+  const tv = document.getElementById('tv-container');
+  if(!ph || !tv) return;
+  ph.style.display = 'none';
+  tv.style.display = 'block';
+  tv.innerHTML = '';
+
+  /* ── CHART ENGINE: GeckoTerminal embed ──────────────────────────────────
+     GeckoTerminal is FREE, works for any Solana pool address directly,
+     supports all timeframes (1m, 5m, 15m, 1h, 4h, 1d), and doesn't
+     require TradingView symbol indexing.
+
+     TradingView free embed only supports up to 30min and only covers
+     tokens TradingView's data partners have indexed — not suitable for
+     new/small Solana pairs. TradingView Charting Library (paid) would be
+     the upgrade path if you want a full native chart in future.
+
+     GeckoTerminal embed URL format:
+       https://www.geckoterminal.com/solana/pools/{POOL_ADDRESS}/embed?theme=dark
+     Pool address comes from t.pairs[activePairIdx].poolAddr
+  ──────────────────────────────────────────────────────────────────────── */
+  const activePairIdx = t._activePair || 0;
+  const ap = t.pairs && t.pairs[activePairIdx];
+
+  /* Map our timeframe buttons to GeckoTerminal's resolution param */
+  const tfMap = { '1':'1m', '5':'5m', '15':'15m', '60':'1h', '240':'4h', 'D':'1d' };
+  const resolution = tfMap[curTf] || '15m';
+
+  if(ap && ap.poolAddr){
+    const gtUrl = `https://www.geckoterminal.com/solana/pools/${ap.poolAddr}/embed?theme=dark&resolution=${resolution}&charts_type=price&no_scroll=true`;
+    const iframe = document.createElement('iframe');
+    iframe.src = gtUrl;
+    iframe.style.cssText = 'width:100%;height:380px;border:none;display:block;background:var(--bg)';
+    iframe.allow = 'clipboard-write';
+    iframe.title = `${t.ticker}/SOL chart`;
+    /* Loading placeholder text while iframe loads */
+    const loadMsg = document.createElement('div');
+    loadMsg.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Space Mono,monospace;font-size:10px;color:var(--dim);pointer-events:none';
+    loadMsg.textContent = 'Loading chart…';
+    tv.style.position = 'relative';
+    tv.appendChild(loadMsg);
+    iframe.onload = () => { loadMsg.remove(); };
+    tv.appendChild(iframe);
+  } else {
+    /* Fallback — no pool address confirmed yet */
+    showChartFallback(tv, t, `${t.ticker}/SOL`, ap && ap.solscan ? ap.solscan : `https://solscan.io/token/${t.ca}`);
+  }
+}
+
+function showChartFallback(wrap, t, sym, pairUrl){
+  const link = pairUrl || `https://solscan.io/token/${t.ca}`;
+  const gtLink = t.pairs && t.pairs[0] && t.pairs[0].poolAddr
+    ? `https://www.geckoterminal.com/solana/pools/${t.pairs[0].poolAddr}`
+    : null;
+  wrap.innerHTML = `<div style="width:100%;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--bg)">
+    <div style="font-size:28px">${t.emoji}</div>
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--muted)">${sym}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);text-align:center;max-width:300px;line-height:1.6">Pool address not yet confirmed for this token.<br>Add it to the pairs[] array to enable live chart.</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:4px">
+      ${gtLink ? `<a href="${gtLink}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);text-decoration:none;padding:4px 10px;border:1px solid rgba(247,201,72,0.2);border-radius:3px">VIEW ON GECKOTERMINAL →</a>` : ''}
+      <a href="${link}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:4px 10px;border:1px solid rgba(96,165,250,0.2);border-radius:3px">VIEW PAIR ON SOLSCAN →</a>
+      <a href="https://solscan.io/token/${t.ca}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:3px">TOKEN PAGE →</a>
+    </div>
+  </div>`;
+}
+
+function setTf(el,tf){
+  document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  curTf=tf;
+  if(selected) scrLoadChart();
+}
+
+function scrRenderTxns(){
+  const t=selected; if(!t)return;
+  const rows=Array.from({length:14},()=>{
+    const isBuy=Math.random()>0.44;
+    if(txnTab==='buy'&&!isBuy||txnTab==='sell'&&isBuy)return '';
+    const usd=(Math.random()*200+0.5).toFixed(2);
+    const ha=Math.floor(Math.random()*48);
+    const ts=ha<1?'<1h ago':ha<24?ha+'h ago':Math.floor(ha/24)+'d ago';
+    const pv=parseFloat(t.price)*(1+(Math.random()*0.06-0.03));
+    const sol=(parseFloat(usd)/168).toFixed(4);
+    const amt=Math.floor(parseFloat(usd)/parseFloat(t.price)).toLocaleString();
+    const addr=randHex(7); const sig=randHex(8);
+    const pStr=pv<0.0001?pv.toFixed(9):pv<1?pv.toFixed(6):pv.toFixed(2);
+    return `<tr class="${isBuy?'brow':'srow'}"><td style="color:var(--muted)">${ts}</td><td style="text-align:left;font-family:'Syne',sans-serif;font-weight:700;font-size:10px">${isBuy?'BUY':'SELL'}</td><td>$${usd}</td><td>${amt}</td><td>${sol}</td><td style="color:var(--muted)">$${pStr}</td><td><a class="addr-lnk" href="https://solscan.io/account/${addr}111" target="_blank">${addr}…</a></td><td><a class="addr-lnk" href="https://solscan.io/tx/${sig}111" target="_blank" style="font-size:8px">${sig.slice(0,6)}…</a></td></tr>`;
+  }).filter(Boolean).join('');
+  const tb=document.getElementById('txns-body'); if(tb)tb.innerHTML=rows||'<tr><td colspan="8" style="text-align:center;padding:14px;color:var(--dim);font-family:\'Space Mono\',monospace;font-size:9px">No transactions for this filter</td></tr>';
+}
+
+function setTxnTab(el,tab){ document.querySelectorAll('.txn-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); txnTab=tab; scrRenderTxns(); }
+
+function scrRenderRightPanel(){
+  const t=selected; if(!t){ return; }
+  const soc=Object.entries(t.socials).map(([k,v])=>{
+    const ic={web:'🌐',x:'𝕏',tg:'✈️',discord:'💬',github:'⚙️'};
+    const lb={web:'Website',x:'Twitter',tg:'Telegram',discord:'Discord',github:'GitHub'};
+    return `<a class="soc-btn" href="${v}" target="_blank">${ic[k]||'🔗'} ${lb[k]||k}</a>`;
+  }).join('');
+
+  const tb = t.trust==='yakk'
+    ? `<span class="badge b-yakk">YAKK TRUSTED</span>`
+    : t.trust==='bluechip'
+    ? `<span class="badge b-blue">BLUECHIP</span>`
+    : `<span class="badge b-dim">LISTED</span>`;
+
+  const ub = t.updated
+    ? `<span class="badge b-green">YES — $10</span>`
+    : `<span class="badge b-dim">NO</span>`;
+
+  const audit = t.trust==='none'
+    ? `<span style="font-size:9px;color:var(--yellow)">⚠ Under Review</span>`
+    : `<span style="font-size:9px;color:var(--green)">✓ No Issues</span>`;
+
+  const priceDisplay = t.price !== null
+    ? `<span style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--text)">$${fmtP(t.price)}</span>`
+    : `<span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--dim)">Fetching…</span>`;
+
+  const chgDisplay = t.change !== null
+    ? `<span style="font-family:'Space Mono',monospace;font-size:10px;color:${t.change>=0?'var(--green)':'var(--red)'}">${fmtC(t.change)} 24H</span>`
+    : '';
+
+  /* Pairs dropdown — shows all confirmed pools for this token */
+  const pairsHtml = t.pairs && t.pairs.length > 1
+    ? `<div class="rp-row" style="align-items:flex-start">
+        <span class="rp-key">Pairs</span>
+        <span class="rp-val" style="flex-direction:column;gap:3px;align-items:flex-end">
+          ${t.pairs.map((p,i) => `<span style="font-size:8px;color:${i===0?'var(--pink)':'var(--dim)'};cursor:pointer;padding:2px 5px;border-radius:3px;border:1px solid ${i===0?'rgba(224,96,126,0.25)':'var(--border)'};background:${i===0?'rgba(224,96,126,0.06)':'transparent'}"
+            onclick="selectPair(${t.id},${i})" title="View this pair">${p.label}</span>`).join('')}
+        </span>
+      </div>`
+    : `<div class="rp-row"><span class="rp-key">Pair</span><span class="rp-val"><span style="font-size:9px;color:var(--dim)">${(t.pairs&&t.pairs[0])?t.pairs[0].label:'—'}</span></span></div>`;
+
+  document.getElementById('rp-inner').innerHTML = `
+    <div class="rp-banner">
+      <div style="width:100%;height:100%;background:linear-gradient(${t.bannerGrad});display:flex;align-items:flex-end;padding:5px 9px">
+        <span style="font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:0.12em">${t.name.toUpperCase()}</span>
+      </div>
+    </div>
+    <div class="rp-tok-hdr">
+      <div class="rp-timg">${t.emoji}</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:13px;line-height:1.2">${t.name}</div>
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px">${t.ticker} · Solana · ${t.dex}</div>
+      </div>
+    </div>
+    <div class="rp-sec" style="padding-bottom:10px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+        ${priceDisplay}
+        ${chgDisplay}
+      </div>
+    </div>
+    <div class="rp-sec"><p style="font-size:11px;color:var(--muted);line-height:1.6">${t.desc}</p></div>
+    <div class="soc-row">${soc}</div>
+    <div class="rp-sec">
+      ${pairsHtml}
+      <div class="rp-row">
+        <span class="rp-key">CA</span>
+        <span class="rp-val">
+          <span style="font-size:8px;color:var(--dim)">${shortCA(t.ca)}</span>
+          <span class="ca-pill" id="ca-btn-${t.id}" onclick="copyCA('${t.ca}','${t.id}')">COPY</span>
+          <a class="scan-lnk" href="https://solscan.io/token/${t.ca}" target="_blank">TOKEN</a>
+          ${activePair && activePair.solscan ? `<a class="scan-lnk" href="${activePair.solscan}" target="_blank">PAIR</a>` : ''}
+        </span>
+      </div>
+      <div class="rp-row"><span class="rp-key">Holders</span><span class="rp-val" id="rp-holders-${t.id}">${t.holders?t.holders.toLocaleString():'…'}</span></div>
+      <div class="rp-row"><span class="rp-key">Market Cap</span><span class="rp-val" id="rp-mcap-${t.id}">${t.mcap||'…'}</span></div>
+      <div class="rp-row"><span class="rp-key">24H Volume</span><span class="rp-val" id="rp-vol-${t.id}">${t.vol||'…'}</span></div>
+      <div class="rp-row"><span class="rp-key">Trust Tier</span><span class="rp-val">${tb}</span></div>
+      <div class="rp-row"><span class="rp-key">Updated</span><span class="rp-val">${ub}</span></div>
+    </div>
+    <div class="rp-sec">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 7px;background:var(--bg3);border-radius:4px;border:1px solid var(--border)">
+        <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted)">YAKK Cabal Scan</span>
+        ${audit}
+      </div>
+    </div>
+    <div class="rp-update">
+      <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--green);letter-spacing:0.08em;margin-bottom:4px">UPDATE METADATA ON-CHAIN</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:7px">MPL + Token-2022 · $10 SOL · vs $300+ DexScreener</div>
+      <button class="btn btn-green" style="width:100%;justify-content:center;font-size:9px;padding:6px" onclick="openUpdateModal()">UPDATE THIS TOKEN →</button>
+    </div>
+  `;
+}
+
+/* Select a specific pair for a token (multi-pair support) */
+function selectPair(tokenId, pairIdx){
+  const t = TOKENS.find(t=>t.id===tokenId);
+  if(!t||!t.pairs[pairIdx])return;
+  t._activePair = pairIdx;
+  scrLoadChart();
+  scrRenderRightPanel();
+}
+
+function copyCA(ca,id){
+  navigator.clipboard.writeText(ca).then(()=>{ const btn=document.getElementById('ca-btn-'+id); if(btn){btn.textContent='COPIED!';btn.classList.add('ok');setTimeout(()=>{btn.textContent='COPY';btn.classList.remove('ok');},2000);} }).catch(()=>{});
+}
+
+function scrFilterList(q){
+  let tokens=scrGetFiltered();
+  if(q)tokens=tokens.filter(t=>t.name.toLowerCase().includes(q.toLowerCase())||t.ticker.toLowerCase().includes(q.toLowerCase())||t.ca.toLowerCase().includes(q.toLowerCase()));
+  scrRenderList(tokens);
+}
+
+function scrSetFilter(el,f){ document.querySelectorAll('.fp').forEach(p=>p.classList.remove('active')); el.classList.add('active'); scrFilter=f; scrRenderList(scrGetFiltered()); }
+function scrGlobalSearch(q){ const lps=document.getElementById('scr-lp-search'); if(lps)lps.value=q; scrFilterList(q); }
+
+function setScrView(el,view){
+  document.querySelectorAll('.scr-nb').forEach(b=>b.classList.remove('active')); el.classList.add('active');
+  document.querySelectorAll('.scr-view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('scr-view-'+view).classList.add('active');
+  if(view==='new')renderNewPairs();
+  if(view==='gainers')renderGainers();
+}
+
+function renderNewPairs(){
+  const g=document.getElementById('new-pairs-grid'); if(!g)return;
+  g.innerHTML=TOKENS.filter(t=>t.id>=5).map(t=>{
+    const up=t.change>=0;
+    return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:11px;cursor:pointer;transition:border-color 0.12s" onclick="scrSelectToken(${t.id});setScrView(document.querySelector('.scr-nb'),'chart');document.querySelector('.scr-nb').classList.add('active')" onmouseover="this.style.borderColor='rgba(224,96,126,0.4)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px"><div style="width:28px;height:28px;border-radius:50%;background:var(--bg5);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px">${t.emoji}</div><div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:11px">${t.ticker}</div><div style="font-size:10px;color:var(--muted)">${t.name}</div></div><div style="margin-left:auto;text-align:right"><div style="font-family:'Space Mono',monospace;font-size:9px">$${fmtP(t.price)}</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:${up?'var(--green)':'var(--red)'}">${fmtC(t.change)}</div></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted)"><span>Vol:${t.vol}</span><span>MCap:${t.mcap}</span><span>${t.trust==='yakk'?'<span class="badge b-yakk" style="font-size:7px">Y</span>':'<span class="badge b-dim" style="font-size:7px">—</span>'}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function renderGainers(){
+  const el=document.getElementById('gainers-list'); if(!el)return;
+  el.innerHTML=[...TOKENS].sort((a,b)=>b.change-a.change).map((t,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer" onclick="scrSelectToken(${t.id})">
+      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);min-width:20px">${i+1}</div>
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px">${t.emoji}</div>
+      <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px">${t.ticker}</div><div style="font-size:10px;color:var(--muted)">${t.name}</div></div>
+      <div style="text-align:right"><div style="font-family:'Space Mono',monospace;font-size:10px">$${fmtP(t.price)}</div><div style="font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:${t.change>=0?'var(--green)':'var(--red)'}">${fmtC(t.change)}</div></div>
+    </div>`).join('');
+}
+
+/* ═══ TRUSTED LIST ═══ */
+function renderTrustedList(){
+  const el=document.getElementById('trusted-project-list'); if(!el)return;
+  el.innerHTML=TRUSTED_DATA.map(p=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:11px 14px;background:var(--bg3);border:1px solid ${p.tier==='yakk'?'rgba(224,96,126,0.18)':'rgba(96,165,250,0.14)'};border-radius:7px;margin-bottom:7px">
+      <span class="badge ${p.tier==='yakk'?'b-yakk':'b-blue'}" style="flex-shrink:0;margin-top:1px">${p.tier==='yakk'?'YAKK':'BLUE'}</span>
+      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:2px">${p.name} <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted)">${p.ticker}</span></div><div style="font-size:11px;color:var(--muted)">${p.reason}</div></div>
+    </div>`).join('');
+}
+
+/* ═══ YAKK CODE ═══ */
+function buildYakkCode(){
+  const rules=[['I','Investigate before you ape. Always.'],['II','Extractors are the enemy — not fellow degens.'],['III','Knowledge is the only real edge.'],['IV','The ledger remembers. We don\'t forgive extraction.'],['V','Raid with purpose. Not noise.'],['VI','Dev fee is locked on-chain. Transparency over promises.'],['VII','Pink Yakk Supremacy is anti-greed. Full stop.'],['VIII','GET YAKKED.']];
+  const el=document.getElementById('yakk-code-wp'); if(!el)return;
+  el.innerHTML=rules.map(([r,t])=>`<div style="display:flex;gap:9px;align-items:flex-start;margin-bottom:7px"><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:11px;color:rgba(224,96,126,0.35);min-width:26px">${r}</span><span style="font-size:11px;color:var(--muted);line-height:1.5">${t}</span></div>`).join('');
+}
+
+/* ═══ ART LAB ═══ */
+function buildPrompt(){
+  const core='Vibrant pink yakk, dense hot-pink fur, silver curved horns, black feet/paws, intense yellow eyes under black mask, gold-dripping tail, fluffy chibi round body, cinematic chiaroscuro lighting';
+  const scene=document.getElementById('pb-scene').value;
+  const style=document.getElementById('pb-style').value;
+  const props=document.getElementById('pb-props').value;
+  const full=[core,scene,style,props].filter(Boolean).join(', ')+' --ar 16:9 --style raw --no text watermark logos';
+  document.getElementById('prompt-txt').textContent=full;
+  document.getElementById('prompt-out').style.display='block';
+}
+function copyPrompt(){ navigator.clipboard.writeText(document.getElementById('prompt-txt').textContent).then(()=>alert('Prompt copied! Paste into Midjourney. GET YAKKED. 😈')).catch(()=>{}); }
+
+/* ═══ COACH ═══ */
+const AI={
+  discipline:["Write down your entry, target, and stop before you open a position. No thesis = a gamble. The mountain doesn't respect gamblers.","Paper hands are a choice. The dip is the extractor's mechanism working on you. Don't gift them the exit."],
+  raid:["Effective raid: Like first. Retweet with a comment. Tag two degens by name. Drop the emoji. Organic beats bot-like every time.","Best raid times: 9–11am and 6–9pm EST. Coordinate in TG so volume hits simultaneously."],
+  risk:["Never put in what you can't afford to lose. Size so a 90% drawdown doesn't change your life.","The cabal targets emotional traders. High-volume coordinated dumps trigger panic sells. Know the playbook — it's in the ledger."],
+  lore:["The yakk endures. Domesticated 10,000 years before Bitcoin. Three-times lung capacity. Built for altitude. $YST built for all-time highs.","Pink Yakk Supremacy is a stance. Anti-greed. Anti-extraction. Pro-degen. The cult is the mission."],
+};
+
+function setMode(el,mode){ document.querySelectorAll('.mode-pill').forEach(p=>p.classList.remove('active')); el.classList.add('active'); curMode=mode; addMsg('ai',`Mode: ${mode.toUpperCase()}. What do you need, degen?`,mode.toUpperCase()+' MODE'); }
+function addMsg(type,text,label){ const box=document.getElementById('chat-msgs'); const div=document.createElement('div'); if(type==='user'){div.className='msg-user';div.textContent=text;}else{div.className='msg-ai';div.innerHTML=`<div class="ai-lbl">YAKKAI — ${label||curMode.toUpperCase()+' MODE'}</div>${text}`;} box.appendChild(div); box.scrollTop=box.scrollHeight; }
+function sendChat(){ const inp=document.getElementById('chat-in'); const txt=inp.value.trim(); if(!txt)return; addMsg('user',txt); inp.value=''; setTimeout(()=>{ const pool=AI[curMode]; addMsg('ai',pool[Math.floor(Math.random()*pool.length)]); },500); }
+function quickMsg(txt){ document.getElementById('chat-in').value=txt; sendChat(); showSection('coach'); }
+
+/* ═══ RAIDS ═══ */
+function buildLeaderboard(){
+  const el=document.getElementById('leaderboard'); if(!el)return;
+  const data=[{n:'shyfts_',x:1240},{n:'YAKKdegen',x:890},{n:'PinkHooves',x:750},{n:'FlatCapLord',x:620},{n:'MountainMaxi',x:480}];
+  el.innerHTML=data.map((p,i)=>`<div class="lb-row"><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;min-width:24px;color:${i<3?'var(--gold)':'var(--dim)'}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1;font-size:12px">${p.n}</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--gold)">${p.x} XP</div></div>`).join('');
+}
+function logRaid(){ const link=document.getElementById('raid-link').value.trim(); if(!link){alert('Paste your raid link first, degen.');return;} myXP+=10;myRaids++; document.getElementById('my-xp').textContent=myXP; document.getElementById('my-raids').textContent=myRaids; document.getElementById('raid-link').value=''; alert(`+10 XP! Total: ${myXP} XP. ${myRaids} raid(s). GET YAKKED. 😈`); }
+
+/* ═══ WALLET ═══ */
+function connectWallet(){
+  walletConnected=!walletConnected;
+  const btns=['home-wallet-btn','scr-wallet-btn'];
+  btns.forEach(id=>{ const btn=document.getElementById(id); if(!btn)return; if(walletConnected){btn.textContent='✓ 7Xk9…mE2r';btn.style.color='var(--green)';btn.style.borderColor='rgba(34,197,94,0.4)';}else{btn.textContent=id==='scr-wallet-btn'?'🔗 Wallet':'🔗 Connect Wallet';btn.style.color='';btn.style.borderColor='';} });
+  /* Refresh terminal swap button to reflect wallet state */
+  updateSwapBtn();
+  if(walletConnected){
+    /* Simulate balance display */
+    const solBal = document.getElementById('sol-bal');
+    if(solBal) solBal.textContent = 'Balance: 2.45 SOL';
+  }
+}
+
+/* ═══ UPDATE MODAL ═══ */
+function openUpdateModal(){ document.getElementById('modal-wrap').classList.add('open'); mNext(1); }
+function closeUpdateModal(){ document.getElementById('modal-wrap').classList.remove('open'); }
+/* ═══ UPDATE MODAL JS ═══ */
+let tokenProgram = 'mpl'; /* 'mpl' or 't22' */
+
+function selectProgram(prog){
+  tokenProgram = prog;
+  const mpl = document.getElementById('prog-mpl');
+  const t22 = document.getElementById('prog-t22');
+  if(mpl && t22){
+    if(prog === 'mpl'){
+      mpl.style.border = '2px solid var(--pink)';
+      mpl.style.background = 'rgba(224,96,126,0.08)';
+      mpl.querySelector('div').style.color = 'var(--pink)';
+      t22.style.border = '2px solid var(--border2)';
+      t22.style.background = 'var(--bg3)';
+      t22.querySelector('div').style.color = 'var(--muted)';
+    } else {
+      t22.style.border = '2px solid var(--blue)';
+      t22.style.background = 'rgba(96,165,250,0.08)';
+      t22.querySelector('div').style.color = 'var(--blue)';
+      mpl.style.border = '2px solid var(--border2)';
+      mpl.style.background = 'var(--bg3)';
+      mpl.querySelector('div').style.color = 'var(--muted)';
+    }
+  }
+}
+
+function mNext(step){
+  for(let i=1;i<=4;i++){
+    const el = document.getElementById('ms'+i);
+    if(el) el.classList.toggle('active', i===step);
+    const d = document.getElementById('m-sd'+i);
+    if(d){
+      if(i<step){ d.className='sdot sdone'; d.textContent='✓'; }
+      else if(i===step){ d.className='sdot sact'; d.textContent=i; }
+      else{ d.className='sdot spend'; d.textContent=i; }
+    }
+  }
+  if(step===4){
+    /* Show correct flow panel based on selected program */
+    const mplFlow = document.getElementById('ms4-mpl-flow');
+    const t22Flow = document.getElementById('ms4-t22-flow');
+    if(mplFlow && t22Flow){
+      mplFlow.style.display = tokenProgram === 'mpl' ? 'block' : 'none';
+      t22Flow.style.display = tokenProgram === 't22' ? 'block' : 'none';
+    }
+    /* Build summary */
+    const n      = document.getElementById('m-name').value    || '—';
+    const ticker = document.getElementById('m-ticker').value  || '—';
+    const ca     = document.getElementById('m-ca').value      || '—';
+    const web    = document.getElementById('m-web').value     || '—';
+    const tw     = document.getElementById('m-twitter').value || '—';
+    const tg     = document.getElementById('m-tg').value      || '—';
+    const progLabel = tokenProgram === 't22'
+      ? '<span style="color:var(--blue)">Token-2022 · updateField</span>'
+      : '<span style="color:var(--green)">Metaplex MPL · updateMetadataAccountV2</span>';
+    document.getElementById('pay-summary').innerHTML = [
+      ['Token',       `${ticker} — ${n}`],
+      ['CA',          `<span style="color:var(--gold);font-size:9px;word-break:break-all">${ca.length>24?ca.slice(0,24)+'…':ca}</span>`],
+      ['Program',     progLabel],
+      ['Website',     web],
+      ['Twitter',     tw],
+      ['Telegram',    tg],
+      ['Image/Banner','<span style="color:var(--green)">IPFS via NFT.Storage</span>'],
+    ].map(([k,v]) => `<div class="pay-row"><span style="color:var(--muted)">${k}</span><span style="font-size:10px">${v}</span></div>`).join('');
+  }
+}
+
+function prevCircle(input){ if(!input.files[0])return; document.getElementById('img-circle').innerHTML=`<img src="${URL.createObjectURL(input.files[0])}">`; }
+function prevBanner(input){ if(!input.files[0])return; document.getElementById('banner-drop').innerHTML=`<img src="${URL.createObjectURL(input.files[0])}" style="width:100%;height:100%;object-fit:cover">`; }
+
+function submitOnChain(){
+  const ca   = document.getElementById('m-ca').value.trim();
+  const name = document.getElementById('m-name').value.trim();
+  const ticker = document.getElementById('m-ticker').value.trim() || 'TOKEN';
+  if(!ca || !name){ alert('Fill in Token Name and Contract Address first.'); mNext(1); return; }
+
+  const isMPL = tokenProgram === 'mpl';
+  const progName  = isMPL ? 'Metaplex MPL'  : 'Token-2022';
+  const sdkNote   = isMPL
+    ? '@metaplex-foundation/mpl-token-metadata + @solana/web3.js'
+    : '@solana/spl-token ^0.4 + @solana/web3.js';
+  const instrNote = isMPL
+    ? 'updateMetadataAccountV2 instruction on Metadata PDA'
+    : 'updateField instruction on TokenMetadata extension';
+  const authNote  = isMPL
+    ? 'update authority on the Metadata PDA'
+    : 'mint authority with TokenMetadata extension rights';
+
+  updateCount++;
+  document.getElementById('home-updates').textContent = updateCount;
+
+  alert(
+    `YAKK SCREENER — On-Chain Metadata Update\n\n` +
+    `Token:   ${name} (${ticker})\n` +
+    `CA:      ${ca.slice(0,20)}...\n` +
+    `Program: ${progName}\n\n` +
+    `PRODUCTION FLOW:\n` +
+    `1. Phantom/Backpack wallet connect popup fires\n` +
+    `2. Wallet verified as ${authNote}\n` +
+    `3. Token image + banner uploaded to IPFS via NFT.Storage\n` +
+    `4. Metadata JSON (name, symbol, URI, socials) pinned to IPFS\n` +
+    `5. ${instrNote}\n` +
+    `6. User signs + broadcasts on Solana mainnet\n` +
+    `7. ~0.06 SOL fee sent to YAKK Studios treasury\n` +
+    `8. Screener polls Solscan — listing live within ~2 minutes\n\n` +
+    `SDK: ${sdkNote}\n\n` +
+    `GET YAKKED. 😈`
+  );
+  closeUpdateModal();
+  showSection('screener');
+}
+
+/* ═══ TRUSTED APPLY ═══ */
+function submitApply(){ const ca=document.getElementById('apply-ca').value.trim(),why=document.getElementById('apply-why').value.trim(); if(!ca||!why){alert('Fill all fields, degen.');return;} alert(`Application received for: ${ca}\n\nYAKK Studios will review. Don't hold your breath — we don't rush trust. The ledger watches everything.\n\nGET YAKKED. 😈`); ['apply-ca','apply-why','apply-contact'].forEach(id=>document.getElementById(id).value=''); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   YAKK TERMINAL JS
+   - termSelectedToken: currently active token in terminal
+   - termTf: active timeframe
+   - swapFlipped: whether SOL→TOKEN is flipped to TOKEN→SOL
+   - slippage: current slippage %
+   - Swap is wired to Jupiter Terminal (https://terminal.jup.ag) which
+     handles all routing, signing, and execution. Zero extra fee on our end.
+   - In production: load Jupiter Terminal SDK and call init() on mount.
+   - For now: full UI with placeholder swap execution + wallet connect stub.
+═══════════════════════════════════════════════════════════════════════ */
+let termToken = null;
+let termTf = '15';
+let swapFlipped = false;
+let slippage = 1;
+
+function termInit(){
+  /* Render token selector pills at top of chart */
+  const pills = document.getElementById('term-tok-pills');
+  if(!pills) return;
+  pills.innerHTML = TOKENS.map(t => {
+    const up = t.change !== null && t.change >= 0;
+    const chgStr = t.change !== null ? fmtC(t.change) : '—';
+    return `<button class="term-tok-btn${termToken && termToken.id===t.id ? ' active' : ''}" onclick="termSelectToken(${t.id})">
+      <span>${t.emoji}</span>
+      <span>${t.ticker}</span>
+      <span class="tt-chg ${t.change !== null ? (up ? 'up' : 'dn') : ''}">${chgStr}</span>
+    </button>`;
+  }).join('');
+}
+
+/* Open a specific token in the terminal — called from TRADE button in screener */
+function termOpenToken(id){
+  showSection('terminal');
+  setTimeout(() => termSelectToken(id), 50);
+}
+
+function termSelectToken(id){
+  termToken = TOKENS.find(t => t.id === id);
+  if(!termToken) return;
+  termInit(); /* re-render pills with active state */
+  termLoadChart();
+  termUpdateStats();
+  termUpdateSwapUI();
+  termRenderRecentTrades();
+  /* Update CA display at bottom */
+  const caEl = document.getElementById('term-ca-display');
+  if(caEl) caEl.textContent = termToken.ca;
+  /* Update Solscan link for the pair */
+  const ap = termToken.pairs && termToken.pairs[0];
+  if(ap && ap.solscan){
+    /* Nothing to set here in header — but we use it in fallback */
+  }
+}
+
+function termLoadChart(){
+  const t = termToken;
+  if(!t) return;
+  const ph = document.getElementById('term-chart-ph');
+  const inner = document.getElementById('term-chart-inner');
+  if(!inner) return;
+  const ap = t.pairs && t.pairs[0];
+  const tfMap = {'1':'1m','5':'5m','15':'15m','60':'1h','240':'4h','D':'1d'};
+  const resolution = tfMap[termTf] || '15m';
+  if(ap && ap.poolAddr){
+    if(ph) ph.style.display = 'none';
+    const gtUrl = `https://www.geckoterminal.com/solana/pools/${ap.poolAddr}/embed?theme=dark&resolution=${resolution}&charts_type=price&no_scroll=true`;
+    inner.innerHTML = `<iframe src="${gtUrl}" style="width:100%;height:100%;border:none;display:block" allow="clipboard-write" title="${t.ticker}/SOL"></iframe>`;
+  } else {
+    inner.innerHTML = `<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px"><div style="font-size:24px">${t.emoji}</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Pool address not yet confirmed</div><a href="https://solscan.io/token/${t.ca}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:3px 9px;border:1px solid rgba(96,165,250,0.2);border-radius:3px">VIEW ON SOLSCAN →</a></div>`;
+  }
+}
+
+function termSetTf(el, tf){
+  document.querySelectorAll('#term-chart-hdr .tf').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  termTf = tf;
+  if(termToken) termLoadChart();
+}
+
+function termUpdateStats(){
+  const t = termToken; if(!t) return;
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val || '—'; };
+  set('ts-mcap',    t.mcap);
+  set('ts-vol',     t.vol);
+  set('ts-liq',     t.liq);
+  set('ts-holders', t.holders ? t.holders.toLocaleString() : '—');
+  set('ts-buys',    t.buys  ? t.buys.toLocaleString()  : '—');
+  set('ts-sells',   t.sells ? t.sells.toLocaleString() : '—');
+  /* Price + change in chart header */
+  const pEl = document.getElementById('term-price');
+  const cEl = document.getElementById('term-change');
+  if(pEl) pEl.textContent = t.price !== null ? '$' + fmtP(t.price) : '—';
+  if(cEl){
+    cEl.textContent = t.change !== null ? fmtC(t.change) : '—';
+    cEl.style.color = t.change !== null ? (t.change >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--dim)';
+  }
+}
+
+function termUpdateSwapUI(){
+  const t = termToken; if(!t) return;
+  /* Update swap "TO" token badge */
+  const emojiEl = document.getElementById('term-tok-emoji');
+  const symEl   = document.getElementById('swap-to-sym');
+  const titleEl = document.getElementById('swap-title');
+  const caEl    = document.getElementById('term-ca-display');
+  if(emojiEl) emojiEl.textContent = t.emoji;
+  if(symEl)   symEl.textContent   = t.ticker;
+  if(titleEl) titleEl.textContent = `Buy / Sell ${t.ticker}`;
+  if(caEl)    caEl.textContent    = t.ca;
+  /* Update swap button text based on wallet state */
+  updateSwapBtn();
+  calcSwapOut();
+}
+
+function updateSwapBtn(){
+  const btn = document.getElementById('swap-btn');
+  if(!btn) return;
+  if(!walletConnected){
+    btn.textContent = 'CONNECT WALLET TO TRADE';
+    btn.className   = 'swap-btn swap-btn-connect';
+  } else if(!swapFlipped){
+    btn.textContent = termToken ? `BUY ${termToken.ticker}` : 'BUY';
+    btn.className   = 'swap-btn swap-btn-buy';
+  } else {
+    btn.textContent = termToken ? `SELL ${termToken.ticker}` : 'SELL';
+    btn.className   = 'swap-btn swap-btn-sell';
+  }
+}
+
+function flipSwap(){
+  swapFlipped = !swapFlipped;
+  updateSwapBtn();
+  calcSwapOut();
+  /* Swap the FROM/TO labels visually */
+  const fromLbl = document.querySelector('.swap-box:first-child .swap-box-lbl span:first-child');
+  if(fromLbl) fromLbl.textContent = swapFlipped ? 'FROM (TOKEN)' : 'FROM';
+}
+
+function setQuickAmt(amt){
+  const inp = document.getElementById('swap-from-amt');
+  if(inp){ inp.value = amt; calcSwapOut(); }
+}
+
+function calcSwapOut(){
+  const inp = document.getElementById('swap-from-amt');
+  const toEl = document.getElementById('swap-to-amt');
+  const fromUsd = document.getElementById('swap-from-usd');
+  const toUsd = document.getElementById('swap-to-usd');
+  const minOut = document.getElementById('swap-min-out');
+  const impact = document.getElementById('swap-impact');
+  if(!inp || !toEl || !termToken) return;
+  const fromAmt = parseFloat(inp.value) || 0;
+  const solPrice  = (TOKENS.find(t => t.ticker === 'SOL') || {}).price || 170;
+  const tokPrice  = termToken.price || 0;
+  if(tokPrice > 0 && fromAmt > 0){
+    let outAmt, inUsd, outUsd;
+    if(!swapFlipped){
+      /* SOL → TOKEN */
+      inUsd  = fromAmt * solPrice;
+      outAmt = (inUsd / tokPrice) * (1 - slippage/100 * 0.5); /* rough estimate with slippage */
+      outUsd = outAmt * tokPrice;
+      if(fromUsd) fromUsd.textContent = `≈ $${inUsd.toFixed(2)}`;
+      if(toEl)    toEl.textContent    = outAmt > 1000 ? outAmt.toLocaleString('en',{maximumFractionDigits:0}) : outAmt.toFixed(4);
+      if(toUsd)   toUsd.textContent   = `≈ $${outUsd.toFixed(2)}`;
+      if(minOut)  minOut.textContent  = `${(outAmt * (1 - slippage/100)).toFixed(4)} ${termToken.ticker}`;
+    } else {
+      /* TOKEN → SOL */
+      inUsd  = fromAmt * tokPrice;
+      outAmt = (inUsd / solPrice) * (1 - slippage/100 * 0.5);
+      outUsd = outAmt * solPrice;
+      if(fromUsd) fromUsd.textContent = `≈ $${inUsd.toFixed(2)}`;
+      if(toEl)    toEl.textContent    = outAmt.toFixed(4);
+      if(toUsd)   toUsd.textContent   = `≈ $${outUsd.toFixed(2)}`;
+      if(minOut)  minOut.textContent  = `${(outAmt * (1 - slippage/100)).toFixed(4)} SOL`;
+    }
+    /* Rough price impact based on size vs liquidity */
+    const liqNum = parseFloat((termToken.liq || '$0').replace(/[$KMB]/g,'')) *
+      ((termToken.liq||'').includes('B')?1e9:(termToken.liq||'').includes('M')?1e6:(termToken.liq||'').includes('K')?1e3:1);
+    const pctOfLiq = liqNum > 0 ? (inUsd / liqNum) * 100 : 0;
+    if(impact){
+      impact.textContent = pctOfLiq > 5  ? `~${pctOfLiq.toFixed(1)}% ⚠` :
+                           pctOfLiq > 1  ? `~${pctOfLiq.toFixed(2)}%`    : '< 0.1%';
+      impact.style.color = pctOfLiq > 5 ? 'var(--red)' : pctOfLiq > 1 ? 'var(--yellow)' : 'var(--green)';
+    }
+  } else {
+    if(toEl)    toEl.textContent  = '0.00';
+    if(fromUsd) fromUsd.textContent = '≈ $0.00';
+    if(toUsd)   toUsd.textContent   = '≈ $0.00';
+    if(minOut)  minOut.textContent  = '—';
+  }
+}
+
+function setSlip(el, val){
+  document.querySelectorAll('.slip-opt').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  slippage = val;
+  document.getElementById('slip-custom').value = '';
+  calcSwapOut();
+}
+
+function setSlipCustom(val){
+  document.querySelectorAll('.slip-opt').forEach(b => b.classList.remove('active'));
+  slippage = Math.max(0.1, Math.min(50, parseFloat(val) || 1));
+  calcSwapOut();
+}
+
+function handleSwap(){
+  if(!walletConnected){
+    connectWallet();
+    return;
+  }
+  if(!termToken){
+    alert('Select a token first.');
+    return;
+  }
+  const fromAmt = parseFloat(document.getElementById('swap-from-amt').value) || 0;
+  if(fromAmt <= 0){
+    alert('Enter an amount to swap.');
+    return;
+  }
+  /* ── PRODUCTION SWAP FLOW ──────────────────────────────────────────────
+     Wire Jupiter Terminal SDK:
+       // Load: <scr' + 'ipt src="https://terminal.jup.ag/main-v2.js"><\/scr' + 'ipt>
+       window.Jupiter.init({
+         displayMode: 'integrated',
+         integratedTargetId: 'swap-jupiter-container',
+         endpoint: 'https://mainnet.helius-rpc.com/?api-key=YOUR_KEY',
+         defaultExplorer: 'Solscan',
+         formProps: {
+           inputMint:  swapFlipped ? termToken.ca : 'So11111111111111111111111111111111111111112',
+           outputMint: swapFlipped ? 'So11111111111111111111111111111111111111112' : termToken.ca,
+           fixedInputMint: false,
+           fixedOutputMint: false,
+         },
+         onSwapError: ({ error }) => console.error('Swap error', error),
+         onSuccess: ({ txid }) => {
+           addTermTrade(txid, fromAmt);
+         }
+       });
+     Jupiter applies their ~0.2% protocol fee. YAKK applies 0%.
+     Set platformFeeAndAccounts to null or omit to confirm zero fee.
+  ────────────────────────────────────────────────────────────────────── */
+  const dir = swapFlipped ? `${termToken.ticker} → SOL` : `SOL → ${termToken.ticker}`;
+  const out = document.getElementById('swap-to-amt').textContent;
+  alert(
+    `YAKK TERMINAL — Swap Preview\n\n` +
+    `Direction: ${dir}\n` +
+    `Amount in: ${fromAmt} ${swapFlipped ? termToken.ticker : 'SOL'}\n` +
+    `Est. out:  ${out} ${swapFlipped ? 'SOL' : termToken.ticker}\n` +
+    `Slippage:  ${slippage}%\n` +
+    `YAKK fee:  0%\n\n` +
+    `PRODUCTION: Fires Jupiter Terminal SDK swap.\n` +
+    `Route: Jupiter best-price aggregation across all Solana DEXes.\n` +
+    `Wallet signs transaction — no custody, non-custodial.\n\n` +
+    `GET YAKKED. 😈`
+  );
+}
+
+function addTermTrade(txid, amt){
+  const t = termToken; if(!t) return;
+  const list = document.getElementById('term-recent-list');
+  if(!list) return;
+  const row = document.createElement('div');
+  row.className = 'tr-row';
+  row.innerHTML = `<span class="tr-type ${swapFlipped ? 'dn' : 'up'}">${swapFlipped ? 'SELL' : 'BUY'}</span>
+    <span style="color:var(--muted)">${amt} ${swapFlipped?t.ticker:'SOL'}</span>
+    <a href="https://solscan.io/tx/${txid}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none">${txid.slice(0,6)}…</a>`;
+  list.insertBefore(row, list.firstChild);
+}
+
+function termRenderRecentTrades(){
+  const list = document.getElementById('term-recent-list');
+  if(!list || !termToken) return;
+  /* Show placeholder while real txn data would load via Solscan API */
+  list.innerHTML = `<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);padding:8px 0">
+    Connect wallet to see your trades.<br>
+    <a href="https://solscan.io/token/${termToken.ca}" target="_blank" style="color:var(--blue);text-decoration:none">View all trades on Solscan →</a>
+  </div>`;
+}
+
+function calcPosition(){
+  const port  = parseFloat(document.getElementById('pc-portfolio').value) || 0;
+  const risk  = parseFloat(document.getElementById('pc-risk').value) || 2;
+  const stop  = parseFloat(document.getElementById('pc-stop').value) || 20;
+  const res   = document.getElementById('pc-result');
+  if(!res) return;
+  if(port <= 0){ res.style.display='none'; return; }
+  const riskAmt    = (port * risk) / 100;
+  const posSize    = (riskAmt / (stop / 100));
+  const posPercent = (posSize / port) * 100;
+  res.style.display = 'block';
+  res.innerHTML = `
+    <div style="display:flex;justify-content:space-between;font-size:10px">
+      <span style="color:var(--dim)">Max risk ($)</span>
+      <span style="color:var(--red)">$${riskAmt.toFixed(2)}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:3px">
+      <span style="color:var(--dim)">Position size</span>
+      <span style="color:var(--gold)">$${Math.round(posSize).toLocaleString()}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:3px">
+      <span style="color:var(--dim)">% of portfolio</span>
+      <span style="color:${posPercent>25?'var(--red)':posPercent>10?'var(--yellow)':'var(--green)'}">${posPercent.toFixed(1)}%${posPercent>25?' ⚠ HIGH':''}</span>
+    </div>
+    ${termToken && termToken.price ? `
+    <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:3px">
+      <span style="color:var(--dim)">Tokens to buy</span>
+      <span style="color:var(--text)">${Math.floor(posSize / termToken.price).toLocaleString()} ${termToken.ticker}</span>
+    </div>` : ''}`;
+}
+
+
+/* ═══ INIT ═══ */
+setupTicker();
+setupCountdown();
+refreshPep();
+buildYakkCode();
+buildLeaderboard();
+renderTrustedList();
+
+/* Kick off live Solscan data fetch immediately — renders list with
+   "…" placeholders then fills in real values as API responds */
+fetchLiveData();
+setInterval(fetchLiveData, 30000);
+
+/* Pre-render list with placeholders so it's not blank on load */
+scrRenderList(TOKENS);
+
+document.getElementById('modal-wrap').addEventListener('click',function(e){ if(e.target===this)closeUpdateModal(); });
+</script>
+</body>
+</html>
