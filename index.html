@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag https://dexscreener.com; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YAKK Studios — Pink Yakk Supremacy</title>
@@ -180,7 +180,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .tf{padding:3px 7px;border-radius:3px;font-family:Space Mono,monospace;font-size:8px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
 .tf:hover{color:var(--text);background:rgba(255,255,255,0.05)}
 .tf.active{color:var(--pink);background:rgba(224,96,126,0.1)}
-#chart-wrap{width:100%;height:440px;background:var(--bg);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+#chart-wrap{width:100%;height:440px;background:#050509;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
 #chart-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
 #tv-container{width:100%;height:440px;display:none}
 .scr-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--border)}
@@ -334,6 +334,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .risk-high{background:linear-gradient(90deg,var(--gold),var(--red))}
 .risk-extreme{background:var(--red);animation:riskPulse 1.5s infinite}
 @keyframes riskPulse{0%,100%{opacity:1}50%{opacity:0.6}}
+@keyframes chartLoad{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
 .pattern-card{background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:11px 14px;margin-bottom:8px;display:flex;gap:11px;align-items:flex-start}
 .pattern-icon{font-size:18px;flex-shrink:0;margin-top:1px}
 .pattern-title{font-family:Syne,sans-serif;font-weight:700;font-size:11px;margin-bottom:3px}
@@ -1884,9 +1885,20 @@ function scrLoadChart(){
   const tv = document.getElementById('tv-container');
   if(!ph||!tv) return;
   ph.style.display='none'; tv.style.display='block'; tv.innerHTML='';
+
   const ap = t.pairs && t.pairs[t._activePair||0];
   const pairAddr = ap && ap.poolAddr ? ap.poolAddr : null;
+
+  if(!pairAddr && t.ticker !== 'SOL'){
+    /* No pair confirmed yet */
+    const p = t.price!==null?'$'+fmtP(t.price):'--';
+    const cc = t.change!==null?(t.change>=0?'var(--green)':'var(--red)'):'var(--dim)';
+    tv.innerHTML='<div style="width:100%;height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#050509"><div style="font-size:32px">'+t.emoji+'</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:28px;color:#f5f5f7">'+p+'</div><div style="font-family:Space Mono,monospace;font-size:11px;color:'+cc+'">'+(t.change!==null?fmtC(t.change):'--')+' 24H</div></div>';
+    return;
+  }
+
   if(t.ticker==='SOL'){
+    /* TradingView for SOL — no Solana DEX pair needed */
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
     const cont=document.createElement('div');
     cont.className='tradingview-widget-container'; cont.style.cssText='height:440px;width:100%';
@@ -1894,23 +1906,18 @@ function scrLoadChart(){
     wd.className='tradingview-widget-container__widget'; wd.style.cssText='height:408px;width:100%';
     cont.appendChild(wd);
     const copy=document.createElement('div');
-    copy.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="font-family:Space Mono,monospace;font-size:8px;color:#333">Charts by TradingView</span></a>';
+    copy.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:#333">TradingView</a>';
     cont.appendChild(copy); tv.appendChild(cont);
     const sc=document.createElement('script');
-    sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; sc.async=true;
-    sc.textContent=JSON.stringify({symbol:'BINANCE:SOLUSD',interval:iMap[curTf]||'15',theme:'dark',style:'1',locale:'en',backgroundColor:'#050509',gridColor:'rgba(30,30,46,0.8)',hide_side_toolbar:true,withdateranges:true,hide_volume:false,save_image:true,autosize:true});
+    sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+    sc.async=true;
+    sc.textContent=JSON.stringify({symbol:'BINANCE:SOLUSD',interval:iMap[curTf]||'15',theme:'dark',style:'1',locale:'en',backgroundColor:'#050509',gridColor:'rgba(30,30,46,0.8)',hide_side_toolbar:true,withdateranges:true,hide_volume:false,save_image:false,autosize:true});
     cont.appendChild(sc); return;
   }
-  if(pairAddr){
-    const iframe=document.createElement('iframe');
-    iframe.src='https://dexscreener.com/solana/'+pairAddr+'?embed=1&theme=dark&info=0';
-    iframe.style.cssText='width:100%;height:440px;border:none;display:block;background:var(--bg)';
-    iframe.allow='clipboard-write'; iframe.loading='lazy'; iframe.title=t.ticker+' chart';
-    tv.appendChild(iframe); return;
-  }
-  const p=t.price!==null?'$'+fmtP(t.price):'Loading...';
-  const cc=t.change!==null?(t.change>=0?'var(--green)':'var(--red)'):'var(--dim)';
-  tv.innerHTML='<div style="width:100%;height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:var(--bg)"><div style="font-size:32px">'+t.emoji+'</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:28px;color:var(--text)">'+p+'</div><div style="font-family:Space Mono,monospace;font-size:11px;color:'+cc+'">'+(t.change!==null?fmtC(t.change):'--')+' 24H</div><a href="https://solscan.io/token/'+t.ca+'" target="_blank" style="font-family:Space Mono,monospace;font-size:9px;color:var(--blue);text-decoration:none;padding:5px 12px;border:1px solid rgba(96,165,250,0.3);border-radius:4px">VIEW ON SOLSCAN</a></div>';
+
+  /* Custom canvas candlestick chart using DexScreener candles API.
+     No iframe, no branding, pure data → YAKK-styled chart. */
+  yakkDrawChart(tv, t, pairAddr, curTf);
 }
 
 
@@ -2023,8 +2030,9 @@ function scrRenderRightPanel(){
         <span class="rp-val">
           <span style="font-size:8px;color:var(--dim)">${shortCA(t.ca)}</span>
           <span class="ca-pill" id="ca-btn-${t.id}" onclick="copyCA('${t.ca}','${t.id}')">COPY</span>
-          <a class="scan-lnk" href="https://solscan.io/token/${t.ca}" target="_blank">TOKEN</a>
-          ${activePair && activePair.solscan ? `<a class="scan-lnk" href="${activePair.solscan}" target="_blank">PAIR</a>` : ''}
+          <a class="scan-lnk" href="https://solscan.io/token/${t.ca}" target="_blank">SOLSCAN</a>
+          <a class="scan-lnk" href="https://app.bubblemaps.io/sol/token/${t.ca}" target="_blank" style="color:var(--gold);border-color:rgba(247,201,72,0.3)">BUBBLEMAPS</a>
+          ${activePair && activePair.solscan ? `<a class="scan-lnk" href="${activePair.solscan}" target="_blank" style="color:var(--dim)">PAIR</a>` : ''}
         </span>
       </div>
       <div class="rp-row"><span class="rp-key">Holders</span><span class="rp-val" id="rp-holders-${t.id}">${t.holders?t.holders.toLocaleString():'…'}</span></div>
@@ -2453,23 +2461,21 @@ function termLoadChart(){
     const cont=document.createElement('div');
     cont.className='tradingview-widget-container'; cont.style.cssText='height:100%;width:100%';
     const wd=document.createElement('div');
-    wd.className='tradingview-widget-container__widget'; wd.style.cssText='height:calc(100% - 22px);width:100%';
+    wd.className='tradingview-widget-container__widget'; wd.style.cssText='height:calc(100% - 20px);width:100%';
     cont.appendChild(wd);
     const copy=document.createElement('div');
-    copy.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="font-family:Space Mono,monospace;font-size:8px;color:#333">Charts by TradingView</span></a>';
+    copy.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:#333">TradingView</a>';
     cont.appendChild(copy); inner.appendChild(cont);
     const sc=document.createElement('script');
-    sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; sc.async=true;
-    sc.textContent=JSON.stringify({symbol:'BINANCE:SOLUSD',interval:iMap[termTf]||'15',theme:'dark',style:'1',locale:'en',backgroundColor:'#050509',gridColor:'rgba(30,30,46,0.8)',hide_side_toolbar:false,withdateranges:true,hide_volume:false,save_image:true,autosize:true});
+    sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+    sc.async=true;
+    sc.textContent=JSON.stringify({symbol:'BINANCE:SOLUSD',interval:iMap[termTf]||'15',theme:'dark',style:'1',locale:'en',backgroundColor:'#050509',gridColor:'rgba(30,30,46,0.8)',hide_side_toolbar:false,withdateranges:true,hide_volume:false,save_image:false,autosize:true});
     cont.appendChild(sc); return;
   }
-  if(pairAddr){
-    inner.innerHTML='<iframe src="https://dexscreener.com/solana/'+pairAddr+'?embed=1&theme=dark&info=0" style="width:100%;height:100%;border:none;display:block" allow="clipboard-write" loading="lazy" title="'+t.ticker+' chart"></iframe>';
-    return;
-  }
-  const p=t.price!==null?'$'+fmtP(t.price):'Loading...';
+  if(pairAddr){ yakkDrawChart(inner,t,pairAddr,termTf); return; }
+  const p=t.price!==null?'$'+fmtP(t.price):'--';
   const cc=t.change!==null?(t.change>=0?'var(--green)':'var(--red)'):'var(--dim)';
-  inner.innerHTML='<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--bg)"><div style="font-size:28px">'+t.emoji+'</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:24px;color:var(--text)">'+p+'</div><div style="font-family:Space Mono,monospace;font-size:10px;color:'+cc+'">'+(t.change!==null?fmtC(t.change):'--')+' 24H</div></div>';
+  inner.innerHTML='<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#050509"><div style="font-size:28px">'+t.emoji+'</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:24px;color:#f5f5f7">'+p+'</div><div style="font-family:Space Mono,monospace;font-size:10px;color:'+cc+'">'+(t.change!==null?fmtC(t.change):'--')+' 24H</div></div>';
 }
 
 
@@ -3241,6 +3247,193 @@ function ciAddToLedger(){
   const score = ciData.score;
   const totalVal = ciData.rows.reduce((s,r)=>s+r.value,0);
   alert(`"${name}" flagged for Rug Ledger submission.\nRisk: ${score}/100 | Tracked: $${fmtCompact(totalVal)}\n\nIn production: auto-submits to YAKK Studios review queue for ledger inclusion after verification.\nGET YAKKED. 😈`);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   YAKK CUSTOM CHART ENGINE
+   Fetches OHLCV candles from DexScreener candles API — no branding, pure data.
+   Renders to HTML5 canvas with full YAKK colour scheme.
+   API: https://io.dexscreener.com/dex/chart/amm/v3/solana/{pair}?res={res}&cb=0
+   Timeframe map matches DexScreener resolution codes.
+═══════════════════════════════════════════════════════════════════════ */
+async function yakkDrawChart(container, token, pairAddr, tf){
+  /* Loading state */
+  container.innerHTML = '<div style="width:100%;height:100%;min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:#050509"><div style="font-family:Space Mono,monospace;font-size:9px;color:#444;letter-spacing:0.15em">LOADING CHART...</div><div style="width:120px;height:2px;background:#1e1e2e;border-radius:2px;overflow:hidden"><div style="height:100%;background:var(--pink);border-radius:2px;animation:chartLoad 1s ease infinite" id="chart-progress"></div></div></div>';
+
+  /* DexScreener resolution codes */
+  const resMap = {'1':'1','5':'5','15':'15','60':'60','240':'240','D':'1D'};
+  const res = resMap[tf] || '15';
+
+  try {
+    const url = `https://io.dexscreener.com/dex/chart/amm/v3/solana/${pairAddr}?res=${res}&cb=0`;
+    const r = await fetch(url, {headers:{'Accept':'application/json'}});
+    if(!r.ok) throw new Error('API ' + r.status);
+    const data = await r.json();
+
+    /* DexScreener candles format: array of [timestamp, open, high, low, close, volume] */
+    const candles = (data.candles || data.bars || data.ohlcv || []).slice(-120); /* last 120 candles */
+    if(!candles.length) throw new Error('No candle data');
+
+    container.innerHTML = '';
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'width:100%;height:100%;min-height:440px;position:relative;background:#050509';
+    container.appendChild(wrapper);
+
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'width:100%;height:100%;display:block';
+    wrapper.appendChild(canvas);
+
+    /* DexScreener candle format varies — normalise */
+    const parsed = candles.map(c => {
+      if(Array.isArray(c)) return {t:c[0],o:c[1],h:c[2],l:c[3],c:c[4],v:c[5]||0};
+      return {t:c.time||c.t||c.timestamp,o:c.open||c.o,h:c.high||c.h,l:c.low||c.l,c:c.close||c.c,v:c.volume||c.v||0};
+    }).filter(c=>c.o&&c.h&&c.l&&c.c);
+
+    if(!parsed.length) throw new Error('Parse failed');
+    yakkRenderCanvas(canvas, parsed, token);
+
+  } catch(err){
+    /* Clean fallback — price card, no external branding */
+    const p = token.price!==null?'$'+fmtP(token.price):'--';
+    const cc = token.change!==null?(token.change>=0?'var(--green)':'var(--red)'):'var(--dim)';
+    const chg = token.change!==null?fmtC(token.change):'--';
+    container.innerHTML = '<div style="width:100%;height:100%;min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#050509">' +
+      '<div style="font-size:32px">' + token.emoji + '</div>' +
+      '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:28px;color:#f5f5f7">' + p + '</div>' +
+      '<div style="font-family:Space Mono,monospace;font-size:11px;color:' + cc + '">' + chg + ' 24H</div>' +
+      '<div style="font-family:Space Mono,monospace;font-size:8px;color:#333;margin-top:4px">' + token.ticker + ' &middot; ' + (token.dex||'Solana') + '</div>' +
+    '</div>';
+  }
+}
+
+function yakkRenderCanvas(canvas, candles, token){
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const W = rect.width  || 800;
+  const H = rect.height || 440;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  /* Colours */
+  const BG    = '#050509';
+  const GRID  = 'rgba(30,30,46,0.8)';
+  const UP    = '#22c55e';
+  const DOWN  = '#ef4444';
+  const TEXT  = '#9a9aa2';
+  const PINK  = '#e0607e';
+  const GOLD  = '#f7c948';
+
+  /* Padding */
+  const PAD_L = 8, PAD_R = 62, PAD_T = 24, PAD_B = 32;
+  const CW = W - PAD_L - PAD_R;
+  const CH = H - PAD_T - PAD_B;
+
+  /* Price range */
+  const highs  = candles.map(c=>c.h);
+  const lows   = candles.map(c=>c.l);
+  const maxP   = Math.max(...highs);
+  const minP   = Math.min(...lows);
+  const range  = maxP - minP || maxP * 0.01;
+  const padded = range * 0.06;
+  const hi = maxP + padded, lo = minP - padded;
+
+  const toY = p => PAD_T + CH - ((p - lo) / (hi - lo)) * CH;
+  const n   = candles.length;
+  const candleW = Math.max(1, CW / n);
+  const bodyW   = Math.max(1, candleW * 0.6);
+
+  /* Background */
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, W, H);
+
+  /* Grid lines */
+  ctx.strokeStyle = GRID;
+  ctx.lineWidth = 1;
+  const gridLines = 5;
+  for(let i=0; i<=gridLines; i++){
+    const y = PAD_T + (CH / gridLines) * i;
+    ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(W - PAD_R, y); ctx.stroke();
+    const price = hi - ((hi - lo) / gridLines) * i;
+    ctx.fillStyle = TEXT;
+    ctx.font = '9px Space Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('$' + fmtP(price), W - PAD_R + 5, y + 3);
+  }
+
+  /* Volume bars (subtle, bottom 20%) */
+  const volH   = CH * 0.18;
+  const maxVol = Math.max(...candles.map(c=>c.v||0)) || 1;
+  candles.forEach((c, i) => {
+    if(!c.v) return;
+    const x  = PAD_L + i * candleW;
+    const vh = (c.v / maxVol) * volH;
+    ctx.fillStyle = c.c >= c.o ? 'rgba(34,197,94,0.18)' : 'rgba(239,68,68,0.18)';
+    ctx.fillRect(x + (candleW - bodyW)/2, PAD_T + CH - vh, bodyW, vh);
+  });
+
+  /* Candles */
+  candles.forEach((c, i) => {
+    const x    = PAD_L + i * candleW;
+    const xMid = x + candleW / 2;
+    const up   = c.c >= c.o;
+    const col  = up ? UP : DOWN;
+    const yO   = toY(c.o), yC = toY(c.c), yH = toY(c.h), yL = toY(c.l);
+
+    /* Wick */
+    ctx.strokeStyle = col; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(xMid, yH); ctx.lineTo(xMid, yL); ctx.stroke();
+
+    /* Body */
+    const bodyTop = Math.min(yO, yC);
+    const bodyHt  = Math.max(1, Math.abs(yO - yC));
+    ctx.fillStyle = col;
+    ctx.fillRect(x + (candleW - bodyW)/2, bodyTop, bodyW, bodyHt);
+  });
+
+  /* Current price line */
+  const lastClose = candles[candles.length-1].c;
+  const priceY    = toY(lastClose);
+  const up        = candles[candles.length-1].c >= candles[candles.length-1].o;
+  ctx.strokeStyle  = up ? UP : DOWN;
+  ctx.lineWidth    = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(PAD_L, priceY); ctx.lineTo(W - PAD_R, priceY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  /* Price label */
+  ctx.fillStyle = up ? UP : DOWN;
+  ctx.font = 'bold 9px Space Mono, monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('$' + fmtP(lastClose), W - PAD_R + 5, priceY + 3);
+
+  /* Token label top-left */
+  ctx.fillStyle = PINK;
+  ctx.font = 'bold 11px Syne, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(token.ticker + '/SOL', PAD_L + 4, PAD_T - 6);
+
+  /* Change label */
+  if(token.change !== null){
+    const chgTxt = fmtC(token.change);
+    const chgCol = token.change >= 0 ? UP : DOWN;
+    ctx.fillStyle = chgCol;
+    ctx.font = '9px Space Mono, monospace';
+    ctx.fillText(chgTxt, PAD_L + 80, PAD_T - 6);
+  }
+
+  /* X-axis time labels */
+  const step = Math.max(1, Math.floor(n / 6));
+  ctx.fillStyle = TEXT; ctx.font = '8px Space Mono, monospace'; ctx.textAlign = 'center';
+  for(let i=0; i<n; i+=step){
+    const c = candles[i];
+    if(!c.t) continue;
+    const d = new Date(c.t < 1e12 ? c.t * 1000 : c.t);
+    const label = d.toLocaleDateString('en',{month:'short',day:'numeric'});
+    const x = PAD_L + i * candleW + candleW/2;
+    ctx.fillText(label, x, H - 8);
+  }
 }
 
 /* ═══ INIT ═══ */
