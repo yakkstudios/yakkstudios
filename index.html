@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.geckoterminal.com https://terminal.jup.ag; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so wss:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YAKK Studios — Pink Yakk Supremacy</title>
@@ -32,25 +32,25 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
 /* ══ SIDEBAR ══ */
 .sb-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
-.sb-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:var(--pink);letter-spacing:0.06em}
+.sb-brand{font-family:Syne,sans-serif;font-weight:800;font-size:14px;color:var(--pink);letter-spacing:0.06em}
 .sb-brand span{color:var(--gold)}
-.sb-sub{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.15em;margin-top:3px}
+.sb-sub{font-family:Space Mono,monospace;font-size:8px;color:var(--dim);letter-spacing:0.15em;margin-top:3px}
 .sb-nav{padding:8px 0;flex:1;overflow-y:auto}
 .sb-nav::-webkit-scrollbar{display:none}
-.nav-section{padding:8px 18px 4px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim)}
-.nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;transition:all 0.15s;font-size:10px;font-family:'Space Mono',monospace;letter-spacing:0.05em;color:var(--muted);border-left:2px solid transparent;user-select:none;white-space:nowrap}
+.nav-section{padding:8px 18px 4px;font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim)}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;transition:all 0.15s;font-size:10px;font-family:Space Mono,monospace;letter-spacing:0.05em;color:var(--muted);border-left:2px solid transparent;user-select:none;white-space:nowrap}
 .nav-item:hover{color:var(--text);background:rgba(224,96,126,0.05)}
 .nav-item.active{color:var(--pink);border-left-color:var(--pink);background:rgba(224,96,126,0.08)}
 .nav-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0}
 .nav-divider{height:1px;background:var(--border);margin:5px 14px}
-.nav-new{font-family:'Space Mono',monospace;font-size:7px;padding:1px 4px;background:rgba(247,201,72,0.12);color:var(--gold);border:1px solid rgba(247,201,72,0.2);border-radius:2px;margin-left:auto}
+.nav-new{font-family:Space Mono,monospace;font-size:7px;padding:1px 4px;background:rgba(247,201,72,0.12);color:var(--gold);border:1px solid rgba(247,201,72,0.2);border-radius:2px;margin-left:auto}
 .sb-footer{padding:12px 18px;border-top:1px solid var(--border);flex-shrink:0}
 .sb-links{display:flex;gap:5px;flex-wrap:wrap}
-.sb-link{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);text-decoration:none;padding:3px 7px;border:1px solid var(--border);border-radius:3px;transition:all 0.15s;letter-spacing:0.08em}
+.sb-link{font-family:Space Mono,monospace;font-size:8px;color:var(--dim);text-decoration:none;padding:3px 7px;border:1px solid var(--border);border-radius:3px;transition:all 0.15s;letter-spacing:0.08em}
 .sb-link:hover{color:var(--pink);border-color:var(--pink)}
 
 /* ══ TICKER ══ */
-.tick-inner{display:inline-block;animation:tickscroll 50s linear infinite;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;color:var(--dim)}
+.tick-inner{display:inline-block;animation:tickscroll 50s linear infinite;font-family:Space Mono,monospace;font-size:9px;letter-spacing:0.08em;color:var(--dim)}
 @keyframes tickscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .tp{color:var(--pink)}.tg{color:var(--gold)}.tgr{color:var(--green)}.tr{color:var(--red)}
 
@@ -59,8 +59,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .page-section.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .sec-pad{padding:44px 48px}
-.sec-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--dim);margin-bottom:10px}
-.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1.1;margin-bottom:6px}
+.sec-eyebrow{font-family:Space Mono,monospace;font-size:9px;letter-spacing:0.3em;color:var(--dim);margin-bottom:10px}
+.sec-title{font-family:Syne,sans-serif;font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1.1;margin-bottom:6px}
 .sec-bar{width:48px;height:3px;background:linear-gradient(90deg,var(--pink),var(--gold));margin-top:12px;margin-bottom:28px}
 
 /* ══ SHARED COMPONENTS ══ */
@@ -69,13 +69,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:5px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.06em;cursor:pointer;transition:all 0.15s;border:none;text-decoration:none;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:5px;font-family:Syne,sans-serif;font-weight:700;font-size:11px;letter-spacing:0.06em;cursor:pointer;transition:all 0.15s;border:none;text-decoration:none;white-space:nowrap}
 .btn-pink{background:var(--pink);color:#fff}.btn-pink:hover{background:#cc4e6c}
 .btn-gold{background:var(--gold);color:#050509}.btn-gold:hover{background:#e5b83d}
 .btn-green{background:#16a34a;color:#fff}.btn-green:hover{background:#15803d}
 .btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border2)}.btn-outline:hover{border-color:var(--pink);color:var(--pink)}
 .btn-ghost{background:rgba(224,96,126,0.08);color:var(--pink);border:1px solid rgba(224,96,126,0.2)}.btn-ghost:hover{background:rgba(224,96,126,0.14)}
-.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.06em}
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:3px;font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.06em}
 .b-yakk{background:rgba(224,96,126,0.15);color:var(--pink);border:1px solid rgba(224,96,126,0.3)}
 .b-blue{background:rgba(96,165,250,0.12);color:var(--blue);border:1px solid rgba(96,165,250,0.25)}
 .b-green{background:rgba(34,197,94,0.12);color:var(--green);border:1px solid rgba(34,197,94,0.25)}
@@ -83,27 +83,27 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .b-dim{background:rgba(255,255,255,0.04);color:var(--dim);border:1px solid var(--border)}
 .b-gold{background:rgba(247,201,72,0.1);color:var(--gold);border:1px solid rgba(247,201,72,0.2)}
 .stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 18px}
-.slbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim);margin-bottom:5px}
-.sval{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--text)}
+.slbl{font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim);margin-bottom:5px}
+.sval{font-family:Syne,sans-serif;font-weight:800;font-size:20px;color:var(--text)}
 .ssub{font-size:11px;color:var(--muted);margin-top:2px}
-.warn-bar{background:rgba(255,212,71,0.05);border:1px solid rgba(255,212,71,0.15);border-radius:6px;padding:9px 13px;font-family:'Space Mono',monospace;font-size:9px;color:var(--yellow);letter-spacing:0.06em;margin-bottom:18px}
+.warn-bar{background:rgba(255,212,71,0.05);border:1px solid rgba(255,212,71,0.15);border-radius:6px;padding:9px 13px;font-family:Space Mono,monospace;font-size:9px;color:var(--yellow);letter-spacing:0.06em;margin-bottom:18px}
 .prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--gold));border-radius:2px}
-.field-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--muted);display:block;margin-bottom:4px;margin-top:12px}
+.field-lbl{font-family:Space Mono,monospace;font-size:9px;letter-spacing:0.12em;color:var(--muted);display:block;margin-bottom:4px;margin-top:12px}
 .field-inp{width:100%;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:8px 12px;color:var(--text);font-size:12px;outline:none;font-family:'DM Sans',sans-serif}
 .field-inp:focus{border-color:var(--pink)}
 .field-sel{width:100%;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:8px 12px;color:var(--text);font-size:12px;outline:none;cursor:pointer;font-family:'DM Sans',sans-serif}
 .cd-block{text-align:center;background:var(--bg4);border:1px solid var(--border);border-radius:6px;padding:9px 13px;min-width:54px}
-.cd-num{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--pink)}
-.cd-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.15em;margin-top:2px}
-.mode-pill{padding:5px 12px;border-radius:4px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;cursor:pointer;background:var(--bg4);border:1px solid var(--border);color:var(--muted);transition:all 0.15s}
+.cd-num{font-family:Syne,sans-serif;font-weight:800;font-size:22px;color:var(--pink)}
+.cd-lbl{font-family:Space Mono,monospace;font-size:8px;color:var(--dim);letter-spacing:0.15em;margin-top:2px}
+.mode-pill{padding:5px 12px;border-radius:4px;font-family:Space Mono,monospace;font-size:9px;letter-spacing:0.08em;cursor:pointer;background:var(--bg4);border:1px solid var(--border);color:var(--muted);transition:all 0.15s}
 .mode-pill.active{background:rgba(224,96,126,0.1);border-color:var(--pink);color:var(--pink)}
 .chat-msgs{height:300px;overflow-y:auto;background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
 .chat-msgs::-webkit-scrollbar{width:3px}
 .chat-msgs::-webkit-scrollbar-thumb{background:var(--border2)}
 .msg-user{align-self:flex-end;background:rgba(224,96,126,0.14);border:1px solid rgba(224,96,126,0.25);border-radius:8px 8px 2px 8px;padding:8px 13px;max-width:75%;font-size:12px}
 .msg-ai{align-self:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px 8px 8px 2px;padding:8px 13px;max-width:80%;font-size:12px;line-height:1.6}
-.ai-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);letter-spacing:0.1em;margin-bottom:5px}
+.ai-lbl{font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.1em;margin-bottom:5px}
 .chat-inp{flex:1;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none}
 .chat-inp:focus{border-color:var(--pink)}
 .raid-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:13px 16px;display:flex;align-items:center;gap:13px;margin-bottom:9px;transition:border-color 0.15s}
@@ -112,20 +112,20 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
 /* ══ TABLE SHARED ══ */
 .tbl{width:100%;border-collapse:collapse;font-size:11px}
-.tbl th{padding:8px 13px;text-align:left;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--dim);background:var(--bg4);border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl th{padding:8px 13px;text-align:left;font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.12em;color:var(--dim);background:var(--bg4);border-bottom:1px solid var(--border);white-space:nowrap}
 .tbl td{padding:10px 13px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:nth-child(odd){background:rgba(255,255,255,0.01)}
-.td-tok{font-family:'Syne',sans-serif;font-weight:700;color:var(--pink)}
-.td-amt{font-family:'Space Mono',monospace;color:var(--red)}
+.td-tok{font-family:Syne,sans-serif;font-weight:700;color:var(--pink)}
+.td-amt{font-family:Space Mono,monospace;color:var(--red)}
 
 /* ══ MJ PROMPTS ══ */
 .mj-card{background:var(--bg4);border:1px dashed var(--border2);border-radius:7px;padding:16px;margin-bottom:10px}
-.mj-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--gold);margin-bottom:8px}
+.mj-lbl{font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.18em;color:var(--gold);margin-bottom:8px}
 .mj-txt{font-size:11px;color:var(--muted);line-height:1.7;font-style:italic}
 
 /* ══ COMING SOON ══ */
-.cs-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(255,212,71,0.07);border:1px solid rgba(255,212,71,0.18);border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;color:var(--yellow);letter-spacing:0.1em}
+.cs-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(255,212,71,0.07);border:1px solid rgba(255,212,71,0.18);border-radius:3px;font-family:Space Mono,monospace;font-size:8px;color:var(--yellow);letter-spacing:0.1em}
 
 /* ══════════════════════════════════════════
    SCREENER-SPECIFIC STYLES (embedded)
@@ -135,7 +135,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .scr-search{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:7px 12px;color:var(--text);font-size:12px;outline:none;font-family:'DM Sans',sans-serif;flex:1;max-width:300px}
 .scr-search:focus{border-color:var(--pink)}
 .scr-nav{display:flex;gap:2px}
-.scr-nb{padding:5px 10px;border-radius:3px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.07em;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
+.scr-nb{padding:5px 10px;border-radius:3px;font-family:Space Mono,monospace;font-size:9px;letter-spacing:0.07em;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
 .scr-nb:hover{color:var(--text);background:rgba(255,255,255,0.05)}
 .scr-nb.active{color:var(--pink);background:rgba(224,96,126,0.1)}
 #scr-body{display:flex;flex:1;overflow:hidden;min-height:0}
@@ -146,10 +146,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .scr-lp-search:focus{border-color:var(--pink)}
 .scr-filters{padding:6px 11px;border-bottom:1px solid var(--border);display:flex;gap:4px;flex-shrink:0;overflow-x:auto}
 .scr-filters::-webkit-scrollbar{display:none}
-.fp{padding:2px 7px;border-radius:9px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);white-space:nowrap;transition:all 0.12s}
+.fp{padding:2px 7px;border-radius:9px;font-family:Space Mono,monospace;font-size:8px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);white-space:nowrap;transition:all 0.12s}
 .fp:hover{border-color:var(--pink);color:var(--pink)}
 .fp.active{background:rgba(224,96,126,0.1);border-color:var(--pink);color:var(--pink)}
-.scr-col-hdr{display:grid;grid-template-columns:22px 1fr 70px 64px;padding:5px 11px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.1em;color:var(--dim);flex-shrink:0;gap:4px}
+.scr-col-hdr{display:grid;grid-template-columns:22px 1fr 70px 64px;padding:5px 11px;border-bottom:1px solid var(--border);font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.1em;color:var(--dim);flex-shrink:0;gap:4px}
 .scr-col-hdr>div:nth-child(3),.scr-col-hdr>div:nth-child(4){text-align:right}
 .scr-list{flex:1;overflow-y:auto}
 .scr-list::-webkit-scrollbar{width:3px}
@@ -157,14 +157,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .tok-row{display:grid;grid-template-columns:22px 1fr 70px 64px;padding:7px 11px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;align-items:center;gap:4px;transition:background 0.1s}
 .tok-row:hover{background:rgba(255,255,255,0.025)}
 .tok-row.sel{background:rgba(224,96,126,0.07);border-left:2px solid var(--pink);padding-left:9px}
-.tok-num{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)}
+.tok-num{font-family:Space Mono,monospace;font-size:8px;color:var(--dim)}
 .tok-imgw{display:flex;align-items:center;gap:6px;min-width:0}
 .tok-img{width:24px;height:24px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;overflow:hidden;flex-shrink:0}
 .tok-img img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.tok-nm{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;display:flex;align-items:center;gap:3px;line-height:1.2;overflow:hidden}
-.tok-sym{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tok-price{font-family:'Space Mono',monospace;font-size:9px;text-align:right}
-.tok-chg{font-family:'Space Mono',monospace;font-size:9px;text-align:right}
+.tok-nm{font-family:Syne,sans-serif;font-weight:700;font-size:11px;display:flex;align-items:center;gap:3px;line-height:1.2;overflow:hidden}
+.tok-sym{font-family:Space Mono,monospace;font-size:8px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tok-price{font-family:Space Mono,monospace;font-size:9px;text-align:right}
+.tok-chg{font-family:Space Mono,monospace;font-size:9px;text-align:right}
 .up{color:var(--green)}.dn{color:var(--red)}
 /* Center chart */
 #scr-center{flex:1;overflow-y:auto;min-width:0;background:var(--bg)}
@@ -174,10 +174,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .ch-hdr{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--bg2)}
 .ch-img{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0}
 .ch-img img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.ch-pair{font-family:'Syne',sans-serif;font-weight:800;font-size:16px}
-.ch-price{font-family:'Space Mono',monospace;font-size:17px;font-weight:700;margin-left:10px}
+.ch-pair{font-family:Syne,sans-serif;font-weight:800;font-size:16px}
+.ch-price{font-family:Space Mono,monospace;font-size:17px;font-weight:700;margin-left:10px}
 .tf-row{display:flex;gap:2px;margin-left:auto}
-.tf{padding:3px 7px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
+.tf{padding:3px 7px;border-radius:3px;font-family:Space Mono,monospace;font-size:8px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
 .tf:hover{color:var(--text);background:rgba(255,255,255,0.05)}
 .tf.active{color:var(--pink);background:rgba(224,96,126,0.1)}
 #chart-wrap{width:100%;height:440px;background:var(--bg);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
@@ -186,16 +186,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .scr-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--border)}
 .scr-stat{padding:9px 13px;border-right:1px solid var(--border)}
 .scr-stat:last-child{border-right:none}
-.scr-slbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.13em;color:var(--dim);margin-bottom:3px}
-.scr-sval{font-family:'Syne',sans-serif;font-weight:700;font-size:14px}
+.scr-slbl{font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.13em;color:var(--dim);margin-bottom:3px}
+.scr-sval{font-family:Syne,sans-serif;font-weight:700;font-size:14px}
 .txns-hdr{padding:7px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;background:var(--bg2)}
-.txn-tab{padding:3px 8px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
+.txn-tab{padding:3px 8px;border-radius:3px;font-family:Space Mono,monospace;font-size:8px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
 .txn-tab:hover{color:var(--text);background:rgba(255,255,255,0.05)}
 .txn-tab.active{color:var(--text);background:rgba(255,255,255,0.07)}
 .txn-tbl{width:100%;border-collapse:collapse;table-layout:fixed}
-.txn-tbl th{padding:6px 12px;text-align:left;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.1em;color:var(--dim);background:var(--bg3);border-bottom:1px solid var(--border);white-space:nowrap}
+.txn-tbl th{padding:6px 12px;text-align:left;font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.1em;color:var(--dim);background:var(--bg3);border-bottom:1px solid var(--border);white-space:nowrap}
 .txn-tbl th:not(:first-child){text-align:right}
-.txn-tbl td{padding:6px 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:10px;font-family:'Space Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.txn-tbl td{padding:6px 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:10px;font-family:Space Mono,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .txn-tbl td:not(:first-child){text-align:right}
 .txn-tbl tr:hover td{background:rgba(255,255,255,0.02)}
 .brow td:nth-child(2){color:var(--green)}.srow td:nth-child(2){color:var(--red)}
@@ -211,8 +211,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .rp-sec{padding:7px 11px;border-bottom:1px solid var(--border)}
 .rp-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:11px}
 .rp-key{color:var(--muted);font-size:10px}
-.rp-val{font-family:'Space Mono',monospace;font-size:9px;display:flex;align-items:center;gap:4px}
-.ca-pill{cursor:pointer;padding:2px 5px;border-radius:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);transition:all 0.12s;user-select:none}
+.rp-val{font-family:Space Mono,monospace;font-size:9px;display:flex;align-items:center;gap:4px}
+.ca-pill{cursor:pointer;padding:2px 5px;border-radius:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);font-family:Space Mono,monospace;font-size:8px;color:var(--dim);transition:all 0.12s;user-select:none}
 .ca-pill:hover{color:var(--gold);border-color:var(--gold)}
 .ca-pill.ok{color:var(--green);border-color:var(--green)}
 .scan-lnk{font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.2);border-radius:3px}
@@ -231,10 +231,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .modal::-webkit-scrollbar-thumb{background:var(--border2)}
 .mstep{display:none}.mstep.active{display:block}
 .step-row{display:flex;align-items:center;gap:4px;margin-bottom:18px}
-.sdot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;flex-shrink:0}
+.sdot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-weight:700;font-size:10px;flex-shrink:0}
 .sdone{background:var(--green);color:#fff}.sact{background:var(--pink);color:#fff}.spend{background:var(--bg3);color:var(--dim);border:1px solid var(--border)}
 .sline{flex:1;height:1px;background:var(--border)}
-.step-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-left:4px;margin-right:6px}
+.step-lbl{font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-left:4px;margin-right:6px}
 .img-circle{width:64px;height:64px;border-radius:50%;background:var(--bg3);border:2px dashed var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;overflow:hidden;transition:border-color 0.15s;flex-shrink:0}
 .img-circle:hover{border-color:var(--pink)}
 .img-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
@@ -257,54 +257,54 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 #term-right::-webkit-scrollbar{width:3px}
 #term-right::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 .term-tok-sel{display:flex;gap:4px;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
-.term-tok-btn{padding:5px 11px;border-radius:4px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.06em;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s;display:flex;align-items:center;gap:5px}
+.term-tok-btn{padding:5px 11px;border-radius:4px;font-family:Space Mono,monospace;font-size:9px;letter-spacing:0.06em;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s;display:flex;align-items:center;gap:5px}
 .term-tok-btn:hover{border-color:var(--pink);color:var(--pink)}
 .term-tok-btn.active{background:rgba(224,96,126,0.1);border-color:var(--pink);color:var(--pink)}
 .term-tok-btn .tt-chg{font-size:8px}
 .swap-panel{padding:12px 14px;border-bottom:1px solid var(--border)}
-.swap-panel-title{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.swap-panel-title{font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
 .swap-dir{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
 .swap-box{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px 12px;transition:border-color 0.12s}
 .swap-box:focus-within{border-color:var(--pink)}
-.swap-box-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:5px;display:flex;justify-content:space-between}
+.swap-box-lbl{font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:5px;display:flex;justify-content:space-between}
 .swap-box-row{display:flex;align-items:center;gap:8px}
-.swap-amt{flex:1;background:transparent;border:none;outline:none;font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--text);width:100%}
+.swap-amt{flex:1;background:transparent;border:none;outline:none;font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);width:100%}
 .swap-amt::placeholder{color:var(--dim)}
-.swap-tok-badge{display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg4);border:1px solid var(--border2);border-radius:5px;flex-shrink:0;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;cursor:pointer}
+.swap-tok-badge{display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg4);border:1px solid var(--border2);border-radius:5px;flex-shrink:0;font-family:Syne,sans-serif;font-weight:700;font-size:11px;cursor:pointer}
 .swap-arrow{text-align:center;cursor:pointer;padding:2px 0;color:var(--muted);font-size:14px;user-select:none;transition:transform 0.2s}
 .swap-arrow:hover{color:var(--pink);transform:rotate(180deg)}
-.swap-usd-val{font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px}
+.swap-usd-val{font-family:Space Mono,monospace;font-size:9px;color:var(--dim);margin-top:4px}
 .quick-amts{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
-.quick-amt{padding:4px 9px;border-radius:4px;font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s}
+.quick-amt{padding:4px 9px;border-radius:4px;font-family:Space Mono,monospace;font-size:9px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s}
 .quick-amt:hover{border-color:var(--gold);color:var(--gold)}
 .slippage-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.slip-opt{padding:3px 8px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s}
+.slip-opt{padding:3px 8px;border-radius:3px;font-family:Space Mono,monospace;font-size:8px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s}
 .slip-opt.active{background:rgba(247,201,72,0.1);border-color:var(--gold);color:var(--gold)}
-.slip-custom{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:3px 6px;font-family:'Space Mono',monospace;font-size:8px;color:var(--text);outline:none;width:52px}
+.slip-custom{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:3px 6px;font-family:Space Mono,monospace;font-size:8px;color:var(--text);outline:none;width:52px}
 .slip-custom:focus{border-color:var(--gold)}
-.swap-btn{width:100%;padding:11px;border-radius:7px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:0.06em;cursor:pointer;border:none;transition:all 0.15s}
+.swap-btn{width:100%;padding:11px;border-radius:7px;font-family:Syne,sans-serif;font-weight:800;font-size:13px;letter-spacing:0.06em;cursor:pointer;border:none;transition:all 0.15s}
 .swap-btn-buy{background:var(--green);color:#fff}.swap-btn-buy:hover{background:#15803d}
 .swap-btn-sell{background:var(--red);color:#fff}.swap-btn-sell:hover{background:#dc2626}
 .swap-btn-connect{background:var(--pink);color:#fff}.swap-btn-connect:hover{background:#cc4e6c}
-.fee-notice{margin-top:8px;padding:6px 9px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:4px;font-family:'Space Mono',monospace;font-size:8px;color:var(--green);line-height:1.5}
+.fee-notice{margin-top:8px;padding:6px 9px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:4px;font-family:Space Mono,monospace;font-size:8px;color:var(--green);line-height:1.5}
 .term-stats{padding:10px 12px;border-bottom:1px solid var(--border)}
 .ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .ts-cell{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 10px}
-.ts-lbl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.12em;color:var(--dim);margin-bottom:3px}
-.ts-val{font-family:'Syne',sans-serif;font-weight:700;font-size:13px}
+.ts-lbl{font-family:Space Mono,monospace;font-size:7px;letter-spacing:0.12em;color:var(--dim);margin-bottom:3px}
+.ts-val{font-family:Syne,sans-serif;font-weight:700;font-size:13px}
 .term-recent{padding:10px 12px}
-.tr-title{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.tr-title{font-family:Syne,sans-serif;font-weight:700;font-size:11px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 .tr-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:10px}
 .tr-row:last-child{border:none}
-.tr-type{font-family:'Syne',sans-serif;font-weight:700;font-size:10px}
+.tr-type{font-family:Syne,sans-serif;font-weight:700;font-size:10px}
 .position-calc{padding:10px 12px;border-top:1px solid var(--border)}
-.pc-title{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;margin-bottom:8px}
+.pc-title{font-family:Syne,sans-serif;font-weight:700;font-size:11px;margin-bottom:8px}
 .pc-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.pc-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);min-width:70px}
-.pc-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:11px;color:var(--text);outline:none;font-family:'Space Mono',monospace}
+.pc-lbl{font-family:Space Mono,monospace;font-size:8px;color:var(--dim);min-width:70px}
+.pc-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:11px;color:var(--text);outline:none;font-family:Space Mono,monospace}
 .pc-inp:focus{border-color:var(--gold)}
 .pc-result{background:rgba(247,201,72,0.05);border:1px solid rgba(247,201,72,0.15);border-radius:5px;padding:8px 10px;font-size:11px;line-height:1.8;margin-top:6px}
-.jup-notice{padding:10px 12px;border-top:1px solid var(--border);font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);line-height:1.7}
+.jup-notice{padding:10px 12px;border-top:1px solid var(--border);font-family:Space Mono,monospace;font-size:8px;color:var(--dim);line-height:1.7}
 
 /* ══ CABAL INVESTIGATOR ══ */
 .ci-drop{border:2px dashed var(--border2);border-radius:8px;padding:28px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg3);position:relative}
@@ -312,15 +312,15 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .ci-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .ci-step{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:18px 22px;margin-bottom:12px}
 .ci-step-hdr{display:flex;align-items:center;gap:10px;margin-bottom:0;cursor:pointer}
-.ci-step-num{width:26px;height:26px;border-radius:50%;background:var(--pink);color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-step-num{width:26px;height:26px;border-radius:50%;background:var(--pink);color:#fff;font-family:Syne,sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ci-step-num.done{background:var(--green)}
 .ci-step-num.idle{background:var(--border2)}
-.ci-step-title{font-family:'Syne',sans-serif;font-weight:700;font-size:12px}
+.ci-step-title{font-family:Syne,sans-serif;font-weight:700;font-size:12px}
 .ci-step-body{margin-top:14px;display:none}
 .ci-step-body.open{display:block}
-.wallet-row{display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--bg4);border-radius:6px;border:1px solid var(--border);margin-bottom:5px;font-size:10px;font-family:'Space Mono',monospace;transition:border-color 0.12s}
+.wallet-row{display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--bg4);border-radius:6px;border:1px solid var(--border);margin-bottom:5px;font-size:10px;font-family:Space Mono,monospace;transition:border-color 0.12s}
 .wallet-row:hover{border-color:var(--pink)}
-.wallet-flag{padding:2px 6px;border-radius:3px;font-size:8px;font-family:'Space Mono',monospace;font-weight:700;letter-spacing:0.08em;flex-shrink:0}
+.wallet-flag{padding:2px 6px;border-radius:3px;font-size:8px;font-family:Space Mono,monospace;font-weight:700;letter-spacing:0.08em;flex-shrink:0}
 .flag-hub{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
 .flag-relay{background:rgba(247,201,72,0.12);color:var(--gold);border:1px solid rgba(247,201,72,0.25)}
 .flag-ghost{background:rgba(168,85,247,0.12);color:#a855f7;border:1px solid rgba(168,85,247,0.25)}
@@ -336,21 +336,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 @keyframes riskPulse{0%,100%{opacity:1}50%{opacity:0.6}}
 .pattern-card{background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:11px 14px;margin-bottom:8px;display:flex;gap:11px;align-items:flex-start}
 .pattern-icon{font-size:18px;flex-shrink:0;margin-top:1px}
-.pattern-title{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;margin-bottom:3px}
+.pattern-title{font-family:Syne,sans-serif;font-weight:700;font-size:11px;margin-bottom:3px}
 .pattern-desc{font-size:10px;color:var(--muted);line-height:1.6}
 .pattern-card.triggered{border-color:rgba(239,68,68,0.35);background:rgba(239,68,68,0.04)}
 .pattern-card.warn{border-color:rgba(247,201,72,0.3);background:rgba(247,201,72,0.03)}
-.report-block{background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:16px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.9;color:var(--muted);white-space:pre-wrap;word-break:break-word;max-height:380px;overflow-y:auto;margin-bottom:10px}
+.report-block{background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:16px;font-family:Space Mono,monospace;font-size:10px;line-height:1.9;color:var(--muted);white-space:pre-wrap;word-break:break-word;max-height:380px;overflow-y:auto;margin-bottom:10px}
 .report-block::-webkit-scrollbar{width:3px}
 .report-block::-webkit-scrollbar-thumb{background:var(--border2)}
 .bubblemaps-frame{width:100%;height:460px;border:none;border-radius:8px;background:var(--bg3)}
-.known-infra-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;color:var(--red);margin:2px}
+.known-infra-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:3px;font-family:Space Mono,monospace;font-size:8px;color:var(--red);margin:2px}
 .ci-tabs{display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:8px}
-.ci-tab{padding:5px 13px;border-radius:4px 4px 0 0;font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s;letter-spacing:0.06em}
+.ci-tab{padding:5px 13px;border-radius:4px 4px 0 0;font-family:Space Mono,monospace;font-size:9px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s;letter-spacing:0.06em}
 .ci-tab:hover{color:var(--text)}
 .ci-tab.active{color:var(--pink);background:rgba(224,96,126,0.08);border-bottom:2px solid var(--pink)}
 .ci-view{display:none}.ci-view.active{display:block}
-.sync-event{background:rgba(239,68,68,0.06);border-left:3px solid var(--red);padding:8px 12px;border-radius:0 5px 5px 0;margin-bottom:6px;font-size:10px;font-family:'Space Mono',monospace}
+.sync-event{background:rgba(239,68,68,0.06);border-left:3px solid var(--red);padding:8px 12px;border-radius:0 5px 5px 0;margin-bottom:6px;font-size:10px;font-family:Space Mono,monospace}
 
 </style>
 </head>
@@ -412,7 +412,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;flex-wrap:wrap;gap:14px">
             <div>
               <div class="sec-eyebrow">01 — THE DEN IS OPEN</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,5vw,66px);line-height:0.95;letter-spacing:-0.02em">
+              <div style="font-family:Syne,sans-serif;font-weight:800;font-size:clamp(36px,5vw,66px);line-height:0.95;letter-spacing:-0.02em">
                 <div>PINK</div><div style="color:var(--pink)">YAKK</div><div style="color:var(--gold)">SUPREMACY</div>
               </div>
               <div class="sec-bar"></div>
@@ -426,13 +426,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div class="grid4" style="margin-bottom:22px">
             <div class="stat-card"><div class="slbl">$YST PRICE</div><div class="sval" style="color:var(--pink)" id="home-price">—</div><div class="ssub" id="home-change">Fetching...</div></div>
             <div class="stat-card"><div class="slbl">EXTRACTED TRACKED</div><div class="sval" style="color:var(--gold)">$3.9B+</div><div class="ssub">11 investigations</div></div>
-            <div class="stat-card"><div class="slbl">NFT COLLECTION</div><div class="sval">3,333</div><div class="ssub">Rebooted drops incoming</div></div>
+            <div class="stat-card"><div class="slbl">NFT COLLECTION</div><div class="sval">3,333</div><div class="ssub">YAKKS drops incoming</div></div>
             <div class="stat-card"><div class="slbl">SCREENER UPDATES</div><div class="sval" id="home-updates">0</div><div class="ssub">$10 SOL per update</div></div>
           </div>
           <div class="grid2" style="margin-bottom:20px">
             <div class="card">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px">GEN III NFT DROP</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px">YAKKS NFT DROP</div>
                 <span class="badge b-gold">3,333 PIECES</span>
               </div>
               <div style="display:flex;gap:9px;margin-bottom:12px">
@@ -442,12 +442,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">SEC</div></div>
               </div>
               <div class="prog-bar"><div class="prog-fill" style="width:38%"></div></div>
-              <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)"><span>PROGRESS</span><span>38%</span></div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:Space Mono,monospace;font-size:8px;color:var(--dim)"><span>PROGRESS</span><span>38%</span></div>
               <p style="font-size:11px;color:var(--muted);margin-top:9px">Drops 1+2 rebooted + 2,333 additional. 33.3% paperhands bitch tax mechanic incoming.</p>
             </div>
             <div class="card">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
-                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px">DAILY YAKKAI PEP</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px">DAILY YAKKAI PEP</div>
                 <span class="badge b-yakk">AI</span>
               </div>
               <div id="pep-text" style="font-size:12px;color:var(--muted);line-height:1.8;min-height:68px;font-style:italic">Loading your daily discipline...</div>
@@ -461,29 +461,29 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:22px">
             <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('screener')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
               <div style="font-size:18px;margin-bottom:7px">📊</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">YAKK SCREENER</div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">YAKK SCREENER</div>
               <div style="font-size:11px;color:var(--muted)">$10 SOL to update your token on-chain. Supports Metaplex MPL + Token-2022 (pump.fun). Trusted projects featured.</div>
               <div style="margin-top:8px"><span class="badge b-green">$10 vs $300+</span></div>
             </div>
             <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('ledger')" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border)'">
               <div style="font-size:18px;margin-bottom:7px">📖</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">RUG LEDGER</div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">RUG LEDGER</div>
               <div style="font-size:11px;color:var(--muted)">$3.9B+ documented. 11 investigations. The same 15 wallets every time.</div>
               <div style="margin-top:8px"><span class="badge b-red">$3.9B+ TRACKED</span></div>
             </div>
             <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('coach')" onmouseover="this.style.borderColor='var(--pink)'" onmouseout="this.style.borderColor='var(--border)'">
               <div style="font-size:18px;margin-bottom:7px">🧠</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">YAKKAI COACH</div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">YAKKAI COACH</div>
               <div style="font-size:11px;color:var(--muted)">Discipline. Raid strategy. Risk management. Your mafia consigliere.</div>
             </div>
             <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('raids')" onmouseover="this.style.borderColor='var(--pink)'" onmouseout="this.style.borderColor='var(--border)'">
               <div style="font-size:18px;margin-bottom:7px">⚔️</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">RAID HUB</div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">RAID HUB</div>
               <div style="font-size:11px;color:var(--muted)">Daily targets. Earn XP. Climb the leaderboard. GET YAKKED.</div>
             </div>
           </div>
           <div style="padding:18px 22px;background:rgba(247,201,72,0.03);border:1px solid rgba(247,201,72,0.1);border-radius:9px">
-            <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.18em;margin-bottom:9px">COMING SOON — YAKK DEFI SUITE</div>
+            <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold);letter-spacing:0.18em;margin-bottom:9px">COMING SOON — YAKK DEFI SUITE</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap">
               <span class="cs-tag">AI TRADING ASSISTANT</span>
               <span class="cs-tag">ADVANCED CHARTS</span>
@@ -502,7 +502,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
         <div id="screener-wrap">
           <!-- Screener toolbar -->
           <div id="scr-toolbar">
-            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:var(--pink);white-space:nowrap">YAKK <span style="color:var(--gold)">SCREENER</span></div>
+            <div style="font-family:Syne,sans-serif;font-weight:800;font-size:14px;color:var(--pink);white-space:nowrap">YAKK <span style="color:var(--gold)">SCREENER</span></div>
             <input class="scr-search" id="scr-top-search" type="text" placeholder="Search token, ticker, CA..." oninput="scrGlobalSearch(this.value)">
             <div class="scr-nav">
               <button class="scr-nb active" onclick="setScrView(this,'chart')">CHART</button>
@@ -510,7 +510,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <button class="scr-nb" onclick="setScrView(this,'gainers')">GAINERS</button>
             </div>
             <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
-              <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 9px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;color:var(--green)">$10 vs $300+ DEX</span>
+              <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 9px;border-radius:3px;font-family:Space Mono,monospace;font-size:8px;color:var(--green)">$10 vs $300+ DEX</span>
               <button class="btn btn-pink" style="font-size:10px;padding:5px 12px" onclick="openUpdateModal()">+ UPDATE TOKEN</button>
               <button class="btn btn-outline" style="font-size:10px;padding:5px 12px" id="scr-wallet-btn" onclick="connectWallet()">🔗 Wallet</button>
             </div>
@@ -545,13 +545,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div>
                     <div class="ch-pair" id="sch-pair" style="color:var(--muted)">Select a token</div>
                     <div style="display:flex;gap:5px;align-items:center;margin-top:2px">
-                      <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">Solana</span>
+                      <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">Solana</span>
                       <span style="color:var(--dim);font-size:8px">·</span>
-                      <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)" id="sch-dex">—</span>
+                      <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)" id="sch-dex">—</span>
                     </div>
                   </div>
                   <div class="ch-price" id="sch-price" style="color:var(--dim);font-size:13px">—</div>
-                  <span style="font-family:'Space Mono',monospace;font-size:9px" id="sch-change">—</span>
+                  <span style="font-family:Space Mono,monospace;font-size:9px" id="sch-change">—</span>
                   <div class="tf-row">
                     <button class="tf" onclick="setTf(this,'1')">1M</button>
                     <button class="tf" onclick="setTf(this,'5')">5M</button>
@@ -564,8 +564,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <div id="chart-wrap">
                   <div id="chart-ph">
                     <div style="font-size:32px">🩷</div>
-                    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--muted)">Select a token to load chart</div>
-                    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">TradingView · Data via Solscan</div>
+                    <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted)">Select a token to load chart</div>
+                    <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim)">TradingView · Data via Solscan</div>
                   </div>
                   <div id="tv-container"></div>
                 </div>
@@ -582,14 +582,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div class="scr-stat"><div class="scr-slbl">HOLDERS</div><div class="scr-sval" id="ss-holders">—</div></div>
                 </div>
                 <div class="txns-hdr">
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px">Transactions</div>
+                  <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px">Transactions</div>
                   <div style="display:flex;gap:2px;margin-left:7px">
                     <button class="txn-tab active" onclick="setTxnTab(this,'all')">All</button>
                     <button class="txn-tab" onclick="setTxnTab(this,'buy')">Buys</button>
                     <button class="txn-tab" onclick="setTxnTab(this,'sell')">Sells</button>
                   </div>
                   <div style="margin-left:auto;display:flex;gap:5px;align-items:center">
-                    <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">Via Solscan</span>
+                    <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">Via Solscan</span>
                     <a id="solscan-link" href="#" target="_blank" class="scan-lnk">SOLSCAN →</a>
                   </div>
                 </div>
@@ -597,7 +597,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <table class="txn-tbl">
                     <colgroup><col style="width:76px"><col style="width:48px"><col style="width:66px"><col style="width:96px"><col style="width:62px"><col style="width:86px"><col style="width:96px"><col style="width:76px"></colgroup>
                     <thead><tr><th>DATE</th><th style="text-align:left">TYPE</th><th>USD</th><th>AMOUNT</th><th>SOL</th><th>PRICE</th><th>MAKER</th><th>TXN</th></tr></thead>
-                    <tbody id="txns-body"><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">Select a token to load transactions</td></tr></tbody>
+                    <tbody id="txns-body"><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--dim);font-family:Space Mono,monospace;font-size:9px">Select a token to load transactions</td></tr></tbody>
                   </table>
                 </div>
               </div>
@@ -605,8 +605,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <!-- NEW PAIRS VIEW -->
               <div class="scr-view" id="scr-view-new">
                 <div style="padding:18px">
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px">New Pairs</div>
-                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:14px">Recently listed via $10 YAKK Screener update</div>
+                  <div style="font-family:Syne,sans-serif;font-weight:700;font-size:15px;margin-bottom:4px">New Pairs</div>
+                  <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);margin-bottom:14px">Recently listed via $10 YAKK Screener update</div>
                   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px" id="new-pairs-grid"></div>
                 </div>
               </div>
@@ -614,8 +614,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <!-- GAINERS VIEW -->
               <div class="scr-view" id="scr-view-gainers">
                 <div style="padding:18px">
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px">Top Gainers — 24H</div>
-                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:14px">Sorted by 24H price change</div>
+                  <div style="font-family:Syne,sans-serif;font-weight:700;font-size:15px;margin-bottom:4px">Top Gainers — 24H</div>
+                  <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);margin-bottom:14px">Sorted by 24H price change</div>
                   <div id="gainers-list"></div>
                 </div>
               </div>
@@ -626,8 +626,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <div id="rp-inner">
                 <div class="rp-empty">
                   <div style="font-size:22px">👈</div>
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--muted)">Select a token</div>
-                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Token details appear here</div>
+                  <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted)">Select a token</div>
+                  <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim)">Token details appear here</div>
                 </div>
               </div>
             </div>
@@ -657,16 +657,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               </div>
               <!-- Price display -->
               <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0">
-                <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px" id="term-price">—</div>
-                <div style="font-family:'Space Mono',monospace;font-size:9px" id="term-change">—</div>
+                <div style="font-family:Syne,sans-serif;font-weight:800;font-size:16px" id="term-price">—</div>
+                <div style="font-family:Space Mono,monospace;font-size:9px" id="term-change">—</div>
               </div>
             </div>
             <div id="term-chart">
               <div id="term-chart-inner" style="width:100%;height:100%">
                 <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px" id="term-chart-ph">
                   <div style="font-size:28px">⚡</div>
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--muted)">Select a token to trade</div>
-                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Chart powered by TradingView</div>
+                  <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;color:var(--muted)">Select a token to trade</div>
+                  <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim)">Chart powered by TradingView</div>
                 </div>
               </div>
             </div>
@@ -680,14 +680,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <div class="swap-panel-title">
                 <span id="swap-title">Swap</span>
                 <div style="display:flex;gap:5px;align-items:center">
-                  <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">via Jupiter</span>
-                  <a href="https://jup.ag" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.15);border-radius:3px">JUP</a>
+                  <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">via Jupiter</span>
+                  <a href="https://jup.ag" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.15);border-radius:3px">JUP</a>
                 </div>
               </div>
 
               <!-- Quick buy amounts -->
               <div class="quick-amts" id="quick-amts">
-                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-right:2px">QUICK:</span>
+                <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-right:2px">QUICK:</span>
                 <button class="quick-amt" onclick="setQuickAmt(0.1)">0.1 SOL</button>
                 <button class="quick-amt" onclick="setQuickAmt(0.5)">0.5 SOL</button>
                 <button class="quick-amt" onclick="setQuickAmt(1)">1 SOL</button>
@@ -717,7 +717,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                     <span id="tok-bal">Balance: —</span>
                   </div>
                   <div class="swap-box-row">
-                    <div style="flex:1;font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--dim)" id="swap-to-amt">0.00</div>
+                    <div style="flex:1;font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--dim)" id="swap-to-amt">0.00</div>
                     <div class="swap-tok-badge" id="swap-to-badge"><span id="term-tok-emoji">🩷</span> <span id="swap-to-sym">YST</span></div>
                   </div>
                   <div class="swap-usd-val" id="swap-to-usd">≈ $0.00</div>
@@ -726,14 +726,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
               <!-- Slippage -->
               <div style="margin-bottom:8px">
-                <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:5px">SLIPPAGE TOLERANCE</div>
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:5px">SLIPPAGE TOLERANCE</div>
                 <div class="slippage-row">
                   <button class="slip-opt" onclick="setSlip(this,0.5)">0.5%</button>
                   <button class="slip-opt active" onclick="setSlip(this,1)">1%</button>
                   <button class="slip-opt" onclick="setSlip(this,2)">2%</button>
                   <button class="slip-opt" onclick="setSlip(this,5)">5%</button>
                   <input class="slip-custom" id="slip-custom" type="number" min="0.1" max="50" step="0.1" placeholder="Custom" oninput="setSlipCustom(this.value)">
-                  <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">%</span>
+                  <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">%</span>
                 </div>
               </div>
 
@@ -766,7 +766,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
             <!-- Token stats -->
             <div class="term-stats">
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:11px;margin-bottom:8px">Token Stats</div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;margin-bottom:8px">Token Stats</div>
               <div class="ts-grid">
                 <div class="ts-cell"><div class="ts-lbl">MARKET CAP</div><div class="ts-val" id="ts-mcap">—</div></div>
                 <div class="ts-cell"><div class="ts-lbl">24H VOLUME</div><div class="ts-val" id="ts-vol">—</div></div>
@@ -783,17 +783,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <div class="pc-row">
                 <span class="pc-lbl">Portfolio</span>
                 <input class="pc-inp" id="pc-portfolio" type="number" placeholder="e.g. 1000" oninput="calcPosition()">
-                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">USD</span>
+                <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">USD</span>
               </div>
               <div class="pc-row">
                 <span class="pc-lbl">Risk %</span>
                 <input class="pc-inp" id="pc-risk" type="number" placeholder="e.g. 2" value="2" oninput="calcPosition()">
-                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">%</span>
+                <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">%</span>
               </div>
               <div class="pc-row">
                 <span class="pc-lbl">Stop loss</span>
                 <input class="pc-inp" id="pc-stop" type="number" placeholder="e.g. 20" value="20" oninput="calcPosition()">
-                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">% below</span>
+                <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">% below</span>
               </div>
               <div class="pc-result" id="pc-result" style="display:none"></div>
             </div>
@@ -802,7 +802,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
             <div class="term-recent">
               <div class="tr-title">
                 <span>Recent Trades</span>
-                <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">via Solscan</span>
+                <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">via Solscan</span>
               </div>
               <div id="term-recent-list"></div>
             </div>
@@ -829,10 +829,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div class="sec-bar"></div>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px">
             <div style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:5px">
-              <span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--green)">UPDATE FEE</span>
-              <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--green)">~0.06 SOL ≈ $10</span>
+              <span style="font-family:Space Mono,monospace;font-size:9px;color:var(--green)">UPDATE FEE</span>
+              <span style="font-family:Syne,sans-serif;font-weight:800;font-size:18px;color:var(--green)">~0.06 SOL ≈ $10</span>
             </div>
-            <span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--dim)">vs DexScreener: $300–500</span>
+            <span style="font-family:Space Mono,monospace;font-size:10px;color:var(--dim)">vs DexScreener: $300–500</span>
           </div>
           <div class="card">
             <div class="step-row">
@@ -844,7 +844,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
             <!-- Steps reuse modal steps logic — button opens modal -->
             <div style="text-align:center;padding:20px">
               <div style="font-size:24px;margin-bottom:10px">⚡</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:8px">Ready to update your token?</div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;margin-bottom:8px">Ready to update your token?</div>
               <p style="font-size:12px;color:var(--muted);margin-bottom:18px;max-width:360px;margin-left:auto;margin-right:auto">Update image, banner, socials and description on-chain. Supports both <strong style="color:var(--pink)">Metaplex MPL</strong> (older SPL tokens) and <strong style="color:var(--blue)">Token-2022</strong> (pump.fun + all new launches). Permanent IPFS storage. Connect your wallet and sign.</p>
               <button class="btn btn-pink" style="font-size:13px;padding:10px 24px" onclick="openUpdateModal()">START UPDATE FLOW →</button>
             </div>
@@ -879,7 +879,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
             <div class="card" style="border-color:rgba(224,96,126,0.2)">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span class="badge b-yakk" style="font-size:10px;padding:4px 10px">YAKK TRUSTED</span></div>
               <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px">Vetted by YAKK Studios + community. Demonstrates on-chain transparency, aligns with anti-greed values, no rug history or cabal wallet patterns.</p>
-              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:7px">REQUIREMENTS</div>
+              <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:7px">REQUIREMENTS</div>
               <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)">
                 <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green)">✓</span> No rug history or cabal wallet patterns</div>
                 <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green)">✓</span> Transparent team / on-chain dev locks</div>
@@ -891,7 +891,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
             <div class="card" style="border-color:rgba(96,165,250,0.2)">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span class="badge b-blue" style="font-size:10px;padding:4px 10px">BLUECHIP</span></div>
               <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px">Established, market-proven Solana ecosystem projects. Widely held, strong track records. Auto-listed — no payment required.</p>
-              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:7px">CRITERIA</div>
+              <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:7px">CRITERIA</div>
               <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)">
                 <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--blue)">✓</span> Large market cap + sustained volume</div>
                 <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--blue)">✓</span> Listed on major CEX or ecosystem standard</div>
@@ -900,10 +900,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               </div>
             </div>
           </div>
-          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">CURRENT TRUSTED PROJECTS</div>
+          <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">CURRENT TRUSTED PROJECTS</div>
           <div id="trusted-project-list" style="margin-bottom:24px"></div>
           <div class="card" style="max-width:540px">
-            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:10px">Apply for Trusted Status</div>
+            <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:10px">Apply for Trusted Status</div>
             <label class="field-lbl" style="margin-top:0">PROJECT + CA</label><input class="field-inp" id="apply-ca" type="text" placeholder="Token name + Solana CA">
             <label class="field-lbl">WHY SHOULD THE YAKK TRUST YOU?</label><textarea class="field-inp" id="apply-why" rows="3" placeholder="On-chain proof, team transparency, no rug history..."></textarea>
             <label class="field-lbl">CONTACT (TG or X)</label><input class="field-inp" id="apply-contact" type="text" placeholder="@handle">
@@ -923,7 +923,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div class="grid2" style="gap:28px">
             <div>
               <div class="card" style="margin-bottom:16px">
-                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">PROMPT BUILDER</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">PROMPT BUILDER</div>
                 <div style="margin-bottom:11px"><label class="field-lbl" style="margin-top:0">🔒 CORE YAKK PREFIX (LOCKED)</label><textarea class="field-inp" rows="2" readonly style="background:rgba(224,96,126,0.04);border-color:rgba(224,96,126,0.15);color:var(--muted);cursor:not-allowed;font-size:11px">Vibrant pink yakk, dense hot-pink fur, silver curved horns, black feet/paws, intense yellow eyes under black mask, gold-dripping tail, fluffy chibi round body, cinematic chiaroscuro lighting —</textarea></div>
                 <div style="margin-bottom:11px"><label class="field-lbl" style="margin-top:0">SCENE</label>
                   <select class="field-sel" id="pb-scene">
@@ -945,7 +945,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <button class="btn btn-pink" style="width:100%;justify-content:center" onclick="buildPrompt()">BUILD PROMPT →</button>
               </div>
               <div id="prompt-out" style="display:none" class="card">
-                <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);letter-spacing:0.15em;margin-bottom:8px">MIDJOURNEY PROMPT — COPY & PASTE</div>
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.15em;margin-bottom:8px">MIDJOURNEY PROMPT — COPY & PASTE</div>
                 <div id="prompt-txt" style="font-size:11px;color:var(--muted);line-height:1.7;font-style:italic;padding:11px;background:var(--bg4);border-radius:5px"></div>
                 <div style="display:flex;gap:7px;margin-top:10px">
                   <button class="btn btn-gold" style="font-size:10px;padding:5px 12px" onclick="copyPrompt()">COPY</button>
@@ -954,7 +954,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               </div>
             </div>
             <div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">MJ REFERENCE PROMPTS</div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">MJ REFERENCE PROMPTS</div>
               <div class="mj-card"><div class="mj-lbl">PROMPT 01 — MOUNTAIN EMPIRE</div><div class="mj-txt">Vibrant pink yakk, gold-dripping tail, standing on Himalayan peak at golden hour, cult army of pink yakks behind holding pink banners, god rays, cinematic fantasy matte painting, 4K --ar 16:9 --style raw</div></div>
               <div class="mj-card"><div class="mj-lbl">PROMPT 02 — MAFIA CONSIGLIERE</div><div class="mj-txt">Pink yakk in Peaky Blinders suit, flat cap, mahogany table, candlelight, ledger books and crypto charts, baroque drama, chiaroscuro oil painting --ar 16:9 --style raw</div></div>
               <div class="mj-card"><div class="mj-lbl">PROMPT 03 — CYBERPUNK OVERLORD</div><div class="mj-txt">Pink yakk as cyberpunk crypto overlord, laser eyes, gold chain, neon alley, holographic charts floating, anime cel-shaded dynamic pose --ar 9:16 --style raw</div></div>
@@ -1007,21 +1007,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div class="sec-bar"></div>
           <div class="grid2" style="gap:28px">
             <div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">DAILY TARGETS <span class="badge b-yakk">LIVE</span></div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">DAILY TARGETS <span class="badge b-yakk">LIVE</span></div>
               <div class="raid-item">
-                <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">@YAKKStudios — Pinned Tweet</div><div style="font-size:11px;color:var(--muted)">Like ★ Retweet ↺ Comment "GET YAKKED 😈"</div></div>
-                <div style="text-align:right"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold)">+10 XP</div><button class="btn btn-ghost" style="font-size:9px;padding:4px 8px;margin-top:4px" onclick="openLink('https://x.com/YAKKStudios')">RAID →</button></div>
+                <div style="flex:1"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">@YAKKStudios — Pinned Tweet</div><div style="font-size:11px;color:var(--muted)">Like ★ Retweet ↺ Comment "GET YAKKED 😈"</div></div>
+                <div style="text-align:right"><div style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold)">+10 XP</div><button class="btn btn-ghost" style="font-size:9px;padding:4px 8px;margin-top:4px" onclick="openLink('https://x.com/YAKKStudios')">RAID →</button></div>
               </div>
               <div class="raid-item">
-                <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">@yakkops2 — Latest Drop</div><div style="font-size:11px;color:var(--muted)">Engage + tag 2 degens + drop 😈</div></div>
-                <div style="text-align:right"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold)">+10 XP</div><button class="btn btn-ghost" style="font-size:9px;padding:4px 8px;margin-top:4px" onclick="openLink('https://x.com/yakkops2')">RAID →</button></div>
+                <div style="flex:1"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">@yakkops2 — Latest Drop</div><div style="font-size:11px;color:var(--muted)">Engage + tag 2 degens + drop 😈</div></div>
+                <div style="text-align:right"><div style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold)">+10 XP</div><button class="btn btn-ghost" style="font-size:9px;padding:4px 8px;margin-top:4px" onclick="openLink('https://x.com/yakkops2')">RAID →</button></div>
               </div>
               <div class="raid-item" style="border-color:rgba(247,201,72,0.2)">
-                <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px;color:var(--gold)">BONUS — RUG EXPOSÉ THREAD</div><div style="font-size:11px;color:var(--muted)">Share the latest investigation. Protect the herd.</div></div>
-                <div style="text-align:right"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold)">+25 XP</div></div>
+                <div style="flex:1"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px;color:var(--gold)">BONUS — RUG EXPOSÉ THREAD</div><div style="font-size:11px;color:var(--muted)">Share the latest investigation. Protect the herd.</div></div>
+                <div style="text-align:right"><div style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold)">+25 XP</div></div>
               </div>
               <div style="margin-top:14px;padding:12px;background:var(--bg4);border-radius:7px;border:1px solid var(--border)">
-                <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:7px">LOG YOUR RAID</div>
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:7px">LOG YOUR RAID</div>
                 <div style="display:flex;gap:7px">
                   <input class="field-inp" id="raid-link" type="text" placeholder="Paste tweet link after raiding..." style="flex:1;padding:7px 10px;font-size:11px">
                   <button class="btn btn-pink" style="font-size:10px;padding:7px 12px" onclick="logRaid()">/DONE</button>
@@ -1029,13 +1029,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               </div>
             </div>
             <div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">LEADERBOARD</div>
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:12px">LEADERBOARD</div>
               <div id="leaderboard"></div>
               <div style="margin-top:14px;padding:12px;background:var(--bg4);border-radius:7px;border:1px solid var(--border)">
-                <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:7px">YOUR STATS</div>
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:7px">YOUR STATS</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                  <div><div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TOTAL XP</div><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--pink)" id="my-xp">0</div></div>
-                  <div><div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">RAIDS</div><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--gold)" id="my-raids">0</div></div>
+                  <div><div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">TOTAL XP</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:18px;color:var(--pink)" id="my-xp">0</div></div>
+                  <div><div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">RAIDS</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:18px;color:var(--gold)" id="my-raids">0</div></div>
                 </div>
               </div>
             </div>
@@ -1054,7 +1054,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div style="max-width:520px">
             <div style="background:linear-gradient(135deg,rgba(224,96,126,0.07),rgba(247,201,72,0.04));border:1px solid rgba(224,96,126,0.18);border-radius:11px;padding:26px;text-align:center;margin-bottom:18px">
               <div style="font-size:28px;margin-bottom:9px">👛</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;margin-bottom:6px">Connect Your Wallet</div>
+              <div style="font-family:Syne,sans-serif;font-weight:800;font-size:16px;margin-bottom:6px">Connect Your Wallet</div>
               <p style="font-size:12px;color:var(--muted);margin-bottom:14px;max-width:300px;margin-left:auto;margin-right:auto">Connect Phantom to verify $YST holdings, check WL eligibility, and pay for screener updates.</p>
               <button class="btn btn-pink" onclick="connectWallet()">CONNECT PHANTOM</button>
             </div>
@@ -1063,12 +1063,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <div class="stat-card"><div class="slbl">WL STATUS</div><div class="sval" style="font-size:14px">PENDING</div><div class="ssub">Stake $YST for WL</div></div>
             </div>
             <div class="card-sm">
-              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.12em;margin-bottom:9px">WL ELIGIBILITY — GEN III DROP</div>
+              <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);letter-spacing:0.12em;margin-bottom:9px">WL ELIGIBILITY — YAKKS</div>
               <div style="display:flex;flex-direction:column;gap:7px">
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg4);border-radius:5px"><span style="font-size:12px">250,000+ $YST Staked on StakePoint</span><span class="badge b-dim">NOT CHECKED</span></div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg4);border-radius:5px"><span style="font-size:12px">Active in Discord/TG Raids</span><span class="badge b-dim">NOT CHECKED</span></div>
               </div>
-              <p style="font-size:11px;color:var(--dim);margin-top:9px">No Genesis NFT required — fresh start for Gen III. 3,333 total pieces. 33.3% paperhands bitch tax mechanic incoming.</p>
+              <p style="font-size:11px;color:var(--dim);margin-top:9px">No Genesis NFT required — fresh start for YAKKS. 3,333 total pieces. 33.3% paperhands bitch tax mechanic incoming.</p>
             </div>
           </div>
         </div>
@@ -1096,7 +1096,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div class="ci-step-num" id="ci-sn1">1</div>
                   <div>
                     <div class="ci-step-title">Target Token</div>
-                    <div style="font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:1px">Enter the CA you're investigating</div>
+                    <div style="font-size:9px;color:var(--dim);font-family:Space Mono,monospace;margin-top:1px">Enter the CA you're investigating</div>
                   </div>
                   <span style="margin-left:auto;color:var(--dim);font-size:11px" id="ci-arrow1">▼</span>
                 </div>
@@ -1107,7 +1107,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <input class="field-inp" id="ci-name" type="text" placeholder="e.g. $BUTTCOIN Investigation #11">
                   <label class="field-lbl">KNOWN INFRASTRUCTURE WALLETS (optional)</label>
                   <textarea class="field-inp" id="ci-infra" rows="2" placeholder="One per line — ARu4n5mF... (OKX relay), etc."></textarea>
-                  <div style="margin-top:10px;font-size:10px;color:var(--dim);font-family:'Space Mono',monospace;line-height:1.7">
+                  <div style="margin-top:10px;font-size:10px;color:var(--dim);font-family:Space Mono,monospace;line-height:1.7">
                     Known YAKK cabal infra:<br>
                     <span class="known-infra-pill">ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn</span>
                     <button onclick="ciAddKnownInfra()" class="btn btn-ghost" style="font-size:8px;padding:3px 8px;margin-top:4px">+ ADD ALL KNOWN</button>
@@ -1122,7 +1122,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div class="ci-step-num idle" id="ci-sn2">2</div>
                   <div>
                     <div class="ci-step-title">Upload Solscan CSV</div>
-                    <div style="font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:1px">Large transfer export from Solscan</div>
+                    <div style="font-size:9px;color:var(--dim);font-family:Space Mono,monospace;margin-top:1px">Large transfer export from Solscan</div>
                   </div>
                   <span style="margin-left:auto;color:var(--dim);font-size:11px" id="ci-arrow2">▶</span>
                 </div>
@@ -1138,10 +1138,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div class="ci-drop" id="ci-drop" ondragover="ciDragOver(event)" ondragleave="ciDragLeave(event)" ondrop="ciDrop(event)">
                     <input type="file" accept=".csv" multiple onchange="ciLoadCSV(this.files)">
                     <div style="font-size:22px;margin-bottom:7px">📂</div>
-                    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">Drop CSV files here</div>
+                    <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">Drop CSV files here</div>
                     <div style="font-size:10px;color:var(--dim)">Solscan transfer exports · Multiple files supported</div>
                   </div>
-                  <div id="ci-csv-status" style="display:none;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;color:var(--green);padding:7px 11px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:5px"></div>
+                  <div id="ci-csv-status" style="display:none;margin-top:10px;font-family:Space Mono,monospace;font-size:9px;color:var(--green);padding:7px 11px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:5px"></div>
                   <button class="btn btn-pink" style="width:100%;justify-content:center;margin-top:10px;display:none" id="ci-step2-btn" onclick="ciRunAnalysis()">🔍 RUN ANALYSIS →</button>
                 </div>
               </div>
@@ -1152,7 +1152,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div class="ci-step-num idle" id="ci-sn3">3</div>
                   <div>
                     <div class="ci-step-title">Bubblemaps</div>
-                    <div style="font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:1px">Visual wallet clustering</div>
+                    <div style="font-size:9px;color:var(--dim);font-family:Space Mono,monospace;margin-top:1px">Visual wallet clustering</div>
                   </div>
                   <span style="margin-left:auto;color:var(--dim);font-size:11px" id="ci-arrow3">▶</span>
                 </div>
@@ -1161,7 +1161,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div id="ci-bubblemap-wrap" style="border-radius:8px;overflow:hidden;border:1px solid var(--border)">
                     <div style="padding:22px;text-align:center;background:var(--bg4)">
                       <div style="font-size:18px;margin-bottom:6px">🫧</div>
-                      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Enter token CA in Step 1 to load Bubblemaps</div>
+                      <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim)">Enter token CA in Step 1 to load Bubblemaps</div>
                     </div>
                   </div>
                 </div>
@@ -1173,7 +1173,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div class="ci-step-num idle" id="ci-sn4">4</div>
                   <div>
                     <div class="ci-step-title">Top 100 Traders</div>
-                    <div style="font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:1px">Paste wallet addresses from DexScreener</div>
+                    <div style="font-size:9px;color:var(--dim);font-family:Space Mono,monospace;margin-top:1px">Paste wallet addresses from DexScreener</div>
                   </div>
                   <span style="margin-left:auto;color:var(--dim);font-size:11px" id="ci-arrow4">▶</span>
                 </div>
@@ -1189,7 +1189,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
             <!-- RIGHT: Analysis results -->
             <div id="ci-right">
-              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+              <div style="font-family:Syne,sans-serif;font-weight:800;font-size:14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
                 ANALYSIS RESULTS
                 <span id="ci-risk-badge" style="display:none" class="badge b-dim">AWAITING DATA</span>
               </div>
@@ -1197,7 +1197,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <!-- Before analysis -->
               <div id="ci-empty-state" style="text-align:center;padding:50px 20px;background:var(--bg3);border:1px solid var(--border);border-radius:9px">
                 <div style="font-size:32px;margin-bottom:12px">🔍</div>
-                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:6px;color:var(--muted)">No investigation loaded</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;margin-bottom:6px;color:var(--muted)">No investigation loaded</div>
                 <div style="font-size:11px;color:var(--dim);max-width:280px;margin:auto;line-height:1.7">Enter a token CA, upload Solscan CSV exports, and run analysis. The engine will detect hub-and-spoke patterns, relay chains, ghost exits, sync dumps and more.</div>
               </div>
 
@@ -1208,16 +1208,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <div class="card" style="margin-bottom:14px;border-color:rgba(239,68,68,0.2)">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
                     <div>
-                      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--dim);margin-bottom:4px">CABAL RISK SCORE</div>
-                      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:36px;line-height:1" id="ci-score">—</div>
+                      <div style="font-family:Space Mono,monospace;font-size:8px;letter-spacing:0.18em;color:var(--dim);margin-bottom:4px">CABAL RISK SCORE</div>
+                      <div style="font-family:Syne,sans-serif;font-weight:800;font-size:36px;line-height:1" id="ci-score">—</div>
                     </div>
                     <div style="text-align:right">
-                      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px" id="ci-verdict">—</div>
-                      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px" id="ci-token-name">—</div>
+                      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px" id="ci-verdict">—</div>
+                      <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);margin-top:3px" id="ci-token-name">—</div>
                     </div>
                   </div>
                   <div class="risk-meter"><div class="risk-fill" id="ci-risk-fill" style="width:0%"></div></div>
-                  <div style="display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:3px">
+                  <div style="display:flex;justify-content:space-between;font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-top:3px">
                     <span>CLEAN</span><span>LOW</span><span>MEDIUM</span><span>HIGH</span><span>EXTREME</span>
                   </div>
                 </div>
@@ -1246,7 +1246,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
                 <!-- Sync events -->
                 <div class="ci-view" id="ci-view-sync">
-                  <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-bottom:10px;letter-spacing:0.1em">TRANSACTIONS WITHIN SAME BLOCK / 60-SECOND WINDOW</div>
+                  <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:10px;letter-spacing:0.1em">TRANSACTIONS WITHIN SAME BLOCK / 60-SECOND WINDOW</div>
                   <div id="ci-sync-list"></div>
                 </div>
 
@@ -1258,7 +1258,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                     <button class="btn btn-ghost" style="font-size:10px;padding:6px 13px" onclick="ciCopyThread()">COPY X THREAD</button>
                     <button class="btn btn-outline" style="font-size:10px;padding:6px 13px" onclick="ciAddToLedger()">+ ADD TO LEDGER</button>
                   </div>
-                  <div id="ci-report-loading" style="display:none;font-family:'Space Mono',monospace;font-size:9px;color:var(--pink);padding:14px;text-align:center">
+                  <div id="ci-report-loading" style="display:none;font-family:Space Mono,monospace;font-size:9px;color:var(--pink);padding:14px;text-align:center">
                     YAKKAI analysing on-chain patterns...
                   </div>
                   <div class="report-block" id="ci-report-text">
@@ -1283,45 +1283,45 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
           <div class="warn-bar">NOT FINANCIAL ADVICE — Structural estimates only. On-chain behavioral analysis. Patterns ≠ proof of intent. DYOR.</div>
           <div style="background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.18);border-radius:9px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:16px">
             <div>
-              <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.18em;margin-bottom:5px">YAKK CABAL CUMULATIVE RUG LEDGER</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:var(--red)">~$1.043B–$3.98B+</div>
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--red);letter-spacing:0.18em;margin-bottom:5px">YAKK CABAL CUMULATIVE RUG LEDGER</div>
+              <div style="font-family:Syne,sans-serif;font-weight:800;font-size:36px;color:var(--red)">~$1.043B–$3.98B+</div>
               <div style="font-size:12px;color:var(--muted);margin-top:5px">12 investigations. The ledger never closes.</div>
             </div>
           </div>
-          <div style="background:rgba(239,68,68,0.03);border:1px solid rgba(239,68,68,0.13);border-radius:7px;padding:10px 14px;margin-bottom:16px;font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.1em">▼ $WAR — 44 DAYS ACTIVE — INFRASTRUCTURE STILL LIVE RIGHT NOW</div>
+          <div style="background:rgba(239,68,68,0.03);border:1px solid rgba(239,68,68,0.13);border-radius:7px;padding:10px 14px;margin-bottom:16px;font-family:Space Mono,monospace;font-size:9px;color:var(--red);letter-spacing:0.1em">▼ $PUNCH — SERIAL EXTRACTOR — DEV DRAINS · LP PULLS · COORDINATED DUMPS</div>
           <div class="grid3" style="margin-bottom:20px">
-            <div class="stat-card"><div class="slbl">TOTAL TRACKED ($BUTTCOIN)</div><div class="sval" style="color:var(--red);font-size:17px">$186,427,275</div></div>
-            <div class="stat-card"><div class="slbl">FFcYgSSg HUB NET</div><div class="sval" style="color:var(--yellow);font-size:17px">$3,014,841</div><div class="ssub">7abmyox relay: $1.53M</div></div>
-            <div class="stat-card"><div class="slbl">NET EXTRACTION FLOOR</div><div class="sval" style="color:var(--pink);font-size:17px">~$5–8M+</div></div>
+            <div class="stat-card"><div class="slbl">TOTAL TRACKED ($PUNCH)</div><div class="sval" style="color:var(--red);font-size:17px">~$3.5–5M+</div></div>
+            <div class="stat-card"><div class="slbl">DEV WALLET DRAINS</div><div class="sval" style="color:var(--yellow);font-size:17px">Multiple</div><div class="ssub">LP pulls confirmed</div></div>
+            <div class="stat-card"><div class="slbl">NET EXTRACTION FLOOR</div><div class="sval" style="color:var(--pink);font-size:17px">~$3.5–5M+</div></div>
           </div>
           <div style="overflow:hidden;border-radius:9px;border:1px solid var(--border)">
             <table class="tbl" style="table-layout:fixed;width:100%">
               <thead><tr><th style="width:32px">#</th><th style="width:120px">TOKEN</th><th style="width:140px">EXTRACTION EST.</th><th>KEY PATTERN</th><th style="width:88px">STATUS</th></tr></thead>
               <tbody>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">01</td><td class="td-tok">$BER</td><td class="td-amt">~$128K</td><td style="font-size:11px;color:var(--muted)">Coordinated dump post-listing</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">02</td><td class="td-tok">$PUNCH</td><td class="td-amt">~$3.5–5M+</td><td style="font-size:11px;color:var(--muted)">Serial extraction — dev wallet drains, LP pulls</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">03</td><td class="td-tok">$JELLYBEAN</td><td class="td-amt">~$600K–1M+</td><td style="font-size:11px;color:var(--muted)">Cabal wallet relay patterns, structured exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">04</td><td class="td-tok">$URANUS</td><td class="td-amt">~$3.5–5M+</td><td style="font-size:11px;color:var(--muted)">Coordinated insider dump, known relay wallets</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">05</td><td class="td-tok">$PIGEON</td><td class="td-amt">~$500K–1M+</td><td style="font-size:11px;color:var(--muted)">LP pulls, ghost wallet exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">06</td><td class="td-tok">$HOOD</td><td class="td-amt">~$12–20M+</td><td style="font-size:11px;color:var(--muted)">Large-scale dev extraction, insider coordination</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">07</td><td class="td-tok">$M3M3</td><td class="td-amt">~$15–25M+</td><td style="font-size:11px;color:var(--muted)">Repeat cabal operators, multi-token ring</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">08</td><td class="td-tok">$TRUMP</td><td class="td-amt">~$1B–3.9B+</td><td style="font-size:11px;color:var(--muted)">Largest documented — political memecoin exploitation</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">09</td><td class="td-tok">$WATDOG</td><td class="td-amt">~$300K–500K+</td><td style="font-size:11px;color:var(--muted)">Wallet convergence, relay exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
-                <tr><td style="color:var(--dim);font-family:'Space Mono',monospace;font-size:9px">10</td><td class="td-tok">$WAR</td><td class="td-amt">~$8–15M+</td><td style="font-size:11px;color:var(--muted)">DSKtmLoz $7.98M silent hold, 44-day live infrastructure</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">01</td><td class="td-tok">$BER</td><td class="td-amt">~$128K</td><td style="font-size:11px;color:var(--muted)">Coordinated dump post-listing</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">02</td><td class="td-tok">$PUNCH</td><td class="td-amt">~$3.5–5M+</td><td style="font-size:11px;color:var(--muted)">Serial extraction — dev wallet drains, LP pulls</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">03</td><td class="td-tok">$JELLYBEAN</td><td class="td-amt">~$600K–1M+</td><td style="font-size:11px;color:var(--muted)">Cabal wallet relay patterns, structured exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">04</td><td class="td-tok">$URANUS</td><td class="td-amt">~$3.5–5M+</td><td style="font-size:11px;color:var(--muted)">Coordinated insider dump, known relay wallets</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">05</td><td class="td-tok">$PIGEON</td><td class="td-amt">~$500K–1M+</td><td style="font-size:11px;color:var(--muted)">LP pulls, ghost wallet exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">06</td><td class="td-tok">$HOOD</td><td class="td-amt">~$12–20M+</td><td style="font-size:11px;color:var(--muted)">Large-scale dev extraction, insider coordination</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">07</td><td class="td-tok">$M3M3</td><td class="td-amt">~$15–25M+</td><td style="font-size:11px;color:var(--muted)">Repeat cabal operators, multi-token ring</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">08</td><td class="td-tok">$TRUMP</td><td class="td-amt">~$1B–3.9B+</td><td style="font-size:11px;color:var(--muted)">Largest documented — political memecoin exploitation</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">09</td><td class="td-tok">$WATDOG</td><td class="td-amt">~$300K–500K+</td><td style="font-size:11px;color:var(--muted)">Wallet convergence, relay exits</td><td><span class="badge b-red">EXPOSED</span></td></tr>
+                <tr><td style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">10</td><td class="td-tok">$WAR</td><td class="td-amt">~$8–15M+</td><td style="font-size:11px;color:var(--muted)">DSKtmLoz $7.98M silent hold, 44-day live infrastructure</td><td><span class="badge b-red">EXPOSED</span></td></tr>
                 <tr style="border-top:2px solid rgba(239,68,68,0.3)">
-                  <td style="color:var(--red);font-family:'Space Mono',monospace;font-size:9px">11</td>
+                  <td style="color:var(--red);font-family:Space Mono,monospace;font-size:9px">11</td>
                   <td class="td-tok" style="color:var(--red)">$BUTTCOIN</td>
                   <td class="td-amt">~$5–8M+ net</td>
                   <td style="font-size:10px;color:var(--muted);line-height:1.5">57-day investigation · FFcYgSSg hub $3.01M net · 7abmyox relay $1.53M · 9GVJockJ convergence $2.38M+ · 6 ghost exits (top 13) · ARu4n5mF: 13,638 txns / $23M routed · <strong style="color:var(--red)">$186,427,275 tracked</strong> · Highest ghost ratio documented</td>
                   <td><span class="badge b-red">EXPOSED</span></td>
                 </tr>
                 <tr style="background:rgba(247,201,72,0.04);border-top:1px solid rgba(247,201,72,0.15)">
-                  <td colspan="2" style="font-family:'Syne',sans-serif;font-weight:800;color:var(--gold);font-size:12px">TOKENS 1–10 SUBTOTAL</td>
+                  <td colspan="2" style="font-family:Syne,sans-serif;font-weight:800;color:var(--gold);font-size:12px">TOKENS 1–10 SUBTOTAL</td>
                   <td class="td-amt">~$1.043B–$3.972B+</td>
                   <td colspan="2" style="font-size:10px;color:var(--dim);font-style:italic">Same 15 wallets. Same relay patterns. Every time.</td>
                 </tr>
                 <tr style="background:rgba(239,68,68,0.06);border-top:2px solid rgba(239,68,68,0.4)">
-                  <td colspan="2" style="font-family:'Syne',sans-serif;font-weight:800;color:var(--red);font-size:13px">RUNNING TOTAL</td>
+                  <td colspan="2" style="font-family:Syne,sans-serif;font-weight:800;color:var(--red);font-size:13px">RUNNING TOTAL</td>
                   <td class="td-amt" style="font-size:17px">~$1.048B–$3.98B+</td>
                   <td colspan="2" style="font-size:11px;color:var(--red);font-style:italic">Eleven tokens. $186M tracked in $BUTTCOIN alone. The same 15 wallets. The ledger never closes.</td>
                 </tr>
@@ -1341,30 +1341,30 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
           <div class="sec-bar"></div>
           <div class="grid2" style="gap:18px;margin-bottom:22px">
             <div class="card" style="border-color:rgba(224,96,126,0.18)">
-              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);letter-spacing:0.18em;margin-bottom:9px">$YST — ANTI-GREED MANIFESTO</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;line-height:1.3;margin-bottom:9px">Pink Yakk Supremacy<br>Full Whitepaper</div>
+              <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.18em;margin-bottom:9px">$YST — ANTI-GREED MANIFESTO</div>
+              <div style="font-family:Syne,sans-serif;font-weight:800;font-size:17px;line-height:1.3;margin-bottom:9px">Pink Yakk Supremacy<br>Full Whitepaper</div>
               <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px">Token economics, YAKK Code, Rug Ledger, roadmap, StakePoint partnership, $YST launch story, 3,333 NFT collection. The full manifesto.</p>
               <button class="btn btn-pink" onclick="openLink('https://yakkstudios.com')">READ WHITEPAPER →</button>
             </div>
             <div class="card">
-              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.18em;margin-bottom:12px">THE YAKK CODE</div>
+              <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);letter-spacing:0.18em;margin-bottom:12px">THE YAKK CODE</div>
               <div id="yakk-code-wp"></div>
             </div>
           </div>
           <div class="grid2" style="gap:14px">
             <div class="card-sm">
-              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:9px">TOKEN FACTS</div>
+              <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:9px">TOKEN FACTS</div>
               <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
                 <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Network</span><span>Solana</span></div>
                 <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Token</span><span style="color:var(--pink)">$YST</span></div>
-                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">CA</span><span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold)">jYwmSav…vREV</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">CA</span><span style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold)">jYwmSav…vREV</span></div>
                 <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Supply</span><span>1,000,000,000</span></div>
                 <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Launch</span><span>Fair — revshare</span></div>
                 <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Dev Fee</span><span>20% locked</span></div>
               </div>
             </div>
             <div class="card-sm">
-              <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:9px">QUICK LINKS</div>
+              <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:9px">QUICK LINKS</div>
               <div style="display:flex;flex-direction:column;gap:6px">
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://yakkstudios.com" target="_blank">YAKK STUDIOS <span>→</span></a>
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://t.me/yakkcult" target="_blank">TELEGRAM CULT <span>→</span></a>
@@ -1380,11 +1380,11 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
       <footer style="border-top:1px solid var(--border);padding:24px 48px;background:var(--bg2)">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px">
           <div>
-            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--pink);margin-bottom:3px">$YAKK STUDIOS</div>
-            <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.12em">EST. 2026 ON SOLANA — GET YAKKED</div>
-            <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:4px;word-break:break-all;max-width:230px">CA: jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV</div>
+            <div style="font-family:Syne,sans-serif;font-weight:800;font-size:15px;color:var(--pink);margin-bottom:3px">$YAKK STUDIOS</div>
+            <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);letter-spacing:0.12em">EST. 2026 ON SOLANA — GET YAKKED</div>
+            <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-top:4px;word-break:break-all;max-width:230px">CA: jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV</div>
           </div>
-          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);line-height:1.9;max-width:340px;text-align:right">
+          <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);line-height:1.9;max-width:340px;text-align:right">
             NOT FINANCIAL ADVICE. $YST is a memecoin on Solana.<br>
             Screener listings ≠ endorsement. DYOR.<br>
             Rug Ledger = community research, not legal accusation.<br>
@@ -1402,8 +1402,8 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
       <div>
-        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px">Update Token Metadata</div>
-        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:2px">On-chain update · $10 in SOL · Metaplex MPL or Token-2022 supported</div>
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:15px">Update Token Metadata</div>
+        <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-top:2px">On-chain update · $10 in SOL · Metaplex MPL or Token-2022 supported</div>
       </div>
       <button class="btn btn-outline" style="padding:3px 8px;font-size:9px" onclick="closeUpdateModal()">✕</button>
     </div>
@@ -1419,17 +1419,17 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
         <label class="field-lbl" style="margin-top:0">TOKEN PROGRAM — SELECT YOURS</label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="prog-selector">
           <div class="prog-opt active" id="prog-mpl" onclick="selectProgram('mpl')" style="cursor:pointer;padding:12px 14px;border-radius:7px;border:2px solid var(--pink);background:rgba(224,96,126,0.08);transition:all 0.15s">
-            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--pink);margin-bottom:5px">Metaplex MPL</div>
-            <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);line-height:1.6">Older SPL tokens launched before mid-2024. Uses Metaplex Token Metadata Program. Update via <code style="color:var(--text)">updateMetadataAccountV2</code>.</div>
-            <div style="margin-top:7px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">Examples: most 2022–2023 tokens, manually created SPL tokens</div>
+            <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--pink);margin-bottom:5px">Metaplex MPL</div>
+            <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--muted);line-height:1.6">Older SPL tokens launched before mid-2024. Uses Metaplex Token Metadata Program. Update via <code style="color:var(--text)">updateMetadataAccountV2</code>.</div>
+            <div style="margin-top:7px;font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">Examples: most 2022–2023 tokens, manually created SPL tokens</div>
           </div>
           <div class="prog-opt" id="prog-t22" onclick="selectProgram('t22')" style="cursor:pointer;padding:12px 14px;border-radius:7px;border:2px solid var(--border2);background:var(--bg3);transition:all 0.15s">
-            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:5px">Token-2022 / SPL-2022</div>
-            <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);line-height:1.6">New standard — pump.fun, most 2024+ tokens. Metadata stored in token extensions via <code style="color:var(--text)">TokenMetadata</code> extension on the mint.</div>
-            <div style="margin-top:7px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">Examples: pump.fun tokens, Moonshot, most new launches</div>
+            <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:5px">Token-2022 / SPL-2022</div>
+            <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--muted);line-height:1.6">New standard — pump.fun, most 2024+ tokens. Metadata stored in token extensions via <code style="color:var(--text)">TokenMetadata</code> extension on the mint.</div>
+            <div style="margin-top:7px;font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">Examples: pump.fun tokens, Moonshot, most new launches</div>
           </div>
         </div>
-        <div id="prog-hint" style="margin-top:8px;padding:8px 11px;background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.15);border-radius:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);line-height:1.6">
+        <div id="prog-hint" style="margin-top:8px;padding:8px 11px;background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.15);border-radius:5px;font-family:Space Mono,monospace;font-size:8px;color:var(--blue);line-height:1.6">
           <strong>Not sure?</strong> Check Solscan → your token page → "Token Program" field. If it says <strong>TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb</strong> it's Token-2022. If it says <strong>TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA</strong> it's MPL/SPL.
         </div>
       </div>
@@ -1453,13 +1453,13 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
           <label class="field-lbl" style="margin-top:0">TOKEN IMAGE</label>
           <div class="img-circle" id="img-circle" onclick="document.getElementById('img-file').click()">📷</div>
           <input type="file" id="img-file" accept="image/*" style="display:none" onchange="prevCircle(this)">
-          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);text-align:center;margin-top:3px">512×512 px</div>
+          <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);text-align:center;margin-top:3px">512×512 px</div>
         </div>
         <div style="flex:1">
           <label class="field-lbl" style="margin-top:0">TOKEN BANNER</label>
-          <div class="banner-drop" id="banner-drop" onclick="document.getElementById('banner-file').click()"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Click to upload banner</div></div>
+          <div class="banner-drop" id="banner-drop" onclick="document.getElementById('banner-file').click()"><div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim)">Click to upload banner</div></div>
           <input type="file" id="banner-file" accept="image/*" style="display:none" onchange="prevBanner(this)">
-          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:3px">1500×500 px recommended</div>
+          <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-top:3px">1500×500 px recommended</div>
         </div>
       </div>
       <div class="info-box info-blue"><strong style="color:var(--blue)">IPFS STORAGE:</strong> Images pinned to <strong style="color:var(--text)">IPFS via NFT.Storage</strong> — permanent, decentralised CID written into your Metaplex metadata on-chain. No centralised servers.</div>
@@ -1499,13 +1499,13 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
         <div style="margin-top:4px;font-size:10px;color:var(--blue)">pump.fun tokens use Token-2022. This is the correct flow for all recent pump.fun launches.</div>
       </div>
       <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:11px;margin-top:11px">
-        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:7px">SUBMISSION SUMMARY</div>
+        <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-bottom:7px">SUBMISSION SUMMARY</div>
         <div id="pay-summary"></div>
         <div style="border-top:1px solid var(--border);margin-top:7px;padding-top:7px;display:flex;justify-content:space-between;align-items:center">
-          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TOTAL FEE</div>
-          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--green)">~0.06 SOL ≈ $10</div>
+          <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">TOTAL FEE</div>
+          <div style="font-family:Syne,sans-serif;font-weight:800;font-size:17px;color:var(--green)">~0.06 SOL ≈ $10</div>
         </div>
-        <div style="margin-top:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TREASURY: <span style="color:var(--gold)">7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB</span></div>
+        <div style="margin-top:5px;font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">TREASURY: <span style="color:var(--gold)">7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB</span></div>
       </div>
       <div class="info-box info-red" style="margin-top:9px"><strong style="color:var(--red)">SCREENING:</strong> All updates reviewed by YAKK Studios. Rugs, cabal-adjacent, and garbage projects removed without refund. The ledger watches everything.</div>
       <div style="margin-top:13px;display:flex;gap:7px;justify-content:flex-end">
@@ -1765,7 +1765,7 @@ function scrRenderList(tokens){
       <div class="tok-price" style="color:${t.price!==null?'var(--text)':'var(--dim)'}">${priceStr}</div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
         <div class="tok-chg ${chgCls}" style="${t.change===null?'color:var(--dim)':''}">${chgStr}</div>
-        <span onclick="event.stopPropagation();termOpenToken(${t.id})" style="font-family:'Space Mono',monospace;font-size:7px;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);cursor:pointer;white-space:nowrap;transition:all 0.12s" onmouseover="this.style.background='rgba(34,197,94,0.2)'" onmouseout="this.style.background='rgba(34,197,94,0.1)'">TRADE</span>
+        <span onclick="event.stopPropagation();termOpenToken(${t.id})" style="font-family:Space Mono,monospace;font-size:7px;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);cursor:pointer;white-space:nowrap;transition:all 0.12s" onmouseover="this.style.background='rgba(34,197,94,0.2)'" onmouseout="this.style.background='rgba(34,197,94,0.1)'">TRADE</span>
       </div>
     </div>`;
   }).join('');
@@ -1848,13 +1848,65 @@ function scrLoadChart(){
   if(!ph || !tv) return;
   ph.style.display = 'none';
   tv.style.display = 'block';
+  tv.innerHTML = '';
 
-  const tvSymMap = { 'SOL':'BINANCE:SOLUSD', 'YST':'METEORA:YSTWSOL', 'SPT':'METEORA:SPTSOL' };
-  const symbol = tvSymMap[t.ticker] || 'METEORA:' + t.ticker + 'SOL';
+  /* TradingView symbol map.
+     SOL: BINANCE:SOLUSD — reliable, high liquidity, fully indexed.
+     YST/SPT: Meteora pairs are NOT indexed on TradingView's data network.
+     Best available fallback: show Solscan pair link + price from our
+     live Solscan API fetch (already running in fetchLiveData).
+     When TradingView Charting Library + Birdeye data feed are wired,
+     these will render full candles from on-chain OHLCV data. */
+  const tvSymMap = { 'SOL': 'BINANCE:SOLUSD' };
+  const symbol = tvSymMap[t.ticker] || null;
+
+  if(!symbol){
+    /* Pair not yet indexed on TradingView — show price card + links */
+    const ap = t.pairs && t.pairs[t._activePair || 0];
+    const pairUrl = ap && ap.solscan ? ap.solscan : 'https://solscan.io/token/' + t.ca;
+    const priceStr = t.price !== null ? '$' + fmtP(t.price) : 'Loading…';
+    const chgStr  = t.change !== null ? fmtC(t.change) : '—';
+    const chgCol  = t.change !== null ? (t.change >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--dim)';
+    tv.innerHTML = `<div style="width:100%;height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg);padding:24px">
+      <div style="font-size:36px">${t.emoji}</div>
+      <div style="text-align:center">
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:28px;color:var(--text)">${priceStr}</div>
+        <div style="font-family:Space Mono,monospace;font-size:12px;color:${chgCol};margin-top:4px">${chgStr} 24H</div>
+        <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);margin-top:8px">${t.ticker} / SOL &middot; ${t.dex || 'Meteora'}</div>
+      </div>
+      <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);text-align:center;max-width:320px;line-height:1.7;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px">
+        ${t.ticker} trades on Meteora &mdash; not yet indexed by TradingView.<br>
+        Full charts incoming with Birdeye API + TradingView Charting Library.
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <a href="${pairUrl}" target="_blank" style="font-family:Space Mono,monospace;font-size:9px;color:var(--blue);text-decoration:none;padding:6px 14px;border:1px solid rgba(96,165,250,0.3);border-radius:4px">VIEW PAIR ON SOLSCAN &rarr;</a>
+        <a href="https://app.meteora.ag/" target="_blank" style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold);text-decoration:none;padding:6px 14px;border:1px solid rgba(247,201,72,0.3);border-radius:4px">TRADE ON METEORA &rarr;</a>
+      </div>
+    </div>`;
+    return;
+  }
+
+  /* SOL — use TradingView Advanced Chart widget.
+     createElement is required — innerHTML script injection never executes. */
   const intervalMap = { '1':'1','5':'5','15':'15','60':'60','240':'240','D':'D' };
   const interval = intervalMap[curTf] || '15';
 
-  const cfg = JSON.stringify({
+  const wrap = document.createElement('div');
+  wrap.className = 'tradingview-widget-container';
+  wrap.style.cssText = 'height:440px;width:100%';
+
+  const widDiv = document.createElement('div');
+  widDiv.className = 'tradingview-widget-container__widget';
+  widDiv.style.cssText = 'height:408px;width:100%';
+  wrap.appendChild(widDiv);
+
+  const copy = document.createElement('div');
+  copy.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="color:#333;font-family:Space Mono,monospace;font-size:8px">Charts by TradingView</span></a>';
+  wrap.appendChild(copy);
+
+  tv.appendChild(wrap);
+
+  const cfg = {
     allow_symbol_change: false, calendar: false, details: false,
     hide_side_toolbar: true, hide_top_toolbar: false, hide_legend: false,
     hide_volume: false, hotlist: false, interval: interval, locale: 'en',
@@ -1862,15 +1914,14 @@ function scrLoadChart(){
     timezone: 'Etc/UTC', backgroundColor: '#050509',
     gridColor: 'rgba(30,30,46,0.8)', withdateranges: true,
     watchlist: [], compareSymbols: [], studies: [], autosize: true,
-  });
+  };
 
-  tv.innerHTML =
-    '<div class="tradingview-widget-container" style="height:440px;width:100%">' +
-    '<div class="tradingview-widget-container__widget" style="height:408px;width:100%"></div>' +
-    '<div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="color:#333;font-family:Space Mono,monospace;font-size:8px">Charts by TradingView</span></a></div>' +
-    '<scr' + 'ipt type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>' +
-    cfg +
-    '</scr' + 'ipt></div>';
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  script.async = true;
+  script.innerHTML = JSON.stringify(cfg);
+  wrap.appendChild(script);
 }
 
 
@@ -1878,11 +1929,11 @@ function showChartFallback(wrap, t, sym, pairUrl){
   const link = pairUrl || `https://solscan.io/token/${t.ca}`;
   wrap.innerHTML = `<div style="width:100%;height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--bg)">
     <div style="font-size:28px">${t.emoji}</div>
-    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--muted)">${sym}</div>
-    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);text-align:center;max-width:300px;line-height:1.6">Chart loading — TradingView indexes new Solana pairs as volume builds.</div>
+    <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;color:var(--muted)">${sym}</div>
+    <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);text-align:center;max-width:300px;line-height:1.6">Chart loading — TradingView indexes new Solana pairs as volume builds.</div>
     <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:4px">
-      <a href="${link}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:4px 10px;border:1px solid rgba(96,165,250,0.2);border-radius:3px">VIEW PAIR ON SOLSCAN →</a>
-      <a href="https://solscan.io/token/${t.ca}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:3px">TOKEN PAGE →</a>
+      <a href="${link}" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:4px 10px;border:1px solid rgba(96,165,250,0.2);border-radius:3px">VIEW PAIR ON SOLSCAN →</a>
+      <a href="https://solscan.io/token/${t.ca}" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:3px">TOKEN PAGE →</a>
     </div>
   </div>`;
 }
@@ -1907,9 +1958,9 @@ function scrRenderTxns(){
     const amt=Math.floor(parseFloat(usd)/parseFloat(t.price)).toLocaleString();
     const addr=randHex(7); const sig=randHex(8);
     const pStr=pv<0.0001?pv.toFixed(9):pv<1?pv.toFixed(6):pv.toFixed(2);
-    return `<tr class="${isBuy?'brow':'srow'}"><td style="color:var(--muted)">${ts}</td><td style="text-align:left;font-family:'Syne',sans-serif;font-weight:700;font-size:10px">${isBuy?'BUY':'SELL'}</td><td>$${usd}</td><td>${amt}</td><td>${sol}</td><td style="color:var(--muted)">$${pStr}</td><td><a class="addr-lnk" href="https://solscan.io/account/${addr}111" target="_blank">${addr}…</a></td><td><a class="addr-lnk" href="https://solscan.io/tx/${sig}111" target="_blank" style="font-size:8px">${sig.slice(0,6)}…</a></td></tr>`;
+    return `<tr class="${isBuy?'brow':'srow'}"><td style="color:var(--muted)">${ts}</td><td style="text-align:left;font-family:Syne,sans-serif;font-weight:700;font-size:10px">${isBuy?'BUY':'SELL'}</td><td>$${usd}</td><td>${amt}</td><td>${sol}</td><td style="color:var(--muted)">$${pStr}</td><td><a class="addr-lnk" href="https://solscan.io/account/${addr}111" target="_blank">${addr}…</a></td><td><a class="addr-lnk" href="https://solscan.io/tx/${sig}111" target="_blank" style="font-size:8px">${sig.slice(0,6)}…</a></td></tr>`;
   }).filter(Boolean).join('');
-  const tb=document.getElementById('txns-body'); if(tb)tb.innerHTML=rows||'<tr><td colspan="8" style="text-align:center;padding:14px;color:var(--dim);font-family:\'Space Mono\',monospace;font-size:9px">No transactions for this filter</td></tr>';
+  const tb=document.getElementById('txns-body'); if(tb)tb.innerHTML=rows||'<tr><td colspan="8" style="text-align:center;padding:14px;color:var(--dim);font-family:Space Mono,monospace;font-size:9px">No transactions for this filter</td></tr>';
 }
 
 function setTxnTab(el,tab){ document.querySelectorAll('.txn-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); txnTab=tab; scrRenderTxns(); }
@@ -1937,11 +1988,11 @@ function scrRenderRightPanel(){
     : `<span style="font-size:9px;color:var(--green)">✓ No Issues</span>`;
 
   const priceDisplay = t.price !== null
-    ? `<span style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--text)">$${fmtP(t.price)}</span>`
-    : `<span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--dim)">Fetching…</span>`;
+    ? `<span style="font-family:Syne,sans-serif;font-weight:800;font-size:16px;color:var(--text)">$${fmtP(t.price)}</span>`
+    : `<span style="font-family:Space Mono,monospace;font-size:10px;color:var(--dim)">Fetching…</span>`;
 
   const chgDisplay = t.change !== null
-    ? `<span style="font-family:'Space Mono',monospace;font-size:10px;color:${t.change>=0?'var(--green)':'var(--red)'}">${fmtC(t.change)} 24H</span>`
+    ? `<span style="font-family:Space Mono,monospace;font-size:10px;color:${t.change>=0?'var(--green)':'var(--red)'}">${fmtC(t.change)} 24H</span>`
     : '';
 
   /* Pairs dropdown — shows all confirmed pools for this token */
@@ -1958,14 +2009,14 @@ function scrRenderRightPanel(){
   document.getElementById('rp-inner').innerHTML = `
     <div class="rp-banner">
       <div style="width:100%;height:100%;background:linear-gradient(${t.bannerGrad});display:flex;align-items:flex-end;padding:5px 9px">
-        <span style="font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:0.12em">${t.name.toUpperCase()}</span>
+        <span style="font-family:Space Mono,monospace;font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:0.12em">${t.name.toUpperCase()}</span>
       </div>
     </div>
     <div class="rp-tok-hdr">
       <div class="rp-timg">${t.emoji}</div>
       <div>
-        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:13px;line-height:1.2">${t.name}</div>
-        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px">${t.ticker} · Solana · ${t.dex}</div>
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:13px;line-height:1.2">${t.name}</div>
+        <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--muted);margin-top:2px">${t.ticker} · Solana · ${t.dex}</div>
       </div>
     </div>
     <div class="rp-sec" style="padding-bottom:10px">
@@ -1995,12 +2046,12 @@ function scrRenderRightPanel(){
     </div>
     <div class="rp-sec">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 7px;background:var(--bg3);border-radius:4px;border:1px solid var(--border)">
-        <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted)">YAKK Cabal Scan</span>
+        <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--muted)">YAKK Cabal Scan</span>
         ${audit}
       </div>
     </div>
     <div class="rp-update">
-      <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--green);letter-spacing:0.08em;margin-bottom:4px">UPDATE METADATA ON-CHAIN</div>
+      <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--green);letter-spacing:0.08em;margin-bottom:4px">UPDATE METADATA ON-CHAIN</div>
       <div style="font-size:10px;color:var(--muted);margin-bottom:7px">MPL + Token-2022 · $10 SOL · vs $300+ DexScreener</div>
       <button class="btn btn-green" style="width:100%;justify-content:center;font-size:9px;padding:6px" onclick="openUpdateModal()">UPDATE THIS TOKEN →</button>
     </div>
@@ -2042,7 +2093,7 @@ function renderNewPairs(){
   g.innerHTML=TOKENS.filter(t=>t.id>=5).map(t=>{
     const up=t.change>=0;
     return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:11px;cursor:pointer;transition:border-color 0.12s" onclick="scrSelectToken(${t.id});setScrView(document.querySelector('.scr-nb'),'chart');document.querySelector('.scr-nb').classList.add('active')" onmouseover="this.style.borderColor='rgba(224,96,126,0.4)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px"><div style="width:28px;height:28px;border-radius:50%;background:var(--bg5);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px">${t.emoji}</div><div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:11px">${t.ticker}</div><div style="font-size:10px;color:var(--muted)">${t.name}</div></div><div style="margin-left:auto;text-align:right"><div style="font-family:'Space Mono',monospace;font-size:9px">$${fmtP(t.price)}</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:${up?'var(--green)':'var(--red)'}">${fmtC(t.change)}</div></div></div>
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px"><div style="width:28px;height:28px;border-radius:50%;background:var(--bg5);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px">${t.emoji}</div><div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px">${t.ticker}</div><div style="font-size:10px;color:var(--muted)">${t.name}</div></div><div style="margin-left:auto;text-align:right"><div style="font-family:Space Mono,monospace;font-size:9px">$${fmtP(t.price)}</div><div style="font-family:Space Mono,monospace;font-size:9px;color:${up?'var(--green)':'var(--red)'}">${fmtC(t.change)}</div></div></div>
       <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted)"><span>Vol:${t.vol}</span><span>MCap:${t.mcap}</span><span>${t.trust==='yakk'?'<span class="badge b-yakk" style="font-size:7px">Y</span>':'<span class="badge b-dim" style="font-size:7px">—</span>'}</span></div>
     </div>`;
   }).join('');
@@ -2052,10 +2103,10 @@ function renderGainers(){
   const el=document.getElementById('gainers-list'); if(!el)return;
   el.innerHTML=[...TOKENS].sort((a,b)=>b.change-a.change).map((t,i)=>`
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer" onclick="scrSelectToken(${t.id})">
-      <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);min-width:20px">${i+1}</div>
+      <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);min-width:20px">${i+1}</div>
       <div style="width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px">${t.emoji}</div>
-      <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px">${t.ticker}</div><div style="font-size:10px;color:var(--muted)">${t.name}</div></div>
-      <div style="text-align:right"><div style="font-family:'Space Mono',monospace;font-size:10px">$${fmtP(t.price)}</div><div style="font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:${t.change>=0?'var(--green)':'var(--red)'}">${fmtC(t.change)}</div></div>
+      <div style="flex:1"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px">${t.ticker}</div><div style="font-size:10px;color:var(--muted)">${t.name}</div></div>
+      <div style="text-align:right"><div style="font-family:Space Mono,monospace;font-size:10px">$${fmtP(t.price)}</div><div style="font-family:Space Mono,monospace;font-size:10px;font-weight:700;color:${t.change>=0?'var(--green)':'var(--red)'}">${fmtC(t.change)}</div></div>
     </div>`).join('');
 }
 
@@ -2065,7 +2116,7 @@ function renderTrustedList(){
   el.innerHTML=TRUSTED_DATA.map(p=>`
     <div style="display:flex;align-items:flex-start;gap:10px;padding:11px 14px;background:var(--bg3);border:1px solid ${p.tier==='yakk'?'rgba(224,96,126,0.18)':'rgba(96,165,250,0.14)'};border-radius:7px;margin-bottom:7px">
       <span class="badge ${p.tier==='yakk'?'b-yakk':'b-blue'}" style="flex-shrink:0;margin-top:1px">${p.tier==='yakk'?'YAKK':'BLUE'}</span>
-      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:2px">${p.name} <span style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted)">${p.ticker}</span></div><div style="font-size:11px;color:var(--muted)">${p.reason}</div></div>
+      <div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:2px">${p.name} <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--muted)">${p.ticker}</span></div><div style="font-size:11px;color:var(--muted)">${p.reason}</div></div>
     </div>`).join('');
 }
 
@@ -2073,7 +2124,7 @@ function renderTrustedList(){
 function buildYakkCode(){
   const rules=[['I','Investigate before you ape. Always.'],['II','Extractors are the enemy — not fellow degens.'],['III','Knowledge is the only real edge.'],['IV','The ledger remembers. We don\'t forgive extraction.'],['V','Raid with purpose. Not noise.'],['VI','Dev fee is locked on-chain. Transparency over promises.'],['VII','Pink Yakk Supremacy is anti-greed. Full stop.'],['VIII','GET YAKKED.']];
   const el=document.getElementById('yakk-code-wp'); if(!el)return;
-  el.innerHTML=rules.map(([r,t])=>`<div style="display:flex;gap:9px;align-items:flex-start;margin-bottom:7px"><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:11px;color:rgba(224,96,126,0.35);min-width:26px">${r}</span><span style="font-size:11px;color:var(--muted);line-height:1.5">${t}</span></div>`).join('');
+  el.innerHTML=rules.map(([r,t])=>`<div style="display:flex;gap:9px;align-items:flex-start;margin-bottom:7px"><span style="font-family:Syne,sans-serif;font-weight:800;font-size:11px;color:rgba(224,96,126,0.35);min-width:26px">${r}</span><span style="font-size:11px;color:var(--muted);line-height:1.5">${t}</span></div>`).join('');
 }
 
 /* ═══ ART LAB ═══ */
@@ -2210,7 +2261,7 @@ function quickMsg(txt){ document.getElementById('chat-in').value=txt; sendChat()
 function buildLeaderboard(){
   const el=document.getElementById('leaderboard'); if(!el)return;
   const data=[{n:'shyfts_',x:1240},{n:'YAKKdegen',x:890},{n:'PinkHooves',x:750},{n:'FlatCapLord',x:620},{n:'MountainMaxi',x:480}];
-  el.innerHTML=data.map((p,i)=>`<div class="lb-row"><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;min-width:24px;color:${i<3?'var(--gold)':'var(--dim)'}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1;font-size:12px">${p.n}</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--gold)">${p.x} XP</div></div>`).join('');
+  el.innerHTML=data.map((p,i)=>`<div class="lb-row"><div style="font-family:Syne,sans-serif;font-weight:800;font-size:14px;min-width:24px;color:${i<3?'var(--gold)':'var(--dim)'}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1;font-size:12px">${p.n}</div><div style="font-family:Space Mono,monospace;font-size:10px;color:var(--gold)">${p.x} XP</div></div>`).join('');
 }
 function logRaid(){ const link=document.getElementById('raid-link').value.trim(); if(!link){alert('Paste your raid link first, degen.');return;} myXP+=10;myRaids++; document.getElementById('my-xp').textContent=myXP; document.getElementById('my-raids').textContent=myRaids; document.getElementById('raid-link').value=''; alert(`+10 XP! Total: ${myXP} XP. ${myRaids} raid(s). GET YAKKED. 😈`); }
 
@@ -2408,13 +2459,57 @@ function termLoadChart(){
   const inner = document.getElementById('term-chart-inner');
   if(!inner) return;
   if(ph) ph.style.display = 'none';
+  inner.innerHTML = '';
 
-  const tvSymMap = { 'SOL':'BINANCE:SOLUSD', 'YST':'METEORA:YSTWSOL', 'SPT':'METEORA:SPTSOL' };
-  const symbol = tvSymMap[t.ticker] || 'METEORA:' + t.ticker + 'SOL';
+  const tvSymMap = { 'SOL': 'BINANCE:SOLUSD' };
+  const symbol = tvSymMap[t.ticker] || null;
+
+  if(!symbol){
+    const ap = t.pairs && t.pairs[0];
+    const pairUrl = ap && ap.solscan ? ap.solscan : `https://solscan.io/token/${t.ca}`;
+    const priceStr = t.price !== null ? `$${fmtP(t.price)}` : 'Loading…';
+    const chgStr  = t.change !== null ? fmtC(t.change) : '—';
+    const chgCol  = t.change !== null ? (t.change >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--dim)';
+    inner.innerHTML = `<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:var(--bg);padding:24px">
+      <div style="font-size:32px">${t.emoji}</div>
+      <div style="text-align:center">
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:26px;color:var(--text)">${priceStr}</div>
+        <div style="font-family:Space Mono,monospace;font-size:11px;color:${chgCol};margin-top:4px">${chgStr} 24H</div>
+        <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-top:6px">${t.ticker} &middot; ${t.dex || 'Meteora'}</div>
+      </div>
+      <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);text-align:center;max-width:280px;line-height:1.7;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:5px">
+        Full charts incoming with Birdeye API + TradingView Charting Library.
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">
+        <a href="${pairUrl}" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:5px 11px;border:1px solid rgba(96,165,250,0.3);border-radius:4px">SOLSCAN PAIR &rarr;</a>
+        <a href="https://app.meteora.ag/" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);text-decoration:none;padding:5px 11px;border:1px solid rgba(247,201,72,0.3);border-radius:4px">TRADE ON METEORA &rarr;</a>
+      </div>
+    </div>`;
+    return;
+  }
+
+  /* SOL — TradingView widget  }
+
+  /* SOL — TradingView widget via createElement (innerHTML scripts don't execute) */
   const intervalMap = { '1':'1','5':'5','15':'15','60':'60','240':'240','D':'D' };
   const interval = intervalMap[termTf] || '15';
 
-  const cfg = JSON.stringify({
+  const wrap = document.createElement('div');
+  wrap.className = 'tradingview-widget-container';
+  wrap.style.cssText = 'height:100%;width:100%';
+
+  const widDiv = document.createElement('div');
+  widDiv.className = 'tradingview-widget-container__widget';
+  widDiv.style.cssText = 'height:calc(100% - 22px);width:100%';
+  wrap.appendChild(widDiv);
+
+  const copy = document.createElement('div');
+  copy.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="color:#333;font-family:Space Mono,monospace;font-size:8px">Charts by TradingView</span></a>';
+  wrap.appendChild(copy);
+
+  inner.appendChild(wrap);
+
+  const cfg = {
     allow_symbol_change: false, calendar: false, details: false,
     hide_side_toolbar: false, hide_top_toolbar: false, hide_legend: false,
     hide_volume: false, hotlist: false, interval: interval, locale: 'en',
@@ -2422,15 +2517,14 @@ function termLoadChart(){
     timezone: 'Etc/UTC', backgroundColor: '#050509',
     gridColor: 'rgba(30,30,46,0.8)', withdateranges: true,
     watchlist: [], compareSymbols: [], studies: [], autosize: true,
-  });
+  };
 
-  inner.innerHTML =
-    '<div class="tradingview-widget-container" style="height:100%;width:100%">' +
-    '<div class="tradingview-widget-container__widget" style="height:calc(100% - 22px);width:100%"></div>' +
-    '<div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="color:#333;font-family:Space Mono,monospace;font-size:8px">Charts by TradingView</span></a></div>' +
-    '<scr' + 'ipt type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>' +
-    cfg +
-    '</scr' + 'ipt></div>';
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  script.async = true;
+  script.innerHTML = JSON.stringify(cfg);
+  wrap.appendChild(script);
 }
 
 
@@ -2628,7 +2722,7 @@ function addTermTrade(txid, amt){
   row.className = 'tr-row';
   row.innerHTML = `<span class="tr-type ${swapFlipped ? 'dn' : 'up'}">${swapFlipped ? 'SELL' : 'BUY'}</span>
     <span style="color:var(--muted)">${amt} ${swapFlipped?t.ticker:'SOL'}</span>
-    <a href="https://solscan.io/tx/${txid}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none">${txid.slice(0,6)}…</a>`;
+    <a href="https://solscan.io/tx/${txid}" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none">${txid.slice(0,6)}…</a>`;
   list.insertBefore(row, list.firstChild);
 }
 
@@ -2636,7 +2730,7 @@ function termRenderRecentTrades(){
   const list = document.getElementById('term-recent-list');
   if(!list || !termToken) return;
   /* Show placeholder while real txn data would load via Solscan API */
-  list.innerHTML = `<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);padding:8px 0">
+  list.innerHTML = `<div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);padding:8px 0">
     Connect wallet to see your trades.<br>
     <a href="https://solscan.io/token/${termToken.ca}" target="_blank" style="color:var(--blue);text-decoration:none">View all trades on Solscan →</a>
   </div>`;
@@ -3055,7 +3149,7 @@ function ciRenderPatterns(){
 function ciRenderSyncEvents(){
   const list = document.getElementById('ci-sync-list');
   if(!ciData.syncEvents.length){
-    list.innerHTML='<div style="font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim);padding:14px">No synchronised events detected in uploaded data.</div>';
+    list.innerHTML='<div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);padding:14px">No synchronised events detected in uploaded data.</div>';
     return;
   }
   list.innerHTML = ciData.syncEvents.map(e=>`
@@ -3087,9 +3181,9 @@ function ciCrossRef(){
   const el = document.getElementById('ci-crossref-result');
   el.style.display='block';
   if(hits.length===0){
-    el.innerHTML='<div style="font-family:\'Space Mono\',monospace;font-size:9px;color:var(--green);padding:8px">✓ No convergence — wallets in top 100 not found in CSV data.</div>';
+    el.innerHTML='<div style="font-family:Space Mono,monospace;font-size:9px;color:var(--green);padding:8px">✓ No convergence — wallets in top 100 not found in CSV data.</div>';
   } else {
-    el.innerHTML=`<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);padding:8px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:5px">
+    el.innerHTML=`<div style="font-family:Space Mono,monospace;font-size:9px;color:var(--red);padding:8px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:5px">
       ⚠ ${hits.length} CONVERGENCE HIT${hits.length>1?'S':''} — wallets appear in BOTH top traders AND CSV transfers:<br><br>
       ${hits.map(w=>`<span style="color:var(--text)">${w}</span>`).join('<br>')}
     </div>`;
