@@ -1667,39 +1667,76 @@ function setupCountdown(){
    Called on load and every 30s.
 ═══════════════════════════════════════════════════════════════════════ */
 async function fetchLiveData(){
+  /* ── DexScreener API — free, no key, 300 req/min ─────────────────────────
+     Endpoints used:
+     Token data:  https://api.dexscreener.com/tokens/v1/solana/{mintCA}
+     Pair data:   https://api.dexscreener.com/latest/dex/pairs/solana/{pairAddr}
+     Each token fetched by BOTH mint CA (for all pairs) AND the specific
+     confirmed pair address (for accurate Meteora pool data).
+     We pick the pair matching our confirmed poolAddr, or the highest-volume
+     pair if not found.
+  ────────────────────────────────────────────────────────────────────────── */
   for(const t of TOKENS){
     try {
-      /* Market data: price, 24h change, volume, market cap */
-      const mkt = await fetch(`https://public-api.solscan.io/market/token/${t.ca}`,
-        {headers:{'Accept':'application/json'}});
-      if(mkt.ok){
-        const d = await mkt.json();
-        if(d && d.priceUsdt !== undefined){
-          const prev = t.price;
-          t.price  = parseFloat(d.priceUsdt) || 0;
-          t.vol    = d.volumeUsdt   ? fmtCompact(parseFloat(d.volumeUsdt))   : t.vol;
-          t.mcap   = d.marketCapFD  ? fmtCompact(parseFloat(d.marketCapFD))  : t.mcap;
-          t.fdv    = d.marketCapFD  ? fmtCompact(parseFloat(d.marketCapFD))  : t.fdv;
-          /* 24h change from priceChange24h field if present */
-          if(d.priceChange24h !== undefined) t.change = parseFloat(d.priceChange24h);
+      /* Fetch by confirmed pair address first — most accurate for Meteora */
+      const ap = t.pairs && t.pairs[t._activePair || 0];
+      const pairAddr = ap && ap.poolAddr ? ap.poolAddr : null;
+
+      let pairData = null;
+
+      if(pairAddr){
+        const res = await fetch(
+          `https://api.dexscreener.com/latest/dex/pairs/solana/${pairAddr}`,
+          { headers: { 'Accept': 'application/json' } }
+        );
+        if(res.ok){
+          const d = await res.json();
+          /* pairs array — take first result */
+          pairData = d.pairs && d.pairs[0] ? d.pairs[0] : null;
         }
       }
-    } catch(e){ /* silently ignore — no data is better than wrong data */ }
 
-    try {
-      /* Holder count */
-      const hld = await fetch(
-        `https://public-api.solscan.io/token/holders?tokenAddress=${t.ca}&limit=1&offset=0`,
-        {headers:{'Accept':'application/json'}});
-      if(hld.ok){
-        const d = await hld.json();
-        if(d && d.total) t.holders = parseInt(d.total);
+      /* Fallback: fetch by token CA and pick best pair */
+      if(!pairData){
+        const res2 = await fetch(
+          `https://api.dexscreener.com/tokens/v1/solana/${t.ca}`,
+          { headers: { 'Accept': 'application/json' } }
+        );
+        if(res2.ok){
+          const d2 = await res2.json();
+          const pairs = d2.pairs || [];
+          /* Pick pair with highest liquidity */
+          pairData = pairs.sort((a,b) =>
+            (b.liquidity?.usd||0) - (a.liquidity?.usd||0)
+          )[0] || null;
+        }
       }
-    } catch(e){}
+
+      if(pairData){
+        t.price   = parseFloat(pairData.priceUsd) || t.price;
+        t.change  = parseFloat(pairData.priceChange?.h24) || t.change;
+        t.vol     = fmtCompact(pairData.volume?.h24 || 0);
+        t.liq     = fmtCompact(pairData.liquidity?.usd || 0);
+        t.mcap    = pairData.marketCap   ? fmtCompact(pairData.marketCap)   : t.mcap;
+        t.fdv     = pairData.fdv         ? fmtCompact(pairData.fdv)         : t.fdv;
+        /* Transaction counts */
+        const txns = pairData.txns?.h24;
+        if(txns){
+          t.buys  = txns.buys  || 0;
+          t.sells = txns.sells || 0;
+          t.txns  = (t.buys + t.sells);
+        }
+        /* Update dex label from API response */
+        if(pairData.dexId) t.dex = pairData.dexId.charAt(0).toUpperCase() + pairData.dexId.slice(1);
+        /* Token image from DexScreener info if available */
+        if(pairData.info?.imageUrl && !t.imgUrl) t.imgUrl = pairData.info.imageUrl;
+      }
+    } catch(e){ /* silent fail — show stale data rather than crash */ }
   }
 
-  /* Re-render list and home stat */
+  /* Re-render everywhere */
   scrRenderList(scrGetFiltered());
+
   const yst = TOKENS[0];
   const hpEl = document.getElementById('home-price');
   const hcEl = document.getElementById('home-change');
@@ -1708,18 +1745,10 @@ async function fetchLiveData(){
     hcEl.textContent = fmtC(yst.change);
     hcEl.style.color = yst.change >= 0 ? 'var(--green)' : 'var(--red)';
   }
-  /* If a token is currently selected, refresh its stats panel too */
   if(selected){ scrUpdateStats(); scrUpdateChartHdr(); }
+  if(termToken){ termUpdateStats(); }
 }
 
-/* Format a large number compactly: 1234567 → $1.23M */
-function fmtCompact(n){
-  if(!n || isNaN(n)) return '—';
-  if(n >= 1e9)  return '$' + (n/1e9).toFixed(2) + 'B';
-  if(n >= 1e6)  return '$' + (n/1e6).toFixed(2) + 'M';
-  if(n >= 1e3)  return '$' + (n/1e3).toFixed(1) + 'K';
-  return '$' + n.toFixed(2);
-}
 
 /* Legacy alias so any remaining fetchPrices() calls still work */
 function fetchPrices(){ fetchLiveData(); }
