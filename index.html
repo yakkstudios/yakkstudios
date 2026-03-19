@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.geckoterminal.com https://terminal.jup.ag; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so wss:; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YAKK Studios — Pink Yakk Supremacy</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -1241,7 +1243,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TOTAL FEE</div>
           <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--green)">~0.06 SOL ≈ $10</div>
         </div>
-        <div style="margin-top:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TREASURY: <span style="color:var(--gold)">ADD_YOUR_TREASURY_WALLET_HERE</span></div>
+        <div style="margin-top:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)">TREASURY: <span style="color:var(--gold)">7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB</span></div>
       </div>
       <div class="info-box info-red" style="margin-top:9px"><strong style="color:var(--red)">SCREENING:</strong> All updates reviewed by YAKK Studios. Rugs, cabal-adjacent, and garbage projects removed without refund. The ledger watches everything.</div>
       <div style="margin-top:13px;display:flex;gap:7px;justify-content:flex-end">
@@ -1612,7 +1614,9 @@ function scrLoadChart(){
     const iframe = document.createElement('iframe');
     iframe.src = gtUrl;
     iframe.style.cssText = 'width:100%;height:380px;border:none;display:block;background:var(--bg)';
-    iframe.allow = 'clipboard-write';
+    iframe.allow = 'clipboard-write; clipboard-read';
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('loading', 'lazy');
     iframe.title = `${t.ticker}/SOL chart`;
     /* Loading placeholder text while iframe loads */
     const loadMsg = document.createElement('div');
@@ -1987,7 +1991,7 @@ function submitOnChain(){
     `4. Metadata JSON (name, symbol, URI, socials) pinned to IPFS\n` +
     `5. ${instrNote}\n` +
     `6. User signs + broadcasts on Solana mainnet\n` +
-    `7. ~0.06 SOL fee sent to YAKK Studios treasury\n` +
+    `7. ~0.06 SOL fee sent to: 7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB\n` +
     `8. Screener polls Solscan — listing live within ~2 minutes\n\n` +
     `SDK: ${sdkNote}\n\n` +
     `GET YAKKED. 😈`
