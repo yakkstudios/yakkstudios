@@ -180,9 +180,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .tf{padding:3px 7px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all 0.12s}
 .tf:hover{color:var(--text);background:rgba(255,255,255,0.05)}
 .tf.active{color:var(--pink);background:rgba(224,96,126,0.1)}
-#chart-wrap{width:100%;height:380px;background:var(--bg);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+#chart-wrap{width:100%;height:440px;background:var(--bg);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
 #chart-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-#tv-container{width:100%;height:100%;display:none}
+#tv-container{width:100%;height:440px;display:none}
 .scr-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--border)}
 .scr-stat{padding:9px 13px;border-right:1px solid var(--border)}
 .scr-stat:last-child{border-right:none}
@@ -517,7 +517,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                   <div id="chart-ph">
                     <div style="font-size:32px">🩷</div>
                     <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--muted)">Select a token to load chart</div>
-                    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">GeckoTerminal · Data via Solscan</div>
+                    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">TradingView · Data via Solscan</div>
                   </div>
                   <div id="tv-container"></div>
                 </div>
@@ -618,7 +618,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px" id="term-chart-ph">
                   <div style="font-size:28px">⚡</div>
                   <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--muted)">Select a token to trade</div>
-                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Chart powered by GeckoTerminal</div>
+                  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Chart powered by TradingView</div>
                 </div>
               </div>
             </div>
@@ -1107,7 +1107,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://yakkstudios.com" target="_blank">YAKK STUDIOS <span>→</span></a>
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://t.me/yakkcult" target="_blank">TELEGRAM CULT <span>→</span></a>
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://stakepoint.app" target="_blank">STAKEPOINT <span>→</span></a>
-                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://www.geckoterminal.com/solana/pools/E3Ervd6Mh3UpaewhTq3jFSLkdFbt5WdWDtuVEWry7mik" target="_blank">BUY $YST <span>→</span></a>
+                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://www.www.geckoterminal.com/solana/pools/E3Ervd6Mh3UpaewhTq3jFSLkdFbt5WdWDtuVEWry7mik" target="_blank">BUY $YST <span>→</span></a>
               </div>
             </div>
           </div>
@@ -1586,63 +1586,39 @@ function scrLoadChart(){
   if(!ph || !tv) return;
   ph.style.display = 'none';
   tv.style.display = 'block';
-  tv.innerHTML = '';
 
-  /* ── CHART ENGINE: GeckoTerminal embed ──────────────────────────────────
-     GeckoTerminal is FREE, works for any Solana pool address directly,
-     supports all timeframes (1m, 5m, 15m, 1h, 4h, 1d), and doesn't
-     require TradingView symbol indexing.
+  const tvSymMap = { 'SOL':'BINANCE:SOLUSD', 'YST':'RAYDIUM:YSTSOL', 'SPT':'RAYDIUM:SPTSOL' };
+  const symbol = tvSymMap[t.ticker] || 'RAYDIUM:' + t.ticker + 'SOL';
+  const intervalMap = { '1':'1','5':'5','15':'15','60':'60','240':'240','D':'D' };
+  const interval = intervalMap[curTf] || '15';
 
-     TradingView free embed only supports up to 30min and only covers
-     tokens TradingView's data partners have indexed — not suitable for
-     new/small Solana pairs. TradingView Charting Library (paid) would be
-     the upgrade path if you want a full native chart in future.
+  const cfg = JSON.stringify({
+    allow_symbol_change: false, calendar: false, details: false,
+    hide_side_toolbar: true, hide_top_toolbar: false, hide_legend: false,
+    hide_volume: false, hotlist: false, interval: interval, locale: 'en',
+    save_image: true, style: '1', symbol: symbol, theme: 'dark',
+    timezone: 'Etc/UTC', backgroundColor: '#050509',
+    gridColor: 'rgba(30,30,46,0.8)', withdateranges: true,
+    watchlist: [], compareSymbols: [], studies: [], autosize: true,
+  });
 
-     GeckoTerminal embed URL format:
-       https://www.geckoterminal.com/solana/pools/{POOL_ADDRESS}/embed?theme=dark
-     Pool address comes from t.pairs[activePairIdx].poolAddr
-  ──────────────────────────────────────────────────────────────────────── */
-  const activePairIdx = t._activePair || 0;
-  const ap = t.pairs && t.pairs[activePairIdx];
-
-  /* Map our timeframe buttons to GeckoTerminal's resolution param */
-  const tfMap = { '1':'1m', '5':'5m', '15':'15m', '60':'1h', '240':'4h', 'D':'1d' };
-  const resolution = tfMap[curTf] || '15m';
-
-  if(ap && ap.poolAddr){
-    const gtUrl = `https://www.geckoterminal.com/solana/pools/${ap.poolAddr}/embed?theme=dark&resolution=${resolution}&charts_type=price&no_scroll=true`;
-    const iframe = document.createElement('iframe');
-    iframe.src = gtUrl;
-    iframe.style.cssText = 'width:100%;height:380px;border:none;display:block;background:var(--bg)';
-    iframe.allow = 'clipboard-write; clipboard-read';
-    iframe.setAttribute('allowfullscreen', '');
-    iframe.setAttribute('loading', 'lazy');
-    iframe.title = `${t.ticker}/SOL chart`;
-    /* Loading placeholder text while iframe loads */
-    const loadMsg = document.createElement('div');
-    loadMsg.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Space Mono,monospace;font-size:10px;color:var(--dim);pointer-events:none';
-    loadMsg.textContent = 'Loading chart…';
-    tv.style.position = 'relative';
-    tv.appendChild(loadMsg);
-    iframe.onload = () => { loadMsg.remove(); };
-    tv.appendChild(iframe);
-  } else {
-    /* Fallback — no pool address confirmed yet */
-    showChartFallback(tv, t, `${t.ticker}/SOL`, ap && ap.solscan ? ap.solscan : `https://solscan.io/token/${t.ca}`);
-  }
+  tv.innerHTML =
+    '<div class="tradingview-widget-container" style="height:440px;width:100%">' +
+    '<div class="tradingview-widget-container__widget" style="height:408px;width:100%"></div>' +
+    '<div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="color:#333;font-family:Space Mono,monospace;font-size:8px">Charts by TradingView</span></a></div>' +
+    '<scr' + 'ipt type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>' +
+    cfg +
+    '</scr' + 'ipt></div>';
 }
+
 
 function showChartFallback(wrap, t, sym, pairUrl){
   const link = pairUrl || `https://solscan.io/token/${t.ca}`;
-  const gtLink = t.pairs && t.pairs[0] && t.pairs[0].poolAddr
-    ? `https://www.geckoterminal.com/solana/pools/${t.pairs[0].poolAddr}`
-    : null;
-  wrap.innerHTML = `<div style="width:100%;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--bg)">
+  wrap.innerHTML = `<div style="width:100%;height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--bg)">
     <div style="font-size:28px">${t.emoji}</div>
     <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--muted)">${sym}</div>
-    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);text-align:center;max-width:300px;line-height:1.6">Pool address not yet confirmed for this token.<br>Add it to the pairs[] array to enable live chart.</div>
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);text-align:center;max-width:300px;line-height:1.6">Chart loading — TradingView indexes new Solana pairs as volume builds.</div>
     <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:4px">
-      ${gtLink ? `<a href="${gtLink}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);text-decoration:none;padding:4px 10px;border:1px solid rgba(247,201,72,0.2);border-radius:3px">VIEW ON GECKOTERMINAL →</a>` : ''}
       <a href="${link}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:4px 10px;border:1px solid rgba(96,165,250,0.2);border-radius:3px">VIEW PAIR ON SOLSCAN →</a>
       <a href="https://solscan.io/token/${t.ca}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:3px">TOKEN PAGE →</a>
     </div>
@@ -2064,17 +2040,32 @@ function termLoadChart(){
   const ph = document.getElementById('term-chart-ph');
   const inner = document.getElementById('term-chart-inner');
   if(!inner) return;
-  const ap = t.pairs && t.pairs[0];
-  const tfMap = {'1':'1m','5':'5m','15':'15m','60':'1h','240':'4h','D':'1d'};
-  const resolution = tfMap[termTf] || '15m';
-  if(ap && ap.poolAddr){
-    if(ph) ph.style.display = 'none';
-    const gtUrl = `https://www.geckoterminal.com/solana/pools/${ap.poolAddr}/embed?theme=dark&resolution=${resolution}&charts_type=price&no_scroll=true`;
-    inner.innerHTML = `<iframe src="${gtUrl}" style="width:100%;height:100%;border:none;display:block" allow="clipboard-write" title="${t.ticker}/SOL"></iframe>`;
-  } else {
-    inner.innerHTML = `<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px"><div style="font-size:24px">${t.emoji}</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)">Pool address not yet confirmed</div><a href="https://solscan.io/token/${t.ca}" target="_blank" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:3px 9px;border:1px solid rgba(96,165,250,0.2);border-radius:3px">VIEW ON SOLSCAN →</a></div>`;
-  }
+  if(ph) ph.style.display = 'none';
+
+  const tvSymMap = { 'SOL':'BINANCE:SOLUSD', 'YST':'RAYDIUM:YSTSOL', 'SPT':'RAYDIUM:SPTSOL' };
+  const symbol = tvSymMap[t.ticker] || 'RAYDIUM:' + t.ticker + 'SOL';
+  const intervalMap = { '1':'1','5':'5','15':'15','60':'60','240':'240','D':'D' };
+  const interval = intervalMap[termTf] || '15';
+
+  const cfg = JSON.stringify({
+    allow_symbol_change: false, calendar: false, details: false,
+    hide_side_toolbar: false, hide_top_toolbar: false, hide_legend: false,
+    hide_volume: false, hotlist: false, interval: interval, locale: 'en',
+    save_image: true, style: '1', symbol: symbol, theme: 'dark',
+    timezone: 'Etc/UTC', backgroundColor: '#050509',
+    gridColor: 'rgba(30,30,46,0.8)', withdateranges: true,
+    watchlist: [], compareSymbols: [], studies: [], autosize: true,
+  });
+
+  inner.innerHTML =
+    '<div class="tradingview-widget-container" style="height:100%;width:100%">' +
+    '<div class="tradingview-widget-container__widget" style="height:calc(100% - 22px);width:100%"></div>' +
+    '<div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="color:#333;font-family:Space Mono,monospace;font-size:8px">Charts by TradingView</span></a></div>' +
+    '<scr' + 'ipt type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>' +
+    cfg +
+    '</scr' + 'ipt></div>';
 }
+
 
 function termSetTf(el, tf){
   document.querySelectorAll('#term-chart-hdr .tf').forEach(b => b.classList.remove('active'));
