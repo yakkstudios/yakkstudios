@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag https://dexscreener.com; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YAKK Studios — Pink Yakk Supremacy</title>
@@ -1730,6 +1730,14 @@ async function fetchLiveData(){
         if(pairData.dexId) t.dex = pairData.dexId.charAt(0).toUpperCase() + pairData.dexId.slice(1);
         /* Token image from DexScreener info if available */
         if(pairData.info?.imageUrl && !t.imgUrl) t.imgUrl = pairData.info.imageUrl;
+        if(pairData.info && !t._socialsFromDex){
+          if(pairData.info.websites) pairData.info.websites.forEach(w=>{if(w.url&&!t.socials.web)t.socials.web=w.url;});
+          if(pairData.info.socials) pairData.info.socials.forEach(s=>{
+            if(s.platform==='twitter'&&!t.socials.x) t.socials.x='https://twitter.com/'+s.handle;
+            if(s.platform==='telegram'&&!t.socials.tg) t.socials.tg='https://t.me/'+s.handle;
+          });
+          t._socialsFromDex=true;
+        }
       }
     } catch(e){ /* silent fail — show stale data rather than crash */ }
   }
@@ -1874,83 +1882,35 @@ function scrLoadChart(){
   const t = selected;
   const ph = document.getElementById('chart-ph');
   const tv = document.getElementById('tv-container');
-  if(!ph || !tv) return;
-  ph.style.display = 'none';
-  tv.style.display = 'block';
-  tv.innerHTML = '';
-
-  /* TradingView symbol map.
-     SOL: BINANCE:SOLUSD — reliable, high liquidity, fully indexed.
-     YST/SPT: Meteora pairs are NOT indexed on TradingView's data network.
-     Best available fallback: show Solscan pair link + price from our
-     live Solscan API fetch (already running in fetchLiveData).
-     When TradingView Charting Library + Birdeye data feed are wired,
-     these will render full candles from on-chain OHLCV data. */
-  const tvSymMap = { 'SOL': 'BINANCE:SOLUSD' };
-  const symbol = tvSymMap[t.ticker] || null;
-
-  if(!symbol){
-    /* Pair not yet indexed on TradingView — show price card + links */
-    const ap = t.pairs && t.pairs[t._activePair || 0];
-    const pairUrl = ap && ap.solscan ? ap.solscan : 'https://solscan.io/token/' + t.ca;
-    const priceStr = t.price !== null ? '$' + fmtP(t.price) : 'Loading…';
-    const chgStr  = t.change !== null ? fmtC(t.change) : '—';
-    const chgCol  = t.change !== null ? (t.change >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--dim)';
-    tv.innerHTML = `<div style="width:100%;height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg);padding:24px">
-      <div style="font-size:36px">${t.emoji}</div>
-      <div style="text-align:center">
-        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:28px;color:var(--text)">${priceStr}</div>
-        <div style="font-family:Space Mono,monospace;font-size:12px;color:${chgCol};margin-top:4px">${chgStr} 24H</div>
-        <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);margin-top:8px">${t.ticker} / SOL &middot; ${t.dex || 'Meteora'}</div>
-      </div>
-      <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);text-align:center;max-width:320px;line-height:1.7;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px">
-        ${t.ticker} trades on Meteora &mdash; not yet indexed by TradingView.<br>
-        Full charts incoming with Birdeye API + TradingView Charting Library.
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-        <a href="${pairUrl}" target="_blank" style="font-family:Space Mono,monospace;font-size:9px;color:var(--blue);text-decoration:none;padding:6px 14px;border:1px solid rgba(96,165,250,0.3);border-radius:4px">VIEW PAIR ON SOLSCAN &rarr;</a>
-        <a href="https://app.meteora.ag/" target="_blank" style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold);text-decoration:none;padding:6px 14px;border:1px solid rgba(247,201,72,0.3);border-radius:4px">TRADE ON METEORA &rarr;</a>
-      </div>
-    </div>`;
-    return;
+  if(!ph||!tv) return;
+  ph.style.display='none'; tv.style.display='block'; tv.innerHTML='';
+  const ap = t.pairs && t.pairs[t._activePair||0];
+  const pairAddr = ap && ap.poolAddr ? ap.poolAddr : null;
+  if(t.ticker==='SOL'){
+    const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
+    const cont=document.createElement('div');
+    cont.className='tradingview-widget-container'; cont.style.cssText='height:440px;width:100%';
+    const wd=document.createElement('div');
+    wd.className='tradingview-widget-container__widget'; wd.style.cssText='height:408px;width:100%';
+    cont.appendChild(wd);
+    const copy=document.createElement('div');
+    copy.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="font-family:Space Mono,monospace;font-size:8px;color:#333">Charts by TradingView</span></a>';
+    cont.appendChild(copy); tv.appendChild(cont);
+    const sc=document.createElement('script');
+    sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; sc.async=true;
+    sc.textContent=JSON.stringify({symbol:'BINANCE:SOLUSD',interval:iMap[curTf]||'15',theme:'dark',style:'1',locale:'en',backgroundColor:'#050509',gridColor:'rgba(30,30,46,0.8)',hide_side_toolbar:true,withdateranges:true,hide_volume:false,save_image:true,autosize:true});
+    cont.appendChild(sc); return;
   }
-
-  /* SOL — use TradingView Advanced Chart widget.
-     createElement is required — innerHTML script injection never executes. */
-  const intervalMap = { '1':'1','5':'5','15':'15','60':'60','240':'240','D':'D' };
-  const interval = intervalMap[curTf] || '15';
-
-  const wrap = document.createElement('div');
-  wrap.className = 'tradingview-widget-container';
-  wrap.style.cssText = 'height:440px;width:100%';
-
-  const widDiv = document.createElement('div');
-  widDiv.className = 'tradingview-widget-container__widget';
-  widDiv.style.cssText = 'height:408px;width:100%';
-  wrap.appendChild(widDiv);
-
-  const copy = document.createElement('div');
-  copy.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="color:#333;font-family:Space Mono,monospace;font-size:8px">Charts by TradingView</span></a>';
-  wrap.appendChild(copy);
-
-  tv.appendChild(wrap);
-
-  const cfg = {
-    allow_symbol_change: false, calendar: false, details: false,
-    hide_side_toolbar: true, hide_top_toolbar: false, hide_legend: false,
-    hide_volume: false, hotlist: false, interval: interval, locale: 'en',
-    save_image: true, style: '1', symbol: symbol, theme: 'dark',
-    timezone: 'Etc/UTC', backgroundColor: '#050509',
-    gridColor: 'rgba(30,30,46,0.8)', withdateranges: true,
-    watchlist: [], compareSymbols: [], studies: [], autosize: true,
-  };
-
-  const script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-  script.async = true;
-  script.innerHTML = JSON.stringify(cfg);
-  wrap.appendChild(script);
+  if(pairAddr){
+    const iframe=document.createElement('iframe');
+    iframe.src='https://dexscreener.com/solana/'+pairAddr+'?embed=1&theme=dark&info=0';
+    iframe.style.cssText='width:100%;height:440px;border:none;display:block;background:var(--bg)';
+    iframe.allow='clipboard-write'; iframe.loading='lazy'; iframe.title=t.ticker+' chart';
+    tv.appendChild(iframe); return;
+  }
+  const p=t.price!==null?'$'+fmtP(t.price):'Loading...';
+  const cc=t.change!==null?(t.change>=0?'var(--green)':'var(--red)'):'var(--dim)';
+  tv.innerHTML='<div style="width:100%;height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:var(--bg)"><div style="font-size:32px">'+t.emoji+'</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:28px;color:var(--text)">'+p+'</div><div style="font-family:Space Mono,monospace;font-size:11px;color:'+cc+'">'+(t.change!==null?fmtC(t.change):'--')+' 24H</div><a href="https://solscan.io/token/'+t.ca+'" target="_blank" style="font-family:Space Mono,monospace;font-size:9px;color:var(--blue);text-decoration:none;padding:5px 12px;border:1px solid rgba(96,165,250,0.3);border-radius:4px">VIEW ON SOLSCAN</a></div>';
 }
 
 
@@ -2482,78 +2442,34 @@ function termSelectToken(id){
 }
 
 function termLoadChart(){
-  const t = termToken;
-  if(!t) return;
-  const ph = document.getElementById('term-chart-ph');
-  const inner = document.getElementById('term-chart-inner');
-  if(!inner) return;
-  if(ph) ph.style.display = 'none';
-  inner.innerHTML = '';
-
-  const tvSymMap = { 'SOL': 'BINANCE:SOLUSD' };
-  const symbol = tvSymMap[t.ticker] || null;
-
-  if(!symbol){
-    const ap = t.pairs && t.pairs[0];
-    const pairUrl = ap && ap.solscan ? ap.solscan : `https://solscan.io/token/${t.ca}`;
-    const priceStr = t.price !== null ? `$${fmtP(t.price)}` : 'Loading…';
-    const chgStr  = t.change !== null ? fmtC(t.change) : '—';
-    const chgCol  = t.change !== null ? (t.change >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--dim)';
-    inner.innerHTML = `<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:var(--bg);padding:24px">
-      <div style="font-size:32px">${t.emoji}</div>
-      <div style="text-align:center">
-        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:26px;color:var(--text)">${priceStr}</div>
-        <div style="font-family:Space Mono,monospace;font-size:11px;color:${chgCol};margin-top:4px">${chgStr} 24H</div>
-        <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-top:6px">${t.ticker} &middot; ${t.dex || 'Meteora'}</div>
-      </div>
-      <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);text-align:center;max-width:280px;line-height:1.7;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:5px">
-        Full charts incoming with Birdeye API + TradingView Charting Library.
-      </div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">
-        <a href="${pairUrl}" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:5px 11px;border:1px solid rgba(96,165,250,0.3);border-radius:4px">SOLSCAN PAIR &rarr;</a>
-        <a href="https://app.meteora.ag/" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);text-decoration:none;padding:5px 11px;border:1px solid rgba(247,201,72,0.3);border-radius:4px">TRADE ON METEORA &rarr;</a>
-      </div>
-    </div>`;
+  const t=termToken; if(!t) return;
+  const ph=document.getElementById('term-chart-ph');
+  const inner=document.getElementById('term-chart-inner');
+  if(!inner) return; if(ph) ph.style.display='none'; inner.innerHTML='';
+  const ap=t.pairs&&t.pairs[0];
+  const pairAddr=ap&&ap.poolAddr?ap.poolAddr:null;
+  if(t.ticker==='SOL'){
+    const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
+    const cont=document.createElement('div');
+    cont.className='tradingview-widget-container'; cont.style.cssText='height:100%;width:100%';
+    const wd=document.createElement('div');
+    wd.className='tradingview-widget-container__widget'; wd.style.cssText='height:calc(100% - 22px);width:100%';
+    cont.appendChild(wd);
+    const copy=document.createElement('div');
+    copy.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="font-family:Space Mono,monospace;font-size:8px;color:#333">Charts by TradingView</span></a>';
+    cont.appendChild(copy); inner.appendChild(cont);
+    const sc=document.createElement('script');
+    sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; sc.async=true;
+    sc.textContent=JSON.stringify({symbol:'BINANCE:SOLUSD',interval:iMap[termTf]||'15',theme:'dark',style:'1',locale:'en',backgroundColor:'#050509',gridColor:'rgba(30,30,46,0.8)',hide_side_toolbar:false,withdateranges:true,hide_volume:false,save_image:true,autosize:true});
+    cont.appendChild(sc); return;
+  }
+  if(pairAddr){
+    inner.innerHTML='<iframe src="https://dexscreener.com/solana/'+pairAddr+'?embed=1&theme=dark&info=0" style="width:100%;height:100%;border:none;display:block" allow="clipboard-write" loading="lazy" title="'+t.ticker+' chart"></iframe>';
     return;
   }
-
-  /* SOL — TradingView widget  }
-
-  /* SOL — TradingView widget via createElement (innerHTML scripts don't execute) */
-  const intervalMap = { '1':'1','5':'5','15':'15','60':'60','240':'240','D':'D' };
-  const interval = intervalMap[termTf] || '15';
-
-  const wrap = document.createElement('div');
-  wrap.className = 'tradingview-widget-container';
-  wrap.style.cssText = 'height:100%;width:100%';
-
-  const widDiv = document.createElement('div');
-  widDiv.className = 'tradingview-widget-container__widget';
-  widDiv.style.cssText = 'height:calc(100% - 22px);width:100%';
-  wrap.appendChild(widDiv);
-
-  const copy = document.createElement('div');
-  copy.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span style="color:#333;font-family:Space Mono,monospace;font-size:8px">Charts by TradingView</span></a>';
-  wrap.appendChild(copy);
-
-  inner.appendChild(wrap);
-
-  const cfg = {
-    allow_symbol_change: false, calendar: false, details: false,
-    hide_side_toolbar: false, hide_top_toolbar: false, hide_legend: false,
-    hide_volume: false, hotlist: false, interval: interval, locale: 'en',
-    save_image: true, style: '1', symbol: symbol, theme: 'dark',
-    timezone: 'Etc/UTC', backgroundColor: '#050509',
-    gridColor: 'rgba(30,30,46,0.8)', withdateranges: true,
-    watchlist: [], compareSymbols: [], studies: [], autosize: true,
-  };
-
-  const script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-  script.async = true;
-  script.innerHTML = JSON.stringify(cfg);
-  wrap.appendChild(script);
+  const p=t.price!==null?'$'+fmtP(t.price):'Loading...';
+  const cc=t.change!==null?(t.change>=0?'var(--green)':'var(--red)'):'var(--dim)';
+  inner.innerHTML='<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--bg)"><div style="font-size:28px">'+t.emoji+'</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:24px;color:var(--text)">'+p+'</div><div style="font-family:Space Mono,monospace;font-size:10px;color:'+cc+'">'+(t.change!==null?fmtC(t.change):'--')+' 24H</div></div>';
 }
 
 
