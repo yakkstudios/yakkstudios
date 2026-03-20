@@ -353,6 +353,31 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .ci-view{display:none}.ci-view.active{display:block}
 .sync-event{background:rgba(239,68,68,0.06);border-left:3px solid var(--red);padding:8px 12px;border-radius:0 5px 5px 0;margin-bottom:6px;font-size:10px;font-family:Space Mono,monospace}
 
+
+/* ══ STAKEPOINT ══ */
+.sp-hero{background:linear-gradient(135deg,rgba(224,96,126,0.08) 0%,rgba(30,30,46,0.4) 100%);border:1px solid rgba(224,96,126,0.2);border-radius:12px;padding:28px 32px;display:flex;align-items:center;gap:24px;margin-bottom:20px}
+.sp-logo-wrap{width:56px;height:56px;border-radius:10px;background:rgba(224,96,126,0.12);border:1px solid rgba(224,96,126,0.25);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.sp-lock-card{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:18px 20px;margin-bottom:10px;transition:border-color 0.15s}
+.sp-lock-card:hover{border-color:var(--pink)}
+.sp-lock-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;font-size:10px}
+.sp-lock-row:last-child{border-bottom:none}
+.sp-stat{background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:12px 16px;text-align:center}
+.sp-stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--pink);margin-bottom:3px}
+.sp-stat-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em}
+.sp-token-tab{padding:6px 16px;border-radius:5px;font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--dim);transition:all 0.12s;letter-spacing:0.06em}
+.sp-token-tab:hover{color:var(--text);border-color:var(--border2)}
+.sp-token-tab.active{background:rgba(224,96,126,0.1);border-color:var(--pink);color:var(--pink)}
+.sp-loading{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.15em}
+.sp-error{padding:14px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:6px;font-family:'Space Mono',monospace;font-size:9px;color:var(--red)}
+.sp-progress{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px}
+.sp-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--pink),var(--gold));transition:width 0.5s ease}
+.sp-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:3px;font-family:'Space Mono',monospace;font-size:8px;font-weight:700}
+.sp-badge-active{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.2)}
+.sp-badge-expired{background:rgba(100,100,120,0.1);color:var(--dim);border:1px solid var(--border)}
+.sp-powered{display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:16px}
+.sp-powered a{color:var(--pink);text-decoration:none}
+.sp-powered a:hover{text-decoration:underline}
+
 </style>
 </head>
 <body>
@@ -375,6 +400,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       <div class="nav-divider"></div>
       <div class="nav-section">CULT TOOLS</div>
       <div class="nav-item" onclick="showSection('cabal')"><span class="nav-icon">🔍</span>CABAL INVESTIGATOR <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('stakepoint')"><span class="nav-icon">🔒</span>STAKEPOINT</div>
       <div class="nav-item" onclick="showSection('artlab')"><span class="nav-icon">🎨</span>ART LAB</div>
       <div class="nav-item" onclick="showSection('coach')"><span class="nav-icon">🧠</span>YAKKAI COACH</div>
       <div class="nav-item" onclick="showSection('raids')"><span class="nav-icon">⚔️</span>RAID HUB</div>
@@ -1076,6 +1102,60 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       </div>
 
 
+
+      <!-- ═══════════════════════════════
+           STAKEPOINT
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-stakepoint" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">POWERED BY STAKEPOINT</div>
+          <div class="sec-title">Staking Dashboard</div>
+          <div class="sec-bar"></div>
+
+          <!-- Hero / partner card -->
+          <div class="sp-hero">
+            <div class="sp-logo-wrap">🔒</div>
+            <div style="flex:1">
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;margin-bottom:4px">StakePoint × YAKK Studios</div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);line-height:1.7;max-width:520px">
+                Live lock and staking data for $YST and $SPT — powered by StakePoint, the most advanced staking platform on Solana. SPL + Token-2022 compatible, on-chain verified, real-time data.
+              </div>
+              <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+                <a href="https://stakepoint.app" target="_blank" class="btn btn-pink" style="font-size:9px;padding:5px 14px;text-decoration:none">STAKE ON STAKEPOINT →</a>
+                <a href="https://stakepoint.app/pools" target="_blank" class="btn btn-outline" style="font-size:9px;padding:5px 14px;text-decoration:none">VIEW ALL POOLS</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Token tabs -->
+          <div style="display:flex;gap:6px;margin-bottom:16px">
+            <button class="sp-token-tab active" id="sp-tab-spt" onclick="spSetToken('SPT')">$SPT — StakePoint Token</button>
+            <button class="sp-token-tab" id="sp-tab-yst" onclick="spSetToken('YST')">$YST — YAKK Studios</button>
+          </div>
+
+          <!-- Stats row -->
+          <div class="grid4" id="sp-stats-grid" style="margin-bottom:16px">
+            <div class="sp-stat"><div class="sp-stat-val" id="sp-total-locked">—</div><div class="sp-stat-lbl">TOTAL LOCKED</div></div>
+            <div class="sp-stat"><div class="sp-stat-val" id="sp-lock-count">—</div><div class="sp-stat-lbl">ACTIVE LOCKS</div></div>
+            <div class="sp-stat"><div class="sp-stat-val" id="sp-symbol">—</div><div class="sp-stat-lbl">TOKEN</div></div>
+            <div class="sp-stat"><div class="sp-stat-val" id="sp-largest-lock">—</div><div class="sp-stat-lbl">LARGEST LOCK</div></div>
+          </div>
+
+          <!-- Lock list -->
+          <div class="sp-lock-card">
+            <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.15em;color:var(--dim);margin-bottom:10px">INDIVIDUAL LOCKS</div>
+            <div id="sp-locks-list"><div class="sp-loading">LOADING LOCK DATA...</div></div>
+          </div>
+
+          <!-- Powered by -->
+          <div class="sp-powered">
+            <span>Staking infrastructure by</span>
+            <a href="https://stakepoint.app" target="_blank">StakePoint.app</a>
+            <span>· SPL + Token-2022 compatible · Real-time on-chain data</span>
+          </div>
+        </div>
+      </div>
+
       <!-- ═══════════════════════════════
            CABAL INVESTIGATOR
       ═══════════════════════════════ -->
@@ -1634,6 +1714,7 @@ function showSection(id){
   if(el){ el.style.display = 'block'; el.classList.add('active'); }
   document.querySelectorAll('.nav-item').forEach(n => { if(n.getAttribute('onclick') === `showSection('${id}')`) n.classList.add('active'); });
   if(id === 'screener') initScreener();
+  if(id === 'stakepoint') spLoad(spCurrentToken);
   if(id === 'terminal'){
     termInit();
     if(!termToken) setTimeout(() => termSelectToken(1), 80);
@@ -1885,18 +1966,28 @@ function scrLoadChart(){
   const tv = document.getElementById('tv-container');
   if(!ph||!tv) return;
   ph.style.display='none'; tv.style.display='block'; tv.innerHTML='';
+
   if(t.ticker==='SOL'){
+    /* TradingView iframe embed — no script injection, works reliably */
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
-    const cont=document.createElement('div');
-    cont.className='tradingview-widget-container'; cont.style.cssText='height:440px;width:100%';
-    const wd=document.createElement('div'); wd.className='tradingview-widget-container__widget'; wd.style.cssText='height:408px;width:100%';
-    cont.appendChild(wd);
-    const copy=document.createElement('div'); copy.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:#333">TradingView</a>';
-    cont.appendChild(copy); tv.appendChild(cont);
-    const sc=document.createElement('script'); sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; sc.async=true;
-    sc.textContent=JSON.stringify({symbol:'BINANCE:SOLUSD',interval:iMap[curTf]||'15',theme:'dark',style:'1',locale:'en',backgroundColor:'#050509',gridColor:'rgba(30,30,46,0.8)',hide_side_toolbar:true,withdateranges:true,hide_volume:false,save_image:false,autosize:true});
-    cont.appendChild(sc); return;
+    const interval = iMap[curTf]||'D';
+    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol'
+      + '&symbol=BINANCE%3ASOLUSD'
+      + '&interval=' + interval
+      + '&hidesidetoolbar=1&hidetoptoolbar=0&saveimage=0'
+      + '&theme=dark&style=1&timezone=Etc%2FUTC'
+      + '&studies=[]&locale=en';
+    const iframe = document.createElement('iframe');
+    iframe.src = src;
+    iframe.id = 'tv_sol';
+    iframe.style.cssText = 'width:100%;height:440px;border:none;display:block';
+    iframe.allow = 'clipboard-write';
+    iframe.loading = 'eager';
+    tv.appendChild(iframe);
+    return;
   }
+
+  /* YST / SPT — YAKK custom canvas chart from live price data */
   yakkDrawChart(tv, t);
 }
 
@@ -2434,17 +2525,25 @@ function termLoadChart(){
   const ph=document.getElementById('term-chart-ph');
   const inner=document.getElementById('term-chart-inner');
   if(!inner) return; if(ph) ph.style.display='none'; inner.innerHTML='';
+
   if(t.ticker==='SOL'){
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
-    const cont=document.createElement('div'); cont.className='tradingview-widget-container'; cont.style.cssText='height:100%;width:100%';
-    const wd=document.createElement('div'); wd.className='tradingview-widget-container__widget'; wd.style.cssText='height:calc(100% - 20px);width:100%';
-    cont.appendChild(wd);
-    const copy=document.createElement('div'); copy.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:#333">TradingView</a>';
-    cont.appendChild(copy); inner.appendChild(cont);
-    const sc=document.createElement('script'); sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; sc.async=true;
-    sc.textContent=JSON.stringify({symbol:'BINANCE:SOLUSD',interval:iMap[termTf]||'15',theme:'dark',style:'1',locale:'en',backgroundColor:'#050509',gridColor:'rgba(30,30,46,0.8)',hide_side_toolbar:false,withdateranges:true,hide_volume:false,save_image:false,autosize:true});
-    cont.appendChild(sc); return;
+    const interval = iMap[termTf]||'D';
+    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol_term'
+      + '&symbol=BINANCE%3ASOLUSD'
+      + '&interval=' + interval
+      + '&hidesidetoolbar=0&hidetoptoolbar=0&saveimage=0'
+      + '&theme=dark&style=1&timezone=Etc%2FUTC'
+      + '&studies=[]&locale=en';
+    const iframe = document.createElement('iframe');
+    iframe.src = src;
+    iframe.id = 'tv_sol_term';
+    iframe.style.cssText = 'width:100%;height:100%;border:none;display:block';
+    iframe.allow = 'clipboard-write';
+    inner.appendChild(iframe);
+    return;
   }
+
   yakkDrawChart(inner, t);
 }
 
@@ -3345,6 +3444,127 @@ function yakkDrawChart(container, token){
   ctx.fillText('24H · LIVE PRICE · BIRDEYE CHARTS COMING', W-PAD_R-4, H-8);
 }
 
+
+/* ═══ STAKEPOINT ════════════════════════════════════════════════════════
+   Calls /api/stakepoint (Vercel serverless proxy) to avoid CORS.
+   The proxy forwards to stakepoint.app/api/locks/{mint} server-side.
+════════════════════════════════════════════════════════════════════ */
+const SP_MINTS = {
+  SPT: '6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7',
+  YST: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',
+};
+let spCurrentToken = 'SPT';
+let spCache = {};
+
+function spSetToken(ticker){
+  spCurrentToken = ticker;
+  document.querySelectorAll('.sp-token-tab').forEach(t => t.classList.remove('active'));
+  const tab = document.getElementById('sp-tab-' + ticker.toLowerCase());
+  if(tab) tab.classList.add('active');
+  spLoad(ticker);
+}
+
+async function spLoad(ticker){
+  if(!ticker) ticker = spCurrentToken;
+  const mint = SP_MINTS[ticker];
+  if(!mint) return;
+
+  /* Use cache if fresh (< 60s) */
+  const cached = spCache[ticker];
+  if(cached && Date.now() - cached.ts < 60000){
+    spRender(cached.data, ticker); return;
+  }
+
+  spShowLoading();
+
+  try {
+    /* Call our Vercel proxy — same domain, no CORS */
+    const res = await fetch(`/api/stakepoint?mint=${mint}&type=locks`);
+    if(!res.ok) throw new Error('API error ' + res.status);
+    const data = await res.json();
+    if(data.error) throw new Error(data.error);
+    spCache[ticker] = { data, ts: Date.now() };
+    spRender(data, ticker);
+  } catch(err){
+    spShowError(err.message, ticker);
+  }
+}
+
+function spShowLoading(){
+  document.getElementById('sp-locks-list').innerHTML =
+    '<div class="sp-loading">FETCHING LOCK DATA FROM STAKEPOINT...</div>';
+  ['sp-total-locked','sp-lock-count','sp-symbol','sp-largest-lock']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.textContent = '—'; });
+}
+
+function spShowError(msg, ticker){
+  document.getElementById('sp-locks-list').innerHTML =
+    `<div class="sp-error">⚠ Could not load lock data: ${msg}<br><br>`+
+    `<a href="https://stakepoint.app" target="_blank" style="color:var(--pink)">View directly on StakePoint →</a></div>`;
+}
+
+function spRender(data, ticker){
+  /* Stats */
+  const locks = data.locks || [];
+  const totalLocked = data.totalLocked || locks.reduce((s,l) => s + (parseFloat(l.amount)||0), 0);
+  const symbol = data.symbol || ticker;
+  const largest = locks.length ? Math.max(...locks.map(l => parseFloat(l.amount)||0)) : 0;
+  const activeLocks = locks.filter(l => {
+    if(!l.unlockTime && !l.endTime && !l.expiresAt) return true;
+    const ts = l.unlockTime || l.endTime || l.expiresAt;
+    return (typeof ts === 'number' ? ts * (ts < 1e12 ? 1000 : 1) : new Date(ts).getTime()) > Date.now();
+  }).length;
+
+  const el = id => document.getElementById(id);
+  if(el('sp-total-locked')) el('sp-total-locked').textContent = fmtCompact(totalLocked);
+  if(el('sp-lock-count'))   el('sp-lock-count').textContent   = activeLocks || locks.length;
+  if(el('sp-symbol'))       el('sp-symbol').textContent       = '$' + symbol;
+  if(el('sp-largest-lock')) el('sp-largest-lock').textContent = fmtCompact(largest);
+
+  /* Lock rows */
+  if(!locks.length){
+    document.getElementById('sp-locks-list').innerHTML =
+      '<div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);padding:14px">No locks found for this token.</div>';
+    return;
+  }
+
+  /* Sort by amount desc */
+  const sorted = [...locks].sort((a,b) => (parseFloat(b.amount)||0) - (parseFloat(a.amount)||0));
+  const maxAmt = parseFloat(sorted[0].amount)||1;
+
+  document.getElementById('sp-locks-list').innerHTML = sorted.map(lock => {
+    const amt     = parseFloat(lock.amount) || 0;
+    const pct     = ((amt / totalLocked) * 100).toFixed(1);
+    const barPct  = ((amt / maxAmt) * 100).toFixed(1);
+    const wallet  = lock.wallet || lock.owner || lock.address || '—';
+    const walletShort = wallet !== '—' ? wallet.slice(0,8)+'...'+wallet.slice(-4) : '—';
+
+    /* Expiry */
+    const ts = lock.unlockTime || lock.endTime || lock.expiresAt;
+    let expiry = 'Flexible';
+    let isActive = true;
+    if(ts){
+      const ms = typeof ts === 'number' ? ts * (ts < 1e12 ? 1000 : 1) : new Date(ts).getTime();
+      isActive = ms > Date.now();
+      const d = new Date(ms);
+      expiry = d.toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'});
+    }
+
+    const badgeCls = isActive ? 'sp-badge-active' : 'sp-badge-expired';
+    const badgeTxt = isActive ? '● LOCKED' : '○ EXPIRED';
+
+    return `<div class="sp-lock-row">
+      <span class="sp-badge ${badgeCls}">${badgeTxt}</span>
+      <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${fmtCompact(amt)} <span style="color:var(--dim)">$${symbol}</span></span>
+      <span style="color:var(--dim);min-width:44px;text-align:right">${pct}%</span>
+      <div style="width:80px;margin-left:8px">
+        <div class="sp-progress"><div class="sp-progress-fill" style="width:${barPct}%"></div></div>
+      </div>
+      <span style="color:var(--dim);min-width:90px;text-align:right;font-size:8px">${expiry}</span>
+      ${wallet!=='—'?`<a href="https://solscan.io/account/${wallet}" target="_blank" style="color:var(--blue);font-size:8px;margin-left:6px;text-decoration:none;flex-shrink:0">${walletShort}</a>`:''}
+    </div>`;
+  }).join('');
+}
 
 /* ═══ INIT ═══ */
 setupTicker();
