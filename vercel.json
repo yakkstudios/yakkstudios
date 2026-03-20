@@ -3,15 +3,16 @@
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://www.tradingview.com https://terminal.jup.ag; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag https://app.bubblemaps.io; connect-src 'self' https://api.dexscreener.com https://public-api.solscan.io https://api.anthropic.com https://prodata.tradingview.com https://widgetdata.tradingview.com wss: wss://*.tradingview.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:;"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "no-referrer-when-downgrade"
-        }
+        {"key": "Content-Security-Policy", "value": "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://www.tradingview.com https://terminal.jup.ag; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag https://dexscreener.com https://app.bubblemaps.io; connect-src 'self' https://api.dexscreener.com https://public-api.solscan.io https://api.solscan.io https://prodata.tradingview.com https://widgetdata.tradingview.com https://gamma-api.polymarket.com https://clob.polymarket.com https://stakepoint.app wss: wss://*.tradingview.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:;"},
+        {"key": "Referrer-Policy", "value": "no-referrer-when-downgrade"},
+        {"key": "X-Content-Type-Options", "value": "nosniff"},
+        {"key": "X-Frame-Options", "value": "SAMEORIGIN"},
+        {"key": "Permissions-Policy", "value": "clipboard-write=(self)"}
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/stakepoint.js": {"maxDuration": 10},
+    "api/ai.js": {"maxDuration": 30}
+  }
 }
