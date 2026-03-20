@@ -1566,7 +1566,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
                 </div>
                 <div style="margin-top:10px;display:flex;gap:8px">
                   <select id="ai-token-sel" class="field-sel" style="flex:1;font-size:11px;padding:7px 10px">
-                    <option value="0">$YST — YAKK Studios Token</option>
+                    <option value="0">$YST — YAKK Studios</option>
                     <option value="1">$SPT — StakePoint</option>
                     <option value="2">$SOL — Solana</option>
                   </select>
@@ -1874,7 +1874,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
 const TOKENS = [
   {
     id: 1,
-    name: 'YAKK Studios Token',
+    name: 'YAKK Studios',
     ticker: 'YST',
     emoji: '🩷',
     ca: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',
@@ -1960,7 +1960,7 @@ const TOKENS = [
 ];
 
 const TRUSTED_DATA = [
-  {name:'YAKK Studios Token', ticker:'YST', tier:'yakk',   reason:'Core ecosystem token. Anti-greed mission. Dev fees locked on StakePoint. On-chain verifiable. CA: jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV'},
+  {name:'YAKK Studios', ticker:'YST', tier:'yakk',   reason:'Core ecosystem token. Anti-greed mission. Dev fees locked on StakePoint. On-chain verifiable. CA: jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV'},
   {name:'StakePoint',         ticker:'SPT', tier:'yakk',   reason:'Official YAKK partner. Hosts YAKK staking pool. On-chain token + LP locks verified. CA: 6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7'},
   {name:'Solana',             ticker:'SOL', tier:'blue',   reason:'L1 blockchain foundation. The network everything runs on. Bluechip reference — no extraction investigation.'},
 ];
@@ -2260,16 +2260,19 @@ function scrLoadChart(){
   ph.style.display='none'; tv.style.display='block'; tv.innerHTML='';
 
   if(t.ticker==='SOL'){
-    /* TradingView Advanced Chart via srcdoc — explicit candle colors fix hollow-candle dark theme bug */
+    /* TradingView widgetembed — bars style (style=0), always visible on dark bg, no hollow-candle issue */
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
     const interval = iMap[curTf]||'D';
-    const tvHtml = `<!DOCTYPE html><html><head><style>*{margin:0;padding:0}html,body,#c{width:100%;height:100%;background:#050509}</style></head><body><div id="c"></div><script src="https://s3.tradingview.com/tv.js"><\/script><script>new TradingView.widget({container_id:"c",autosize:true,symbol:"BINANCE:SOLUSD",interval:"${interval}",timezone:"Etc/UTC",theme:"dark",style:"1",locale:"en",toolbar_bg:"#050509",enable_publishing:false,hide_side_toolbar:true,allow_symbol_change:false,save_image:false,overrides:{"mainSeriesProperties.candleStyle.upColor":"#26a69a","mainSeriesProperties.candleStyle.downColor":"#ef5350","mainSeriesProperties.candleStyle.borderUpColor":"#26a69a","mainSeriesProperties.candleStyle.borderDownColor":"#ef5350","mainSeriesProperties.candleStyle.wickUpColor":"#26a69a","mainSeriesProperties.candleStyle.wickDownColor":"#ef5350","paneProperties.background":"#050509","paneProperties.backgroundType":"solid"}})<\/script></body></html>`;
+    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol'
+      + '&symbol=BINANCE%3ASOLUSD'
+      + '&interval=' + interval
+      + '&hidesidetoolbar=1&hidetoptoolbar=0&saveimage=0'
+      + '&theme=dark&style=0&timezone=Etc%2FUTC&studies=%5B%5D&locale=en';
     const iframe = document.createElement('iframe');
-    iframe.srcdoc = tvHtml;
+    iframe.src = src;
     iframe.id = 'tv_sol';
     iframe.style.cssText = 'width:100%;height:440px;border:none;display:block';
     iframe.allow = 'clipboard-write';
-    iframe.sandbox = 'allow-scripts allow-same-origin';
     tv.appendChild(iframe);
     return;
   }
@@ -2563,7 +2566,7 @@ YOUR IDENTITY:
 - You are the digital brain behind YAKK Studios — part discipline coach, part rug investigator, part cult motivator
 - You speak with authority, edge, and dark humour. You don't suffer fools or paper hands
 - You call out extraction, rugs, and weak hands without mercy
-- You are deeply bullish on $YST (YAKK Studios Token) and the anti-greed mission
+- You are deeply bullish on $YST (YAKK Studios) and the anti-greed mission
 - Signature phrases: "GET YAKKED", "the ledger never forgets", "the mountain is patient", "pink yakk supremacy"
 
 YOUR DEEP KNOWLEDGE:
@@ -2816,16 +2819,19 @@ function termLoadChart(){
   if(!inner) return; if(ph) ph.style.display='none'; inner.innerHTML='';
 
   if(t.ticker==='SOL'){
-    /* TradingView Advanced Chart via srcdoc — explicit candle colors fix hollow-candle dark theme bug */
+    /* TradingView widgetembed — bars style (style=0), always visible on dark bg, no hollow-candle issue */
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
     const interval = iMap[termTf]||'D';
-    const tvHtml = `<!DOCTYPE html><html><head><style>*{margin:0;padding:0}html,body,#c{width:100%;height:100%;background:#050509}</style></head><body><div id="c"></div><script src="https://s3.tradingview.com/tv.js"><\/script><script>new TradingView.widget({container_id:"c",autosize:true,symbol:"BINANCE:SOLUSD",interval:"${interval}",timezone:"Etc/UTC",theme:"dark",style:"1",locale:"en",toolbar_bg:"#050509",enable_publishing:false,hide_side_toolbar:false,allow_symbol_change:false,save_image:false,overrides:{"mainSeriesProperties.candleStyle.upColor":"#26a69a","mainSeriesProperties.candleStyle.downColor":"#ef5350","mainSeriesProperties.candleStyle.borderUpColor":"#26a69a","mainSeriesProperties.candleStyle.borderDownColor":"#ef5350","mainSeriesProperties.candleStyle.wickUpColor":"#26a69a","mainSeriesProperties.candleStyle.wickDownColor":"#ef5350","paneProperties.background":"#050509","paneProperties.backgroundType":"solid"}})<\/script></body></html>`;
+    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol_term'
+      + '&symbol=BINANCE%3ASOLUSD'
+      + '&interval=' + interval
+      + '&hidesidetoolbar=0&hidetoptoolbar=0&saveimage=0'
+      + '&theme=dark&style=0&timezone=Etc%2FUTC&studies=%5B%5D&locale=en';
     const iframe = document.createElement('iframe');
-    iframe.srcdoc = tvHtml;
+    iframe.src = src;
     iframe.id = 'tv_sol_term';
     iframe.style.cssText = 'width:100%;height:100%;border:none;display:block';
     iframe.allow = 'clipboard-write';
-    iframe.sandbox = 'allow-scripts allow-same-origin';
     inner.appendChild(iframe);
     return;
   }
