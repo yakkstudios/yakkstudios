@@ -12,7 +12,6 @@
     }
   ],
   "functions": {
-    "api/stakepoint.js": {"maxDuration": 10},
     "api/ai.js": {"maxDuration": 30}
   }
 }
