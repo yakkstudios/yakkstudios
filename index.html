@@ -431,10 +431,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sp-powered a:hover{text-decoration:underline}
 
 
-/* ═══════════════════════════════════════════════════════════
-   MOBILE RESPONSIVE — collapseable sidebar + responsive layout
-═══════════════════════════════════════════════════════════ */
-
+/* MOBILE RESPONSIVE — collapseable sidebar + responsive layout */
 /* Mobile header bar (hidden on desktop) */
 #mobile-header{display:none;align-items:center;gap:10px;padding:0 14px;height:48px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;z-index:50;position:sticky;top:0}
 #mob-menu-btn{background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px 6px;line-height:1;flex-shrink:0}
@@ -453,17 +450,39 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 #scr-back-btn:active{background:var(--bg3)}
 
 @media(max-width:768px){
-  /* ── Sidebar overlay ── */
-  #sidebar{
-    position:fixed;left:-240px;top:0;height:100%;
-    width:240px!important;z-index:99;
-    transition:left 0.25s cubic-bezier(0.4,0,0.2,1);
-    box-shadow:none;
-  }
-  #sidebar.mob-open{left:0;box-shadow:4px 0 24px rgba(0,0,0,0.6)}
+  #sidebar{left:-240px;z-index:99;transition:left 0.25s cubic-bezier(0.4,0,0.2,1)}
+  #sidebar.mob-open{left:0}
   #sb-close{display:block}
   #mobile-header{display:flex}
   #main-wrap{height:100vh;overflow:hidden}
+  .sec-pad{padding:16px 14px}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .grid2{grid-template-columns:1fr;gap:12px}
+  #section-home .sec-pad > div:first-child{flex-direction:column;gap:16px}
+  #home-yakk-img{width:clamp(80px,22vw,140px)!important}
+  #scr-body{flex-direction:column!important;overflow:auto}
+  #scr-left{width:100%!important;max-height:none;flex-shrink:0;border-right:none;border-bottom:1px solid var(--border)}
+  #scr-center{min-width:0;overflow:visible}
+  #scr-right{width:100%!important;border-left:none;border-top:1px solid var(--border);max-height:none}
+  #scr-left.mob-hidden{display:none!important}
+  #scr-back-btn{display:flex}
+  #chart-wrap{height:300px!important}
+  #tv-container{height:300px!important}
+  #terminal-wrap{grid-template-columns:1fr!important;grid-template-rows:1fr auto;height:auto;min-height:calc(100vh - 96px)}
+  #term-right{max-height:340px;border-top:1px solid var(--border);border-right:none}
+  .card,.card-sm{padding:14px}
+  .stat-card{padding:12px}
+  .sval{font-size:clamp(16px,5vw,24px)!important}
+  #ticker-bar{font-size:9px}
+  .ledger-table{overflow-x:auto;font-size:14px}
+  #dex-banner{padding:8px 12px}
+  #main{overflow-y:auto;height:calc(100vh - 48px)}
+  .page-section{overflow-y:auto}
+  .modal{width:calc(100vw - 24px)!important;max-height:90vh;margin:0 12px}
+  .tf{padding:3px 7px;font-size:9px}
+  .nav-item{padding:9px 18px;font-size:10px}
+  .quick-actions{grid-template-columns:1fr!important;gap:9px}
+}
 
   /* ── Section padding ── */
   .sec-pad{padding:16px 14px}
@@ -687,6 +706,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
   <div id="sidebar">
     <button id="sb-close" onclick="closeSidebar()" aria-label="Close menu">✕</button>
     <div class="sb-logo">
+  <img src="https://pbs.twimg.com/profile_images/1843069193181118464/1o9vL3kX_400x400.jpg" alt="YAKK Studios Logo" style="width:80px;height:80px;border-radius:50%;border:3px solid var(--pink);margin-bottom:10px;object-fit:cover;">
+  <div class="sb-brand">$YAKK <span>STUDIOS</span></div>
+  <div class="sb-sub">PINK YAKK SUPREMACY</div>
+</div>
       <div class="sb-brand">$YAKK <span>STUDIOS</span></div>
       <div class="sb-sub">PINK YAKK SUPREMACY</div>
     </div>
