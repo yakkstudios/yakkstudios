@@ -472,9 +472,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
   .grid4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .grid2{grid-template-columns:1fr;gap:12px}
 
+  /* ── Home hero quick actions — FORCE stack */
+  .quick-actions{grid-template-columns:1fr!important;gap:9px}
+
   /* ── Home hero ── */
   #section-home .sec-pad > div:first-child{flex-direction:column;gap:16px}
-  /* Hide the floating yakk on very small screens */
   #home-yakk-img{width:clamp(80px,22vw,140px)!important}
 
   /* ── Screener: stack panels, token list full-width ── */
@@ -487,6 +489,45 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
   #scr-back-btn{display:flex}
   #chart-wrap{height:300px!important}
   #tv-container{height:300px!important}
+
+  /* ── Terminal: stack panels ── */
+  #terminal-wrap{grid-template-columns:1fr!important;grid-template-rows:1fr auto;height:auto;min-height:calc(100vh - 96px)}
+  #term-right{max-height:340px;border-top:1px solid var(--border);border-right:none}
+
+  /* ── Cards & stat cards ── */
+  .card,.card-sm{padding:14px}
+  .stat-card{padding:12px}
+  .sval{font-size:clamp(16px,5vw,24px)!important}
+
+  /* ── Ticker bar ── */
+  #ticker-bar{font-size:9px}
+
+  /* ── Ledger table — force scroll on mobile */
+  .ledger-table{overflow-x:auto;font-size:14px}
+
+  /* ── DEX banner: horizontal scroll ── */
+  #dex-banner{padding:8px 12px}
+
+  /* ── Main content scroll ── */
+  #main{overflow-y:auto;height:calc(100vh - 48px)}
+  .page-section{overflow-y:auto}
+
+  /* ── Modals ── */
+  .modal{width:calc(100vw - 24px)!important;max-height:90vh;margin:0 12px}
+
+  /* ── TF buttons: smaller ── */
+  .tf{padding:3px 7px;font-size:9px}
+
+  /* ── Nav items: slightly tighter ── */
+  .nav-item{padding:9px 18px;font-size:10px}
+}
+
+@media(max-width:480px){
+  .grid4{grid-template-columns:1fr 1fr}
+  .sec-pad{padding:12px 12px}
+  #chart-wrap{height:260px!important}
+  #tv-container{height:260px!important}
+}
 
   /* ── Terminal: stack panels ── */
   #terminal-wrap{grid-template-columns:1fr!important;grid-template-rows:1fr auto;height:auto;min-height:calc(100vh - 96px)}
