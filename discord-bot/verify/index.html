@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YAKK Studios — Wallet Verification</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#05050F;color:#e2e2e8;font-family:'Space Mono',monospace;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  h1{font-family:sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.02em;margin-bottom:6px}
+  h1 span{color:#E0607E}
+  .card{background:#0e0e1a;border:1px solid rgba(224,96,126,0.2);border-radius:16px;padding:36px 32px;max-width:460px;width:100%}
+  .eyebrow{font-size:9px;letter-spacing:0.2em;color:#555;margin-bottom:16px}
+  .bar{width:40px;height:3px;background:#E0607E;border-radius:2px;margin:12px 0 20px}
+  p{font-size:11px;color:#888;line-height:1.8;margin-bottom:20px}
+  .req{background:#0a0a14;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;margin-bottom:20px}
+  .req-row{display:flex;align-items:center;gap:10px;font-size:11px;color:#aaa;padding:4px 0}
+  .req-row strong{color:#F7C948}
+  .req-row .or{color:#555;font-size:9px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:8px;border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:0.08em;transition:opacity .15s}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn-pink{background:#E0607E;color:#fff}
+  .btn-pink:hover:not(:disabled){opacity:.88}
+  .btn-outline{background:transparent;color:#888;border:1px solid rgba(255,255,255,0.1);margin-top:10px}
+  .btn-outline:hover:not(:disabled){border-color:#E0607E;color:#E0607E}
+  .status{font-size:10px;line-height:1.7;margin-top:14px;min-height:18px;text-align:center}
+  .status.ok{color:#22c55e}
+  .status.err{color:#ef4444}
+  .status.info{color:#60a5fa}
+  .wallet-display{font-size:9px;color:#555;text-align:center;margin-top:8px;word-break:break-all}
+  .step{display:flex;align-items:flex-start;gap:12px;padding:8px 0;font-size:10px;color:#777;line-height:1.6}
+  .step-num{background:#E0607E;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
+  .divider{border:none;border-top:1px solid rgba(255,255,255,0.06);margin:20px 0}
+  #success-screen{display:none}
+  #verify-screen{}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="eyebrow">YAKK STUDIOS — WALLET VERIFICATION</div>
+  <h1>Prove Your <span>Holdings</span></h1>
+  <div class="bar"></div>
+
+  <!-- ── VERIFY SCREEN ── -->
+  <div id="verify-screen">
+    <p>Connect your Phantom wallet and sign a message to prove ownership. No transaction is made — signing is free and instant.</p>
+
+    <div class="req">
+      <div class="req-row">🪙 <strong>250,000+ $YST</strong></div>
+      <div class="req-row or">── OR ──</div>
+      <div class="req-row">🔵 <strong>1,000,000+ $SPT</strong></div>
+      <div class="req-row or">── OR ──</div>
+      <div class="req-row">🐋 <strong style="color:#F7C948">10M+ of BOTH</strong> <span style="font-size:9px;color:#F7C948">= Whale Club</span></div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div class="step"><div class="step-num">1</div>Click Connect Wallet below</div>
+      <div class="step"><div class="step-num">2</div>Approve the connection in Phantom</div>
+      <div class="step"><div class="step-num">3</div>Sign the verification message (no fees)</div>
+      <div class="step"><div class="step-num">4</div>Your Discord roles are assigned instantly</div>
+    </div>
+
+    <button class="btn btn-pink" id="connect-btn" onclick="handleConnect()">🔗 Connect Wallet</button>
+    <div id="wallet-display" class="wallet-display"></div>
+    <button class="btn btn-outline" id="sign-btn" onclick="handleSign()" disabled>✍️ Sign & Verify</button>
+    <div id="status" class="status"></div>
+  </div>
+
+  <!-- ── SUCCESS SCREEN ── -->
+  <div id="success-screen">
+    <div style="text-align:center;padding:20px 0">
+      <div style="font-size:52px;margin-bottom:16px" id="success-icon">✅</div>
+      <div style="font-family:sans-serif;font-weight:900;font-size:20px;margin-bottom:8px" id="success-title">Verified!</div>
+      <div style="font-size:11px;color:#888;line-height:1.7;margin-bottom:16px" id="success-msg">Your roles have been assigned in the YAKK Studios Discord.</div>
+      <div style="font-size:10px;color:#555">You can close this window.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const SESSION_ID = params.get('session');
+
+let connectedWallet = null;
+
+function setStatus(msg, type='info') {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = 'status ' + type;
+}
+
+async function handleConnect() {
+  if (!SESSION_ID) { setStatus('❌ Invalid link. Get a fresh link from /verify in Discord.', 'err'); return; }
+  const provider = window?.phantom?.solana || window?.solana;
+  if (!provider?.isPhantom) {
+    setStatus('❌ Phantom wallet not found. Install Phantom at phantom.app', 'err');
+    return;
+  }
+  try {
+    const resp = await provider.connect();
+    connectedWallet = resp.publicKey.toString();
+    document.getElementById('wallet-display').textContent = connectedWallet.slice(0,8) + '…' + connectedWallet.slice(-8);
+    document.getElementById('sign-btn').disabled = false;
+    document.getElementById('connect-btn').textContent = '✓ Connected';
+    document.getElementById('connect-btn').disabled = true;
+    setStatus('Wallet connected. Click Sign & Verify to continue.', 'info');
+  } catch(e) {
+    if (!e?.message?.includes('User rejected')) setStatus('❌ Connection failed: ' + e.message, 'err');
+  }
+}
+
+async function handleSign() {
+  if (!connectedWallet) { setStatus('❌ Connect your wallet first.', 'err'); return; }
+  const provider = window?.phantom?.solana || window?.solana;
+  if (!provider) return;
+
+  setStatus('Fetching verification message…', 'info');
+  document.getElementById('sign-btn').disabled = true;
+
+  try {
+    // Fetch the message to sign from the bot server
+    const msgResp = await fetch('/api/message?session=' + encodeURIComponent(SESSION_ID));
+    const msgData = await msgResp.json();
+    if (!msgData.message) {
+      setStatus('❌ ' + (msgData.error || 'Session expired. Run /verify again.'), 'err');
+      document.getElementById('sign-btn').disabled = false;
+      return;
+    }
+
+    setStatus('Check Phantom — sign the message…', 'info');
+
+    // Sign the message
+    const encoded  = new TextEncoder().encode(msgData.message);
+    const { signature } = await provider.signMessage(encoded, 'utf8');
+
+    // Base58 encode the signature
+    const b58 = encodeBase58(signature);
+
+    setStatus('Verifying on-chain…', 'info');
+
+    // Submit to bot
+    const verResp = await fetch('/api/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId: SESSION_ID, walletAddress: connectedWallet, signature: b58 }),
+    });
+    const verData = await verResp.json();
+
+    if (verData.ok) {
+      // Show success screen
+      document.getElementById('verify-screen').style.display = 'none';
+      document.getElementById('success-screen').style.display = 'block';
+      if (verData.tier === 'whale') {
+        document.getElementById('success-icon').textContent = '🐋';
+        document.getElementById('success-title').textContent = 'Welcome to the Whale Club';
+        document.getElementById('success-msg').textContent =
+          `YST: ${verData.ystBal?.toLocaleString()} | SPT: ${verData.sptBal?.toLocaleString()}\nElite tier roles assigned.`;
+      } else {
+        document.getElementById('success-msg').textContent =
+          `YST: ${verData.ystBal?.toLocaleString()} | SPT: ${verData.sptBal?.toLocaleString()}\nRoles assigned in Discord.`;
+      }
+    } else {
+      setStatus('❌ ' + verData.error, 'err');
+      document.getElementById('sign-btn').disabled = false;
+    }
+  } catch(e) {
+    if (e?.message?.includes('User rejected')) {
+      setStatus('Signing cancelled.', 'info');
+    } else {
+      setStatus('❌ Error: ' + e.message, 'err');
+    }
+    document.getElementById('sign-btn').disabled = false;
+  }
+}
+
+// Minimal base58 encoder for Solana signatures
+const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+function encodeBase58(bytes) {
+  let digits = [0];
+  for (let i = 0; i < bytes.length; i++) {
+    let carry = bytes[i];
+    for (let j = 0; j < digits.length; j++) {
+      carry += digits[j] << 8;
+      digits[j] = carry % 58;
+      carry = (carry / 58) | 0;
+    }
+    while (carry > 0) { digits.push(carry % 58); carry = (carry / 58) | 0; }
+  }
+  let str = '';
+  for (let i = bytes.length - 1; i >= 0 && bytes[i] === 0; i--) str += '1';
+  for (let i = digits.length - 1; i >= 0; i--) str += ALPHABET[digits[i]];
+  return str;
+}
+</script>
+</body>
+</html>

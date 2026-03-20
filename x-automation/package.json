@@ -1,0 +1,22 @@
+{
+  "name": "yakk-x-automation",
+  "version": "1.0.0",
+  "description": "YAKK Studios X automation — hype posts, price updates, and payment-triggered rug exposure threads",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js schedule",
+    "hype": "node index.js hype",
+    "price": "node index.js price",
+    "lock": "node index.js lock",
+    "watch": "node index.js watch"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.98.0",
+    "dotenv": "^16.4.5",
+    "node-cron": "^3.0.3",
+    "twitter-api-v2": "^1.19.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
