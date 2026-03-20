@@ -45,6 +45,7 @@
 <meta name="twitter:description" content="Anti-greed Solana cult. Live $YST &amp; $SPT screener, on-chain investigations, KAIZE discipline system. Fight extractors.">
 <meta name="twitter:image" content="https://pbs.twimg.com/profile_banners/2014280029274796032/1769077251/1500x500">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
 <style>
 /* ══════════════════════════════════════════
    GLOBAL RESET + VARIABLES
@@ -429,7 +430,137 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sp-powered a{color:var(--pink);text-decoration:none}
 .sp-powered a:hover{text-decoration:underline}
 
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — collapseable sidebar + responsive layout
+═══════════════════════════════════════════════════════════ */
+
+/* Mobile header bar (hidden on desktop) */
+#mobile-header{display:none;align-items:center;gap:10px;padding:0 14px;height:48px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;z-index:50;position:sticky;top:0}
+#mob-menu-btn{background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px 6px;line-height:1;flex-shrink:0}
+#mob-brand{font-family:Syne,sans-serif;font-weight:800;font-size:13px;color:var(--pink);letter-spacing:0.05em;flex:1}
+#mob-brand span{color:var(--gold)}
+
+/* Sidebar overlay backdrop */
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:98}
+#sb-overlay.show{display:block}
+
+/* Sidebar close button (mobile only) */
+#sb-close{display:none;position:absolute;top:14px;right:12px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px;line-height:1;z-index:10}
+
+/* Screener mobile back button */
+#scr-back-btn{display:none;align-items:center;gap:6px;padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--border);font-family:Space Mono,monospace;font-size:10px;color:var(--muted);cursor:pointer;flex-shrink:0}
+#scr-back-btn:active{background:var(--bg3)}
+
+@media(max-width:768px){
+  /* ── Sidebar overlay ── */
+  #sidebar{
+    position:fixed;left:-240px;top:0;height:100%;
+    width:240px!important;z-index:99;
+    transition:left 0.25s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:none;
+  }
+  #sidebar.mob-open{left:0;box-shadow:4px 0 24px rgba(0,0,0,0.6)}
+  #sb-close{display:block}
+  #mobile-header{display:flex}
+  #main-wrap{height:100vh;overflow:hidden}
+
+  /* ── Section padding ── */
+  .sec-pad{padding:16px 14px}
+
+  /* ── Grids ── */
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .grid2{grid-template-columns:1fr;gap:12px}
+
+  /* ── Home hero ── */
+  #section-home .sec-pad > div:first-child{flex-direction:column;gap:16px}
+  /* Hide the floating yakk on very small screens */
+  #home-yakk-img{width:clamp(80px,22vw,140px)!important}
+
+  /* ── Screener: stack panels, token list full-width ── */
+  #scr-body{flex-direction:column!important;overflow:auto}
+  #scr-left{width:100%!important;max-height:none;flex-shrink:0;border-right:none;border-bottom:1px solid var(--border)}
+  #scr-center{min-width:0;overflow:visible}
+  #scr-right{width:100%!important;border-left:none;border-top:1px solid var(--border);max-height:none}
+  /* When token selected: hide list, show chart */
+  #scr-left.mob-hidden{display:none!important}
+  #scr-back-btn{display:flex}
+  #chart-wrap{height:300px!important}
+  #tv-container{height:300px!important}
+
+  /* ── Terminal: stack panels ── */
+  #terminal-wrap{grid-template-columns:1fr!important;grid-template-rows:1fr auto;height:auto;min-height:calc(100vh - 96px)}
+  #term-right{max-height:340px;border-top:1px solid var(--border);border-right:none}
+
+  /* ── Cards & stat cards ── */
+  .card,.card-sm{padding:14px}
+  .stat-card{padding:12px}
+  .sval{font-size:clamp(16px,5vw,24px)!important}
+
+  /* ── Ticker bar ── */
+  #ticker-bar{font-size:9px}
+
+  /* ── DEX banner: horizontal scroll ── */
+  #dex-banner{padding:8px 12px}
+
+  /* ── Main content scroll ── */
+  #main{overflow-y:auto;height:calc(100vh - 48px)}
+  .page-section{overflow-y:auto}
+
+  /* ── Modals ── */
+  .modal{width:calc(100vw - 24px)!important;max-height:90vh;margin:0 12px}
+
+  /* ── TF buttons: smaller ── */
+  .tf{padding:3px 7px;font-size:9px}
+
+  /* ── Nav items: slightly tighter ── */
+  .nav-item{padding:9px 18px;font-size:10px}
+}
+
+@media(max-width:480px){
+  .grid4{grid-template-columns:1fr 1fr}
+  .sec-pad{padding:12px 12px}
+  #chart-wrap{height:260px!important}
+  #tv-container{height:260px!important}
+}
 @keyframes yakk-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+/* ══ YST GATE OVERLAY ══ */
+.yst-gate-overlay{position:absolute;inset:0;background:rgba(5,5,9,0.93);backdrop-filter:blur(10px);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.yst-gate-box{background:var(--bg3);border:1px solid rgba(224,96,126,0.3);border-radius:14px;padding:32px 28px;max-width:380px;width:100%;text-align:center}
+.yst-gate-icon{font-size:44px;margin-bottom:14px}
+.yst-gate-title{font-family:Syne,sans-serif;font-weight:800;font-size:19px;color:var(--pink);margin-bottom:8px}
+.yst-gate-sub{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:4px}
+.yst-gate-bal{font-family:Space Mono,monospace;font-size:9px;color:var(--dim);margin-top:12px}
+/* ══ CERTIFIED CLOWNS ══ */
+.clowns-warning{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#fca5a5;line-height:1.7}
+.clowns-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:24px}
+.clown-card{background:var(--bg3);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:7px;transition:border-color 0.15s,transform 0.15s;text-decoration:none!important;color:inherit}
+.clown-card:hover{border-color:rgba(239,68,68,0.55);transform:translateY(-2px)}
+.clown-avatar{width:54px;height:54px;border-radius:50%;border:2px solid rgba(239,68,68,0.35);object-fit:cover;background:var(--bg4)}
+.clown-name{font-size:11px;color:var(--text);text-align:center;font-weight:500;line-height:1.3}
+.clown-handle{font-family:Space Mono,monospace;font-size:8px;color:var(--pink);text-align:center;word-break:break-all}
+.clown-tag{font-family:Space Mono,monospace;font-size:7px;background:rgba(239,68,68,0.15);color:#fca5a5;padding:2px 7px;border-radius:3px;letter-spacing:0.1em}
+.clowns-source{font-family:Space Mono,monospace;font-size:9px;color:var(--dim);text-align:center;padding-top:16px;border-top:1px solid var(--border)}
+.clowns-source a{color:var(--muted);text-decoration:none}.clowns-source a:hover{color:var(--pink)}
+@media(max-width:768px){.clowns-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}}
+/* ══ INVESTIGATION CARD ══ */
+.inv-card{background:var(--bg3);border:1px solid rgba(247,201,72,0.25);border-radius:12px;padding:22px 20px;margin-top:32px;max-width:580px}
+.inv-header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.inv-title{font-family:Syne,sans-serif;font-weight:800;font-size:16px;color:var(--gold)}
+.inv-sub{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.6}
+.inv-price-badge{background:rgba(247,201,72,0.12);border:1px solid rgba(247,201,72,0.3);border-radius:6px;padding:8px 14px;display:inline-flex;align-items:center;gap:10px;margin-bottom:18px}
+.inv-price-sol{font-family:Syne,sans-serif;font-weight:800;font-size:22px;color:var(--gold)}
+.inv-price-label{font-family:Space Mono,monospace;font-size:9px;color:var(--muted);line-height:1.4}
+.inv-type-row{display:flex;gap:8px;margin-bottom:12px}
+.inv-type-btn{flex:1;padding:7px 0;font-family:Space Mono,monospace;font-size:9px;letter-spacing:0.1em;border-radius:5px;border:1px solid var(--border2);background:var(--bg4);color:var(--muted);cursor:pointer;transition:all 0.15s}
+.inv-type-btn.active{border-color:rgba(247,201,72,0.5);background:rgba(247,201,72,0.1);color:var(--gold)}
+#inv-pay-btn{width:100%;padding:12px;font-family:Syne,sans-serif;font-weight:800;font-size:13px;letter-spacing:0.05em;background:linear-gradient(135deg,rgba(247,201,72,0.2),rgba(224,96,126,0.2));border:1px solid rgba(247,201,72,0.4);border-radius:7px;color:var(--gold);cursor:pointer;transition:all 0.2s;margin-top:14px}
+#inv-pay-btn:hover{background:linear-gradient(135deg,rgba(247,201,72,0.35),rgba(224,96,126,0.3));border-color:rgba(247,201,72,0.7)}
+#inv-pay-btn:disabled{opacity:0.4;cursor:not-allowed}
+.inv-status{margin-top:12px;padding:10px 14px;border-radius:6px;font-size:12px;display:none}
+.inv-status.ok{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#86efac;display:block}
+.inv-status.err{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#fca5a5;display:block}
+.inv-status.info{background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);color:#93c5fd;display:block}
 </style>
 </head>
 <body>
@@ -437,7 +568,18 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 <div id="app">
 
   <!-- ══ SIDEBAR ══ -->
+  <!-- ══ MOBILE HEADER ══ -->
+  <div id="mobile-header">
+    <button id="mob-menu-btn" onclick="openSidebar()" aria-label="Menu">☰</button>
+    <div id="mob-brand">$YAKK <span>STUDIOS</span></div>
+    <button class="btn btn-ghost" style="font-size:9px;padding:4px 10px" onclick="connectWallet()">🔗 WALLET</button>
+  </div>
+
+  <!-- Sidebar backdrop overlay -->
+  <div id="sb-overlay" onclick="closeSidebar()"></div>
+
   <div id="sidebar">
+    <button id="sb-close" onclick="closeSidebar()" aria-label="Close menu">✕</button>
     <div class="sb-logo">
       <div class="sb-brand">$YAKK <span>STUDIOS</span></div>
       <div class="sb-sub">PINK YAKK SUPREMACY</div>
@@ -449,6 +591,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       <div class="nav-item" onclick="showSection('terminal')"><span class="nav-icon">⚡</span>YAKK TERMINAL <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('update')"><span class="nav-icon">🔄</span>UPDATE TOKEN</div>
       <div class="nav-item" onclick="showSection('trusted')"><span class="nav-icon">🛡️</span>TRUSTED LIST</div>
+      <div class="nav-item" onclick="showSection('clowns')"><span class="nav-icon">🤡</span>CERTIFIED CLOWNS</div>
       <div class="nav-divider"></div>
       <div class="nav-section">CULT TOOLS</div>
       <div class="nav-item" onclick="showSection('yakktrader')"><span class="nav-icon">🤖</span>YAKK AI TRADER <span class="nav-new">NEW</span></div>
@@ -504,7 +647,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               </div>
             </div>
             <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
-              <img src="/icons/icon-512.png" alt="YAKK mascot" style="width:clamp(120px,14vw,200px);height:auto;filter:drop-shadow(0 0 32px rgba(224,96,126,0.4));animation:yakk-float 4s ease-in-out infinite" onerror="this.style.display='none'">
+              <img id="home-yakk-img" src="/icons/icon-512.png" alt="YAKK mascot" style="width:clamp(120px,14vw,200px);height:auto;filter:drop-shadow(0 0 32px rgba(224,96,126,0.4));animation:yakk-float 4s ease-in-out infinite" onerror="this.style.display='none'">
             </div>
           </div>
           <!-- LIVE DEX BANNER -->
@@ -646,6 +789,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <!-- Screener body -->
           <div id="scr-body">
             <!-- LEFT: Token list -->
+            <!-- Mobile back button (shown when chart is open) -->
+            <div id="scr-back-btn" onclick="scrMobileBack()">← BACK TO LIST</div>
+
             <div id="scr-left">
               <div class="scr-lp-top">
                 <input class="scr-lp-search" id="scr-lp-search" type="text" placeholder="Filter tokens..." oninput="scrFilterList(this.value)">
@@ -1035,6 +1181,45 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
             <label class="field-lbl">WHY SHOULD THE YAKK TRUST YOU?</label><textarea class="field-inp" id="apply-why" rows="3" placeholder="On-chain proof, team transparency, no rug history..."></textarea>
             <label class="field-lbl">CONTACT (TG or X)</label><input class="field-inp" id="apply-contact" type="text" placeholder="@handle">
             <button class="btn btn-pink" style="margin-top:12px" onclick="submitApply()">SUBMIT APPLICATION</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           CERTIFIED CLOWNS
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-clowns">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">05 — HALL OF SHAME</div>
+          <div class="sec-title">Certified Clowns 🤡</div>
+          <div class="sec-bar"></div>
+          <div class="clowns-warning">⚠️ These accounts have been identified by the YAKK community as <strong>serial farmers, coordinated extractors, or known scammers</strong> in the Solana ecosystem. Interactions with these accounts carry risk. Always do your own research. YAKK Studios takes no legal responsibility for this community-sourced list.</div>
+          <div id="clowns-grid" class="clowns-grid"></div>
+          <div class="clowns-source">Source: <a href="https://x.com/UGCabal" target="_blank" rel="noopener">@UGCabal</a> tracking list + YAKK community reports</div>
+
+          <!-- INVESTIGATION REQUEST CARD -->
+          <div class="inv-card">
+            <div class="inv-header">
+              <span style="font-size:22px">🔍</span>
+              <div class="inv-title">Request an Investigation</div>
+            </div>
+            <div class="inv-sub">Know a scammer, farmer, or rug artist we haven't exposed yet? Pay 1 SOL and YAKK Studios will investigate, compile on-chain evidence, and publicly expose them. No bribery — this is a community service.</div>
+            <div class="inv-price-badge">
+              <div class="inv-price-sol">1 SOL</div>
+              <div class="inv-price-label">INVESTIGATION FEE<br><span style="color:var(--dim)">paid directly on-chain</span></div>
+            </div>
+            <div class="inv-type-row">
+              <button class="inv-type-btn active" id="inv-type-account" onclick="setInvType('account')">👤 ACCOUNT / X HANDLE</button>
+              <button class="inv-type-btn" id="inv-type-token" onclick="setInvType('token')">🪙 TOKEN / CA</button>
+            </div>
+            <label class="field-lbl" style="margin-top:0" id="inv-target-lbl">X HANDLE OR NAME</label>
+            <input class="field-inp" id="inv-target" type="text" placeholder="@scammer or token name">
+            <label class="field-lbl">EVIDENCE / CONTEXT</label>
+            <textarea class="field-inp" id="inv-evidence" rows="3" placeholder="What makes them a clown? Links, wallet addresses, transaction hashes, screenshots..."></textarea>
+            <label class="field-lbl">YOUR CONTACT (OPTIONAL)</label>
+            <input class="field-inp" id="inv-contact" type="text" placeholder="@yourhandle on X or Telegram">
+            <button id="inv-pay-btn" onclick="invPay()">🔍 PAY 1 SOL &amp; SUBMIT INVESTIGATION</button>
+            <div id="inv-status" class="inv-status"></div>
           </div>
         </div>
       </div>
@@ -2667,18 +2852,69 @@ function buildLeaderboard(){
 }
 function logRaid(){ const link=document.getElementById('raid-link').value.trim(); if(!link){alert('Paste your raid link first, degen.');return;} myXP+=10;myRaids++; document.getElementById('my-xp').textContent=myXP; document.getElementById('my-raids').textContent=myRaids; document.getElementById('raid-link').value=''; alert(`+10 XP! Total: ${myXP} XP. ${myRaids} raid(s). GET YAKKED. 😈`); }
 
-/* ═══ WALLET ═══ */
-function connectWallet(){
-  walletConnected=!walletConnected;
-  const btns=['home-wallet-btn','scr-wallet-btn'];
-  btns.forEach(id=>{ const btn=document.getElementById(id); if(!btn)return; if(walletConnected){btn.textContent='✓ 7Xk9…mE2r';btn.style.color='var(--green)';btn.style.borderColor='rgba(34,197,94,0.4)';}else{btn.textContent=id==='scr-wallet-btn'?'🔗 Wallet':'🔗 Connect Wallet';btn.style.color='';btn.style.borderColor='';} });
-  /* Refresh terminal swap button to reflect wallet state */
-  updateSwapBtn();
-  if(walletConnected){
-    /* Simulate balance display */
-    const solBal = document.getElementById('sol-bal');
-    if(solBal) solBal.textContent = 'Balance: 2.45 SOL';
+/* ═══ WALLET + $YST GATING ═══ */
+const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
+const YST_GATE = 250000;
+const GATED_SECTIONS = ['screener','terminal','cabal','clowns'];
+let walletAddress = null, ystBalance = 0, ystGated = false;
+
+async function connectWallet(){
+  const provider = window?.phantom?.solana || window?.solana;
+  if(!provider || !provider.isPhantom){
+    alert('Phantom wallet not found. Install Phantom at phantom.app to access YAKK features.');
+    return;
   }
+  try {
+    const resp = await provider.connect();
+    walletAddress = resp.publicKey.toString();
+    walletConnected = true;
+
+    /* Fetch $YST token balance via RPC */
+    const rpc = await fetch(SOLANA_RPC, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({jsonrpc:'2.0',id:1,method:'getTokenAccountsByOwner',
+        params:[walletAddress,{mint:YST_MINT},{encoding:'jsonParsed'}]})
+    });
+    const rpcData = await rpc.json();
+    const accounts = rpcData?.result?.value || [];
+    ystBalance = accounts.reduce((sum,a)=>sum+(a?.account?.data?.parsed?.info?.tokenAmount?.uiAmount||0),0);
+    ystGated = ystBalance >= YST_GATE;
+
+    const short = walletAddress.slice(0,4)+'…'+walletAddress.slice(-4);
+    const btnColor = ystGated ? 'var(--green)' : 'var(--gold)';
+    const btnBorder = ystGated ? 'rgba(34,197,94,0.4)' : 'rgba(247,201,72,0.4)';
+    ['home-wallet-btn','scr-wallet-btn'].forEach(id=>{
+      const b=document.getElementById(id); if(!b)return;
+      b.textContent=(ystGated?'✓ ':'⚠ ')+short;
+      b.style.color=btnColor; b.style.borderColor=btnBorder;
+    });
+    const mobBtn=document.querySelector('#mobile-header .btn');
+    if(mobBtn&&mobBtn.textContent.includes('WALLET')){
+      mobBtn.textContent=(ystGated?'✓ ':'⚠ ')+short; mobBtn.style.color=btnColor;
+    }
+    const solBal=document.getElementById('sol-bal');
+    if(solBal) solBal.textContent='YST: '+ystBalance.toLocaleString();
+
+    updateGates();
+    updateSwapBtn();
+  } catch(e){
+    if(!e?.message?.includes('User rejected')) console.error('Wallet error:',e);
+  }
+}
+
+function updateGates(){
+  GATED_SECTIONS.forEach(sec=>{
+    const el=document.getElementById('section-'+sec);
+    if(!el) return;
+    let overlay=el.querySelector('.yst-gate-overlay');
+    if(ystGated){ if(overlay) overlay.remove(); return; }
+    if(overlay) { overlay.querySelector('.yst-gate-bal') && (overlay.querySelector('.yst-gate-bal').textContent=walletAddress?`Connected: ${walletAddress.slice(0,8)}… | YST: ${ystBalance.toLocaleString()} / 250,000`:''); return; }
+    overlay=document.createElement('div');
+    overlay.className='yst-gate-overlay';
+    overlay.innerHTML=`<div class="yst-gate-box"><div class="yst-gate-icon">🔒</div><div class="yst-gate-title">YAKK MEMBERS ONLY</div><div class="yst-gate-sub">Hold <strong style="color:var(--pink)">250,000 $YST</strong> or more to unlock this feature.<br>The cult doesn't let in freeloaders.</div><button class="btn btn-pink" onclick="connectWallet()" style="margin-top:16px;width:100%;justify-content:center">🔗 Connect Wallet &amp; Verify</button><a href="https://jup.ag/swap/SOL-jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV" target="_blank" rel="noopener" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" class="btn btn-outline">Buy $YST on Jupiter ↗</a>${walletAddress?`<div class="yst-gate-bal">Connected: ${walletAddress.slice(0,8)}… | YST: ${ystBalance.toLocaleString()} / 250,000</div>`:''}</div>`;
+    el.style.position='relative';
+    el.insertBefore(overlay,el.firstChild);
+  });
 }
 
 /* ═══ UPDATE MODAL ═══ */
@@ -4422,8 +4658,188 @@ renderTrustedList();
 
 /* Kick off live Solscan data fetch immediately — renders list with
    "…" placeholders then fills in real values as API responds */
+
+/* ═══ MOBILE SIDEBAR ═══ */
+function openSidebar(){
+  document.getElementById('sidebar').classList.add('mob-open');
+  document.getElementById('sb-overlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('mob-open');
+  document.getElementById('sb-overlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+
+/* Auto-close sidebar when a nav item is tapped on mobile */
+const _origShowSection = showSection;
+/* Override showSection to close sidebar on mobile */
+(function(){
+  const orig = window.showSection || function(){};
+  window.showSection = function(id){
+    if(window.innerWidth <= 768) closeSidebar();
+    orig(id);
+  };
+})();
+
+/* ═══ SCREENER MOBILE PANEL SWITCH ═══ */
+function scrMobileShowChart(){
+  /* On mobile: hide list, show chart+right panel */
+  if(window.innerWidth <= 768){
+    const left = document.getElementById('scr-left');
+    if(left) left.classList.add('mob-hidden');
+  }
+}
+function scrMobileBack(){
+  const left = document.getElementById('scr-left');
+  if(left) left.classList.remove('mob-hidden');
+}
+
+/* Patch scrSelectToken to trigger mobile panel switch */
+(function(){
+  const origSel = window.scrSelectToken;
+  if(origSel) window.scrSelectToken = function(id){
+    origSel(id);
+    scrMobileShowChart();
+  };
+})();
+
+/* ═══ SWIPE TO OPEN SIDEBAR ═══ */
+(function(){
+  let startX = 0, startY = 0;
+  document.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', e => {
+    if(window.innerWidth > 768) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = Math.abs(e.changedTouches[0].clientY - startY);
+    /* Swipe right from left edge → open sidebar */
+    if(startX < 28 && dx > 55 && dy < 60) openSidebar();
+    /* Swipe left while sidebar open → close */
+    if(dx < -55 && dy < 60 && document.getElementById('sidebar').classList.contains('mob-open')) closeSidebar();
+  }, {passive:true});
+})();
+
 fetchLiveData();
 setInterval(fetchLiveData, 30000);
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CERTIFIED CLOWNS
+═══════════════════════════════════════════════════════════════════════ */
+const CLOWNS=[
+  /* Jay's confirmed list */
+  {h:'CookerFlips',name:'Cooker'},{h:'daumenxyz',name:'daumen'},{h:'gudmansachs',name:'gudmansachs'},
+  {h:'orangie',name:'orangie'},{h:'flipski77',name:'flipski'},{h:'notdecu',name:'notdecu'},{h:'robopboc',name:'robopboc'},
+  /* @UGCabal following list */
+  {h:'feibo03',name:'Cowboy BNB'},{h:'astaso1',name:'asta'},{h:'padrino_sol',name:'Padrino'},
+  {h:'0xIT4I',name:'IT4I'},{h:'Rafi_0x',name:'Rafi_0x'},{h:'xandereef',name:'xander'},
+  {h:'ohbrox',name:'brox'},{h:'NFTDefiFutures',name:'NDF'},{h:'cryptowasta',name:'CRYPTO WASTA'},
+  {h:'jackduval',name:'Jack Duval'},{h:'chasingexes',name:'dubbz'},{h:'Aliaian',name:'Aliaian'},
+  {h:'iamkadense',name:'Kadense Pengu'},{h:'0xSunNFT',name:'0xSun'},{h:'notanicecat69',name:'Wood'},
+  {h:'sernimazaki',name:'nimazaki'},{h:'dankcoldturkey',name:'dankcoldturkey'},{h:'poe_real69',name:'POE'},
+  {h:'patty_fi',name:'PattyIce'},{h:'smokey0x',name:'SmokEy'},{h:'Cupseyy',name:'Cupsey'},
+  {h:'SolportTom',name:'Tom'},{h:'OrangeSBS',name:'Orange'},{h:'adultarts',name:'Jen'},
+  {h:'gromwtf',name:'Grom'},{h:'Loopierr',name:'Loopierr'},{h:'Trenchwarior',name:'1 guy'},
+  {h:'valueandtime',name:'Value & Time'},{h:'bobthebuildaaa',name:'Bob The Builder'},
+  {h:'thisisdjen',name:'DJ.Σn'},{h:'shahh',name:'shah'},{h:'eth_exy',name:'Exy'},
+  {h:'Katuchi_xyz',name:'Katuchi'},{h:'SpiderCrypto0x',name:'SpiderCrypto'},
+  {h:'sullyfromDeets',name:'sully'},{h:'dxrnell',name:'dxrnelljcl'},{h:'metaversejoji',name:'joji'},
+  {h:'cryptofrags',name:'Frags'},{h:'Klutch_Trades',name:'Klutch'},{h:'brommmyy',name:'Brommy'},
+  {h:'0xkitty69',name:'kitty'},{h:'littlemustacho',name:'Little Mustacho'},
+  {h:'Falconcrypto_',name:'FalconCrypto'},{h:'crypt0wu',name:'wuzie'},{h:'Ed_x0101',name:'Ed x'},
+  {h:'stekisteks',name:'///Steki'},{h:'koyla_sol',name:'La Koy'},{h:'cryptolyxe',name:'lyxe'},
+  {h:'lamaxbt',name:'lama'}
+];
+function renderClowns(){
+  const g=document.getElementById('clowns-grid');
+  if(!g)return;
+  const fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Crect width='52' height='52' fill='%23191926'/%3E%3Ctext x='26' y='36' text-anchor='middle' font-size='28'%3E%F0%9F%A4%A1%3C/text%3E%3C/svg%3E";
+  g.innerHTML=CLOWNS.map(c=>`<a href="https://x.com/${c.h}" target="_blank" rel="noopener" class="clown-card"><img class="clown-avatar" src="https://unavatar.io/x/${c.h}" alt="${c.name}" loading="lazy" onerror="this.src='${fallback}'"><div class="clown-name">${c.name}</div><div class="clown-handle">@${c.h}</div><div class="clown-tag">FARMER</div></a>`).join('');
+}
+renderClowns();
+/* Lock gated sections on load until wallet verified */
+setTimeout(updateGates, 300);
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INVESTIGATION PAYMENT  (1 SOL → YAKK Studios treasury via Phantom)
+   Treasury: 7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB
+═══════════════════════════════════════════════════════════════════════ */
+const YAKK_INVESTIGATION_WALLET = '7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB';
+const SOLANA_RPC = 'https://api.mainnet-beta.solana.com';
+let invType = 'account';
+
+function setInvType(t){
+  invType = t;
+  document.getElementById('inv-type-account').classList.toggle('active', t==='account');
+  document.getElementById('inv-type-token').classList.toggle('active', t==='token');
+  document.getElementById('inv-target-lbl').textContent = t==='account' ? 'X HANDLE OR NAME' : 'TOKEN CA OR NAME';
+  document.getElementById('inv-target').placeholder = t==='account' ? '@scammer or full name' : 'Token CA or name';
+}
+
+function invStatus(msg, type){
+  const el = document.getElementById('inv-status');
+  el.textContent = msg;
+  el.className = 'inv-status ' + type;
+}
+
+async function invPay(){
+  const target = document.getElementById('inv-target').value.trim();
+  const evidence = document.getElementById('inv-evidence').value.trim();
+  const contact = document.getElementById('inv-contact').value.trim();
+  if(!target){ invStatus('⚠️ Please fill in the target field.','err'); return; }
+  if(!evidence){ invStatus('⚠️ Please provide some evidence or context.','err'); return; }
+
+  const btn = document.getElementById('inv-pay-btn');
+  const provider = window?.phantom?.solana || window?.solana;
+
+  if(!provider || !provider.isPhantom){
+    invStatus('🦊 Phantom wallet not detected. Install Phantom to continue.','err'); return;
+  }
+
+  try {
+    btn.disabled = true;
+    invStatus('Connecting wallet…','info');
+
+    const resp = await provider.connect();
+    const fromPubkey = resp.publicKey;
+
+    invStatus('Building transaction…','info');
+
+    const solWeb3 = window.solanaWeb3;
+    if(!solWeb3){ invStatus('⚠️ web3.js not loaded yet — refresh and try again.','err'); btn.disabled=false; return; }
+
+    const connection = new solWeb3.Connection(SOLANA_RPC, 'confirmed');
+    const toPubkey = new solWeb3.PublicKey(YAKK_INVESTIGATION_WALLET);
+    const LAMPORTS = 1000000000; /* 1 SOL */
+
+    const { blockhash } = await connection.getLatestBlockhash();
+    const tx = new solWeb3.Transaction({
+      recentBlockhash: blockhash,
+      feePayer: fromPubkey
+    }).add(
+      solWeb3.SystemProgram.transfer({ fromPubkey, toPubkey, lamports: LAMPORTS })
+    );
+
+    invStatus('Please approve the transaction in Phantom…','info');
+
+    const { signature } = await provider.signAndSendTransaction(tx);
+    await connection.confirmTransaction(signature, 'confirmed');
+
+    invStatus(`✅ Payment confirmed! Tx: ${signature.slice(0,16)}… — YAKK Studios will contact you within 48h. Thanks for keeping Solana clean. 🤡⚖️`, 'ok');
+    btn.disabled = false;
+    document.getElementById('inv-target').value='';
+    document.getElementById('inv-evidence').value='';
+    document.getElementById('inv-contact').value='';
+
+  } catch(e){
+    const msg = e.message || String(e);
+    if(msg.includes('User rejected')){ invStatus('❌ Transaction cancelled.','err'); }
+    else { invStatus('❌ Error: ' + msg,'err'); }
+    btn.disabled = false;
+  }
+}
 
 /* ── Handle manifest shortcuts: ?section=screener etc ─────────────────── */
 (function(){
