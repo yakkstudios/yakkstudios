@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag https://dexscreener.com; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com https://api.dexscreener.com https://gamma-api.polymarket.com https://clob.polymarket.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag https://dexscreener.com https://www.geckoterminal.com; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com https://api.dexscreener.com https://gamma-api.polymarket.com https://clob.polymarket.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YAKK Studios — Pink Yakk Supremacy</title>
@@ -2071,8 +2071,9 @@ async function fetchLiveData(){
         }
         /* Update dex label from API response */
         if(pairData.dexId) t.dex = pairData.dexId.charAt(0).toUpperCase() + pairData.dexId.slice(1);
-        /* Token image from DexScreener info if available */
+        /* Token image + banner from DexScreener info if available */
         if(pairData.info?.imageUrl && !t.imgUrl) t.imgUrl = pairData.info.imageUrl;
+        if(pairData.info?.header && !t.bannerUrl) t.bannerUrl = pairData.info.header;
         if(pairData.info && !t._socialsFromDex){
           if(pairData.info.websites) pairData.info.websites.forEach(w=>{if(w.url&&!t.socials.web)t.socials.web=w.url;});
           if(pairData.info.socials) pairData.info.socials.forEach(s=>{
@@ -2256,34 +2257,27 @@ function scrLoadChart(){
   ph.style.display='none'; tv.style.display='block'; tv.innerHTML='';
 
   if(t.ticker==='SOL'){
-    /* TradingView iframe embed — no script injection, works reliably */
+    /* TradingView Advanced Chart via srcdoc — explicit candle colors fix hollow-candle dark theme bug */
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
     const interval = iMap[curTf]||'D';
-    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol'
-      + '&symbol=BINANCE%3ASOLUSD'
-      + '&interval=' + interval
-      + '&hidesidetoolbar=1&hidetoptoolbar=0&saveimage=0'
-      + '&theme=dark&style=1&timezone=Etc%2FUTC'
-      + '&studies=[]&locale=en';
+    const tvHtml = `<!DOCTYPE html><html><head><style>*{margin:0;padding:0}html,body,#c{width:100%;height:100%;background:#050509}</style></head><body><div id="c"></div><script src="https://s3.tradingview.com/tv.js"><\/script><script>new TradingView.widget({container_id:"c",autosize:true,symbol:"BINANCE:SOLUSD",interval:"${interval}",timezone:"Etc/UTC",theme:"dark",style:"1",locale:"en",toolbar_bg:"#050509",enable_publishing:false,hide_side_toolbar:true,allow_symbol_change:false,save_image:false,overrides:{"mainSeriesProperties.candleStyle.upColor":"#26a69a","mainSeriesProperties.candleStyle.downColor":"#ef5350","mainSeriesProperties.candleStyle.borderUpColor":"#26a69a","mainSeriesProperties.candleStyle.borderDownColor":"#ef5350","mainSeriesProperties.candleStyle.wickUpColor":"#26a69a","mainSeriesProperties.candleStyle.wickDownColor":"#ef5350","paneProperties.background":"#050509","paneProperties.backgroundType":"solid"}})<\/script></body></html>`;
     const iframe = document.createElement('iframe');
-    iframe.src = src;
+    iframe.srcdoc = tvHtml;
     iframe.id = 'tv_sol';
     iframe.style.cssText = 'width:100%;height:440px;border:none;display:block';
     iframe.allow = 'clipboard-write';
-    iframe.loading = 'eager';
+    iframe.sandbox = 'allow-scripts allow-same-origin';
     tv.appendChild(iframe);
     return;
   }
 
-  /* YST / SPT — DexScreener live chart embed (pair address required) */
+  /* YST / SPT — GeckoTerminal embed (clean chart-only, no info panel) */
   const activePair = t.pairs && t.pairs[t._activePair || 0];
   if(activePair && activePair.poolAddr){
-    const dexUrl = 'https://dexscreener.com/solana/' + activePair.poolAddr
-      + '?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0'
-      + '&chartLeftToolbar=0&chartTheme=dark&theme=dark'
-      + '&chartStyle=1&chartType=usd&interval=' + (curTf === 'D' ? '1D' : curTf);
+    const gtUrl = 'https://www.geckoterminal.com/solana/pools/' + activePair.poolAddr
+      + '?embed=1&info=0&swaps=0&grayscale=0&light_chart=0';
     const iframe = document.createElement('iframe');
-    iframe.src = dexUrl;
+    iframe.src = gtUrl;
     iframe.style.cssText = 'width:100%;height:440px;border:none;display:block';
     iframe.allow = 'clipboard-write';
     iframe.loading = 'eager';
@@ -2379,9 +2373,10 @@ function scrRenderRightPanel(){
 
   document.getElementById('rp-inner').innerHTML = `
     <div class="rp-banner">
-      <div style="width:100%;height:100%;background:linear-gradient(${t.bannerGrad});display:flex;align-items:flex-end;padding:5px 9px">
-        <span style="font-family:Space Mono,monospace;font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:0.12em">${t.name.toUpperCase()}</span>
-      </div>
+      ${t.bannerUrl
+        ? `<img src="${t.bannerUrl}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentNode.style.background='linear-gradient(${t.bannerGrad})';this.remove()">`
+        : `<div style="width:100%;height:100%;background:linear-gradient(${t.bannerGrad});display:flex;align-items:flex-end;padding:5px 9px"><span style="font-family:Space Mono,monospace;font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:0.12em">${t.name.toUpperCase()}</span></div>`
+      }
     </div>
     <div class="rp-tok-hdr">
       <div class="rp-timg">${t.emoji}</div>
@@ -2818,31 +2813,27 @@ function termLoadChart(){
   if(!inner) return; if(ph) ph.style.display='none'; inner.innerHTML='';
 
   if(t.ticker==='SOL'){
+    /* TradingView Advanced Chart via srcdoc — explicit candle colors fix hollow-candle dark theme bug */
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
     const interval = iMap[termTf]||'D';
-    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol_term'
-      + '&symbol=BINANCE%3ASOLUSD'
-      + '&interval=' + interval
-      + '&hidesidetoolbar=0&hidetoptoolbar=0&saveimage=0'
-      + '&theme=dark&style=1&timezone=Etc%2FUTC'
-      + '&studies=[]&locale=en';
+    const tvHtml = `<!DOCTYPE html><html><head><style>*{margin:0;padding:0}html,body,#c{width:100%;height:100%;background:#050509}</style></head><body><div id="c"></div><script src="https://s3.tradingview.com/tv.js"><\/script><script>new TradingView.widget({container_id:"c",autosize:true,symbol:"BINANCE:SOLUSD",interval:"${interval}",timezone:"Etc/UTC",theme:"dark",style:"1",locale:"en",toolbar_bg:"#050509",enable_publishing:false,hide_side_toolbar:false,allow_symbol_change:false,save_image:false,overrides:{"mainSeriesProperties.candleStyle.upColor":"#26a69a","mainSeriesProperties.candleStyle.downColor":"#ef5350","mainSeriesProperties.candleStyle.borderUpColor":"#26a69a","mainSeriesProperties.candleStyle.borderDownColor":"#ef5350","mainSeriesProperties.candleStyle.wickUpColor":"#26a69a","mainSeriesProperties.candleStyle.wickDownColor":"#ef5350","paneProperties.background":"#050509","paneProperties.backgroundType":"solid"}})<\/script></body></html>`;
     const iframe = document.createElement('iframe');
-    iframe.src = src;
+    iframe.srcdoc = tvHtml;
     iframe.id = 'tv_sol_term';
     iframe.style.cssText = 'width:100%;height:100%;border:none;display:block';
     iframe.allow = 'clipboard-write';
+    iframe.sandbox = 'allow-scripts allow-same-origin';
     inner.appendChild(iframe);
     return;
   }
 
   const tActivePair = t.pairs && t.pairs[t._activePair || 0];
   if(tActivePair && tActivePair.poolAddr){
-    const dexUrl = 'https://dexscreener.com/solana/' + tActivePair.poolAddr
-      + '?embed=1&loadChartSettings=0&trades=1&tabs=0&info=1'
-      + '&chartLeftToolbar=1&chartTheme=dark&theme=dark'
-      + '&chartStyle=1&chartType=usd&interval=' + (termTf === 'D' ? '1D' : termTf);
+    /* GeckoTerminal embed for YST/SPT — clean chart with trades feed */
+    const gtUrl = 'https://www.geckoterminal.com/solana/pools/' + tActivePair.poolAddr
+      + '?embed=1&info=0&swaps=1&grayscale=0&light_chart=0';
     const iframe = document.createElement('iframe');
-    iframe.src = dexUrl;
+    iframe.src = gtUrl;
     iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;min-height:460px';
     iframe.allow = 'clipboard-write';
     inner.appendChild(iframe);
