@@ -1968,26 +1968,25 @@ function scrLoadChart(){
   ph.style.display='none'; tv.style.display='block'; tv.innerHTML='';
 
   if(t.ticker==='SOL'){
-    /* TradingView iframe embed — no script injection, works reliably */
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
-    const interval = iMap[curTf]||'D';
-    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol'
-      + '&symbol=BINANCE%3ASOLUSD'
-      + '&interval=' + interval
-      + '&hidesidetoolbar=1&hidetoptoolbar=0&saveimage=0'
-      + '&theme=dark&style=1&timezone=Etc%2FUTC'
-      + '&studies=[]&locale=en';
+    const interval = iMap[curTf]||'15';
+    /* Use advanced-chart embed directly with full config in hash.
+       No backgroundColor override — let TradingView handle its own
+       dark theme so candle colors render correctly. */
+    const cfg = encodeURIComponent(JSON.stringify({
+      symbol:'BINANCE:SOLUSD', interval, theme:'dark', style:'1',
+      locale:'en', hide_side_toolbar:true, withdateranges:true,
+      hide_volume:false, save_image:false, autosize:true,
+    }));
     const iframe = document.createElement('iframe');
-    iframe.src = src;
-    iframe.id = 'tv_sol';
+    iframe.src = 'https://s.tradingview.com/embed-widget/advanced-chart/?locale=en#' + cfg;
     iframe.style.cssText = 'width:100%;height:440px;border:none;display:block';
     iframe.allow = 'clipboard-write';
     iframe.loading = 'eager';
+    iframe.title = 'SOL/USD Chart';
     tv.appendChild(iframe);
     return;
   }
-
-  /* YST / SPT — YAKK custom canvas chart from live price data */
   yakkDrawChart(tv, t);
 }
 
@@ -2528,22 +2527,20 @@ function termLoadChart(){
 
   if(t.ticker==='SOL'){
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
-    const interval = iMap[termTf]||'D';
-    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol_term'
-      + '&symbol=BINANCE%3ASOLUSD'
-      + '&interval=' + interval
-      + '&hidesidetoolbar=0&hidetoptoolbar=0&saveimage=0'
-      + '&theme=dark&style=1&timezone=Etc%2FUTC'
-      + '&studies=[]&locale=en';
+    const interval = iMap[termTf]||'15';
+    const cfg = encodeURIComponent(JSON.stringify({
+      symbol:'BINANCE:SOLUSD', interval, theme:'dark', style:'1',
+      locale:'en', hide_side_toolbar:false, withdateranges:true,
+      hide_volume:false, save_image:false, autosize:true,
+    }));
     const iframe = document.createElement('iframe');
-    iframe.src = src;
-    iframe.id = 'tv_sol_term';
+    iframe.src = 'https://s.tradingview.com/embed-widget/advanced-chart/?locale=en#' + cfg;
     iframe.style.cssText = 'width:100%;height:100%;border:none;display:block';
     iframe.allow = 'clipboard-write';
+    iframe.title = 'SOL/USD Chart';
     inner.appendChild(iframe);
     return;
   }
-
   yakkDrawChart(inner, t);
 }
 
