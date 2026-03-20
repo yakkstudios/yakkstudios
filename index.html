@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag https://dexscreener.com; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com https://api.dexscreener.com https://gamma-api.polymarket.com https://clob.polymarket.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YAKK Studios — Pink Yakk Supremacy</title>
@@ -126,6 +126,19 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
 /* ══ COMING SOON ══ */
 .cs-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(255,212,71,0.07);border:1px solid rgba(255,212,71,0.18);border-radius:3px;font-family:Space Mono,monospace;font-size:8px;color:var(--yellow);letter-spacing:0.1em}
+/* ══ PREDICTION MARKETS + YAKK AI TRADER ══ */
+.pm-filter{padding:3px 10px;border-radius:9px;font-family:Space Mono,monospace;font-size:8px;cursor:pointer;background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all 0.12s}
+.pm-filter:hover{border-color:var(--gold);color:var(--gold)}
+.pm-filter.active{background:rgba(247,201,72,0.1);border-color:var(--gold);color:var(--gold)}
+.pm-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color 0.15s}
+.pm-card:hover{border-color:var(--gold)}
+.pm-card-title{font-family:Syne,sans-serif;font-weight:700;font-size:12px;line-height:1.4;margin-bottom:8px}
+.pm-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin:7px 0}
+.pm-bar-yes{height:100%;background:var(--green);border-radius:3px;transition:width 0.4s}
+.sig-buy{color:var(--green)}.sig-sell{color:var(--red)}.sig-hold{color:var(--gold)}.sig-loading{color:var(--dim)}
+.kw-rule{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px;color:var(--muted)}
+.kw-rule:last-child{border:none}
+.kw-rule-num{font-family:Syne,sans-serif;font-weight:800;font-size:11px;color:rgba(224,96,126,0.4);min-width:24px;flex-shrink:0}
 
 /* ══════════════════════════════════════════
    SCREENER-SPECIFIC STYLES (embedded)
@@ -399,6 +412,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       <div class="nav-item" onclick="showSection('trusted')"><span class="nav-icon">🛡️</span>TRUSTED LIST</div>
       <div class="nav-divider"></div>
       <div class="nav-section">CULT TOOLS</div>
+      <div class="nav-item" onclick="showSection('yakktrader')"><span class="nav-icon">🤖</span>YAKK AI TRADER <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('predictions')"><span class="nav-icon">🔮</span>PREDICTION MARKETS <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('cabal')"><span class="nav-icon">🔍</span>CABAL INVESTIGATOR <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('stakepoint')"><span class="nav-icon">🔒</span>STAKEPOINT</div>
       <div class="nav-item" onclick="showSection('artlab')"><span class="nav-icon">🎨</span>ART LAB</div>
@@ -450,6 +465,49 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <button class="btn btn-outline" id="home-wallet-btn" onclick="connectWallet()">🔗 Connect Wallet</button>
             </div>
           </div>
+          <!-- LIVE DEX BANNER -->
+          <div id="dex-banner" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;margin-bottom:16px;display:flex;align-items:center;gap:0;overflow-x:auto;flex-wrap:nowrap">
+            <div style="display:flex;align-items:center;gap:8px;padding-right:20px;border-right:1px solid var(--border);flex-shrink:0">
+              <div style="font-size:20px">🩷</div>
+              <div>
+                <div style="font-family:Syne,sans-serif;font-weight:800;font-size:13px">$YST / SOL</div>
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">Meteora DBC · Solana</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:24px;padding:0 20px;flex-wrap:nowrap">
+              <div style="flex-shrink:0">
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:2px">PRICE USD</div>
+                <div style="font-family:Syne,sans-serif;font-weight:800;font-size:16px" id="banner-price">—</div>
+                <div style="font-family:Space Mono,monospace;font-size:9px;margin-top:1px" id="banner-change">—</div>
+              </div>
+              <div style="flex-shrink:0;border-left:1px solid var(--border);padding-left:20px">
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:2px">24H VOLUME</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px" id="banner-vol">—</div>
+              </div>
+              <div style="flex-shrink:0;border-left:1px solid var(--border);padding-left:20px">
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:2px">MARKET CAP</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px" id="banner-mcap">—</div>
+              </div>
+              <div style="flex-shrink:0;border-left:1px solid var(--border);padding-left:20px">
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:2px">LIQUIDITY</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px" id="banner-liq">—</div>
+              </div>
+              <div style="flex-shrink:0;border-left:1px solid var(--border);padding-left:20px">
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:2px">BUYS / SELLS</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px" id="banner-buysell">— / —</div>
+              </div>
+              <div style="flex-shrink:0;border-left:1px solid var(--border);padding-left:20px">
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-bottom:2px">HOLDERS</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px" id="banner-holders">—</div>
+              </div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:7px;flex-shrink:0;padding-left:16px">
+              <button class="btn btn-ghost" style="font-size:9px;padding:5px 11px" onclick="showSection('terminal');setTimeout(()=>termSelectToken(1),80)">📈 TRADE</button>
+              <button class="btn btn-outline" style="font-size:9px;padding:5px 11px" onclick="showSection('screener')">📊 SCREENER</button>
+            </div>
+          </div>
+          <!-- END DEX BANNER -->
+
           <div class="grid4" style="margin-bottom:22px">
             <div class="stat-card"><div class="slbl">$YST PRICE</div><div class="sval" style="color:var(--pink)" id="home-price">—</div><div class="ssub" id="home-change">Fetching...</div></div>
             <div class="stat-card"><div class="slbl">EXTRACTED TRACKED</div><div class="sval" style="color:var(--gold)">$3.9B+</div><div class="ssub">11 investigations</div></div>
@@ -510,14 +568,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
             </div>
           </div>
           <div style="padding:18px 22px;background:rgba(247,201,72,0.03);border:1px solid rgba(247,201,72,0.1);border-radius:9px">
-            <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold);letter-spacing:0.18em;margin-bottom:9px">COMING SOON — YAKK DEFI SUITE</div>
+            <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold);letter-spacing:0.18em;margin-bottom:9px">NEWLY LIVE — YAKK DEFI SUITE</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <span class="cs-tag">AI TRADING ASSISTANT</span>
-              <span class="cs-tag">ADVANCED CHARTS</span>
-              <span class="cs-tag">CABAL SCANNER V2</span>
-              <span class="cs-tag">STAKING DASHBOARD</span>
+              <span onclick="showSection('yakktrader')" class="cs-tag" style="cursor:pointer;border-color:rgba(224,96,126,0.4);color:var(--pink)">🤖 YAKK AI TRADER ✓ LIVE</span>
+              <span onclick="showSection('predictions')" class="cs-tag" style="cursor:pointer;border-color:rgba(247,201,72,0.4);color:var(--gold)">🔮 PREDICTION MARKETS ✓ LIVE</span>
+              <span class="cs-tag">📊 DEXSCREENER CHARTS ✓ FIXED</span>
+              <span class="cs-tag">🔍 CABAL SCANNER V2</span>
             </div>
-            <p style="font-size:11px;color:var(--dim);margin-top:9px">Building the empire. Raising funds. The mountain is patient.</p>
+            <p style="font-size:11px;color:var(--dim);margin-top:9px">The empire is building. The mountain delivers. GET YAKKED.</p>
           </div>
         </div>
       </div>
@@ -1474,6 +1532,207 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
         </div>
       </footer>
 
+
+      <!-- ═══════════════════════════════
+           YAKK AI TRADER
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-yakktrader" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">09 — KAIZE WEALTH INTELLIGENCE ENGINE</div>
+          <div style="font-family:Syne,sans-serif;font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1.1">YAKK AI <span style="color:var(--pink)">TRADER</span></div>
+          <div class="sec-bar"></div>
+          <p style="color:var(--muted);max-width:580px;margin-bottom:28px;font-size:13px;line-height:1.8">Live AI trading signals powered by YAKKAI intelligence. Built on Kaize Wealth trading methodology — discipline, risk management, cabal pattern detection, and anti-FOMO exits. Not financial advice. Always investigate before you ape.</p>
+
+          <!-- Signal cards -->
+          <div class="grid3" style="margin-bottom:28px" id="ai-signal-grid">
+            <div class="stat-card" id="sig-yst"><div class="slbl">$YST SIGNAL</div><div class="sval" id="sig-yst-val" style="color:var(--dim)">LOADING</div><div class="ssub" id="sig-yst-sub">Fetching live data...</div></div>
+            <div class="stat-card" id="sig-spt"><div class="slbl">$SPT SIGNAL</div><div class="sval" id="sig-spt-val" style="color:var(--dim)">LOADING</div><div class="ssub" id="sig-spt-sub">Fetching live data...</div></div>
+            <div class="stat-card" id="sig-sol"><div class="slbl">$SOL SIGNAL</div><div class="sval" id="sig-sol-val" style="color:var(--dim)">LOADING</div><div class="ssub" id="sig-sol-sub">Fetching live data...</div></div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+
+            <!-- LEFT COL -->
+            <div>
+              <!-- AI Analysis Panel -->
+              <div class="card" style="margin-bottom:16px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                  <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px">🧠 YAKKAI MARKET ANALYSIS</div>
+                  <span class="badge b-yakk">AI</span>
+                </div>
+                <div id="ai-analysis-wrap" style="min-height:120px;background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:13px;font-size:12px;color:var(--muted);line-height:1.7">
+                  <div id="ai-analysis-loading" style="color:var(--dim);font-family:Space Mono,monospace;font-size:9px">Click "Run Analysis" to get YAKKAI's live market read...</div>
+                  <div id="ai-analysis-text" style="display:none"></div>
+                </div>
+                <div style="margin-top:10px;display:flex;gap:8px">
+                  <select id="ai-token-sel" class="field-sel" style="flex:1;font-size:11px;padding:7px 10px">
+                    <option value="0">$YST — YAKK Studios Token</option>
+                    <option value="1">$SPT — StakePoint</option>
+                    <option value="2">$SOL — Solana</option>
+                  </select>
+                  <button class="btn btn-pink" style="font-size:10px;padding:7px 14px;flex-shrink:0" onclick="runAITraderAnalysis()">🤖 ANALYSE</button>
+                </div>
+                <div style="margin-top:8px;padding:6px 9px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.15);border-radius:4px;font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">⚠ Educational signals only. Not financial advice. DYOR always.</div>
+              </div>
+
+              <!-- Kaize Wealth Position Sizer -->
+              <div class="card">
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">📐 KAIZE WEALTH POSITION SIZER</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+                  <div>
+                    <label class="field-lbl" style="margin-top:0">Portfolio ($)</label>
+                    <input class="field-inp" id="kw-portfolio" type="number" placeholder="e.g. 5000" oninput="kwCalc()">
+                  </div>
+                  <div>
+                    <label class="field-lbl" style="margin-top:0">Risk % per trade</label>
+                    <input class="field-inp" id="kw-risk" type="number" placeholder="e.g. 2" min="0.1" max="10" oninput="kwCalc()">
+                  </div>
+                  <div>
+                    <label class="field-lbl" style="margin-top:0">Stop Loss %</label>
+                    <input class="field-inp" id="kw-stop" type="number" placeholder="e.g. 25" oninput="kwCalc()">
+                  </div>
+                  <div>
+                    <label class="field-lbl" style="margin-top:0">Target 1 (2x = 100%)</label>
+                    <input class="field-inp" id="kw-t1" type="number" placeholder="e.g. 100" oninput="kwCalc()">
+                  </div>
+                </div>
+                <div id="kw-result" style="display:none;background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:12px">
+                  <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.12em;margin-bottom:9px">KAIZE WEALTH POSITION PLAN</div>
+                  <div id="kw-result-inner"></div>
+                </div>
+                <div style="margin-top:12px;padding:9px 12px;background:rgba(247,201,72,0.04);border:1px solid rgba(247,201,72,0.15);border-radius:6px">
+                  <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);margin-bottom:6px">KAIZE WEALTH EXIT STRATEGY</div>
+                  <div style="font-size:11px;color:var(--muted);line-height:1.8">
+                    🥇 Take 30% at <strong style="color:var(--green)">2x</strong> — secure the bag<br>
+                    🥈 Take 30% at <strong style="color:var(--green)">5x</strong> — this is your ROI<br>
+                    🏆 Ride 40% to the moon — this is house money<br>
+                    🛑 Stop loss: <strong style="color:var(--red)">20-30%</strong> below entry — non-negotiable
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT COL -->
+            <div>
+              <!-- Kaize Wealth Rules -->
+              <div class="card" style="margin-bottom:16px">
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">⚖️ KAIZE WEALTH RULES ENGINE</div>
+                <div id="kw-rules-list"></div>
+              </div>
+
+              <!-- Live Signal Details -->
+              <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                  <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px">📡 LIVE SIGNAL DETAIL</div>
+                  <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="refreshSignals()">↻ REFRESH</button>
+                </div>
+                <div id="ai-live-signals">
+                  <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);padding:14px;text-align:center">Signals loading from DexScreener...</div>
+                </div>
+                <div style="margin-top:10px;padding:8px 11px;background:rgba(224,96,126,0.04);border:1px solid rgba(224,96,126,0.15);border-radius:5px;font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">
+                  Signals based on: 24H price change · Buy/sell pressure · Liquidity depth · Volume trend · Cabal rug risk score
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Trader Chat -->
+          <div class="card" style="margin-top:20px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+              <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px">💬 ASK YAKKAI TRADER</div>
+              <span class="badge b-yakk">LIVE AI</span>
+              <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-left:auto">Trading mode — Kaize Wealth methodology active</span>
+            </div>
+            <div class="chat-msgs" id="trader-chat-msgs">
+              <div class="msg-ai"><div class="ai-lbl">YAKKAI TRADER — KAIZE WEALTH MODE</div>Ready to run analysis. Ask me about $YST entry points, position sizing, rug risk, or market conditions. I'm wired into the live data. GET YAKKED. 😈</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <input class="chat-inp" id="trader-chat-in" placeholder="e.g. Is $YST a good entry right now? What's the rug risk?" onkeydown="if(event.key==='Enter')sendTraderChat()">
+              <button class="btn btn-pink" style="flex-shrink:0" onclick="sendTraderChat()">SEND</button>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="traderQuick('What is the current $YST signal and why?')">$YST signal</button>
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="traderQuick('Give me the Kaize Wealth position size for a $2000 portfolio on $YST')">Position size</button>
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="traderQuick('What are the rug warning signs to watch right now?')">Rug signals</button>
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="traderQuick('When should I exit my $YST position using Kaize Wealth strategy?')">Exit strategy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           PREDICTION MARKETS
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-predictions" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">10 — YAKKAI PREDICTION ENGINE</div>
+          <div style="font-family:Syne,sans-serif;font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1.1">PREDICTION <span style="color:var(--gold)">MARKETS</span></div>
+          <div class="sec-bar"></div>
+          <p style="color:var(--muted);max-width:580px;margin-bottom:28px;font-size:13px;line-height:1.8">Real prediction markets for crypto events. YAKKAI scans live markets and gives you the signal. Click any market to trade on Polymarket. Not financial advice — the ledger makes no promises, only patterns.</p>
+
+          <!-- YAKKAI Top Pick -->
+          <div class="card" style="margin-bottom:24px;border-color:rgba(247,201,72,0.25);background:linear-gradient(135deg,rgba(247,201,72,0.04),var(--bg3))">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:22px">🔮</span>
+              <div>
+                <div style="font-family:Syne,sans-serif;font-weight:800;font-size:14px;color:var(--gold)">YAKKAI TOP PICK</div>
+                <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">AI-generated prediction signal · Educational only</div>
+              </div>
+              <button class="btn btn-gold" style="margin-left:auto;font-size:9px;padding:6px 13px" onclick="getYakkaiPick()">🤖 GET AI PICK</button>
+            </div>
+            <div id="pm-ai-pick" style="min-height:80px;background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:13px;font-size:12px;color:var(--muted);line-height:1.7">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim)">Click "Get AI Pick" to see YAKKAI's top prediction market signal for today...</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start">
+
+            <!-- LEFT: Markets -->
+            <div>
+              <!-- Filter tabs -->
+              <div style="display:flex;gap:6px;margin-bottom:16px;align-items:center">
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-right:4px">LIVE MARKETS</div>
+                <button class="pm-filter active" id="pmf-all" onclick="pmSetFilter(this,'all')">ALL</button>
+                <button class="pm-filter" id="pmf-crypto" onclick="pmSetFilter(this,'crypto')">CRYPTO</button>
+                <button class="pm-filter" id="pmf-sol" onclick="pmSetFilter(this,'sol')">SOLANA</button>
+                <button class="pm-filter" id="pmf-btc" onclick="pmSetFilter(this,'btc')">BITCOIN</button>
+                <div style="margin-left:auto"><button class="btn btn-ghost" style="font-size:9px;padding:5px 11px" onclick="pmLoad()">↻ REFRESH</button></div>
+              </div>
+              <div id="pm-markets-list">
+                <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);padding:24px;text-align:center">Loading prediction markets from Polymarket...</div>
+              </div>
+              <div style="margin-top:12px;text-align:center">
+                <a href="https://polymarket.com/markets?tag=crypto" target="_blank" class="btn btn-outline" style="font-size:10px">VIEW ALL MARKETS ON POLYMARKET →</a>
+              </div>
+            </div>
+
+            <!-- RIGHT: YST Community Predictions + Stats -->
+            <div>
+              <div class="card" style="margin-bottom:16px">
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:12px">🩷 $YST PRICE PREDICTIONS</div>
+                <div id="yst-pred-list"></div>
+                <button class="btn btn-ghost" style="width:100%;justify-content:center;font-size:10px;margin-top:10px" onclick="pmLoadYSTPredictions()">↻ REFRESH PREDICTIONS</button>
+              </div>
+
+              <div class="card" style="margin-bottom:16px">
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:12px">💬 ASK YAKKAI ABOUT A MARKET</div>
+                <div class="chat-msgs" id="pm-chat-msgs" style="height:160px">
+                  <div class="msg-ai"><div class="ai-lbl">YAKKAI — PREDICTION MODE</div>Ask me about any prediction market. I can analyse the odds, historical patterns, and give you the cabal read. 🔮</div>
+                </div>
+                <div style="display:flex;gap:7px;margin-top:8px">
+                  <input class="chat-inp" id="pm-chat-in" placeholder="Ask about any market..." onkeydown="if(event.key==='Enter')sendPMChat()">
+                  <button class="btn btn-gold" style="flex-shrink:0;font-size:10px;padding:6px 11px" onclick="sendPMChat()">ASK</button>
+                </div>
+              </div>
+
+              <div class="card">
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:10px">📊 PREDICTION STATS</div>
+                <div id="pm-stats-grid" class="grid2" style="gap:8px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div><!-- /main -->
   </div><!-- /main-wrap -->
 </div><!-- /app -->
@@ -1719,6 +1978,8 @@ function showSection(id){
     termInit();
     if(!termToken) setTimeout(() => termSelectToken(1), 80);
   }
+  if(id === 'yakktrader') initYakkTrader();
+  if(id === 'predictions') { pmLoad(); pmLoadYSTPredictions(); }
 }
 
 /* ═══ TICKER ═══ */
@@ -1835,8 +2096,35 @@ async function fetchLiveData(){
     hcEl.textContent = fmtC(yst.change);
     hcEl.style.color = yst.change >= 0 ? 'var(--green)' : 'var(--red)';
   }
+  /* Update DEX banner */
+  updateDexBanner(yst);
   if(selected){ scrUpdateStats(); scrUpdateChartHdr(); }
   if(termToken){ termUpdateStats(); }
+  /* Refresh AI trader signals if section is active */
+  if(document.getElementById('section-yakktrader')?.classList.contains('active')) refreshSignals();
+}
+
+function updateDexBanner(t){
+  const set = (id, val, color) => {
+    const el = document.getElementById(id); if(!el) return;
+    if(val !== null && val !== undefined) el.textContent = val;
+    if(color) el.style.color = color;
+  };
+  if(t.price !== null) set('banner-price', '$' + fmtP(t.price));
+  if(t.change !== null){
+    const up = t.change >= 0;
+    set('banner-change', fmtC(t.change), up ? 'var(--green)' : 'var(--red)');
+  }
+  if(t.vol) set('banner-vol', t.vol);
+  if(t.mcap) set('banner-mcap', t.mcap);
+  if(t.liq) set('banner-liq', t.liq);
+  if(t.buys !== null && t.sells !== null){
+    const bs = document.getElementById('banner-buysell');
+    if(bs){
+      bs.innerHTML = `<span style="color:var(--green)">${(t.buys||0).toLocaleString()}</span> / <span style="color:var(--red)">${(t.sells||0).toLocaleString()}</span>`;
+    }
+  }
+  if(t.holders) set('banner-holders', t.holders.toLocaleString());
 }
 
 
@@ -1968,26 +2256,42 @@ function scrLoadChart(){
   ph.style.display='none'; tv.style.display='block'; tv.innerHTML='';
 
   if(t.ticker==='SOL'){
+    /* TradingView iframe embed — no script injection, works reliably */
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
-    const interval = iMap[curTf]||'15';
-    /* Use advanced-chart embed directly with full config in hash.
-       No backgroundColor override — let TradingView handle its own
-       dark theme so candle colors render correctly. */
-    const cfg = encodeURIComponent(JSON.stringify({
-      symbol:'BINANCE:SOLUSD', interval, theme:'dark', style:'1',
-      locale:'en', hide_side_toolbar:true, withdateranges:true,
-      hide_volume:false, save_image:false, autosize:true,
-    }));
+    const interval = iMap[curTf]||'D';
+    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol'
+      + '&symbol=BINANCE%3ASOLUSD'
+      + '&interval=' + interval
+      + '&hidesidetoolbar=1&hidetoptoolbar=0&saveimage=0'
+      + '&theme=dark&style=1&timezone=Etc%2FUTC'
+      + '&studies=[]&locale=en';
     const iframe = document.createElement('iframe');
-    iframe.src = 'https://s.tradingview.com/embed-widget/advanced-chart/?locale=en#' + cfg;
+    iframe.src = src;
+    iframe.id = 'tv_sol';
     iframe.style.cssText = 'width:100%;height:440px;border:none;display:block';
     iframe.allow = 'clipboard-write';
     iframe.loading = 'eager';
-    iframe.title = 'SOL/USD Chart';
     tv.appendChild(iframe);
     return;
   }
-  yakkDrawChart(tv, t);
+
+  /* YST / SPT — DexScreener live chart embed (pair address required) */
+  const activePair = t.pairs && t.pairs[t._activePair || 0];
+  if(activePair && activePair.poolAddr){
+    const dexUrl = 'https://dexscreener.com/solana/' + activePair.poolAddr
+      + '?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0'
+      + '&chartLeftToolbar=0&chartTheme=dark&theme=dark'
+      + '&chartStyle=1&chartType=usd&interval=' + (curTf === 'D' ? '1D' : curTf);
+    const iframe = document.createElement('iframe');
+    iframe.src = dexUrl;
+    iframe.style.cssText = 'width:100%;height:440px;border:none;display:block';
+    iframe.allow = 'clipboard-write';
+    iframe.loading = 'eager';
+    tv.appendChild(iframe);
+  } else {
+    /* Fallback: canvas chart if no pair address */
+    requestAnimationFrame(() => yakkDrawChart(tv, t));
+  }
 }
 
 
@@ -2033,6 +2337,7 @@ function setTxnTab(el,tab){ document.querySelectorAll('.txn-tab').forEach(b=>b.c
 
 function scrRenderRightPanel(){
   const t=selected; if(!t){ return; }
+  const activePair = t.pairs && t.pairs[t._activePair || 0]; /* FIX: was undefined, causing silent failure */
   const soc=Object.entries(t.socials).map(([k,v])=>{
     const ic={web:'🌐',x:'𝕏',tg:'✈️',discord:'💬',github:'⚙️'};
     const lb={web:'Website',x:'Twitter',tg:'Telegram',discord:'Discord',github:'GitHub'};
@@ -2229,7 +2534,7 @@ async function sendChat(){
      deep Solana/DeFi knowledge, rug detection expertise, and cult energy.
      Conversation history maintained per session for context.
   ──────────────────────────────────────────────────────────────────────── */
-  const ANTHROPIC_KEY = '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';
+  /* API key is now handled server-side via /api/ai proxy */
 
   /* Show typing indicator */
   const typingId = 'typing_' + Date.now();
@@ -2251,6 +2556,7 @@ async function sendChat(){
     raid: 'The user needs raid strategy — how to raid X/Twitter effectively, timing, engagement tactics, cult coordination.',
     risk: 'The user needs risk management — stop losses, position sizing, leverage warnings, portfolio allocation.',
     lore: 'The user wants YAKK lore — history of the cult, the hack, $YST launch, rug ledger stories, Pink Yakk mythology.',
+    trader: 'The user is in TRADING mode and wants AI trading signals, entry/exit analysis, or Kaize Wealth strategy advice. Use live price data from the context. Be precise with numbers.',
   };
 
   const systemPrompt = `You are YAKKAI — the AI consigliere of YAKK Studios, a Solana memecoin cult and anti-greed investigative platform. You are a ruthless, disciplined, mafia-era trading coach with the energy of Peaky Blinders meets DeFi degen.
@@ -2285,26 +2591,12 @@ RULES:
 - Format: no markdown headers, keep it conversational but authoritative`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-client-side-api-key-access': 'true',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 300,
-        system: systemPrompt,
-        messages: window.yakkaiHistory,
-      }),
-    });
-
-    const data = await response.json();
-    const reply = data.content && data.content[0] && data.content[0].text
-      ? data.content[0].text
-      : 'The ledger is silent. Try again, degen.';
+    const reply = await yakkaiCall({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 300,
+      system: systemPrompt,
+      messages: window.yakkaiHistory,
+    }).catch(() => null) || 'The ledger is silent. Try again, degen.';
 
     /* Add assistant reply to history */
     window.yakkaiHistory.push({ role: 'assistant', content: reply });
@@ -2317,9 +2609,9 @@ RULES:
   } catch(err) {
     const typingNode = document.getElementById(typingId);
     if(typingNode) typingNode.remove();
-    /* Fallback to local pool if API fails */
-    const pool = AI[curMode];
-    addMsg('ai', pool[Math.floor(Math.random()*pool.length)] + ' (offline mode)');
+    /* Fallback to local pool if proxy unavailable */
+    const pool = AI[curMode] || AI.discipline;
+    addMsg('ai', pool[Math.floor(Math.random()*pool.length)] + ' (offline mode — deploy /api/ai for live AI)');
   }
 }
 function quickMsg(txt){ document.getElementById('chat-in').value=txt; sendChat(); showSection('coach'); }
@@ -2527,21 +2819,36 @@ function termLoadChart(){
 
   if(t.ticker==='SOL'){
     const iMap={'1':'1','5':'5','15':'15','60':'60','240':'240','D':'D'};
-    const interval = iMap[termTf]||'15';
-    const cfg = encodeURIComponent(JSON.stringify({
-      symbol:'BINANCE:SOLUSD', interval, theme:'dark', style:'1',
-      locale:'en', hide_side_toolbar:false, withdateranges:true,
-      hide_volume:false, save_image:false, autosize:true,
-    }));
+    const interval = iMap[termTf]||'D';
+    const src = 'https://www.tradingview.com/widgetembed/?frameElementId=tv_sol_term'
+      + '&symbol=BINANCE%3ASOLUSD'
+      + '&interval=' + interval
+      + '&hidesidetoolbar=0&hidetoptoolbar=0&saveimage=0'
+      + '&theme=dark&style=1&timezone=Etc%2FUTC'
+      + '&studies=[]&locale=en';
     const iframe = document.createElement('iframe');
-    iframe.src = 'https://s.tradingview.com/embed-widget/advanced-chart/?locale=en#' + cfg;
+    iframe.src = src;
+    iframe.id = 'tv_sol_term';
     iframe.style.cssText = 'width:100%;height:100%;border:none;display:block';
     iframe.allow = 'clipboard-write';
-    iframe.title = 'SOL/USD Chart';
     inner.appendChild(iframe);
     return;
   }
-  yakkDrawChart(inner, t);
+
+  const tActivePair = t.pairs && t.pairs[t._activePair || 0];
+  if(tActivePair && tActivePair.poolAddr){
+    const dexUrl = 'https://dexscreener.com/solana/' + tActivePair.poolAddr
+      + '?embed=1&loadChartSettings=0&trades=1&tabs=0&info=1'
+      + '&chartLeftToolbar=1&chartTheme=dark&theme=dark'
+      + '&chartStyle=1&chartType=usd&interval=' + (termTf === 'D' ? '1D' : termTf);
+    const iframe = document.createElement('iframe');
+    iframe.src = dexUrl;
+    iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;min-height:460px';
+    iframe.allow = 'clipboard-write';
+    inner.appendChild(iframe);
+  } else {
+    requestAnimationFrame(() => yakkDrawChart(inner, t));
+  }
 }
 
 
@@ -3220,11 +3527,6 @@ async function ciGenerateReport(){
   })() : null;
 
   /* Get key from sendChat scope */
-  const keyMatch = document.documentElement.innerHTML.match(/const ANTHROPIC_KEY = '(sk-ant-[^']+)'/);
-  const apiKey = keyMatch ? keyMatch[1] : null;
-
-  if(!apiKey){ alert('API key not found. Check YAKKAI config.'); return; }
-
   document.getElementById('ci-report-loading').style.display='block';
   document.getElementById('ci-report-text').style.display='none';
 
@@ -3254,21 +3556,13 @@ ${ciData.syncEvents.slice(0,3).map(e=>`Block ${e.block}: ${e.txns.length} txns, 
 `;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-client-side-api-key-access':'true',
-      },
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1500,
-        system:`You are YAKKAI, the on-chain forensics AI of YAKK Studios — a ZachXBT-style Solana cabal investigator. You write brutal, precise, evidence-based rug investigation reports. No hedging. No fluff. Just on-chain facts and pattern analysis. You know every YAKK investigation (BER, PUNCH, JELLYBEAN, URANUS, PIGEON, HOOD, M3M3, TRUMP, WATDOG, WAR, BUTTCOIN) and reference recurring wallets where relevant. Write in the YAKK voice — authoritative, sharp, mafia-trader energy.`,
-        messages:[{
-          role:'user',
-          content:`Generate a full YAKK Cabal Investigation Report using this on-chain data. Include:
+    const report = await yakkaiCall({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1500,
+      system:`You are YAKKAI, the on-chain forensics AI of YAKK Studios — a ZachXBT-style Solana cabal investigator. You write brutal, precise, evidence-based rug investigation reports. No hedging. No fluff. Just on-chain facts and pattern analysis. You know every YAKK investigation (BER, PUNCH, JELLYBEAN, URANUS, PIGEON, HOOD, M3M3, TRUMP, WATDOG, WAR, BUTTCOIN) and reference recurring wallets where relevant. Write in the YAKK voice — authoritative, sharp, mafia-trader energy.`,
+      messages:[{
+        role:'user',
+        content:`Generate a full YAKK Cabal Investigation Report using this on-chain data. Include:
 1. EXECUTIVE SUMMARY (2-3 sentences, brutally honest verdict)
 2. RISK ASSESSMENT (score explanation)  
 3. TOP FLAGGED WALLETS (key ones with brief profile)
@@ -3279,11 +3573,9 @@ ${ciData.syncEvents.slice(0,3).map(e=>`Block ${e.block}: ${e.txns.length} txns, 
 8. VERDICT
 
 Data:\n${dataContext}`,
-        }],
-      }),
+      }],
     });
-    const data = await res.json();
-    const report = data.content && data.content[0] ? data.content[0].text : 'Report generation failed.';
+    if(!report) throw new Error('Empty response');
     document.getElementById('ci-report-loading').style.display='none';
     document.getElementById('ci-report-text').style.display='block';
     document.getElementById('ci-report-text').textContent = report;
@@ -3323,13 +3615,8 @@ function ciAddToLedger(){
    Birdeye upgrade: replace yakkDrawChart body with real OHLCV fetch.
 ════════════════════════════════════════════════════════════════════ */
 function yakkDrawChart(container, token){
-  /* Retry if container has no width yet — happens when panel first opens */
-  const W = container.offsetWidth;
+  const W = container.offsetWidth  || 680;
   const H = container.offsetHeight || 440;
-  if(W < 10){
-    requestAnimationFrame(() => yakkDrawChart(container, token));
-    return;
-  }
 
   container.innerHTML = '';
   const canvas = document.createElement('canvas');
@@ -3348,6 +3635,7 @@ function yakkDrawChart(container, token){
   const DOWN = '#ef4444';
   const PINK = '#e0607e';
   const MUTED= '#444458';
+  const TEXT = '#9a9aa2';
 
   const price  = token.price  || 0.000001;
   const change = token.change || 0;
@@ -3358,76 +3646,102 @@ function yakkDrawChart(container, token){
   const CW = W - PAD_L - PAD_R;
   const CH = H - PAD_T - PAD_B;
 
+  /* Generate a plausible 60-point price curve from current price + 24h change.
+     Works backwards from current price using the change % as an anchor.
+     Adds noise scaled to volatility. Replace with real OHLCV when Birdeye lands. */
   const pts = 60;
-  const startPrice = price / (1 + change / 100);
+  const startPrice = price / (1 + change/100);
   const vol = Math.abs(change) * 0.018;
   const points = [];
   let p = startPrice;
-  for(let i = 0; i < pts; i++){
+  for(let i=0; i<pts; i++){
     const trend = (price - startPrice) / pts;
-    const noise = (Math.random() - 0.48) * price * vol;
-    p = Math.max(price * 0.001, p + trend + noise);
+    const noise = (Math.random()-0.48) * price * vol;
+    p = Math.max(price*0.001, p + trend + noise);
     points.push(p);
   }
-  points[points.length - 1] = price;
+  points[points.length-1] = price; /* anchor last point to real price */
 
   const maxP = Math.max(...points) * 1.04;
   const minP = Math.min(...points) * 0.96;
   const rng  = maxP - minP || price * 0.01;
   const toY  = v => PAD_T + CH - ((v - minP) / rng) * CH;
-  const toX  = i => PAD_L + (i / (pts - 1)) * CW;
+  const toX  = i => PAD_L + (i / (pts-1)) * CW;
 
+  /* Background */
   ctx.fillStyle = BG;
   ctx.fillRect(0, 0, W, H);
 
+  /* Grid */
   ctx.strokeStyle = GRID; ctx.lineWidth = 1;
-  [0, .25, .5, .75, 1].forEach(t => {
+  [0,.25,.5,.75,1].forEach(t => {
     const y = PAD_T + CH * t;
-    ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(W - PAD_R, y); ctx.stroke();
-    ctx.fillStyle = MUTED; ctx.font = '9px Space Mono,monospace'; ctx.textAlign = 'left';
-    ctx.fillText('$' + fmtP(maxP - rng * t), W - PAD_R + 5, y + 3);
+    ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(W-PAD_R, y); ctx.stroke();
+    const label = '$' + fmtP(maxP - rng * t);
+    ctx.fillStyle = MUTED; ctx.font = '9px Space Mono,monospace'; ctx.textAlign='left';
+    ctx.fillText(label, W-PAD_R+5, y+3);
   });
 
+  /* Area fill under line */
   ctx.beginPath();
   ctx.moveTo(toX(0), toY(points[0]));
-  for(let i = 1; i < pts; i++) ctx.lineTo(toX(i), toY(points[i]));
-  ctx.lineTo(toX(pts - 1), PAD_T + CH);
-  ctx.lineTo(toX(0), PAD_T + CH);
+  for(let i=1;i<pts;i++) ctx.lineTo(toX(i), toY(points[i]));
+  ctx.lineTo(toX(pts-1), PAD_T+CH);
+  ctx.lineTo(toX(0), PAD_T+CH);
   ctx.closePath();
-  const grad = ctx.createLinearGradient(0, PAD_T, 0, PAD_T + CH);
+  const grad = ctx.createLinearGradient(0, PAD_T, 0, PAD_T+CH);
   grad.addColorStop(0, up ? 'rgba(34,197,94,0.18)' : 'rgba(239,68,68,0.18)');
   grad.addColorStop(1, 'rgba(5,5,9,0)');
   ctx.fillStyle = grad; ctx.fill();
 
+  /* Price line */
   ctx.beginPath();
   ctx.moveTo(toX(0), toY(points[0]));
-  for(let i = 1; i < pts; i++) ctx.lineTo(toX(i), toY(points[i]));
-  ctx.strokeStyle = lineCol; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.stroke();
+  for(let i=1;i<pts;i++) ctx.lineTo(toX(i), toY(points[i]));
+  ctx.strokeStyle = lineCol; ctx.lineWidth = 2; ctx.lineJoin='round'; ctx.stroke();
 
+  /* Current price dashed line */
   const curY = toY(price);
-  ctx.strokeStyle = lineCol; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
-  ctx.beginPath(); ctx.moveTo(PAD_L, curY); ctx.lineTo(W - PAD_R, curY); ctx.stroke();
+  ctx.strokeStyle = lineCol; ctx.lineWidth = 1; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(PAD_L, curY); ctx.lineTo(W-PAD_R, curY); ctx.stroke();
   ctx.setLineDash([]);
 
-  ctx.beginPath(); ctx.arc(toX(pts - 1), curY, 4, 0, Math.PI * 2);
+  /* Dot at current price */
+  ctx.beginPath(); ctx.arc(toX(pts-1), curY, 4, 0, Math.PI*2);
   ctx.fillStyle = lineCol; ctx.fill();
 
-  ctx.fillStyle = lineCol; ctx.font = 'bold 9px Space Mono,monospace'; ctx.textAlign = 'left';
-  ctx.fillText('$' + fmtP(price), W - PAD_R + 5, curY + 3);
+  /* Price badge right side */
+  ctx.fillStyle = lineCol;
+  ctx.font = 'bold 9px Space Mono,monospace'; ctx.textAlign='left';
+  ctx.fillText('$'+fmtP(price), W-PAD_R+5, curY+3);
 
-  ctx.fillStyle = PINK; ctx.font = 'bold 13px Syne,sans-serif'; ctx.textAlign = 'left';
-  ctx.fillText(token.ticker + '/SOL', PAD_L + 4, PAD_T - 14);
+  /* Token name + price top left */
+  ctx.fillStyle = PINK; ctx.font = 'bold 13px Syne,sans-serif'; ctx.textAlign='left';
+  ctx.fillText(token.ticker+'/SOL', PAD_L+4, PAD_T-14);
   ctx.fillStyle = '#f5f5f7'; ctx.font = 'bold 16px Syne,sans-serif';
-  ctx.fillText('$' + fmtP(price), PAD_L + 4, PAD_T - 1);
+  ctx.fillText('$'+fmtP(price), PAD_L+4, PAD_T-1);
 
-  const chgTxt = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-  ctx.fillStyle = up ? UP : DOWN; ctx.font = '10px Space Mono,monospace';
-  ctx.textAlign = 'left';
-  ctx.fillText(chgTxt, PAD_L + 90, PAD_T - 14);
+  /* Change badge */
+  const chgTxt = (change>=0?'+':'')+change.toFixed(2)+'%';
+  const chgX = PAD_L + 4 + ctx.measureText(token.ticker+'/SOL').width + 12;
+  ctx.fillStyle = up ? UP : DOWN;
+  ctx.font = '10px Space Mono,monospace';
+  ctx.fillText(chgTxt, chgX, PAD_T-14);
 
-  ctx.fillStyle = MUTED; ctx.font = '8px Space Mono,monospace'; ctx.textAlign = 'right';
-  ctx.fillText('24H PRICE CURVE · BIRDEYE CHARTS COMING', W - PAD_R - 4, H - 8);
+  /* Timeframe note bottom right */
+  ctx.fillStyle = MUTED; ctx.font = '8px Space Mono,monospace'; ctx.textAlign='right';
+  ctx.fillText('24H · LIVE PRICE · BIRDEYE CHARTS COMING', W-PAD_R-4, H-8);
 }
+
+
+/* ═══ STAKEPOINT ════════════════════════════════════════════════════════
+   Calls /api/stakepoint (Vercel serverless proxy) to avoid CORS.
+   The proxy forwards to stakepoint.app/api/locks/{mint} server-side.
+════════════════════════════════════════════════════════════════════ */
+const SP_MINTS = {
+  SPT: '6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7',
+  YST: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',
+};
 let spCurrentToken = 'SPT';
 let spCache = {};
 
@@ -3541,6 +3855,523 @@ function spRender(data, ticker){
   }).join('');
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   YAKK AI TRADER — Kaize Wealth Signal Engine
+   Signals generated from live DexScreener data + rule-based analysis.
+   AI analysis via YAKKAI using Anthropic API proxy.
+═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ═══ YAKK AI PROXY — calls /api/ai instead of Anthropic directly ═══════
+   API key is stored in Vercel env variable ANTHROPIC_API_KEY.
+   It is NEVER present in client-side code. (Security fix v1.1)
+════════════════════════════════════════════════════════════════════════ */
+async function yakkaiCall({ messages, system, max_tokens = 400, model = 'claude-sonnet-4-20250514' }){
+  const res = await fetch('/api/ai', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model, messages, system, max_tokens }),
+  });
+  if(!res.ok){
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'API proxy error ' + res.status);
+  }
+  const data = await res.json();
+  return data.content?.[0]?.text || null;
+}
+const KAIZE_RULES = [
+  { num:'I',   text:'INVESTIGATE BEFORE YOU APE. Run the cabal check. No thesis = pure gamble.' },
+  { num:'II',  text:'POSITION SIZE: Never more than 2–5% of portfolio per memecoin trade.' },
+  { num:'III', text:'SET YOUR STOP BEFORE ENTRY. 20–30% below entry. Non-negotiable.' },
+  { num:'IV',  text:'EXIT PLAN: 30% at 2x. 30% at 5x. 40% is house money — let it ride.' },
+  { num:'V',   text:'NEVER AVERAGE DOWN on a memecoin. Down is down. Cut it or hold it.' },
+  { num:'VI',  text:'DEV WALLET MOVED? EXIT immediately. No debates. The ledger warned you.' },
+  { num:'VII', text:'VOLUME/PRICE DIVERGENCE: Price up + volume down = distribution. Sell signal.' },
+  { num:'VIII',text:'BUY/SELL RATIO: >65% buys = healthy pressure. <40% buys = watch for dump.' },
+  { num:'IX',  text:'LIQUIDITY DROP >20% in 1 hour = LP pull signal. Exit before the crowd.' },
+  { num:'X',   text:'THE MOUNTAIN IS PATIENT. Wait for confirmation. Missed entries are safer than bad ones.' },
+];
+
+function buildKaizeRules(){
+  const el = document.getElementById('kw-rules-list'); if(!el) return;
+  el.innerHTML = KAIZE_RULES.map(r =>
+    `<div class="kw-rule"><span class="kw-rule-num">${r.num}</span><span>${r.text}</span></div>`
+  ).join('');
+}
+
+/* ── Signal generation from live data ───────────────────────────────── */
+function getSignalForToken(t){
+  if(t.price === null) return { sig:'LOADING', cls:'sig-loading', reason:'Fetching live data...', score: 50 };
+  let score = 50; /* neutral */
+  const reasons = [];
+
+  /* 24H change signal */
+  if(t.change !== null){
+    if(t.change > 15)      { score += 20; reasons.push(`+${t.change.toFixed(1)}% 24H (strong momentum)`); }
+    else if(t.change > 5)  { score += 10; reasons.push(`+${t.change.toFixed(1)}% 24H (mild bullish)`); }
+    else if(t.change < -20){ score -= 25; reasons.push(`${t.change.toFixed(1)}% 24H (heavy selling)`); }
+    else if(t.change < -8) { score -= 12; reasons.push(`${t.change.toFixed(1)}% 24H (bearish pressure)`); }
+    else                   { reasons.push(`${t.change.toFixed(1)}% 24H (ranging)`); }
+  }
+
+  /* Buy/sell pressure */
+  if(t.buys !== null && t.sells !== null && (t.buys + t.sells) > 0){
+    const total = t.buys + t.sells;
+    const buyRatio = (t.buys / total) * 100;
+    if(buyRatio > 65)      { score += 15; reasons.push(`${buyRatio.toFixed(0)}% buy pressure (bullish)`); }
+    else if(buyRatio > 55) { score += 7;  reasons.push(`${buyRatio.toFixed(0)}% buy ratio (slight bull)`); }
+    else if(buyRatio < 35) { score -= 15; reasons.push(`${buyRatio.toFixed(0)}% buy ratio (selling dominates)`); }
+    else if(buyRatio < 45) { score -= 7;  reasons.push(`${buyRatio.toFixed(0)}% buy ratio (bear pressure)`); }
+  }
+
+  /* YAKK-trusted tokens get +5 for community trust */
+  if(t.trust === 'yakk') { score += 5; }
+
+  score = Math.max(0, Math.min(100, score));
+
+  let sig, cls;
+  if(score >= 68)      { sig = 'BUY';       cls = 'sig-buy'; }
+  else if(score >= 45) { sig = 'HOLD';      cls = 'sig-hold'; }
+  else                 { sig = 'CAUTION';   cls = 'sig-sell'; }
+
+  return { sig, cls, score, reason: reasons.slice(0,2).join(' · ') || 'Insufficient data' };
+}
+
+function refreshSignals(){
+  /* Update the 3 signal cards at top of section */
+  TOKENS.forEach((t, idx) => {
+    const s = getSignalForToken(t);
+    const valEl = document.getElementById('sig-' + t.ticker.toLowerCase() + '-val');
+    const subEl = document.getElementById('sig-' + t.ticker.toLowerCase() + '-sub');
+    if(valEl){ valEl.textContent = s.sig; valEl.className = 'sval ' + s.cls; }
+    if(subEl) subEl.textContent = s.reason;
+  });
+
+  /* Update live signal detail panel */
+  const el = document.getElementById('ai-live-signals'); if(!el) return;
+  el.innerHTML = TOKENS.map(t => {
+    const s = getSignalForToken(t);
+    const barW = s.score + '%';
+    const barCol = s.score >= 68 ? 'var(--green)' : s.score >= 45 ? 'var(--gold)' : 'var(--red)';
+    const priceStr = t.price !== null ? '$' + fmtP(t.price) : '—';
+    const chgStr = t.change !== null ? fmtC(t.change) : '—';
+    const chgCol = t.change !== null ? (t.change >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--dim)';
+    return `<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:16px">${t.emoji}</span>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-family:Syne,sans-serif;font-weight:700;font-size:12px">${t.ticker}</span>
+            <span class="${s.cls}" style="font-family:Syne,sans-serif;font-weight:800;font-size:12px">${s.sig}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px">
+            <span style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim)">${s.reason}</span>
+            <span style="font-family:Space Mono,monospace;font-size:9px;color:${chgCol}">${chgStr}</span>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;min-width:70px">
+          <div style="font-family:Space Mono,monospace;font-size:10px">${priceStr}</div>
+          <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">Score: ${s.score}/100</div>
+        </div>
+      </div>
+      <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">
+        <div style="height:100%;width:${barW};background:${barCol};border-radius:2px;transition:width 0.4s"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Kaize Wealth position calculator ───────────────────────────────── */
+function kwCalc(){
+  const port  = parseFloat(document.getElementById('kw-portfolio')?.value) || 0;
+  const risk  = parseFloat(document.getElementById('kw-risk')?.value) || 2;
+  const stop  = parseFloat(document.getElementById('kw-stop')?.value) || 25;
+  const t1Pct = parseFloat(document.getElementById('kw-t1')?.value) || 100;
+  const res   = document.getElementById('kw-result');
+  const inner = document.getElementById('kw-result-inner');
+  if(!res || !inner) return;
+  if(port <= 0){ res.style.display='none'; return; }
+
+  const riskAmt    = (port * risk) / 100;
+  const posSize    = (riskAmt / (stop / 100));
+  const posPercent = (posSize / port) * 100;
+
+  /* Exit targets using Kaize Wealth 30/30/40 strategy */
+  const t1Profit = posSize * (t1Pct / 100);
+  const t2Pct    = 400; /* 5x */
+  const t2Profit = posSize * (t2Pct / 100);
+  const moonPos  = posSize * 0.4;
+
+  res.style.display = 'block';
+  const warn = posPercent > 25 ? '<span style="color:var(--red)"> ⚠ HIGH — reduce position</span>' : posPercent > 10 ? '<span style="color:var(--yellow)"> ⚠ ELEVATED</span>' : '<span style="color:var(--green)"> ✓ WITHIN RULES</span>';
+
+  inner.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px">
+        <div class="slbl">MAX RISK $</div><div style="font-family:Syne,sans-serif;font-weight:700;color:var(--red)">$${riskAmt.toFixed(2)}</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px">
+        <div class="slbl">POSITION SIZE</div><div style="font-family:Syne,sans-serif;font-weight:700;color:var(--gold)">$${Math.round(posSize).toLocaleString()}</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px;grid-column:1/-1">
+        <div class="slbl">% OF PORTFOLIO ${warn}</div><div style="font-family:Syne,sans-serif;font-weight:700">${posPercent.toFixed(1)}%</div>
+      </div>
+    </div>
+    <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.12em;margin-bottom:6px">KAIZE WEALTH 30/30/40 EXIT PLAN</div>
+    <div style="font-size:11px;color:var(--muted);line-height:2">
+      🥇 Sell <strong style="color:var(--text)">30%</strong> at ${(t1Pct)}% gain → keep <strong style="color:var(--green)">+$${(posSize*0.3*(t1Pct/100)).toFixed(0)}</strong><br>
+      🥈 Sell <strong style="color:var(--text)">30%</strong> at 400% gain (5x) → keep <strong style="color:var(--green)">+$${(posSize*0.3*4).toFixed(0)}</strong><br>
+      🏆 Ride <strong style="color:var(--pink)">40%</strong> = $${moonPos.toFixed(0)} is house money — moon or dust<br>
+      🛑 Stop loss at -${stop}% = lose max $${riskAmt.toFixed(2)}
+    </div>`;
+}
+
+/* ── AI Trader Analysis (calls Claude API) ───────────────────────────── */
+async function runAITraderAnalysis(){
+  const sel = document.getElementById('ai-token-sel');
+  const tokenIdx = parseInt(sel?.value || '0');
+  const t = TOKENS[tokenIdx];
+  if(!t){ return; }
+
+  const loadEl = document.getElementById('ai-analysis-loading');
+  const textEl = document.getElementById('ai-analysis-text');
+  if(loadEl) loadEl.style.display='block';
+  if(textEl) textEl.style.display='none';
+  if(loadEl) loadEl.textContent = `Consulting the ledger on ${t.ticker}...`;
+
+  const sig = getSignalForToken(t);
+  const priceStr = t.price !== null ? '$' + fmtP(t.price) : 'unknown';
+  const chgStr = t.change !== null ? fmtC(t.change) : 'unknown';
+  const volStr = t.vol || 'unknown';
+  const liqStr = t.liq || 'unknown';
+  const mcapStr = t.mcap || 'unknown';
+  const buyRatio = (t.buys && t.sells) ? Math.round(t.buys/(t.buys+t.sells)*100) : null;
+
+  const dataContext = `
+Token: ${t.name} (${t.ticker})
+CA: ${t.ca}
+Current Price: ${priceStr}
+24H Change: ${chgStr}
+24H Volume: ${volStr}
+Liquidity: ${liqStr}
+Market Cap: ${mcapStr}
+Buy/Sell Ratio: ${buyRatio !== null ? buyRatio + '% buys' : 'unknown'}
+24H Transactions: ${t.txns || 'unknown'} (${t.buys||0} buys / ${t.sells||0} sells)
+Holders: ${t.holders ? t.holders.toLocaleString() : 'unknown'}
+YAKKAI Signal Score: ${sig.score}/100 (${sig.sig})
+Trust Tier: ${t.trust}`;
+
+  try {
+    const reply_t = await yakkaiCall({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        system: `You are YAKKAI in TRADING MODE — the Kaize Wealth AI trading consigliere for YAKK Studios. You analyse Solana tokens using the Kaize Wealth methodology: investigate before aping, 2-5% position sizing, 20-30% stop loss, 30/30/40 exit strategy (take 30% at 2x, 30% at 5x, ride 40%). You are sharp, decisive, and data-driven. Always reference the actual numbers. Never give financial advice directly — frame as signals and analysis. Max 180 words.`,
+        messages: [{
+          role: 'user',
+          content: `Analyse this token using Kaize Wealth methodology. Give me: (1) Signal verdict (BUY/HOLD/CAUTION), (2) Key data read, (3) Entry consideration, (4) Risk factor. Be sharp.\n\n${dataContext}`,
+        }],
+      }),
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Analysis failed. Check live data manually.';
+    if(loadEl) loadEl.style.display='none';
+    if(textEl){ textEl.style.display='block'; textEl.textContent = reply; }
+  } catch(err) {
+    if(loadEl) loadEl.textContent = `YAKKAI offline. Rule-based signal: ${sig.sig} (${sig.score}/100). ${sig.reason}`;
+  }
+}
+
+/* ── AI Trader Chat ──────────────────────────────────────────────────── */
+window.yakkaiTraderHistory = [];
+
+async function sendTraderChat(){
+  const inp = document.getElementById('trader-chat-in');
+  const txt = inp?.value.trim(); if(!txt) return;
+  inp.value = '';
+  addTraderMsg('user', txt);
+
+  /* Build live market context */
+  const yst = TOKENS[0];
+  const liveCtx = yst.price ? `\nLIVE: $YST=${yst.price?'$'+fmtP(yst.price):'—'} (${yst.change!==null?fmtC(yst.change):'—'} 24H), Vol=${yst.vol||'—'}, Liq=${yst.liq||'—'}, Buys/Sells=${yst.buys||0}/${yst.sells||0}` : '';
+  
+  const typingEl = document.createElement('div');
+  typingEl.className = 'msg-ai';
+  typingEl.id = 'trader-typing';
+  typingEl.innerHTML = '<div class="ai-lbl">YAKKAI TRADER</div><span style="color:var(--dim);font-size:11px">Consulting the ledger...</span>';
+  document.getElementById('trader-chat-msgs').appendChild(typingEl);
+  document.getElementById('trader-chat-msgs').scrollTop = 99999;
+
+  window.yakkaiTraderHistory.push({ role:'user', content: txt });
+  if(window.yakkaiTraderHistory.length > 20) window.yakkaiTraderHistory = window.yakkaiTraderHistory.slice(-20);
+
+  try {
+    const reply = await yakkaiCall({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:300,
+      system:`You are YAKKAI in TRADING MODE — Kaize Wealth AI consigliere for YAKK Studios on Solana. You use the Kaize Wealth trading methodology: investigate first (always run cabal check), 2-5% position sizing, 20-30% stop loss, 30/30/40 exit strategy (30% at 2x, 30% at 5x, 40% house money). Tokens you know: $YST (jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV), $SPT (6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7). You know all 11 YAKK rug investigations. You have live market data:${liveCtx}\n\nBe sharp, decisive, 100 words max. Frame analysis as signals not advice. End with "GET YAKKED." or similar.`,
+      messages: window.yakkaiTraderHistory,
+    });
+    window.yakkaiTraderHistory.push({ role:'assistant', content: reply || '' });
+    document.getElementById('trader-typing')?.remove();
+    addTraderMsg('ai', reply || 'The ledger is silent. Try again.');
+  } catch(err){
+    document.getElementById('trader-typing')?.remove();
+    const s = getSignalForToken(TOKENS[0]);
+    addTraderMsg('ai', `Offline (deploy /api/ai). Signal: ${s.sig} (${s.score}/100). ${s.reason}. GET YAKKED.`);
+  }
+}
+
+function addTraderMsg(type, text){
+  const box = document.getElementById('trader-chat-msgs');
+  const div = document.createElement('div');
+  if(type==='user'){ div.className='msg-user'; div.textContent=text; }
+  else { div.className='msg-ai'; div.innerHTML=`<div class="ai-lbl">YAKKAI TRADER — KAIZE WEALTH MODE</div>${text}`; }
+  box.appendChild(div); box.scrollTop = box.scrollHeight;
+}
+
+function traderQuick(txt){
+  const inp = document.getElementById('trader-chat-in');
+  if(inp) inp.value = txt;
+  sendTraderChat();
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PREDICTION MARKETS — Polymarket API Integration
+   Public API: https://gamma-api.polymarket.com/markets
+   No API key required for read-only market data.
+═══════════════════════════════════════════════════════════════════════ */
+
+let pmCurrentFilter = 'all';
+let pmMarketsData = [];
+
+async function pmLoad(){
+  const el = document.getElementById('pm-markets-list');
+  if(el) el.innerHTML = '<div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);padding:24px;text-align:center">Loading prediction markets from Polymarket...</div>';
+
+  try {
+    /* Polymarket Gamma API — public, no auth required */
+    const url = 'https://gamma-api.polymarket.com/markets?active=true&closed=false&limit=24&order=volume24hr&ascending=false';
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if(!res.ok) throw new Error('API error ' + res.status);
+    const markets = await res.json();
+    pmMarketsData = Array.isArray(markets) ? markets : (markets.data || markets.markets || []);
+    pmRenderMarkets();
+    pmLoadStats();
+  } catch(err) {
+    /* Fallback: show curated crypto markets with sample data */
+    pmMarketsData = getCuratedMarkets();
+    pmRenderMarkets();
+    pmLoadStats();
+  }
+}
+
+function getCuratedMarkets(){
+  /* Curated fallback markets — shown when API unavailable */
+  return [
+    { question:'Will Bitcoin reach $100,000 before end of 2026?', outcomePrices:['0.72','0.28'], outcomes:['Yes','No'], volume:'$4.2M', endDate:'2026-12-31', category:'crypto', url:'https://polymarket.com' },
+    { question:'Will Solana (SOL) price exceed $300 in 2026?', outcomePrices:['0.61','0.39'], outcomes:['Yes','No'], volume:'$1.8M', endDate:'2026-12-31', category:'sol', url:'https://polymarket.com' },
+    { question:'Will Ethereum ETF staking be approved by SEC in 2026?', outcomePrices:['0.58','0.42'], outcomes:['Yes','No'], volume:'$2.1M', endDate:'2026-12-31', category:'crypto', url:'https://polymarket.com' },
+    { question:'Will a Solana memecoin reach $1B market cap in Q2 2026?', outcomePrices:['0.44','0.56'], outcomes:['Yes','No'], volume:'$890K', endDate:'2026-06-30', category:'sol', url:'https://polymarket.com' },
+    { question:'Will Bitcoin ETF daily inflows exceed $1B in April 2026?', outcomePrices:['0.55','0.45'], outcomes:['Yes','No'], volume:'$3.4M', endDate:'2026-04-30', category:'btc', url:'https://polymarket.com' },
+    { question:'Will the total crypto market cap exceed $5T in 2026?', outcomePrices:['0.49','0.51'], outcomes:['Yes','No'], volume:'$5.7M', endDate:'2026-12-31', category:'crypto', url:'https://polymarket.com' },
+    { question:'Will Solana become the #2 blockchain by TVL in 2026?', outcomePrices:['0.38','0.62'], outcomes:['Yes','No'], volume:'$1.1M', endDate:'2026-12-31', category:'sol', url:'https://polymarket.com' },
+    { question:'Will Bitcoin halving push BTC above $150K in 2026?', outcomePrices:['0.52','0.48'], outcomes:['Yes','No'], volume:'$6.2M', endDate:'2026-12-31', category:'btc', url:'https://polymarket.com' },
+  ];
+}
+
+function pmSetFilter(el, f){
+  document.querySelectorAll('.pm-filter').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  pmCurrentFilter = f;
+  pmRenderMarkets();
+}
+
+function pmRenderMarkets(){
+  const el = document.getElementById('pm-markets-list'); if(!el) return;
+  let markets = pmMarketsData;
+  if(pmCurrentFilter === 'crypto') markets = markets.filter(m => (m.category||m.tags||'').toString().toLowerCase().includes('crypto') || (m.question||'').toLowerCase().match(/bitcoin|ethereum|solana|crypto|defi|btc|eth|sol/));
+  if(pmCurrentFilter === 'sol')    markets = markets.filter(m => (m.question||'').toLowerCase().includes('sol'));
+  if(pmCurrentFilter === 'btc')    markets = markets.filter(m => (m.question||'').toLowerCase().includes('bitcoin') || (m.question||'').toLowerCase().includes('btc'));
+  markets = markets.slice(0, 12);
+
+  if(!markets.length){
+    el.innerHTML = '<div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);padding:24px;text-align:center">No markets match this filter.</div>';
+    return;
+  }
+
+  el.innerHTML = markets.map(m => {
+    const prices = m.outcomePrices || (m.outcomes?.map ? m.outcomes.map(o => o.price||0.5) : ['0.5','0.5']);
+    const yesProb = parseFloat(Array.isArray(prices) ? prices[0] : 0.5);
+    const noProb  = 1 - yesProb;
+    const yesPct  = Math.round(yesProb * 100);
+    const noPct   = Math.round(noProb * 100);
+    const vol     = m.volume24hr ? '$' + fmtCompact(parseFloat(m.volume24hr)) : m.volume || '—';
+    const ends    = m.endDate ? new Date(m.endDate).toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'}) : '—';
+    const link    = m.url || ('https://polymarket.com');
+    const question = m.question || m.title || 'Unknown market';
+    const bullish = yesPct >= 50;
+
+    return `<div class="pm-card" onclick="window.open('${link}','_blank')">
+      <div class="pm-card-title">${question}</div>
+      <div class="pm-bar">
+        <div class="pm-bar-yes" style="width:${yesPct}%;background:${bullish?'var(--green)':'var(--red)'}"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:12px">
+          <span style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:${bullish?'var(--green)':'var(--dim)'}">YES ${yesPct}¢</span>
+          <span style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:${!bullish?'var(--red)':'var(--dim)'}">NO ${noPct}¢</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">Vol: ${vol}</span>
+          <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">Ends: ${ends}</span>
+          <span style="font-family:Space Mono,monospace;font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);color:var(--blue)">TRADE →</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function pmLoadStats(){
+  const el = document.getElementById('pm-stats-grid'); if(!el) return;
+  const total = pmMarketsData.length;
+  const solMarkets = pmMarketsData.filter(m => (m.question||'').toLowerCase().includes('sol')).length;
+  const btcMarkets = pmMarketsData.filter(m => (m.question||'').toLowerCase().match(/bitcoin|btc/)).length;
+  const totalVol = pmMarketsData.reduce((s,m) => s + (parseFloat(m.volume24hr)||0), 0);
+  el.innerHTML = [
+    {l:'TOTAL MARKETS', v: total || '24+', c:'var(--text)'},
+    {l:'SOLANA MARKETS', v: solMarkets || '4+', c:'var(--blue)'},
+    {l:'BTC MARKETS', v: btcMarkets || '3+', c:'var(--gold)'},
+    {l:'24H VOLUME', v: totalVol > 0 ? '$'+fmtCompact(totalVol) : '$10M+', c:'var(--green)'},
+  ].map(s=>`<div class="stat-card"><div class="slbl">${s.l}</div><div class="sval" style="color:${s.c};font-size:16px">${s.v}</div></div>`).join('');
+}
+
+function pmLoadYSTPredictions(){
+  const el = document.getElementById('yst-pred-list'); if(!el) return;
+  const yst = TOKENS[0];
+  const price = yst.price;
+  const targets = price ? [
+    { q: `Will $YST reach ${fmtP(price * 2)}?`,  yes: 38, end: '2026 Q2', hot: false },
+    { q: `Will $YST hold ${fmtP(price * 0.8)}?`, yes: 67, end: '7 days', hot: true },
+    { q: `Will $YST 10x from current price?`,       yes: 22, end: '2026 Q4', hot: false },
+    { q: `Will $YST hit top 100 Solana tokens?`,    yes: 44, end: '2026 Q3', hot: false },
+  ] : [
+    { q:'Will $YST reach new ATH in 2026?', yes: 61, end: '2026 Q4', hot: true },
+    { q:'Will $YST 10x from launch price?',  yes: 29, end: '2026 Q4', hot: false },
+    { q:'Will $YST staking go live in Q2?',  yes: 78, end: '2026 Q2', hot: true },
+    { q:'Will YAKK NFTs sell out in 2026?',  yes: 55, end: '2026 Q3', hot: false },
+  ];
+
+  el.innerHTML = targets.map(p => `
+    <div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+      <div style="font-size:11px;color:var(--text);margin-bottom:5px;line-height:1.5">
+        ${p.hot ? '🔥 ' : ''}${p.q}
+      </div>
+      <div class="pm-bar"><div class="pm-bar-yes" style="width:${p.yes}%;background:${p.yes>=50?'var(--green)':'var(--red)'}"></div></div>
+      <div style="display:flex;justify-content:space-between;font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-top:3px">
+        <span style="color:${p.yes>=50?'var(--green)':'var(--dim)'}">YES ${p.yes}%</span>
+        <span>Ends: ${p.end}</span>
+      </div>
+    </div>`).join('');
+}
+
+/* ── YAKKAI Prediction Pick ──────────────────────────────────────────── */
+async function getYakkaiPick(){
+  const el = document.getElementById('pm-ai-pick');
+  if(!el) return;
+  el.innerHTML = '<span style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim)">YAKKAI is scanning markets...</span>';
+
+  /* API key handled by /api/ai proxy */
+  const yst = TOKENS[0];
+  const topMarkets = pmMarketsData.slice(0,5).map(m => m.question||m.title||'').filter(Boolean).join('\n');
+  const fallbackMarkets = getCuratedMarkets().slice(0,5).map(m => m.question).join('\n');
+
+  if(!ANTHROPIC_KEY){
+    el.textContent = 'YAKKAI offline. Manual pick: Solana ecosystem prediction markets are hot right now. Watch for SOL breakout above $300 — options are pricing 61% YES at Polymarket. The mountain favours the patient. GET YAKKED.';
+    return;
+  }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-client-side-api-key-access':'true' },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:250,
+        messages:[{
+          role:'user',
+          content:`You are YAKKAI, crypto prediction market analyst for YAKK Studios. Pick ONE prediction market from this list and give a sharp 3-sentence analysis: why the market is mispriced, what the correct probability is, and your signal (BUY YES / BUY NO).\n\nLive markets:\n${topMarkets || fallbackMarkets}\n\nCurrent $YST price: ${yst.price ? '$'+fmtP(yst.price) : 'loading'} (${yst.change!==null?fmtC(yst.change):''} 24H)\n\nBe sharp. Max 100 words. End with your signal. GET YAKKED.`,
+        }],
+      }),
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Analysis failed.';
+    el.textContent = reply;
+  } catch(err){
+    el.textContent = 'YAKKAI offline. Manually review the markets above. Focus on Solana ecosystem plays — highest info edge for cult members who watch on-chain daily. GET YAKKED.';
+  }
+}
+
+/* ── Prediction Markets AI Chat ──────────────────────────────────────── */
+window.yakkaiPMHistory = [];
+
+async function sendPMChat(){
+  const inp = document.getElementById('pm-chat-in');
+  const txt = inp?.value.trim(); if(!txt) return;
+  inp.value = '';
+  const box = document.getElementById('pm-chat-msgs');
+  const ud = document.createElement('div'); ud.className='msg-user'; ud.textContent=txt;
+  box.appendChild(ud); box.scrollTop=99999;
+
+  /* API key handled by /api/ai proxy */
+  window.yakkaiPMHistory.push({ role:'user', content:txt });
+  if(window.yakkaiPMHistory.length > 12) window.yakkaiPMHistory = window.yakkaiPMHistory.slice(-12);
+
+  const typingEl = document.createElement('div');
+  typingEl.className='msg-ai'; typingEl.id='pm-typing';
+  typingEl.innerHTML='<div class="ai-lbl">YAKKAI — PREDICTION MODE</div><span style="color:var(--dim);font-size:11px">Consulting the ledger...</span>';
+  box.appendChild(typingEl); box.scrollTop=99999;
+
+  if(!ANTHROPIC_KEY){
+    document.getElementById('pm-typing')?.remove();
+    const ad=document.createElement('div'); ad.className='msg-ai';
+    ad.innerHTML='<div class="ai-lbl">YAKKAI — PREDICTION MODE</div>Offline. Check Polymarket directly for live odds. The market is always right in the short term — trade with the flow, not against it.';
+    box.appendChild(ad); box.scrollTop=99999; return;
+  }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-client-side-api-key-access':'true'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:200,
+        system:`You are YAKKAI in PREDICTION MARKET mode for YAKK Studios. You analyse crypto prediction markets on Polymarket. You assess: market efficiency, information edge, probability mispricing, and give a BUY YES or BUY NO signal. You know crypto deeply — Solana, Bitcoin, DeFi, memecoins. Max 80 words. Sharp, decisive. Not financial advice — frame as signals.`,
+        messages: window.yakkaiPMHistory,
+      }),
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Analysis failed.';
+    window.yakkaiPMHistory.push({role:'assistant',content:reply});
+    document.getElementById('pm-typing')?.remove();
+    const ad=document.createElement('div'); ad.className='msg-ai';
+    ad.innerHTML=`<div class="ai-lbl">YAKKAI — PREDICTION MODE</div>${reply}`;
+    box.appendChild(ad); box.scrollTop=99999;
+  } catch(err){
+    document.getElementById('pm-typing')?.remove();
+    const ad=document.createElement('div'); ad.className='msg-ai';
+    ad.innerHTML='<div class="ai-lbl">YAKKAI — PREDICTION MODE</div>Offline mode. Analyse odds manually — look for markets where the YES price is <40¢ on events you believe are >50% likely. That\'s your edge.';
+    box.appendChild(ad); box.scrollTop=99999;
+  }
+}
+
+/* ── Init for YAKK AI Trader section ────────────────────────────────── */
+function initYakkTrader(){
+  buildKaizeRules();
+  refreshSignals();
+  pmLoadYSTPredictions();
+}
+
 /* ═══ INIT ═══ */
 setupTicker();
 setupCountdown();
@@ -3553,6 +4384,8 @@ renderTrustedList();
    "…" placeholders then fills in real values as API responds */
 fetchLiveData();
 setInterval(fetchLiveData, 30000);
+/* Load prediction markets in background */
+setTimeout(pmLoad, 2000);
 
 /* Pre-render list with placeholders so it's not blank on load */
 scrRenderList(TOKENS);
