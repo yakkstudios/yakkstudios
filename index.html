@@ -1538,7 +1538,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
       ═══════════════════════════════ -->
       <div class="page-section" id="section-yakktrader" style="display:none">
         <div class="sec-pad">
-          <div class="sec-eyebrow">09 — KAIZE WEALTH INTELLIGENCE ENGINE</div>
+          <div class="sec-eyebrow">09 — KAIZE INTELLIGENCE ENGINE</div>
           <div style="font-family:Syne,sans-serif;font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1.1">YAKK AI <span style="color:var(--pink)">TRADER</span></div>
           <div class="sec-bar"></div>
           <p style="color:var(--muted);max-width:580px;margin-bottom:28px;font-size:13px;line-height:1.8">Live AI trading signals powered by YAKKAI intelligence. Built on Kaize Wealth trading methodology — discipline, risk management, cabal pattern detection, and anti-FOMO exits. Not financial advice. Always investigate before you ape.</p>
@@ -1577,7 +1577,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
 
               <!-- Kaize Wealth Position Sizer -->
               <div class="card">
-                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">📐 KAIZE WEALTH POSITION SIZER</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">📐 KAIZE POSITION SIZER</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
                   <div>
                     <label class="field-lbl" style="margin-top:0">Portfolio ($)</label>
@@ -1597,11 +1597,11 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
                   </div>
                 </div>
                 <div id="kw-result" style="display:none;background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:12px">
-                  <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.12em;margin-bottom:9px">KAIZE WEALTH POSITION PLAN</div>
+                  <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.12em;margin-bottom:9px">KAIZE POSITION PLAN</div>
                   <div id="kw-result-inner"></div>
                 </div>
                 <div style="margin-top:12px;padding:9px 12px;background:rgba(247,201,72,0.04);border:1px solid rgba(247,201,72,0.15);border-radius:6px">
-                  <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);margin-bottom:6px">KAIZE WEALTH EXIT STRATEGY</div>
+                  <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);margin-bottom:6px">KAIZE EXIT STRATEGY</div>
                   <div style="font-size:11px;color:var(--muted);line-height:1.8">
                     🥇 Take 30% at <strong style="color:var(--green)">2x</strong> — secure the bag<br>
                     🥈 Take 30% at <strong style="color:var(--green)">5x</strong> — this is your ROI<br>
@@ -1616,7 +1616,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
             <div>
               <!-- Kaize Wealth Rules -->
               <div class="card" style="margin-bottom:16px">
-                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">⚖️ KAIZE WEALTH RULES ENGINE</div>
+                <div style="font-family:Syne,sans-serif;font-weight:700;font-size:13px;margin-bottom:14px">⚖️ KAIZE RULES ENGINE</div>
                 <div id="kw-rules-list"></div>
               </div>
 
@@ -1644,7 +1644,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
               <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim);margin-left:auto">Trading mode — Kaize Wealth methodology active</span>
             </div>
             <div class="chat-msgs" id="trader-chat-msgs">
-              <div class="msg-ai"><div class="ai-lbl">YAKKAI TRADER — KAIZE WEALTH MODE</div>Ready to run analysis. Ask me about $YST entry points, position sizing, rug risk, or market conditions. I'm wired into the live data. GET YAKKED. 😈</div>
+              <div class="msg-ai"><div class="ai-lbl">YAKKAI TRADER — KAIZE MODE</div>Ready to run analysis. Ask me about $YST entry points, position sizing, rug risk, or market conditions. I'm wired into the live data. GET YAKKED. 😈</div>
             </div>
             <div style="display:flex;gap:8px;margin-bottom:8px">
               <input class="chat-inp" id="trader-chat-in" placeholder="e.g. Is $YST a good entry right now? What's the rug risk?" onkeydown="if(event.key==='Enter')sendTraderChat()">
@@ -4018,7 +4018,7 @@ function kwCalc(){
         <div class="slbl">% OF PORTFOLIO ${warn}</div><div style="font-family:Syne,sans-serif;font-weight:700">${posPercent.toFixed(1)}%</div>
       </div>
     </div>
-    <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.12em;margin-bottom:6px">KAIZE WEALTH 30/30/40 EXIT PLAN</div>
+    <div style="font-family:Space Mono,monospace;font-size:8px;color:var(--gold);letter-spacing:0.12em;margin-bottom:6px">KAIZE 30/30/40 EXIT PLAN</div>
     <div style="font-size:11px;color:var(--muted);line-height:2">
       🥇 Sell <strong style="color:var(--text)">30%</strong> at ${(t1Pct)}% gain → keep <strong style="color:var(--green)">+$${(posSize*0.3*(t1Pct/100)).toFixed(0)}</strong><br>
       🥈 Sell <strong style="color:var(--text)">30%</strong> at 400% gain (5x) → keep <strong style="color:var(--green)">+$${(posSize*0.3*4).toFixed(0)}</strong><br>
@@ -4124,7 +4124,7 @@ function addTraderMsg(type, text){
   const box = document.getElementById('trader-chat-msgs');
   const div = document.createElement('div');
   if(type==='user'){ div.className='msg-user'; div.textContent=text; }
-  else { div.className='msg-ai'; div.innerHTML=`<div class="ai-lbl">YAKKAI TRADER — KAIZE WEALTH MODE</div>${text}`; }
+  else { div.className='msg-ai'; div.innerHTML=`<div class="ai-lbl">YAKKAI TRADER — KAIZE MODE</div>${text}`; }
   box.appendChild(div); box.scrollTop = box.scrollHeight;
 }
 
