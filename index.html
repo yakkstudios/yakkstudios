@@ -4063,7 +4063,7 @@ YAKKAI Signal Score: ${sig.score}/100 (${sig.sig})
 Trust Tier: ${t.trust}`;
 
   try {
-    const reply_t = await yakkaiCall({
+    const data = await yakkaiCall({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 400,
         system: `You are YAKKAI in TRADING MODE — the Kaize Wealth AI trading consigliere for YAKK Studios. You analyse Solana tokens using the Kaize Wealth methodology: investigate before aping, 2-5% position sizing, 20-30% stop loss, 30/30/40 exit strategy (take 30% at 2x, 30% at 5x, ride 40%). You are sharp, decisive, and data-driven. Always reference the actual numbers. Never give financial advice directly — frame as signals and analysis. Max 180 words.`,
@@ -4071,9 +4071,7 @@ Trust Tier: ${t.trust}`;
           role: 'user',
           content: `Analyse this token using Kaize Wealth methodology. Give me: (1) Signal verdict (BUY/HOLD/CAUTION), (2) Key data read, (3) Entry consideration, (4) Risk factor. Be sharp.\n\n${dataContext}`,
         }],
-      }),
-    });
-    const data = await res.json();
+      });
     const reply = data.content?.[0]?.text || 'Analysis failed. Check live data manually.';
     if(loadEl) loadEl.style.display='none';
     if(textEl){ textEl.style.display='block'; textEl.textContent = reply; }
