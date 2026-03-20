@@ -4,8 +4,46 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://www.tradingview.com https://s3.tradingview.com https://terminal.jup.ag https://dexscreener.com https://www.geckoterminal.com; connect-src 'self' https://public-api.solscan.io https://api.solscan.io https://birdeye.so https://prodata.tradingview.com https://widgetdata.tradingview.com https://api.dexscreener.com https://gamma-api.polymarket.com https://clob.polymarket.com wss: wss://*.tradingview.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com https://terminal.jup.ag https://www.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
 <meta name="referrer" content="no-referrer-when-downgrade">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YAKK Studios — Pink Yakk Supremacy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>YAKK Studios | Solana Token Screener &amp; Anti-Greed Cult</title>
+
+<!-- ═══ SEO ═══ -->
+<meta name="description" content="YAKK Studios — the anti-greed Solana cult. Live $YST &amp; $SPT token screener, on-chain extraction investigations, KAIZE discipline trading system. Fight extractors. Build real wealth.">
+<meta name="keywords" content="YAKK Studios, YST, SPT, Solana, token screener, DeFi, Solana meme, anti-greed, KAIZE, crypto screener, StakePoint, on-chain">
+<meta name="author" content="YAKK Studios">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#E0607E">
+<link rel="canonical" href="https://yakkstudios.xyz/">
+
+<!-- ═══ PWA / PHANTOM ═══ -->
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="YAKK Studios">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16.png">
+<link rel="shortcut icon" href="/icons/favicon.ico">
+
+<!-- ═══ OPEN GRAPH ═══ -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YAKK Studios">
+<meta property="og:title" content="YAKK Studios | Solana Token Screener &amp; Anti-Greed Cult">
+<meta property="og:description" content="Anti-greed Solana cult. Live $YST &amp; $SPT screener, on-chain investigations, KAIZE discipline system. Fight extractors. Build real wealth.">
+<meta property="og:image" content="https://pbs.twimg.com/profile_banners/2014280029274796032/1769077251/1500x500">
+<meta property="og:image:width" content="1500">
+<meta property="og:image:height" content="500">
+<meta property="og:url" content="https://yakkstudios.xyz/">
+<meta property="og:locale" content="en_US">
+
+<!-- ═══ TWITTER / X CARD ═══ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@YakkStudios">
+<meta name="twitter:creator" content="@YakkStudios">
+<meta name="twitter:title" content="YAKK Studios | Solana Token Screener &amp; Anti-Greed Cult">
+<meta name="twitter:description" content="Anti-greed Solana cult. Live $YST &amp; $SPT screener, on-chain investigations, KAIZE discipline system. Fight extractors.">
+<meta name="twitter:image" content="https://pbs.twimg.com/profile_banners/2014280029274796032/1769077251/1500x500">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════
@@ -391,6 +429,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sp-powered a{color:var(--pink);text-decoration:none}
 .sp-powered a:hover{text-decoration:underline}
 
+@keyframes yakk-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 </style>
 </head>
 <body>
@@ -459,10 +498,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               </div>
               <div class="sec-bar"></div>
               <p style="color:var(--muted);max-width:440px;font-size:13px;line-height:1.8">Anti-greed Solana cult. Fight extractors. Now with a $10 token screener that eats DexScreener's lunch.</p>
+              <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;margin-top:16px">
+                <button class="btn btn-pink" onclick="showSection('screener')">📊 YAKK SCREENER</button>
+                <button class="btn btn-outline" id="home-wallet-btn" onclick="connectWallet()">🔗 Connect Wallet</button>
+              </div>
             </div>
-            <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap">
-              <button class="btn btn-pink" onclick="showSection('screener')">📊 YAKK SCREENER</button>
-              <button class="btn btn-outline" id="home-wallet-btn" onclick="connectWallet()">🔗 Connect Wallet</button>
+            <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
+              <img src="/icons/icon-512.png" alt="YAKK mascot" style="width:clamp(120px,14vw,200px);height:auto;filter:drop-shadow(0 0 32px rgba(224,96,126,0.4));animation:yakk-float 4s ease-in-out infinite" onerror="this.style.display='none'">
             </div>
           </div>
           <!-- LIVE DEX BANNER -->
@@ -4382,6 +4424,12 @@ renderTrustedList();
    "…" placeholders then fills in real values as API responds */
 fetchLiveData();
 setInterval(fetchLiveData, 30000);
+
+/* ── Handle manifest shortcuts: ?section=screener etc ─────────────────── */
+(function(){
+  const p = new URLSearchParams(window.location.search).get('section');
+  if(p) setTimeout(()=>showSection(p), 100);
+})();
 /* Load prediction markets in background */
 setTimeout(pmLoad, 2000);
 
