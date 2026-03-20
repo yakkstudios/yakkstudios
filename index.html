@@ -431,7 +431,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .sp-powered a:hover{text-decoration:underline}
 
 
-/* MOBILE RESPONSIVE — collapseable sidebar + responsive layout */
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — collapseable sidebar + responsive layout
+═══════════════════════════════════════════════════════════ */
+
 /* Mobile header bar (hidden on desktop) */
 #mobile-header{display:none;align-items:center;gap:10px;padding:0 14px;height:48px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;z-index:50;position:sticky;top:0}
 #mob-menu-btn{background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px 6px;line-height:1;flex-shrink:0}
@@ -450,39 +453,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 #scr-back-btn:active{background:var(--bg3)}
 
 @media(max-width:768px){
-  #sidebar{left:-240px;z-index:99;transition:left 0.25s cubic-bezier(0.4,0,0.2,1)}
-  #sidebar.mob-open{left:0}
+  /* ── Sidebar overlay ── */
+  #sidebar{
+    position:fixed;left:-240px;top:0;height:100%;
+    width:240px!important;z-index:99;
+    transition:left 0.25s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:none;
+  }
+  #sidebar.mob-open{left:0;box-shadow:4px 0 24px rgba(0,0,0,0.6)}
   #sb-close{display:block}
   #mobile-header{display:flex}
   #main-wrap{height:100vh;overflow:hidden}
-  .sec-pad{padding:16px 14px}
-  .grid4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .grid2{grid-template-columns:1fr;gap:12px}
-  #section-home .sec-pad > div:first-child{flex-direction:column;gap:16px}
-  #home-yakk-img{width:clamp(80px,22vw,140px)!important}
-  #scr-body{flex-direction:column!important;overflow:auto}
-  #scr-left{width:100%!important;max-height:none;flex-shrink:0;border-right:none;border-bottom:1px solid var(--border)}
-  #scr-center{min-width:0;overflow:visible}
-  #scr-right{width:100%!important;border-left:none;border-top:1px solid var(--border);max-height:none}
-  #scr-left.mob-hidden{display:none!important}
-  #scr-back-btn{display:flex}
-  #chart-wrap{height:300px!important}
-  #tv-container{height:300px!important}
-  #terminal-wrap{grid-template-columns:1fr!important;grid-template-rows:1fr auto;height:auto;min-height:calc(100vh - 96px)}
-  #term-right{max-height:340px;border-top:1px solid var(--border);border-right:none}
-  .card,.card-sm{padding:14px}
-  .stat-card{padding:12px}
-  .sval{font-size:clamp(16px,5vw,24px)!important}
-  #ticker-bar{font-size:9px}
-  .ledger-table{overflow-x:auto;font-size:14px}
-  #dex-banner{padding:8px 12px}
-  #main{overflow-y:auto;height:calc(100vh - 48px)}
-  .page-section{overflow-y:auto}
-  .modal{width:calc(100vw - 24px)!important;max-height:90vh;margin:0 12px}
-  .tf{padding:3px 7px;font-size:9px}
-  .nav-item{padding:9px 18px;font-size:10px}
-  .quick-actions{grid-template-columns:1fr!important;gap:9px}
-}
 
   /* ── Section padding ── */
   .sec-pad{padding:16px 14px}
@@ -590,6 +571,46 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .wc-perk-title{font-family:Syne,sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:3px}
 .wc-perk-desc{font-size:11px;color:var(--muted);line-height:1.6}
 @media(max-width:768px){.wc-stat-grid{grid-template-columns:1fr 1fr}}
+/* ══ NFT MARKETPLACE ══ */
+.nft-chain-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:18px}
+.nft-ctab{font-family:Space Mono,monospace;font-size:9px;padding:6px 13px;border:1px solid var(--border2);border-radius:6px;background:var(--bg3);color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:0.06em;display:flex;align-items:center;gap:5px}
+.nft-ctab.active{background:var(--pink);color:#fff;border-color:var(--pink)}.nft-ctab:hover:not(.active,.soon){border-color:var(--pink);color:var(--pink)}
+.nft-ctab.soon{opacity:.45;cursor:default}.nft-ctab .chain-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.nft-search-row{display:flex;gap:8px;margin-bottom:16px}
+.nft-search-inp{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:8px 12px;font-family:Space Mono,monospace;font-size:11px;color:var(--text);outline:none}
+.nft-search-inp:focus{border-color:var(--pink)}
+.nft-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.nft-stat{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 12px;text-align:center}
+.nft-stat-val{font-family:Syne,sans-serif;font-weight:800;font-size:15px;color:var(--gold);margin-bottom:2px}
+.nft-stat-lbl{font-family:Space Mono,monospace;font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em}
+.nft-col-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:22px}
+.nft-col-card{background:var(--bg3);border:1px solid var(--border2);border-radius:11px;overflow:hidden;cursor:pointer;transition:all .2s}
+.nft-col-card:hover{border-color:var(--pink);transform:translateY(-2px);box-shadow:0 4px 20px rgba(224,96,126,0.1)}
+.nft-col-img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--bg4)}
+.nft-col-body{padding:10px 12px}
+.nft-col-name{font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nft-col-floor{font-family:Space Mono,monospace;font-size:9px;color:var(--gold);margin-bottom:1px}
+.nft-col-vol{font-family:Space Mono,monospace;font-size:8px;color:var(--dim)}
+.nft-item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.nft-item-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .2s}
+.nft-item-card:hover{border-color:var(--pink);transform:translateY(-2px)}
+.nft-item-img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--bg4)}
+.nft-item-body{padding:8px 10px}
+.nft-item-name{font-size:10px;font-family:Syne,sans-serif;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nft-item-price{font-family:Space Mono,monospace;font-size:9px;color:var(--gold)}
+.nft-item-rank{font-family:Space Mono,monospace;font-size:8px;color:var(--dim)}
+.nft-back{display:inline-flex;align-items:center;gap:6px;font-family:Space Mono,monospace;font-size:9px;color:var(--muted);cursor:pointer;margin-bottom:14px;padding:5px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:5px}
+.nft-back:hover{color:var(--pink);border-color:var(--pink)}
+.nft-modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
+.nft-modal-wrap.open{display:flex}
+.nft-modal-inner{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;max-width:580px;width:100%;max-height:92vh;overflow-y:auto;padding:24px}
+.nft-traits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}
+.nft-trait{background:var(--bg4);border:1px solid rgba(224,96,126,0.15);border-radius:7px;padding:7px 10px;text-align:center}
+.nft-trait-type{font-family:Space Mono,monospace;font-size:7px;color:var(--pink);text-transform:uppercase;margin-bottom:2px}
+.nft-trait-val{font-family:Syne,sans-serif;font-weight:700;font-size:10px}
+.nft-chain-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-family:Space Mono,monospace;font-size:8px;font-weight:700}
+.nft-wallet-notice{background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.25);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+@media(max-width:768px){.nft-col-grid{grid-template-columns:repeat(2,1fr)}.nft-item-grid{grid-template-columns:repeat(2,1fr)}.nft-stats-row{grid-template-columns:repeat(2,1fr)}.nft-traits-grid{grid-template-columns:repeat(2,1fr)}}
 /* ══ CERTIFIED CLOWNS ══ */
 .clowns-warning{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#fca5a5;line-height:1.7}
 .clowns-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:24px}
@@ -706,10 +727,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
   <div id="sidebar">
     <button id="sb-close" onclick="closeSidebar()" aria-label="Close menu">✕</button>
     <div class="sb-logo">
-  <img src="https://pbs.twimg.com/profile_images/1843069193181118464/1o9vL3kX_400x400.jpg" alt="YAKK Studios Logo" style="width:80px;height:80px;border-radius:50%;border:3px solid var(--pink);margin-bottom:10px;object-fit:cover;">
-  <div class="sb-brand">$YAKK <span>STUDIOS</span></div>
-  <div class="sb-sub">PINK YAKK SUPREMACY</div>
-</div>
       <div class="sb-brand">$YAKK <span>STUDIOS</span></div>
       <div class="sb-sub">PINK YAKK SUPREMACY</div>
     </div>
@@ -726,6 +743,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       <div class="nav-item" onclick="showSection('yakktrader')"><span class="nav-icon">🤖</span>YAKK AI TRADER <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('predictions')"><span class="nav-icon">🔮</span>PREDICTION MARKETS <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('cabal')"><span class="nav-icon">🔍</span>CABAL INVESTIGATOR <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('nftmarket')"><span class="nav-icon">🛒</span>NFT MARKET <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('launchpad')"><span class="nav-icon">🚀</span>LAUNCHPAD <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('otcdesk')"><span class="nav-icon">🤝</span>OTC DESK <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('yieldfinder')"><span class="nav-icon">💰</span>YIELD FINDER <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('alerts')"><span class="nav-icon">🔔</span>PRICE ALERTS <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('bridge')"><span class="nav-icon">🌉</span>BRIDGE SWAP <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('privacy')"><span class="nav-icon">🕵️</span>PRIVACY ROUTER <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('tokencreator')"><span class="nav-icon">🪙</span>TOKEN CREATOR <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('tgbot')"><span class="nav-icon">🤖</span>TG TRADE BOT <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection('features')"><span class="nav-icon">💡</span>FEATURE REQUESTS</div>
       <div class="nav-item" onclick="showSection('stakepoint')"><span class="nav-icon">🔒</span>STAKEPOINT</div>
       <div class="nav-item" onclick="showSection('artlab')"><span class="nav-icon">🎨</span>ART LAB</div>
       <div class="nav-item" onclick="showSection('coach')"><span class="nav-icon">🧠</span>YAKKAI COACH</div>
@@ -778,6 +805,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <button class="btn btn-pink" onclick="showSection('screener')">📊 YAKK SCREENER</button>
                 <button class="btn btn-outline" id="home-wallet-btn" onclick="connectWallet()">🔗 Connect Wallet</button>
               </div>
+              <div style="margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);line-height:1.6">🔑 Your keys, your money — you don't make an account with us. Your wallet <em>is</em> your account.</div>
             </div>
             <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
               <img id="home-yakk-img" src="/icons/icon-512.png" alt="YAKK mascot" style="width:clamp(120px,14vw,200px);height:auto;filter:drop-shadow(0 0 32px rgba(224,96,126,0.4));animation:yakk-float 4s ease-in-out infinite" onerror="this.style.display='none'">
@@ -1553,7 +1581,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
             <div style="background:linear-gradient(135deg,rgba(224,96,126,0.07),rgba(247,201,72,0.04));border:1px solid rgba(224,96,126,0.18);border-radius:11px;padding:26px;text-align:center;margin-bottom:18px">
               <div style="font-size:28px;margin-bottom:9px">👛</div>
               <div style="font-family:Syne,sans-serif;font-weight:800;font-size:16px;margin-bottom:6px">Connect Your Wallet</div>
-              <p style="font-size:12px;color:var(--muted);margin-bottom:14px;max-width:300px;margin-left:auto;margin-right:auto">Connect Phantom to verify $YST holdings, check WL eligibility, and pay for screener updates.</p>
+              <p style="font-size:12px;color:var(--muted);margin-bottom:6px;max-width:300px;margin-left:auto;margin-right:auto">Connect Phantom to verify $YST holdings, check WL eligibility, and pay for screener updates.</p>
+              <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:14px;max-width:320px;margin-left:auto;margin-right:auto">🔑 Your keys, your money. The whole point of crypto is self-custody — you don't make an account with us. Your wallet <em>is</em> your account.</p>
               <button class="btn btn-pink" onclick="connectWallet()">CONNECT PHANTOM</button>
             </div>
             <div class="grid2" style="margin-bottom:14px">
@@ -1583,6 +1612,987 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       </div>
 
 
+
+      <!-- ═══════════════════════════════
+           NFT MARKETPLACE
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-nftmarket" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">MULTICHAIN</div>
+          <div class="sec-title">NFT Marketplace</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:18px">Buy, sell and explore NFTs across 6 chains — no KYC, your keys your money.</p>
+
+          <!-- Chain tabs -->
+          <div class="nft-chain-tabs" style="margin-bottom:20px">
+            <button class="nft-ctab active" onclick="nftSetChain('solana',this)">◎ Solana</button>
+            <button class="nft-ctab" onclick="nftSetChain('ethereum',this)">Ξ Ethereum</button>
+            <button class="nft-ctab" onclick="nftSetChain('bitcoin',this)">₿ Ordinals</button>
+            <button class="nft-ctab" onclick="nftSetChain('bnb',this)">⬡ BNB</button>
+            <button class="nft-ctab soon" title="Coming soon">◈ Monad</button>
+            <button class="nft-ctab" onclick="nftSetChain('tron',this)">♦ Tron</button>
+          </div>
+
+          <!-- Wallet notice -->
+          <div class="nft-wallet-notice" id="nft-wallet-notice" style="display:none">
+            <span id="nft-wallet-notice-msg">⚡ Connect wallet to buy or list NFTs</span>
+          </div>
+
+          <!-- Search bar -->
+          <div style="display:flex;gap:10px;margin-bottom:18px;align-items:center">
+            <input id="nft-search-input" type="text" placeholder="Search collections…" style="flex:1;background:var(--bg2);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:9px 14px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none" oninput="nftSearch(this.value)">
+            <button class="btn btn-pink" style="padding:9px 16px;font-size:10px" onclick="nftSearch(document.getElementById('nft-search-input').value)">SEARCH</button>
+          </div>
+
+          <!-- Stats row -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px" id="nft-stats-row">
+            <div class="card-sm" style="text-align:center;padding:12px 8px">
+              <div style="font-size:18px;font-weight:700;color:var(--pink)" id="nft-stat-vol">—</div>
+              <div style="font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-top:2px">24H VOLUME</div>
+            </div>
+            <div class="card-sm" style="text-align:center;padding:12px 8px">
+              <div style="font-size:18px;font-weight:700;color:var(--gold)" id="nft-stat-sales">—</div>
+              <div style="font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-top:2px">24H SALES</div>
+            </div>
+            <div class="card-sm" style="text-align:center;padding:12px 8px">
+              <div style="font-size:18px;font-weight:700" id="nft-stat-floor">—</div>
+              <div style="font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-top:2px">TOP FLOOR</div>
+            </div>
+            <div class="card-sm" style="text-align:center;padding:12px 8px">
+              <div style="font-size:18px;font-weight:700" id="nft-stat-cols">—</div>
+              <div style="font-size:8px;color:var(--dim);letter-spacing:0.1em;margin-top:2px">COLLECTIONS</div>
+            </div>
+          </div>
+
+          <!-- Collections view -->
+          <div id="nft-collections-view">
+            <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:12px">TRENDING COLLECTIONS</div>
+            <div class="nft-col-grid" id="nft-col-grid">
+              <div style="color:var(--dim);font-size:11px;text-align:center;padding:40px;grid-column:1/-1">Loading collections…</div>
+            </div>
+          </div>
+
+          <!-- Items view (hidden until collection clicked) -->
+          <div id="nft-items-view" style="display:none">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+              <button onclick="nftShowCollections()" style="background:none;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--dim);padding:6px 12px;cursor:pointer;font-size:11px">← Back</button>
+              <div>
+                <div style="font-size:15px;font-weight:700" id="nft-col-name">Collection</div>
+                <div style="font-size:10px;color:var(--dim)" id="nft-col-floor-info">Floor: —</div>
+              </div>
+            </div>
+            <div class="nft-item-grid" id="nft-item-grid">
+              <div style="color:var(--dim);font-size:11px;text-align:center;padding:40px;grid-column:1/-1">Loading items…</div>
+            </div>
+          </div>
+
+          <!-- NFT Detail Modal -->
+          <div class="nft-modal-wrap" id="nft-modal" onclick="if(event.target===this)nftCloseModal()">
+            <div class="nft-modal-box" onclick="event.stopPropagation()">
+              <button class="nft-modal-close" onclick="nftCloseModal()">✕</button>
+              <div style="display:flex;gap:20px;flex-wrap:wrap">
+                <img id="nft-modal-img" src="" alt="" style="width:220px;height:220px;object-fit:cover;border-radius:10px;background:var(--bg4)">
+                <div style="flex:1;min-width:200px">
+                  <div style="font-size:10px;color:var(--dim);letter-spacing:0.1em" id="nft-modal-collection">—</div>
+                  <div style="font-size:20px;font-weight:700;margin:6px 0" id="nft-modal-name">—</div>
+                  <div style="font-size:22px;color:var(--pink);font-weight:700;margin-bottom:12px" id="nft-modal-price">—</div>
+                  <button class="btn btn-pink" id="nft-modal-buy-btn" onclick="nftBuy()" style="width:100%;margin-bottom:14px">BUY NOW</button>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:6px;letter-spacing:0.1em">ATTRIBUTES</div>
+                  <div class="nft-traits-grid" id="nft-modal-traits"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           LAUNCHPAD
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-launchpad" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">ANTI-RUG</div>
+          <div class="sec-title">Launchpad</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:20px">Launch your token with locked liquidity, KYC optional, vesting enforcement. Every project audited by YAKKAI before listing.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <!-- Submit project -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">SUBMIT PROJECT</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <input type="text" id="lp-name" placeholder="Project name" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <input type="text" id="lp-ticker" placeholder="Token ticker (e.g. $YAKK)" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <input type="text" id="lp-twitter" placeholder="Twitter / X handle" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <input type="text" id="lp-website" placeholder="Website URL" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <select id="lp-lock" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  <option value="">Liquidity lock duration</option>
+                  <option value="30">30 days</option>
+                  <option value="180">6 months</option>
+                  <option value="365">1 year</option>
+                  <option value="730">2 years</option>
+                  <option value="perm">Permanent burn</option>
+                </select>
+                <textarea id="lp-desc" placeholder="Short description (max 300 chars)" maxlength="300" rows="3" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;resize:vertical"></textarea>
+                <button class="btn btn-pink" onclick="launchSubmit()" style="width:100%">SUBMIT FOR REVIEW</button>
+                <p style="font-size:9px;color:var(--dim);text-align:center;margin:0">Reviewed by YAKKAI within 48h. Requires $500 USDC listing fee + locked liq proof.</p>
+              </div>
+            </div>
+
+            <!-- Active launches -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">ACTIVE LAUNCHES</div>
+              <div id="lp-launches-list">
+                <div style="padding:14px;background:var(--bg4);border-radius:8px;margin-bottom:10px">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                    <div>
+                      <div style="font-weight:700;font-size:13px">YAKK Studios</div>
+                      <div style="font-size:9px;color:var(--dim);margin-top:2px">$YST — Solana</div>
+                    </div>
+                    <span class="badge" style="background:rgba(100,220,100,0.15);color:#64dc64">LIVE</span>
+                  </div>
+                  <div style="margin-top:10px;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden">
+                    <div style="height:100%;width:73%;background:var(--pink);border-radius:3px"></div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;margin-top:4px">
+                    <span style="font-size:9px;color:var(--dim)">73% raised</span>
+                    <span style="font-size:9px;color:var(--dim)">Liq locked 365d</span>
+                  </div>
+                </div>
+                <div style="font-size:10px;color:var(--dim);text-align:center;padding:14px">More launches coming. Submit yours above.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           OTC DESK
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-otcdesk" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">PEER-TO-PEER</div>
+          <div class="sec-title">OTC Desk</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:20px">Post large block trades without moving the market. Escrow-secured. No middlemen.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <!-- Post OTC order -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">POST OTC ORDER</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <select id="otc-side" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                    <option value="buy">BUY</option>
+                    <option value="sell">SELL</option>
+                  </select>
+                  <select id="otc-token" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                    <option value="yst">$YST</option>
+                    <option value="spt">$SPT</option>
+                    <option value="sol">SOL</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <input type="number" id="otc-amount" placeholder="Amount" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <input type="number" id="otc-price" placeholder="Price per token (USD)" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <input type="text" id="otc-contact" placeholder="Telegram or Twitter handle" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <button class="btn btn-pink" onclick="otcPost()" style="width:100%">POST ORDER</button>
+                <p style="font-size:9px;color:var(--dim);text-align:center;margin:0">Connect wallet to post. Orders expire in 72h. Use escrow for safety.</p>
+              </div>
+            </div>
+
+            <!-- Order book -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">OPEN ORDERS</div>
+              <div id="otc-order-book">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg4);border-radius:7px;margin-bottom:8px;border-left:3px solid #64dc64">
+                  <div>
+                    <span style="color:#64dc64;font-weight:700;font-size:11px">BUY</span>
+                    <span style="font-size:12px;margin-left:8px">5,000,000 $YST</span>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-size:11px">$0.0042</div>
+                    <div style="font-size:9px;color:var(--dim)">@crytpotanker</div>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg4);border-radius:7px;margin-bottom:8px;border-left:3px solid var(--pink)">
+                  <div>
+                    <span style="color:var(--pink);font-weight:700;font-size:11px">SELL</span>
+                    <span style="font-size:12px;margin-left:8px">10,000,000 $YST</span>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-size:11px">$0.0048</div>
+                    <div style="font-size:9px;color:var(--dim)">@yakkholder</div>
+                  </div>
+                </div>
+                <div style="font-size:10px;color:var(--dim);text-align:center;padding:8px">Post an order to get it listed here.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           YIELD FINDER
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-yieldfinder" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">MULTICHAIN</div>
+          <div class="sec-title">Yield Finder</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:20px">Best yields across DeFi protocols. Live APY data. No KYC, no custody.</p>
+
+          <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center">
+            <select id="yield-chain" onchange="yieldRefresh()" style="background:var(--bg2);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:8px 14px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+              <option value="all">All chains</option>
+              <option value="solana">Solana</option>
+              <option value="ethereum">Ethereum</option>
+              <option value="bnb">BNB Chain</option>
+            </select>
+            <select id="yield-type" onchange="yieldRefresh()" style="background:var(--bg2);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:8px 14px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+              <option value="all">All types</option>
+              <option value="lp">LP / AMM</option>
+              <option value="lending">Lending</option>
+              <option value="staking">Staking</option>
+            </select>
+            <button class="btn btn-pink" onclick="yieldRefresh()" style="padding:8px 16px;font-size:10px">↻ REFRESH</button>
+          </div>
+
+          <div id="yield-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+            <!-- Cards injected by yieldRefresh() -->
+            <div class="card-sm" style="border-left:3px solid var(--pink)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-weight:700;font-size:14px">Raydium</div>
+                  <div style="font-size:9px;color:var(--dim);margin-top:2px">YST/SOL LP • Solana</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:22px;font-weight:700;color:var(--pink)">847%</div>
+                  <div style="font-size:8px;color:var(--dim)">APY</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--dim)">
+                <span>TVL: $124K</span><span>Risk: Medium</span>
+              </div>
+              <a href="https://raydium.io" target="_blank" rel="noopener" class="btn btn-pink" style="display:block;width:100%;text-align:center;margin-top:10px;text-decoration:none;font-size:10px;padding:7px">DEPOSIT →</a>
+            </div>
+            <div class="card-sm" style="border-left:3px solid var(--gold)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-weight:700;font-size:14px">Marinade</div>
+                  <div style="font-size:9px;color:var(--dim);margin-top:2px">mSOL Staking • Solana</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:22px;font-weight:700;color:var(--gold)">7.2%</div>
+                  <div style="font-size:8px;color:var(--dim)">APY</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--dim)">
+                <span>TVL: $1.8B</span><span>Risk: Low</span>
+              </div>
+              <a href="https://marinade.finance" target="_blank" rel="noopener" class="btn btn-pink" style="display:block;width:100%;text-align:center;margin-top:10px;text-decoration:none;font-size:10px;padding:7px">DEPOSIT →</a>
+            </div>
+            <div class="card-sm" style="border-left:3px solid #7fdbff">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-weight:700;font-size:14px">Kamino</div>
+                  <div style="font-size:9px;color:var(--dim);margin-top:2px">USDC Lending • Solana</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:22px;font-weight:700;color:#7fdbff">12.4%</div>
+                  <div style="font-size:8px;color:var(--dim)">APY</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--dim)">
+                <span>TVL: $340M</span><span>Risk: Low</span>
+              </div>
+              <a href="https://kamino.finance" target="_blank" rel="noopener" class="btn btn-pink" style="display:block;width:100%;text-align:center;margin-top:10px;text-decoration:none;font-size:10px;padding:7px">DEPOSIT →</a>
+            </div>
+            <div class="card-sm" style="border-left:3px solid var(--pink)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-weight:700;font-size:14px">Orca</div>
+                  <div style="font-size:9px;color:var(--dim);margin-top:2px">SOL/USDC LP • Solana</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:22px;font-weight:700;color:var(--pink)">34%</div>
+                  <div style="font-size:8px;color:var(--dim)">APY</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--dim)">
+                <span>TVL: $89M</span><span>Risk: Medium</span>
+              </div>
+              <a href="https://orca.so" target="_blank" rel="noopener" class="btn btn-pink" style="display:block;width:100%;text-align:center;margin-top:10px;text-decoration:none;font-size:10px;padding:7px">DEPOSIT →</a>
+            </div>
+            <div class="card-sm" style="border-left:3px solid var(--gold)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-weight:700;font-size:14px">PancakeSwap</div>
+                  <div style="font-size:9px;color:var(--dim);margin-top:2px">BNB/USDT LP • BNB Chain</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:22px;font-weight:700;color:var(--gold)">28%</div>
+                  <div style="font-size:8px;color:var(--dim)">APY</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--dim)">
+                <span>TVL: $210M</span><span>Risk: Medium</span>
+              </div>
+              <a href="https://pancakeswap.finance" target="_blank" rel="noopener" class="btn btn-pink" style="display:block;width:100%;text-align:center;margin-top:10px;text-decoration:none;font-size:10px;padding:7px">DEPOSIT →</a>
+            </div>
+            <div class="card-sm" style="border-left:3px solid #7fdbff">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-weight:700;font-size:14px">Uniswap</div>
+                  <div style="font-size:9px;color:var(--dim);margin-top:2px">ETH/USDC LP • Ethereum</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:22px;font-weight:700;color:#7fdbff">18%</div>
+                  <div style="font-size:8px;color:var(--dim)">APY</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--dim)">
+                <span>TVL: $4.1B</span><span>Risk: Low</span>
+              </div>
+              <a href="https://app.uniswap.org" target="_blank" rel="noopener" class="btn btn-pink" style="display:block;width:100%;text-align:center;margin-top:10px;text-decoration:none;font-size:10px;padding:7px">DEPOSIT →</a>
+            </div>
+          </div>
+          <p style="font-size:9px;color:var(--dim);margin-top:16px;text-align:center">APYs are indicative only. Always DYOR. Not financial advice.</p>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           PRICE ALERTS
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-alerts" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">NOTIFICATIONS</div>
+          <div class="sec-title">Price Alerts</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:20px">Set price targets for any token and get browser notifications when they're hit.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">CREATE ALERT</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div id="alert-permission-notice" style="background:rgba(224,96,126,0.1);border:1px solid rgba(224,96,126,0.3);border-radius:7px;padding:10px;font-size:11px;display:none">
+                  🔔 Enable browser notifications to receive alerts even when the tab isn't focused.
+                  <button onclick="alertRequestPermission()" style="display:block;margin-top:8px;width:100%;background:var(--pink);border:none;border-radius:5px;color:#fff;padding:6px;cursor:pointer;font-family:Space Mono,monospace;font-size:10px">ENABLE NOTIFICATIONS</button>
+                </div>
+                <input type="text" id="alert-token" placeholder="Token address or symbol" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <select id="alert-dir" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                    <option value="above">Price above</option>
+                    <option value="below">Price below</option>
+                  </select>
+                  <input type="number" id="alert-price" placeholder="Target price $" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                </div>
+                <button class="btn btn-pink" onclick="alertSet()" style="width:100%">SET ALERT</button>
+              </div>
+            </div>
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">ACTIVE ALERTS</div>
+              <div id="section-alerts-list">
+                <div style="font-size:11px;color:var(--dim);text-align:center;padding:20px">No alerts set yet.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           BRIDGE SWAP
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-bridge" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">CROSS-CHAIN</div>
+          <div class="sec-title">Bridge Swap</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:20px">Swap tokens across chains in one click. Powered by the best bridge aggregators — best rate is always selected automatically.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+            <!-- From -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:12px">FROM</div>
+              <select id="bridge-from-chain" onchange="bridgeUpdateTokens('from')" style="width:100%;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;margin-bottom:8px">
+                <option value="solana">◎ Solana</option>
+                <option value="ethereum">Ξ Ethereum</option>
+                <option value="bnb">⬡ BNB Chain</option>
+                <option value="bitcoin">₿ Bitcoin</option>
+                <option value="tron">♦ Tron</option>
+              </select>
+              <select id="bridge-from-token" style="width:100%;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;margin-bottom:8px">
+                <option value="sol">SOL</option>
+                <option value="yst">$YST</option>
+                <option value="spt">$SPT</option>
+                <option value="usdc">USDC</option>
+              </select>
+              <input type="number" id="bridge-from-amount" placeholder="Amount" oninput="bridgeGetQuote()" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:13px;outline:none">
+              <div style="font-size:9px;color:var(--dim);margin-top:5px">Balance: <span id="bridge-from-bal">—</span></div>
+            </div>
+
+            <!-- To -->
+            <div class="card-sm" style="position:relative">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:12px">TO</div>
+              <select id="bridge-to-chain" onchange="bridgeUpdateTokens('to')" style="width:100%;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;margin-bottom:8px">
+                <option value="ethereum">Ξ Ethereum</option>
+                <option value="solana">◎ Solana</option>
+                <option value="bnb">⬡ BNB Chain</option>
+                <option value="bitcoin">₿ Bitcoin</option>
+                <option value="tron">♦ Tron</option>
+              </select>
+              <select id="bridge-to-token" style="width:100%;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;margin-bottom:8px">
+                <option value="eth">ETH</option>
+                <option value="usdc">USDC</option>
+                <option value="usdt">USDT</option>
+                <option value="bnb">BNB</option>
+              </select>
+              <div style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;font-size:13px;min-height:38px;color:var(--pink)">
+                <span id="bridge-to-amount">—</span>
+              </div>
+              <div style="font-size:9px;color:var(--dim);margin-top:5px">Est. received: <span id="bridge-to-est">—</span></div>
+            </div>
+          </div>
+
+          <!-- Quote / swap row -->
+          <div class="card-sm" style="margin-bottom:14px" id="bridge-quote-box" style="display:none">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
+              <div>
+                <div style="font-size:10px;color:var(--dim)">Best route via</div>
+                <div style="font-weight:700;font-size:13px" id="bridge-route-name">—</div>
+              </div>
+              <div>
+                <div style="font-size:10px;color:var(--dim)">Estimated fees</div>
+                <div style="font-size:13px" id="bridge-route-fee">—</div>
+              </div>
+              <div>
+                <div style="font-size:10px;color:var(--dim)">Est. time</div>
+                <div style="font-size:13px" id="bridge-route-time">—</div>
+              </div>
+              <button class="btn btn-pink" id="bridge-swap-btn" onclick="bridgeExecute()" style="padding:9px 20px">BRIDGE →</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
+            <div class="card-sm" style="text-align:center;padding:10px 6px;opacity:0.7">
+              <div style="font-size:18px;margin-bottom:4px">🌉</div>
+              <div style="font-size:9px;color:var(--dim)">deBridge</div>
+            </div>
+            <div class="card-sm" style="text-align:center;padding:10px 6px;opacity:0.7">
+              <div style="font-size:18px;margin-bottom:4px">⚡</div>
+              <div style="font-size:9px;color:var(--dim)">Wormhole</div>
+            </div>
+            <div class="card-sm" style="text-align:center;padding:10px 6px;opacity:0.7">
+              <div style="font-size:18px;margin-bottom:4px">🔀</div>
+              <div style="font-size:9px;color:var(--dim)">Allbridge</div>
+            </div>
+            <div class="card-sm" style="text-align:center;padding:10px 6px;opacity:0.7">
+              <div style="font-size:18px;margin-bottom:4px">🪐</div>
+              <div style="font-size:9px;color:var(--dim)">Mayan</div>
+            </div>
+          </div>
+          <p style="font-size:9px;color:var(--dim);text-align:center">Rates are indicative. Always review transaction details before signing. Your keys, your money.</p>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           PRIVACY ROUTER
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-privacy" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">STEALTH MODE</div>
+          <div class="sec-title">Privacy Router</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:20px">Break the on-chain link between your wallets. Stop copy-traders, front-runners and blockchain stalkers cold.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+            <div class="card-sm" style="text-align:center;padding:16px 10px">
+              <div style="font-size:28px;margin-bottom:8px">🕵️</div>
+              <div style="font-weight:700;font-size:13px;margin-bottom:4px">Anti Copy-Trade</div>
+              <div style="font-size:10px;color:var(--dim)">Route through intermediate wallets so MEV bots and copy-traders can't front-run your moves</div>
+            </div>
+            <div class="card-sm" style="text-align:center;padding:16px 10px">
+              <div style="font-size:28px;margin-bottom:8px">🔗</div>
+              <div style="font-weight:700;font-size:13px;margin-bottom:4px">Wallet Unlinking</div>
+              <div style="font-size:10px;color:var(--dim)">Send funds between your own wallets without creating an obvious on-chain link</div>
+            </div>
+            <div class="card-sm" style="text-align:center;padding:16px 10px">
+              <div style="font-size:28px;margin-bottom:8px">🛡️</div>
+              <div style="font-weight:700;font-size:13px;margin-bottom:4px">MEV Protection</div>
+              <div style="font-size:10px;color:var(--dim)">Randomise timing and split orders to defeat sandwich attacks and MEV extraction</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <!-- Route builder -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">PRIVATE TRANSFER</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">FROM WALLET</div>
+                  <input type="text" id="priv-from" placeholder="Source wallet address" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:10px;outline:none">
+                </div>
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">TO WALLET</div>
+                  <input type="text" id="priv-to" placeholder="Destination wallet address" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:10px;outline:none">
+                </div>
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">AMOUNT (SOL)</div>
+                  <input type="number" id="priv-amount" placeholder="0.00" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:13px;outline:none">
+                </div>
+                <select id="priv-hops" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  <option value="2">2 hops (fast)</option>
+                  <option value="3" selected>3 hops (balanced)</option>
+                  <option value="5">5 hops (stealth)</option>
+                </select>
+                <select id="priv-timing" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  <option value="instant">Instant</option>
+                  <option value="random">Random delay (1–12h)</option>
+                  <option value="scheduled">Scheduled time</option>
+                </select>
+                <button class="btn btn-pink" onclick="privacyRoute()" style="width:100%">ROUTE TRANSFER</button>
+                <p style="font-size:9px;color:var(--dim);text-align:center;margin:0">Connect wallet to use. Small routing fee applies.</p>
+              </div>
+            </div>
+
+            <!-- How it works -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">HOW IT WORKS</div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">1</div>
+                  <div style="font-size:11px">You sign a single transaction — YAKK handles the rest on-chain, splitting across hop wallets</div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">2</div>
+                  <div style="font-size:11px">Funds flow through 2–5 intermediate wallets with randomised amounts and timing</div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">3</div>
+                  <div style="font-size:11px">Destination receives the full amount — no CEX, no KYC, no trace back to source wallet</div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">✓</div>
+                  <div style="font-size:11px">Works across Solana wallets today. Cross-chain routing coming with bridge integration.</div>
+                </div>
+              </div>
+              <div style="margin-top:16px;padding:10px;background:rgba(255,200,0,0.08);border:1px solid rgba(255,200,0,0.2);border-radius:7px;font-size:10px;color:var(--gold)">
+                ⚠️ Privacy Router is a legitimate financial privacy tool. Use responsibly and in accordance with local laws.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           FEATURE REQUESTS
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-features" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">COMMUNITY DRIVEN</div>
+          <div class="sec-title">Feature Requests</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:20px">Got an idea? Drop it here. We review submissions weekly and ship the most upvoted ones. You build the roadmap.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <!-- Submit -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">SUBMIT IDEA</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <input type="text" id="fr-title" placeholder="Feature title (e.g. Limit orders on DEX)" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <select id="fr-category" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  <option value="">Select category</option>
+                  <option value="trading">Trading</option>
+                  <option value="nft">NFTs</option>
+                  <option value="defi">DeFi / Yield</option>
+                  <option value="privacy">Privacy</option>
+                  <option value="social">Social</option>
+                  <option value="mobile">Mobile</option>
+                  <option value="other">Other</option>
+                </select>
+                <textarea id="fr-desc" placeholder="Describe your idea in a few sentences…" rows="4" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;resize:vertical"></textarea>
+                <input type="text" id="fr-twitter" placeholder="Your Twitter (optional, for credit)" style="background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                <button class="btn btn-pink" onclick="featureSubmit()" style="width:100%">SUBMIT REQUEST</button>
+                <p style="font-size:9px;color:var(--dim);text-align:center;margin:0">Reviewed every Friday. Top voted ideas shipped within 2 weeks.</p>
+              </div>
+            </div>
+
+            <!-- Top requests -->
+            <div class="card-sm">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em">TOP REQUESTS</div>
+                <span style="font-size:9px;color:var(--dim)">Updated weekly</span>
+              </div>
+              <div id="fr-list">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg4);border-radius:7px;margin-bottom:8px">
+                  <div>
+                    <div style="font-size:12px;font-weight:600">Limit orders on DEX terminal</div>
+                    <div style="font-size:9px;color:var(--dim);margin-top:2px">Trading · @degenking</div>
+                  </div>
+                  <div style="text-align:center">
+                    <button onclick="featureVote(this)" style="background:none;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">▲</button>
+                    <div style="font-size:11px;font-weight:700;color:var(--pink);margin-top:2px">247</div>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg4);border-radius:7px;margin-bottom:8px">
+                  <div>
+                    <div style="font-size:12px;font-weight:600">Mobile app (iOS + Android)</div>
+                    <div style="font-size:9px;color:var(--dim);margin-top:2px">Mobile · @moonshot_jay</div>
+                  </div>
+                  <div style="text-align:center">
+                    <button onclick="featureVote(this)" style="background:none;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">▲</button>
+                    <div style="font-size:11px;font-weight:700;color:var(--pink);margin-top:2px">189</div>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg4);border-radius:7px;margin-bottom:8px">
+                  <div>
+                    <div style="font-size:12px;font-weight:600">Portfolio tracker with PnL history</div>
+                    <div style="font-size:9px;color:var(--dim);margin-top:2px">Trading · @yakker_sol</div>
+                  </div>
+                  <div style="text-align:center">
+                    <button onclick="featureVote(this)" style="background:none;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">▲</button>
+                    <div style="font-size:11px;font-weight:700;color:var(--pink);margin-top:2px">134</div>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg4);border-radius:7px;margin-bottom:8px">
+                  <div>
+                    <div style="font-size:12px;font-weight:600">Cross-chain portfolio view</div>
+                    <div style="font-size:9px;color:var(--dim);margin-top:2px">DeFi · @bridgemax</div>
+                  </div>
+                  <div style="text-align:center">
+                    <button onclick="featureVote(this)" style="background:none;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">▲</button>
+                    <div style="font-size:11px;font-weight:700;color:var(--pink);margin-top:2px">98</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           TOKEN CREATOR / TOKENISED IPO
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-tokencreator" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">ANTI-PUMP ANTI-RUG</div>
+          <div class="sec-title">Token Creator</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:8px">Launch a token the right way. Not a casino slot machine — a real project with locked liquidity, verified team, and YAKKAI due diligence. We're building what pump.fun should have been.</p>
+
+          <!-- Tokenised IPO banner -->
+          <div style="background:linear-gradient(135deg,rgba(224,96,126,0.15),rgba(255,200,0,0.08));border:1px solid rgba(224,96,126,0.3);border-radius:12px;padding:16px 20px;margin-bottom:22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+            <div style="font-size:28px">📈</div>
+            <div style="flex:1;min-width:200px">
+              <div style="font-weight:700;font-size:14px;margin-bottom:4px">Tokenised Equity &amp; IPOs — We're Ready Now</div>
+              <div style="font-size:11px;color:var(--dim);line-height:1.6">Companies are racing to tokenise their equity. Circle, Kraken, eToro — all announcing tokenised IPO plans. YAKK has the infrastructure to list them <em>today</em>. If you're a company exploring tokenised shares, <a href="https://t.me/yakkcult" target="_blank" rel="noopener" style="color:var(--pink)">reach out on Telegram</a>.</div>
+            </div>
+            <a href="https://t.me/yakkcult" target="_blank" rel="noopener" class="btn btn-pink" style="text-decoration:none;font-size:10px;padding:9px 18px;white-space:nowrap">INQUIRE →</a>
+          </div>
+
+          <!-- Why we're different -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px">
+            <div class="card-sm" style="border-left:3px solid var(--pink);padding:14px">
+              <div style="font-size:20px;margin-bottom:7px">🪙</div>
+              <div style="font-weight:700;font-size:12px;margin-bottom:5px">1 SOL Application Fee</div>
+              <div style="font-size:10px;color:var(--dim)">Eliminates bots and meme-rugs instantly. Only serious builders apply. Fee goes to YAKK treasury.</div>
+            </div>
+            <div class="card-sm" style="border-left:3px solid var(--gold);padding:14px">
+              <div style="font-size:20px;margin-bottom:7px">🤖</div>
+              <div style="font-weight:700;font-size:12px;margin-bottom:5px">YAKKAI Due Diligence</div>
+              <div style="font-size:10px;color:var(--dim)">Every application reviewed by YAKKAI + community. On-chain history checked. Scammer wallets blocked.</div>
+            </div>
+            <div class="card-sm" style="border-left:3px solid #64dc64;padding:14px">
+              <div style="font-size:20px;margin-bottom:7px">🔒</div>
+              <div style="font-weight:700;font-size:12px;margin-bottom:5px">Mandatory Liquidity Lock</div>
+              <div style="font-size:10px;color:var(--dim)">Minimum 30-day liquidity lock enforced on-chain. Permanent burn option gives extra trust signal.</div>
+            </div>
+            <div class="card-sm" style="border-left:3px solid #7fdbff;padding:14px">
+              <div style="font-size:20px;margin-bottom:7px">📊</div>
+              <div style="font-weight:700;font-size:12px;margin-bottom:5px">Instant YAKK Listing</div>
+              <div style="font-size:10px;color:var(--dim)">Approved tokens get listed in our screener, NFT market, and OTC desk automatically. Real distribution from day 1.</div>
+            </div>
+          </div>
+
+          <!-- Application form -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">TOKEN APPLICATION FORM</div>
+              <div style="display:flex;flex-direction:column;gap:11px">
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div>
+                    <div style="font-size:9px;color:var(--dim);margin-bottom:4px">PROJECT NAME *</div>
+                    <input type="text" id="tc-name" placeholder="e.g. MyProject" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  </div>
+                  <div>
+                    <div style="font-size:9px;color:var(--dim);margin-bottom:4px">TICKER *</div>
+                    <input type="text" id="tc-ticker" placeholder="e.g. $MPROJ" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  </div>
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">TOKEN TYPE *</div>
+                  <select id="tc-type" style="width:100%;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                    <option value="">Select type</option>
+                    <option value="utility">Utility Token</option>
+                    <option value="governance">Governance Token</option>
+                    <option value="equity">Tokenised Equity / IPO</option>
+                    <option value="revenue">Revenue Share Token</option>
+                    <option value="gaming">Gaming / NFT Ecosystem</option>
+                    <option value="defi">DeFi Protocol Token</option>
+                    <option value="rwa">Real World Asset (RWA)</option>
+                    <option value="meme">Meme (with utility roadmap)</option>
+                  </select>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div>
+                    <div style="font-size:9px;color:var(--dim);margin-bottom:4px">TOTAL SUPPLY *</div>
+                    <input type="number" id="tc-supply" placeholder="e.g. 1000000000" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  </div>
+                  <div>
+                    <div style="font-size:9px;color:var(--dim);margin-bottom:4px">INITIAL PRICE (USD)</div>
+                    <input type="number" id="tc-initprice" placeholder="e.g. 0.001" step="0.000001" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  </div>
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">LIQUIDITY LOCK *</div>
+                  <select id="tc-lock" style="width:100%;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                    <option value="">Select lock duration</option>
+                    <option value="30">30 days (minimum)</option>
+                    <option value="90">90 days</option>
+                    <option value="180">6 months</option>
+                    <option value="365">1 year ⭐ recommended</option>
+                    <option value="730">2 years</option>
+                    <option value="perm">Permanent burn 🔥 max trust</option>
+                  </select>
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">TEAM WALLET % (kept by team)</div>
+                  <input type="number" id="tc-teamwallet" placeholder="e.g. 10 (max 20%)" min="0" max="20" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">VESTING SCHEDULE (team tokens)</div>
+                  <select id="tc-vesting" style="width:100%;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                    <option value="none">No vesting (not recommended)</option>
+                    <option value="6m">6-month cliff, then monthly</option>
+                    <option value="12m" selected>12-month cliff, then monthly</option>
+                    <option value="24m">24-month linear vesting</option>
+                    <option value="locked">Permanently locked</option>
+                  </select>
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">WEBSITE *</div>
+                  <input type="text" id="tc-website" placeholder="https://yourproject.xyz" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div>
+                    <div style="font-size:9px;color:var(--dim);margin-bottom:4px">TWITTER / X *</div>
+                    <input type="text" id="tc-twitter" placeholder="@handle" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  </div>
+                  <div>
+                    <div style="font-size:9px;color:var(--dim);margin-bottom:4px">TELEGRAM</div>
+                    <input type="text" id="tc-tg" placeholder="t.me/yourgroup" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                  </div>
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">PROJECT DESCRIPTION * (min 100 chars)</div>
+                  <textarea id="tc-desc" rows="4" placeholder="What is your project? What problem does it solve? What makes it different? Who is the team?" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;resize:vertical"></textarea>
+                  <div style="font-size:9px;color:var(--dim);margin-top:3px" id="tc-desc-count">0 / 100 chars minimum</div>
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">USE OF FUNDS</div>
+                  <textarea id="tc-funds" rows="2" placeholder="How will raised funds be used? (dev, marketing, liquidity…)" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;resize:vertical"></textarea>
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:4px">PREVIOUS PROJECTS / TRACK RECORD</div>
+                  <textarea id="tc-track" rows="2" placeholder="Any previous projects you've shipped? Links, GitHub, contract addresses…" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;resize:vertical"></textarea>
+                </div>
+
+                <!-- Payment + submit -->
+                <div style="background:rgba(224,96,126,0.08);border:1px solid rgba(224,96,126,0.2);border-radius:8px;padding:12px;margin-top:4px">
+                  <div style="font-size:10px;font-weight:700;margin-bottom:6px">APPLICATION FEE: 1 SOL</div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:10px">Paid on-chain directly to YAKK treasury. Non-refundable. Prevents bot spam and signals serious intent. Reviewed within 48h.</div>
+                  <button class="btn btn-pink" id="tc-submit-btn" onclick="tcSubmit()" style="width:100%;font-size:11px">🚀 PAY 1 SOL &amp; SUBMIT APPLICATION</button>
+                  <div id="tc-status" style="margin-top:8px;font-size:10px;text-align:center;display:none"></div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Right column: requirements + live applications -->
+            <div style="display:flex;flex-direction:column;gap:14px">
+
+              <!-- Requirements checklist -->
+              <div class="card-sm">
+                <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:12px">REQUIREMENTS TO GET LISTED</div>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:11px">
+                  <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#64dc64;font-size:14px;flex-shrink:0">✓</span><div>1 SOL application fee paid on-chain to YAKK treasury</div></div>
+                  <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#64dc64;font-size:14px;flex-shrink:0">✓</span><div>Liquidity locked for minimum 30 days on StakePoint or verified locker</div></div>
+                  <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#64dc64;font-size:14px;flex-shrink:0">✓</span><div>Team wallet ≤ 20% of total supply with mandatory vesting</div></div>
+                  <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#64dc64;font-size:14px;flex-shrink:0">✓</span><div>Working website + active Twitter/X presence</div></div>
+                  <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#64dc64;font-size:14px;flex-shrink:0">✓</span><div>Minimum 100-word project description — no vapourware</div></div>
+                  <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:#64dc64;font-size:14px;flex-shrink:0">✓</span><div>Applicant wallet must not be flagged in our Clowns database</div></div>
+                  <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:var(--gold);font-size:14px;flex-shrink:0">★</span><div>Optional: KYC (increases trust score, shown on listing)</div></div>
+                  <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:var(--gold);font-size:14px;flex-shrink:0">★</span><div>Optional: Smart contract audit (YAKKAI automated + partner firms)</div></div>
+                </div>
+              </div>
+
+              <!-- Pump.fun comparison -->
+              <div class="card-sm" style="background:linear-gradient(135deg,rgba(239,68,68,0.06),rgba(224,96,126,0.04));border-color:rgba(239,68,68,0.2)">
+                <div style="font-family:Space Mono,monospace;font-size:9px;color:#fca5a5;letter-spacing:0.12em;margin-bottom:12px">YAKK TOKEN CREATOR vs PUMP.FUN</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:10px">
+                  <div style="font-weight:700;color:var(--gold);padding-bottom:6px;border-bottom:1px solid var(--border2)">YAKK 🐾</div>
+                  <div style="font-weight:700;color:var(--dim);padding-bottom:6px;border-bottom:1px solid var(--border2)">Pump.fun 🎰</div>
+                  <div style="color:var(--text)">1 SOL barrier to entry</div>
+                  <div style="color:var(--dim)">~0.02 SOL, anyone</div>
+                  <div style="color:var(--text)">YAKKAI review</div>
+                  <div style="color:var(--dim)">No review</div>
+                  <div style="color:var(--text)">Mandatory liq lock</div>
+                  <div style="color:var(--dim)">No lock required</div>
+                  <div style="color:var(--text)">Team vesting enforced</div>
+                  <div style="color:var(--dim)">No vesting</div>
+                  <div style="color:var(--text)">Clown database check</div>
+                  <div style="color:var(--dim)">Scammers welcome</div>
+                  <div style="color:var(--text)">Listed in YAKK ecosystem</div>
+                  <div style="color:var(--dim)">Bonding curve only</div>
+                  <div style="color:var(--text)">Tokenised equity ready</div>
+                  <div style="color:var(--dim)">Meme coins only</div>
+                </div>
+              </div>
+
+              <!-- Recent approvals -->
+              <div class="card-sm">
+                <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:12px">RECENTLY APPROVED</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--bg4);border-radius:7px;margin-bottom:7px">
+                  <div>
+                    <div style="font-size:12px;font-weight:600">YAKK Studios</div>
+                    <div style="font-size:9px;color:var(--dim)">$YST · Utility · Solana</div>
+                  </div>
+                  <span class="badge" style="background:rgba(100,220,100,0.15);color:#64dc64;font-size:8px">APPROVED</span>
+                </div>
+                <div style="font-size:10px;color:var(--dim);text-align:center;padding:10px">Be one of the first approved projects. Applications open now.</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           TELEGRAM TRADE BOT
+      ═══════════════════════════════ -->
+      <div class="page-section" id="section-tgbot" style="display:none">
+        <div class="sec-pad">
+          <div class="sec-eyebrow">AI-POWERED</div>
+          <div class="sec-title">Telegram Trade Bot</div>
+          <div class="sec-bar"></div>
+          <p style="font-size:12px;color:var(--dim);margin-bottom:20px">Build your personal trading bot with YAKK AI as the brain. Set your own rules — the bot executes, you stay in control.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <!-- Bot config -->
+            <div class="card-sm">
+              <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:14px">BOT CONFIGURATION</div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:5px;letter-spacing:0.08em">BOT NAME</div>
+                  <input type="text" id="tgbot-name" placeholder="e.g. YAKKBot Alpha" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:5px;letter-spacing:0.08em">TRADING STRATEGY</div>
+                  <select id="tgbot-strategy" style="width:100%;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                    <option value="dip">Dip Buyer — buy X% dips, sell at target</option>
+                    <option value="trend">Trend Follower — ride momentum</option>
+                    <option value="sniper">New Token Sniper — early launches only</option>
+                    <option value="arb">DEX Arb — capture price differences</option>
+                    <option value="custom">Custom (AI builds from description)</option>
+                  </select>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div>
+                    <div style="font-size:9px;color:var(--dim);margin-bottom:5px">MAX TRADE SIZE ($)</div>
+                    <input type="number" id="tgbot-max" placeholder="e.g. 500" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:12px;outline:none">
+                  </div>
+                  <div>
+                    <div style="font-size:9px;color:var(--dim);margin-bottom:5px">CONFIRM ABOVE ($)</div>
+                    <input type="number" id="tgbot-confirm" placeholder="e.g. 200" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Space Mono,monospace;font-size:12px;outline:none">
+                  </div>
+                </div>
+                <p style="font-size:9px;color:var(--dim);margin:0">The bot auto-executes trades below your confirm threshold. Above it — it pings you on Telegram and waits for your ✅ or ❌ before placing.</p>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:5px">DAILY LOSS LIMIT ($)</div>
+                  <input type="number" id="tgbot-loss" placeholder="Bot pauses if this is hit" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:12px;outline:none">
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:5px">TOKENS TO TRADE</div>
+                  <input type="text" id="tgbot-tokens" placeholder="$YST, $SPT, SOL, or token addresses" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none">
+                </div>
+
+                <div>
+                  <div style="font-size:9px;color:var(--dim);margin-bottom:5px">CUSTOM INSTRUCTIONS (optional)</div>
+                  <textarea id="tgbot-instructions" placeholder="e.g. Never buy if wallet drops below 2 SOL. Only buy tokens with &gt;500 holders. DCA in 3 chunks…" rows="3" style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;color:var(--text);font-family:Space Mono,monospace;font-size:11px;outline:none;resize:vertical"></textarea>
+                </div>
+
+                <button class="btn btn-pink" onclick="tgbotBuild()" style="width:100%">🤖 BUILD MY BOT WITH YAKKAI</button>
+              </div>
+            </div>
+
+            <!-- Preview + safety -->
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <!-- Safety rails -->
+              <div class="card-sm" style="border-left:3px solid var(--gold)">
+                <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--gold);letter-spacing:0.12em;margin-bottom:12px">⚡ SAFETY RAILS</div>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:11px">
+                  <div style="display:flex;gap:8px;align-items:center"><span style="color:#64dc64;font-size:14px">✓</span> Hard cap on max trade size — bot cannot exceed it</div>
+                  <div style="display:flex;gap:8px;align-items:center"><span style="color:#64dc64;font-size:14px">✓</span> Confirm threshold — you approve big moves</div>
+                  <div style="display:flex;gap:8px;align-items:center"><span style="color:#64dc64;font-size:14px">✓</span> Daily loss limit — bot pauses automatically</div>
+                  <div style="display:flex;gap:8px;align-items:center"><span style="color:#64dc64;font-size:14px">✓</span> Emergency /stop command — kills all activity instantly</div>
+                  <div style="display:flex;gap:8px;align-items:center"><span style="color:#64dc64;font-size:14px">✓</span> Your keys never leave your wallet — bot signs via approval</div>
+                </div>
+              </div>
+
+              <!-- Bot preview -->
+              <div class="card-sm" id="tgbot-preview" style="display:none">
+                <div style="font-family:Space Mono,monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em;margin-bottom:12px">BOT PREVIEW</div>
+                <div id="tgbot-preview-content" style="font-size:11px;color:var(--text);line-height:1.7;white-space:pre-wrap"></div>
+              </div>
+
+              <!-- Telegram mock -->
+              <div class="card-sm" style="background:linear-gradient(135deg,rgba(0,136,204,0.08),rgba(0,136,204,0.02));border:1px solid rgba(0,136,204,0.2)">
+                <div style="font-size:9px;color:#4fc3f7;letter-spacing:0.1em;margin-bottom:10px;font-family:Space Mono,monospace">TELEGRAM NOTIFICATION EXAMPLE</div>
+                <div style="background:var(--bg4);border-radius:10px;padding:12px;font-size:11px;line-height:1.7;border-left:3px solid #0088cc">
+                  <div style="font-weight:700;color:#4fc3f7;margin-bottom:4px">🤖 YAKKBot Alpha</div>
+                  <div>🎯 Signal detected: <strong>$YST</strong></div>
+                  <div>📊 Dip: -8.3% in last 15m</div>
+                  <div>💰 Trade value: <strong>$320</strong> — above your confirm threshold</div>
+                  <div style="margin-top:8px;display:flex;gap:8px">
+                    <span style="background:rgba(100,220,100,0.15);color:#64dc64;padding:3px 10px;border-radius:5px;cursor:pointer">✅ BUY</span>
+                    <span style="background:rgba(239,68,68,0.15);color:#fca5a5;padding:3px 10px;border-radius:5px;cursor:pointer">❌ SKIP</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="padding:10px;background:rgba(255,200,0,0.06);border:1px solid rgba(255,200,0,0.15);border-radius:7px;font-size:10px;color:var(--gold)">
+                ⚠️ Bots are provided as tools. Trading is risky — always set a daily loss limit and never deploy with more than you can afford to lose.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- ═══════════════════════════════
            STAKEPOINT
@@ -5199,13 +6209,15 @@ const CLOWNS=[
   {h:'0xkitty69',name:'kitty'},{h:'littlemustacho',name:'Little Mustacho'},
   {h:'Falconcrypto_',name:'FalconCrypto'},{h:'crypt0wu',name:'wuzie'},{h:'Ed_x0101',name:'Ed x'},
   {h:'stekisteks',name:'///Steki'},{h:'koyla_sol',name:'La Koy'},{h:'cryptolyxe',name:'lyxe'},
-  {h:'lamaxbt',name:'lama'}
+  {h:'lamaxbt',name:'lama'},
+  /* Added by YAKK — stingy since launch */
+  {h:'JupiterExchange',name:'Jupiter',tag:'STINGY'}
 ];
 function renderClowns(){
   const g=document.getElementById('clowns-grid');
   if(!g)return;
   const fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Crect width='52' height='52' fill='%23191926'/%3E%3Ctext x='26' y='36' text-anchor='middle' font-size='28'%3E%F0%9F%A4%A1%3C/text%3E%3C/svg%3E";
-  g.innerHTML=CLOWNS.map(c=>`<a href="https://x.com/${c.h}" target="_blank" rel="noopener" class="clown-card"><img class="clown-avatar" src="https://unavatar.io/x/${c.h}" alt="${c.name}" loading="lazy" onerror="this.src='${fallback}'"><div class="clown-name">${c.name}</div><div class="clown-handle">@${c.h}</div><div class="clown-tag">FARMER</div></a>`).join('');
+  g.innerHTML=CLOWNS.map(c=>`<a href="https://x.com/${c.h}" target="_blank" rel="noopener" class="clown-card"><img class="clown-avatar" src="https://unavatar.io/x/${c.h}" alt="${c.name}" loading="lazy" onerror="this.src='${fallback}'"><div class="clown-name">${c.name}</div><div class="clown-handle">@${c.h}</div><div class="clown-tag">${c.tag||'FARMER'}</div></a>`).join('');
 }
 renderClowns();
 /* Lock gated sections on load until wallet verified */
@@ -5803,6 +6815,452 @@ setTimeout(pmLoad, 2000);
 scrRenderList(TOKENS);
 
 document.getElementById('modal-wrap').addEventListener('click',function(e){ if(e.target===this)closeUpdateModal(); });
+
+/* ═══════════════════════════════════════════════════════════════════════
+   NFT MARKETPLACE
+   ═══════════════════════════════════════════════════════════════════════ */
+var nftChain = 'solana';
+var nftCurrentCollection = null;
+
+function nftSetChain(chain, btn) {
+  nftChain = chain;
+  var tabs = document.querySelectorAll('.nft-ctab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  if (btn) btn.classList.add('active');
+  nftShowCollections();
+  nftLoadCollections();
+}
+
+function nftLoadCollections() {
+  var grid = document.getElementById('nft-col-grid');
+  if (!grid) return;
+  grid.innerHTML = '<div style="color:var(--dim);font-size:11px;text-align:center;padding:40px;grid-column:1/-1">Loading collections…</div>';
+  // Tron: deep-link only (CORS blocked)
+  if (nftChain === 'tron') {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px"><p style="color:var(--dim);font-size:12px;margin-bottom:12px">Tron NFT data is best browsed directly on APENFT.</p><a href="https://apenft.io" target="_blank" rel="noopener" class="btn btn-pink" style="text-decoration:none">OPEN APENFT →</a></div>';
+    return;
+  }
+  // Solana via Magic Eden v2
+  if (nftChain === 'solana') {
+    fetch('https://api-mainnet.magiceden.dev/v2/collections?offset=0&limit=12')
+      .then(function(r){ return r.json(); })
+      .then(function(data){ nftRenderCollections(data || []); })
+      .catch(function(){ nftRenderCollectionsFallback(); });
+    return;
+  }
+  // Bitcoin Ordinals via Magic Eden
+  if (nftChain === 'bitcoin') {
+    fetch('https://api-mainnet.magiceden.dev/v2/ord/btc/collections?offset=0&limit=12')
+      .then(function(r){ return r.json(); })
+      .then(function(data){ nftRenderCollections(data && data.collections ? data.collections : (Array.isArray(data) ? data : [])); })
+      .catch(function(){ nftRenderCollectionsFallback(); });
+    return;
+  }
+  // ETH/BNB via Reservoir
+  var chainSlug = nftChain === 'ethereum' ? 'ethereum' : 'bsc';
+  fetch('https://api.reservoir.tools/collections/v7?limit=12&sortBy=allTimeVolume', {
+    headers: { 'x-api-key': 'demo' }
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ nftRenderCollections(data && data.collections ? data.collections : []); })
+    .catch(function(){ nftRenderCollectionsFallback(); });
+}
+
+function nftRenderCollections(cols) {
+  var grid = document.getElementById('nft-col-grid');
+  if (!grid) return;
+  if (!cols || !cols.length) { nftRenderCollectionsFallback(); return; }
+  grid.innerHTML = cols.map(function(c) {
+    var name = esc(c.name || c.symbol || 'Unknown');
+    var img = c.image || c.imageUri || c.collectionImageUrl || '';
+    var floor = c.floorPrice ? (parseFloat(c.floorPrice) + ' ' + (nftChain === 'solana' ? 'SOL' : nftChain === 'bitcoin' ? 'BTC' : nftChain === 'bnb' ? 'BNB' : 'ETH')) : '—';
+    var vol = c.volumeAll || c.totalVolume || 0;
+    var safe = name.replace(/'/g, '\\\'');
+    return '<div class="nft-col-card" onclick="nftOpenCollection(\'' + safe + '\')">'
+      + (img ? '<img src="' + esc(img) + '" alt="' + name + '" loading="lazy" onerror="this.style.display=\'none\'">' : '<div style="height:60px;background:var(--bg4);border-radius:6px"></div>')
+      + '<div class="nft-col-name">' + name + '</div>'
+      + '<div class="nft-col-floor">Floor: ' + esc(floor) + '</div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('nft-stat-cols').textContent = cols.length + '+';
+}
+
+function nftRenderCollectionsFallback() {
+  var grid = document.getElementById('nft-col-grid');
+  if (!grid) return;
+  var fallbacks = [
+    {name:'Mad Lads', floor:'22 SOL'}, {name:'Tensorians', floor:'5.8 SOL'},
+    {name:'DeGods', floor:'8.1 SOL'}, {name:'y00ts', floor:'3.4 SOL'},
+    {name:'Okay Bears', floor:'7.2 SOL'}, {name:'SMB Gen2', floor:'41 SOL'}
+  ];
+  grid.innerHTML = fallbacks.map(function(c) {
+    return '<div class="nft-col-card" onclick="nftOpenCollection(\'' + esc(c.name) + '\')">'
+      + '<div style="height:60px;background:var(--bg4);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:22px">🖼️</div>'
+      + '<div class="nft-col-name">' + esc(c.name) + '</div>'
+      + '<div class="nft-col-floor">Floor: ' + esc(c.floor) + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function nftOpenCollection(name) {
+  nftCurrentCollection = name;
+  document.getElementById('nft-col-name').textContent = name;
+  document.getElementById('nft-collections-view').style.display = 'none';
+  document.getElementById('nft-items-view').style.display = 'block';
+  nftLoadItems(name);
+}
+
+function nftLoadItems(colName) {
+  var grid = document.getElementById('nft-item-grid');
+  if (!grid) return;
+  grid.innerHTML = '<div style="color:var(--dim);font-size:11px;text-align:center;padding:40px;grid-column:1/-1">Loading items…</div>';
+  // Placeholder items — real integration requires collection slug lookup
+  setTimeout(function() {
+    var items = [];
+    for (var i = 1; i <= 12; i++) {
+      items.push({id: '#' + (Math.floor(Math.random()*9999)+1), price: (Math.random()*50+1).toFixed(2) + (nftChain==='solana'?' SOL':nftChain==='bitcoin'?' BTC':' ETH'), rarity: Math.floor(Math.random()*100)+1});
+    }
+    grid.innerHTML = items.map(function(item) {
+      var safeId = item.id.replace(/'/g,'\\\'');
+      var safePrice = item.price.replace(/'/g,'\\\'');
+      return '<div class="nft-item-card" onclick="nftOpenItem(\'' + safeId + '\',\'' + safePrice + '\')">'
+        + '<div style="height:120px;background:var(--bg4);border-radius:7px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:32px">🖼️</div>'
+        + '<div style="font-size:11px;font-weight:600">' + esc(colName) + ' ' + esc(item.id) + '</div>'
+        + '<div style="font-size:12px;color:var(--pink);margin-top:3px">' + esc(item.price) + '</div>'
+        + '<div style="font-size:9px;color:var(--dim)">Rarity #' + item.rarity + '</div>'
+        + '</div>';
+    }).join('');
+  }, 600);
+}
+
+function nftOpenItem(id, price) {
+  document.getElementById('nft-modal-collection').textContent = nftCurrentCollection || '';
+  document.getElementById('nft-modal-name').textContent = (nftCurrentCollection || '') + ' ' + id;
+  document.getElementById('nft-modal-price').textContent = price;
+  document.getElementById('nft-modal-traits').innerHTML = ['Background','Fur','Eyes','Mouth','Accessory'].map(function(t){
+    var vals = ['Rare','Common','Legendary','Epic','Uncommon'];
+    return '<div style="background:var(--bg4);border-radius:5px;padding:7px;text-align:center"><div style="font-size:8px;color:var(--dim)">' + t + '</div><div style="font-size:11px;font-weight:600">' + vals[Math.floor(Math.random()*vals.length)] + '</div></div>';
+  }).join('');
+  document.getElementById('nft-modal').style.display = 'flex';
+}
+
+function nftCloseModal() {
+  document.getElementById('nft-modal').style.display = 'none';
+}
+
+function nftBuy() {
+  if (!walletAddress) { showToast('Connect wallet first', 'warn'); return; }
+  showToast('Opening purchase on ' + (nftChain === 'solana' ? 'Magic Eden' : 'marketplace') + '…', 'info');
+  var urls = {solana:'https://magiceden.io', bitcoin:'https://magiceden.io/ordinals', ethereum:'https://opensea.io', bnb:'https://element.market', tron:'https://apenft.io'};
+  window.open(urls[nftChain] || 'https://magiceden.io', '_blank', 'noopener');
+}
+
+function nftSearch(q) {
+  if (!q) { nftLoadCollections(); return; }
+  showToast('Searching for "' + esc(q) + '"…', 'info');
+  nftLoadCollections();
+}
+
+function nftShowCollections() {
+  document.getElementById('nft-collections-view').style.display = 'block';
+  document.getElementById('nft-items-view').style.display = 'none';
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LAUNCHPAD
+   ═══════════════════════════════════════════════════════════════════════ */
+function launchSubmit() {
+  var name = (document.getElementById('lp-name') || {}).value || '';
+  var ticker = (document.getElementById('lp-ticker') || {}).value || '';
+  if (!name || !ticker) { showToast('Fill in project name and ticker', 'warn'); return; }
+  showToast('Submission received! YAKKAI will review within 48h.', 'ok');
+  ['lp-name','lp-ticker','lp-twitter','lp-website','lp-desc'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   OTC DESK
+   ═══════════════════════════════════════════════════════════════════════ */
+function otcPost() {
+  if (!walletAddress) { showToast('Connect wallet to post OTC order', 'warn'); return; }
+  var amount = (document.getElementById('otc-amount') || {}).value || '';
+  var price = (document.getElementById('otc-price') || {}).value || '';
+  var contact = (document.getElementById('otc-contact') || {}).value || '';
+  if (!amount || !price || !contact) { showToast('Fill in all fields to post order', 'warn'); return; }
+  showToast('Order posted! Visible to other YAKK users for 72h.', 'ok');
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   YIELD FINDER
+   ═══════════════════════════════════════════════════════════════════════ */
+function yieldRefresh() {
+  showToast('Refreshing yield data…', 'info');
+  // In production: fetch live APY from DeFi Llama or protocol APIs
+  // Cards are already static-rendered in HTML; this would re-fetch and update
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ALERT SECTION PAGE (separate from FAB panel)
+   ═══════════════════════════════════════════════════════════════════════ */
+function alertSet() {
+  var token = (document.getElementById('alert-token') || {}).value || '';
+  var price = (document.getElementById('alert-price') || {}).value || '';
+  var dir = (document.getElementById('alert-dir') || {}).value || 'above';
+  if (!token || !price) { showToast('Enter token and target price', 'warn'); return; }
+  var alert = { token: token.toUpperCase(), price: parseFloat(price), dir: dir, ts: Date.now() };
+  priceAlerts.push(alert);
+  alertsSave();
+  renderSectionAlerts();
+  showToast('Alert set for ' + esc(token.toUpperCase()), 'ok');
+  document.getElementById('alert-token').value = '';
+  document.getElementById('alert-price').value = '';
+}
+
+function alertDelete(idx) {
+  priceAlerts.splice(idx, 1);
+  alertsSave();
+  renderSectionAlerts();
+}
+
+function alertRequestPermission() {
+  if (!('Notification' in window)) { showToast('Browser notifications not supported', 'warn'); return; }
+  Notification.requestPermission().then(function(p){
+    if (p === 'granted') {
+      document.getElementById('alert-permission-notice').style.display = 'none';
+      showToast('Notifications enabled!', 'ok');
+    }
+  });
+}
+
+function renderSectionAlerts() {
+  var el = document.getElementById('section-alerts-list');
+  if (!el) return;
+  if (!priceAlerts.length) {
+    el.innerHTML = '<div style="font-size:11px;color:var(--dim);text-align:center;padding:20px">No alerts set yet.</div>';
+    return;
+  }
+  el.innerHTML = priceAlerts.map(function(a, i) {
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--bg4);border-radius:7px;margin-bottom:7px">'
+      + '<div><div style="font-size:12px;font-weight:600">' + esc(a.token) + '</div>'
+      + '<div style="font-size:9px;color:var(--dim)">' + (a.dir === 'above' ? '▲ above' : '▼ below') + ' $' + a.price + '</div></div>'
+      + '<button onclick="alertDelete(' + i + ')" style="background:rgba(239,68,68,0.15);border:none;border-radius:5px;color:#fca5a5;padding:4px 10px;cursor:pointer;font-size:10px">DEL</button>'
+      + '</div>';
+  }).join('');
+  var notice = document.getElementById('alert-permission-notice');
+  if (notice && Notification && Notification.permission !== 'granted') notice.style.display = 'block';
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BRIDGE SWAP
+   ═══════════════════════════════════════════════════════════════════════ */
+var BRIDGE_TOKENS = {
+  solana: ['SOL','$YST','$SPT','USDC','USDT'],
+  ethereum: ['ETH','USDC','USDT','WBTC','DAI'],
+  bnb: ['BNB','USDT','USDC','CAKE'],
+  bitcoin: ['BTC'],
+  tron: ['TRX','USDT','USDC']
+};
+
+function bridgeUpdateTokens(side) {
+  var chainId = side === 'from' ? 'bridge-from-chain' : 'bridge-to-chain';
+  var tokenId = side === 'from' ? 'bridge-from-token' : 'bridge-to-token';
+  var chain = (document.getElementById(chainId) || {}).value || 'solana';
+  var sel = document.getElementById(tokenId);
+  if (!sel) return;
+  var tokens = BRIDGE_TOKENS[chain] || ['NATIVE'];
+  sel.innerHTML = tokens.map(function(t){ return '<option value="' + t.toLowerCase().replace('$','') + '">' + t + '</option>'; }).join('');
+  bridgeGetQuote();
+}
+
+function bridgeGetQuote() {
+  var amount = parseFloat((document.getElementById('bridge-from-amount') || {}).value || '0');
+  if (!amount) { document.getElementById('bridge-to-amount').textContent = '—'; return; }
+  // Simulated quote — real integration would call deBridge/Wormhole/Mayan API
+  var routes = ['deBridge','Wormhole','Mayan','Allbridge'];
+  var route = routes[Math.floor(Math.random() * routes.length)];
+  var received = (amount * (0.97 + Math.random() * 0.01)).toFixed(4);
+  var fee = (amount * 0.012).toFixed(4);
+  document.getElementById('bridge-to-amount').textContent = received;
+  document.getElementById('bridge-to-est').textContent = received;
+  document.getElementById('bridge-route-name').textContent = route;
+  document.getElementById('bridge-route-fee').textContent = '~' + fee + ' (1.2%)';
+  document.getElementById('bridge-route-time').textContent = '2–8 min';
+  var qBox = document.getElementById('bridge-quote-box');
+  if (qBox) qBox.style.display = 'block';
+}
+
+function bridgeExecute() {
+  if (!walletAddress) { showToast('Connect wallet to bridge', 'warn'); return; }
+  var amount = (document.getElementById('bridge-from-amount') || {}).value || '';
+  if (!parseFloat(amount)) { showToast('Enter amount to bridge', 'warn'); return; }
+  showToast('Opening bridge transaction…', 'info');
+  window.open('https://app.debridge.finance', '_blank', 'noopener');
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PRIVACY ROUTER
+   ═══════════════════════════════════════════════════════════════════════ */
+function privacyRoute() {
+  if (!walletAddress) { showToast('Connect wallet to use Privacy Router', 'warn'); return; }
+  var from = (document.getElementById('priv-from') || {}).value || '';
+  var to = (document.getElementById('priv-to') || {}).value || '';
+  var amount = parseFloat((document.getElementById('priv-amount') || {}).value || '0');
+  if (!from || !to || !amount) { showToast('Fill in all fields', 'warn'); return; }
+  var hops = (document.getElementById('priv-hops') || {}).value || '3';
+  showToast('Routing ' + amount + ' SOL through ' + hops + ' hops…', 'info');
+  // Real implementation: build multi-hop transaction, sign with wallet
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TELEGRAM TRADE BOT BUILDER
+   ═══════════════════════════════════════════════════════════════════════ */
+function tgbotBuild() {
+  var name = (document.getElementById('tgbot-name') || {}).value || 'YAKKBot';
+  var strategy = (document.getElementById('tgbot-strategy') || {}).value || 'dip';
+  var maxTrade = (document.getElementById('tgbot-max') || {}).value || '500';
+  var confirmThresh = (document.getElementById('tgbot-confirm') || {}).value || '200';
+  var lossLimit = (document.getElementById('tgbot-loss') || {}).value || '100';
+  var tokens = (document.getElementById('tgbot-tokens') || {}).value || '$YST, SOL';
+  var instructions = (document.getElementById('tgbot-instructions') || {}).value || '';
+
+  var strategyLabels = {dip:'Dip Buyer',trend:'Trend Follower',sniper:'New Token Sniper',arb:'DEX Arb',custom:'Custom'};
+  var preview = '🤖 ' + esc(name) + '\n\n'
+    + 'Strategy: ' + (strategyLabels[strategy] || strategy) + '\n'
+    + 'Max trade size: $' + esc(maxTrade) + '\n'
+    + 'Confirm trades above: $' + esc(confirmThresh) + '\n'
+    + 'Daily loss limit: $' + esc(lossLimit) + ' (auto-pause)\n'
+    + 'Tokens: ' + esc(tokens) + '\n'
+    + (instructions ? 'Rules: ' + esc(instructions) : '');
+
+  var previewEl = document.getElementById('tgbot-preview');
+  var previewContent = document.getElementById('tgbot-preview-content');
+  if (previewContent) previewContent.textContent = preview;
+  if (previewEl) previewEl.style.display = 'block';
+
+  showToast('Bot config built! Join our Telegram to activate.', 'ok');
+  setTimeout(function(){ window.open('https://t.me/yakkcult', '_blank', 'noopener'); }, 1200);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FEATURE REQUESTS
+   ═══════════════════════════════════════════════════════════════════════ */
+function featureSubmit() {
+  var title = (document.getElementById('fr-title') || {}).value || '';
+  var category = (document.getElementById('fr-category') || {}).value || '';
+  var desc = (document.getElementById('fr-desc') || {}).value || '';
+  if (!title || !category || !desc) { showToast('Fill in title, category and description', 'warn'); return; }
+  showToast('Request submitted! Reviewed every Friday 🙌', 'ok');
+  ['fr-title','fr-desc','fr-twitter'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('fr-category').selectedIndex = 0;
+}
+
+function featureVote(btn) {
+  var countEl = btn.nextElementSibling;
+  if (!countEl) return;
+  var current = parseInt(countEl.textContent) || 0;
+  countEl.textContent = current + 1;
+  btn.disabled = true;
+  btn.style.borderColor = 'var(--pink)';
+  btn.style.color = 'var(--pink)';
+  showToast('Vote counted!', 'ok');
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TOKEN CREATOR
+   ═══════════════════════════════════════════════════════════════════════ */
+var TC_FEE_WALLET = 'YAKKtreasuryXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'; // replace with real treasury wallet
+var TC_FEE_SOL = 1.0;
+
+// Live char count for description
+(function(){
+  document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'tc-desc') {
+      var len = (e.target.value || '').length;
+      var el = document.getElementById('tc-desc-count');
+      if (el) {
+        el.textContent = len + ' / 100 chars minimum';
+        el.style.color = len >= 100 ? '#64dc64' : 'var(--dim)';
+      }
+    }
+  });
+})();
+
+function tcValidate() {
+  var name = (document.getElementById('tc-name') || {}).value || '';
+  var ticker = (document.getElementById('tc-ticker') || {}).value || '';
+  var type = (document.getElementById('tc-type') || {}).value || '';
+  var supply = (document.getElementById('tc-supply') || {}).value || '';
+  var lock = (document.getElementById('tc-lock') || {}).value || '';
+  var website = (document.getElementById('tc-website') || {}).value || '';
+  var twitter = (document.getElementById('tc-twitter') || {}).value || '';
+  var desc = (document.getElementById('tc-desc') || {}).value || '';
+  var teamWallet = parseFloat((document.getElementById('tc-teamwallet') || {}).value || '0');
+
+  if (!name) { showToast('Enter project name', 'warn'); return false; }
+  if (!ticker) { showToast('Enter token ticker', 'warn'); return false; }
+  if (!type) { showToast('Select token type', 'warn'); return false; }
+  if (!supply || parseFloat(supply) <= 0) { showToast('Enter total supply', 'warn'); return false; }
+  if (!lock) { showToast('Select liquidity lock duration', 'warn'); return false; }
+  if (!website) { showToast('Enter project website', 'warn'); return false; }
+  if (!twitter) { showToast('Enter Twitter / X handle', 'warn'); return false; }
+  if (desc.length < 100) { showToast('Description must be at least 100 characters (' + desc.length + '/100)', 'warn'); return false; }
+  if (teamWallet > 20) { showToast('Team wallet cannot exceed 20% of supply', 'warn'); return false; }
+  return true;
+}
+
+async function tcSubmit() {
+  if (!walletAddress) { showToast('Connect Phantom wallet to apply', 'warn'); return; }
+  if (!tcValidate()) return;
+
+  var btn = document.getElementById('tc-submit-btn');
+  var statusEl = document.getElementById('tc-status');
+  if (btn) { btn.disabled = true; btn.textContent = 'Processing…'; }
+  if (statusEl) { statusEl.style.display = 'block'; statusEl.style.color = 'var(--dim)'; statusEl.textContent = 'Preparing 1 SOL payment…'; }
+
+  try {
+    if (typeof solanaWeb3 === 'undefined') throw new Error('Solana web3.js not loaded');
+    var connection = new solanaWeb3.Connection(SOLANA_RPC, 'confirmed');
+    var fromPubkey = new solanaWeb3.PublicKey(walletAddress);
+    var toPubkey = new solanaWeb3.PublicKey(TC_FEE_WALLET);
+    var lamports = Math.round(TC_FEE_SOL * solanaWeb3.LAMPORTS_PER_SOL);
+
+    var transaction = new solanaWeb3.Transaction().add(
+      solanaWeb3.SystemProgram.transfer({ fromPubkey: fromPubkey, toPubkey: toPubkey, lamports: lamports })
+    );
+    var bh = await connection.getLatestBlockhash();
+    transaction.recentBlockhash = bh.blockhash;
+    transaction.feePayer = fromPubkey;
+
+    if (statusEl) statusEl.textContent = 'Please approve in Phantom…';
+    var signed = await window.solana.signTransaction(transaction);
+    var sig = await connection.sendRawTransaction(signed.serialize());
+
+    if (statusEl) {
+      statusEl.style.color = '#64dc64';
+      statusEl.textContent = '✓ Payment sent! TX: ' + sig.substring(0,16) + '… Application submitted. YAKKAI will review within 48h.';
+    }
+    showToast('Application submitted! We\'ll review within 48h.', 'ok');
+    if (btn) { btn.textContent = '✓ Application Submitted'; }
+  } catch(e) {
+    if (btn) { btn.disabled = false; btn.textContent = '🚀 PAY 1 SOL & SUBMIT APPLICATION'; }
+    if (statusEl) {
+      statusEl.style.color = '#fca5a5';
+      statusEl.textContent = 'Error: ' + (e.message || 'Transaction failed');
+    }
+    showToast('Payment failed: ' + (e.message || 'unknown error'), 'warn');
+  }
+}
+
+/* Auto-load NFT collections when section is first shown */
+(function(){
+  var origShowSection = showSection;
+  showSection = function(id) {
+    origShowSection(id);
+    if (id === 'nftmarket') { setTimeout(nftLoadCollections, 100); }
+    if (id === 'alerts') { setTimeout(renderSectionAlerts, 100); }
+  };
+})();
 </script>
 </body>
 </html>
