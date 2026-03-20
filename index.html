@@ -2277,14 +2277,14 @@ function scrLoadChart(){
     return;
   }
 
-  /* YST / SPT — GeckoTerminal embed (clean chart-only, no info panel) */
+  /* YST / SPT — DexScreener embed (info=0 hides info panel, chart-only) */
   const activePair = t.pairs && t.pairs[t._activePair || 0];
   if(activePair && activePair.poolAddr){
-    const gtUrl = 'https://www.geckoterminal.com/solana/pools/' + activePair.poolAddr
-      + '?embed=1&info=0&swaps=0&grayscale=0&light_chart=0';
+    const dsUrl = 'https://dexscreener.com/solana/' + activePair.poolAddr
+      + '?embed=1&theme=dark&info=0';
     const iframe = document.createElement('iframe');
-    iframe.src = gtUrl;
-    iframe.style.cssText = 'width:100%;height:492px;margin-top:-52px;border:none;display:block';
+    iframe.src = dsUrl;
+    iframe.style.cssText = 'width:100%;height:440px;border:none;display:block';
     iframe.allow = 'clipboard-write';
     iframe.loading = 'eager';
     tv.appendChild(iframe);
@@ -2838,12 +2838,12 @@ function termLoadChart(){
 
   const tActivePair = t.pairs && t.pairs[t._activePair || 0];
   if(tActivePair && tActivePair.poolAddr){
-    /* GeckoTerminal embed for YST/SPT — clean chart with trades feed */
-    const gtUrl = 'https://www.geckoterminal.com/solana/pools/' + tActivePair.poolAddr
-      + '?embed=1&info=0&swaps=1&grayscale=0&light_chart=0';
+    /* DexScreener embed for YST/SPT — info=0 hides info panel, chart-only */
+    const dsUrl = 'https://dexscreener.com/solana/' + tActivePair.poolAddr
+      + '?embed=1&theme=dark&info=0';
     const iframe = document.createElement('iframe');
-    iframe.src = gtUrl;
-    iframe.style.cssText = 'width:100%;height:calc(100% + 52px);margin-top:-52px;border:none;display:block;min-height:512px';
+    iframe.src = dsUrl;
+    iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;min-height:460px';
     iframe.allow = 'clipboard-write';
     inner.appendChild(iframe);
   } else {
