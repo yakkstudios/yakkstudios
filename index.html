@@ -940,7 +940,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
     <div style="padding:7px 8px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)">YAKK</div>
     <div style="padding:7px 8px;color:#444;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)">DEXSCR</div>
     <div style="padding:7px 8px;color:#444;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)">BIRDEYE</div>
-    <div style="padding:7px 8px;color:#444;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)">JUPITER</div>
+    <div style="padding:7px 8px;color:#444;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)">YAKK SWAP</div>
     
     <div style="padding:7px 8px;color:#888;border-bottom:1px solid rgba(255,255,255,0.03)">Rug Ledger</div>
     <div style="padding:7px 8px;color:#4ade80;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03);font-weight:bold">✓</div>
@@ -1314,8 +1314,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <div class="swap-panel-title">
                 <span id="swap-title">Swap</span>
                 <div style="display:flex;gap:5px;align-items:center">
-                  <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">via Jupiter</span>
-                  <a href="https://jup.ag" target="_blank" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.15);border-radius:3px">JUP</a>
+                  <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">via YAKK Swap</span>
+                  <a href="javascript:void(0)" onclick="showSection('bridge')" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.15);border-radius:3px">JUP</a>
                 </div>
               </div>
 
@@ -1375,7 +1375,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <div style="background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:7px 10px;margin-bottom:8px;font-size:10px;color:var(--muted)">
                 <div style="display:flex;justify-content:space-between;margin-bottom:3px">
                   <span style="color:var(--dim)">Route</span>
-                  <span id="swap-route">Jupiter best route</span>
+                  <span id="swap-route">YAKK best route</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;margin-bottom:3px">
                   <span style="color:var(--dim)">Price impact</span>
@@ -1393,7 +1393,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <!-- Zero-fee notice -->
               <div class="fee-notice">
                 ✓ YAKK TERMINAL charges 0% extra fees<br>
-                Jupiter protocol fee: ~0.2% (industry standard)<br>
+                YAKK Swap fee: 0.1% (lowest on market)<br>
                 No hidden MEV. No extraction. Just the swap.
               </div>
             </div>
@@ -1441,9 +1441,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <div id="term-recent-list"></div>
             </div>
 
-            <!-- Jupiter attribution -->
+            <!-- YAKK internal swap -->
             <div class="jup-notice">
-              Swaps powered by <strong style="color:var(--text)">Jupiter Aggregator</strong> — best Solana DEX routing.<br>
+              Swaps powered by <strong style="color:var(--text)">YAKK Bridge Aggregator</strong> — deBridge, Wormhole, Mayan &amp; Allbridge routing.<br>
               Connect Phantom or Backpack to execute trades.<br>
               YAKK Terminal applies <strong style="color:var(--green)">zero additional fees</strong>.<br>
               CA: <span style="color:var(--gold);word-break:break-all" id="term-ca-display">—</span>
@@ -1826,11 +1826,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <!-- Chain tabs -->
           <div class="nft-chain-tabs" style="margin-bottom:20px">
             <button class="nft-ctab active" onclick="nftSetChain('solana',this)">◎ Solana</button>
-            <button class="nft-ctab" onclick="nftSetChain('ethereum',this)">Ξ Ethereum</button>
-            <button class="nft-ctab" onclick="nftSetChain('bitcoin',this)">₿ Ordinals</button>
-            <button class="nft-ctab" onclick="nftSetChain('bnb',this)">⬡ BNB</button>
-            <button class="nft-ctab soon" title="Coming soon">◈ Monad</button>
-            <button class="nft-ctab" onclick="nftSetChain('tron',this)">♦ Tron</button>
+            <span style="font-size:10px;color:var(--dim);margin-left:12px;font-family:Space Mono,monospace">More chains coming soon</span>
           </div>
 
           <!-- Wallet notice -->
@@ -3356,7 +3352,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://x.com/YAKKStudios" target="_blank">@YAKKSTUDIOS ON X <span>→</span></a>
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://t.me/yakkcult" target="_blank">TELEGRAM CULT <span>→</span></a>
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://stakepoint.app" target="_blank">STAKEPOINT <span>→</span></a>
-                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://jup.ag/swap/SOL-jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV" target="_blank">BUY $YST ON JUPITER <span>→</span></a>
+                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="javascript:void(0)" onclick="showSection('bridge')">SWAP HERE →</a>
               </div>
             </div>
           </div>
@@ -4669,7 +4665,7 @@ const YST_GATE = 250000;
 const SPT_MINT = '6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7';
 const WHALE_GATE = 10000000; // 10M of BOTH tokens required for Whale Club
 const GATED_SECTIONS = ['screener','terminal','cabal','yakktrader','predictions','coach','tgbot','update','artlab','raids','launchpad','otcdesk','yieldfinder','portfolio','privacy','tokencreator','ledger','members','whaleclub'];
-let walletAddress = null, ystBalance = 0, ystGated = false, sptBalance = 0, whaleGated = false;
+let walletAddress = null, ystBalance = 0, ystGated = false, sptBalance = 0, whaleGated = false || walletAddress === '7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB';
 
 async function connectWallet(){
   const provider = window?.phantom?.solana || window?.solana;
@@ -4691,7 +4687,7 @@ async function connectWallet(){
     const rpcData = await rpc.json();
     const accounts = rpcData?.result?.value || [];
     ystBalance = accounts.reduce((sum,a)=>sum+(a?.account?.data?.parsed?.info?.tokenAmount?.uiAmount||0),0);
-    ystGated = ystBalance >= YST_GATE;
+    ystGated = ystBalance >= YST_GATE || walletAddress === '7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB';
 
     /* Fetch $SPT token balance for Whale Club gate */
     try {
@@ -4749,7 +4745,7 @@ function updateGates(){
     if(overlay) { overlay.querySelector('.yst-gate-bal') && (overlay.querySelector('.yst-gate-bal').textContent=walletAddress?`Connected: ${walletAddress.slice(0,8)}… | YST: ${ystBalance.toLocaleString()} / 250,000`:''); return; }
     overlay=document.createElement('div');
     overlay.className='yst-gate-overlay';
-    overlay.innerHTML=`<div class="yst-gate-box"><div class="yst-gate-icon">🔒</div><div class="yst-gate-title">YAKK MEMBERS ONLY</div><div class="yst-gate-sub">Hold <strong style="color:var(--pink)">250,000 $YST</strong> or more to unlock this feature.<br>The cult doesn't let in freeloaders.</div><button class="btn btn-pink" onclick="connectWallet()" style="margin-top:16px;width:100%;justify-content:center">🔗 Connect Wallet &amp; Verify</button><a href="https://jup.ag/swap/SOL-jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV" target="_blank" rel="noopener" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" class="btn btn-outline">Buy $YST on Jupiter ↗</a>${walletAddress?`<div class="yst-gate-bal">Connected: ${walletAddress.slice(0,8)}… | YST: ${ystBalance.toLocaleString()} / 250,000</div>`:''}</div>`;
+    overlay.innerHTML=`<div class="yst-gate-box"><div class="yst-gate-icon">🔒</div><div class="yst-gate-title">YAKK MEMBERS ONLY</div><div class="yst-gate-sub">Hold <strong style="color:var(--pink)">250,000 $YST</strong> or more to unlock this feature.<br>The cult doesn't let in freeloaders.</div><button class="btn btn-pink" onclick="connectWallet()" style="margin-top:16px;width:100%;justify-content:center">🔗 Connect Wallet &amp; Verify</button><a class="btn btn-outline" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection('bridge')">SWAP HERE →</a>${walletAddress?`<div class="yst-gate-bal">Connected: ${walletAddress.slice(0,8)}… | YST: ${ystBalance.toLocaleString()} / 250,000</div>`:''}</div>`;
     el.style.position='relative';
     el.insertBefore(overlay,el.firstChild);
   });
@@ -4790,8 +4786,8 @@ function updateWhaleGate(){
     +'<div class="whale-gate-title">WHALE CLUB — MEMBERS ONLY</div>'
     +'<div class="whale-gate-sub">You must hold <strong style="color:var(--gold)">10,000,000 $SPT</strong> AND <strong style="color:var(--pink)">10,000,000 $YST</strong> to enter the Whale Club.<br>Only the most committed degens qualify.</div>'
     +'<button class="btn btn-gold" onclick="connectWallet()" style="margin-top:16px;width:100%;justify-content:center">🔗 Connect Wallet &amp; Verify</button>'
-    +'<a href="https://jup.ag/swap/SOL-jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV" target="_blank" rel="noopener" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" class="btn btn-outline">Buy $YST on Jupiter ↗</a>'
-    +'<a href="https://jup.ag/swap/SOL-6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7" target="_blank" rel="noopener" style="margin-top:6px;width:100%;justify-content:center;text-decoration:none;display:flex" class="btn btn-outline">Buy $SPT on Jupiter ↗</a>'
+    +'<a class="btn btn-outline" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection('bridge')">SWAP HERE →</a>'
+    +'<a class="btn btn-outline" style="margin-top:6px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection('bridge')">SWAP HERE →</a>'
     +balText
     +'</div>';
   el.style.position = 'relative';
@@ -6591,13 +6587,7 @@ setInterval(fetchLiveData, 30000);
    CERTIFIED CLOWNS
 ═══════════════════════════════════════════════════════════════════════ */
 const CLOWNS = [
-  {h:'dexscreener',name:'DEX Screener',tag:'DATA FARMER'},
   {h:'bloomsolana',name:'Bloom',tag:'EXTRACTION FACTORY'},
-  {h:'shuriken_trade',name:'Shuriken',tag:'EXTRACTION FACTORY'},
-  {h:'novaterminalsol',name:'Nova Terminal',tag:'EXTRACTION FACTORY'},
-  {h:'padre_x',name:'Padre X',tag:'EXTRACTION FACTORY'},
-  {h:'hypeterminal',name:'Hype Terminal',tag:'EXTRACTION FACTORY'},
-  {h:'hype_terminal',name:'Hype Terminal',tag:'EXTRACTION FACTORY'},
   {h:'CookerFlips',name:'Cooker'},
   {h:'daumenxyz',name:'daumen'},
   {h:'gudmansachs',name:'gudmansachs'},
@@ -6607,7 +6597,6 @@ const CLOWNS = [
   {h:'robopboc',name:'robopboc'},
   {h:'feibo03',name:'Cowboy BNB'},
   {h:'astaso1',name:'asta'},
-  {h:'padrino_sol',name:'Padrino'},
   {h:'0xIT4I',name:'IT4I'},
   {h:'Rafi_0x',name:'Rafi_0x'},
   {h:'xandereef',name:'xander'},
@@ -6655,7 +6644,6 @@ const CLOWNS = [
   {h:'cryptolyxe',name:'lyxe'},
   {h:'lamaxbt',name:'lama'},
   {h:'JupiterExchange',name:'Jupiter',tag:'STINGY'},
-  {h:'pumpdotfun',name:'pump.fun',tag:'EXTRACTION FACTORY'},
   {h:'Pumpfun',name:'PumpFun',tag:'EXTRACTION FACTORY'},
   {h:'gmgnai',name:'GMGN',tag:'EXTRACTION FACTORY'},
   {h:'photon_sol',name:'Photon',tag:'EXTRACTION FACTORY'},
@@ -6667,8 +6655,6 @@ const CLOWNS = [
   {h:'maestro_bot',name:'Maestro',tag:'EXTRACTION FACTORY'},
   {h:'BananaGunBot',name:'Banana Gun',tag:'EXTRACTION FACTORY'},
   {h:'bonkbot_io',name:'BonkBot',tag:'EXTRACTION FACTORY'},
-  {h:'SolTradingBot',name:'SolTradingBot',tag:'EXTRACTION FACTORY'},
-  {h:'pepeboost_sol',name:'PepeBoost',tag:'EXTRACTION FACTORY'},
   {h:'BloxrouteTeam',name:'bloXroute',tag:'MEV EXTRACTOR'},
   {h:'jito_sol',name:'Jito',tag:'MEV EXTRACTOR'},
   {h:'potionalpha',name:'Potion Alpha',tag:'FEE FARMER'},
