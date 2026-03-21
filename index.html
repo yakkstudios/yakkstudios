@@ -2974,7 +2974,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div class="sec-eyebrow">YAKK CABAL INVESTIGATOR</div>
           <div class="sec-title">Cabal Investigator</div>
           <div class="sec-bar"></div>
-          <p style="color:var(--muted);max-width:580px;margin-bottom:24px;font-size:13px;line-height:1.8">Map wallet connections, detect coordinated behaviour, and track insider patterns before they reach the chart. <span style="color:var(--gold);font-weight:600">14,000+ wallets profiled. Real-time connection mapping across Solana.</span></p>
+          <p style="color:var(--muted);max-width:580px;margin-bottom:24px;font-size:13px;line-height:1.8">Map wallet connections, detect coordinated behaviour, and track insider patterns before they reach the chart.</p>
           <div class="warn-bar">⚠ RESEARCH TOOL ONLY — On-chain behavioural analysis. Patterns ≠ proof of intent. Not financial or legal advice. DYOR. The ledger watches — use this responsibly.</div>
 
           <div style="display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start">
@@ -3702,7 +3702,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
           <div class="sec-eyebrow">10 — YAKKAI PREDICTION ENGINE</div>
           <div style="font-family:Syne,sans-serif;font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1.1">PREDICTION <span style="color:var(--gold)">MARKETS</span></div>
           <div class="sec-bar"></div>
-          <p style="color:var(--muted);max-width:580px;margin-bottom:28px;font-size:13px;line-height:1.8">Real prediction markets for crypto events. YAKKAI scans live markets and gives you the signal. Click any market to trade on Polymarket. <span style="color:var(--gold);font-weight:600">42 active markets. Community conviction tracked on-chain.</span> Not financial advice — the ledger makes no promises, only patterns.</p>
+          <p style="color:var(--muted);max-width:580px;margin-bottom:28px;font-size:13px;line-height:1.8">Real prediction markets for crypto events. YAKKAI scans live markets and gives you the signal. Click any market to trade on Polymarket. Not financial advice — the ledger makes no promises, only patterns.</p>
 
           <!-- YAKKAI Top Pick -->
           <div class="card" style="margin-bottom:24px;border-color:rgba(247,201,72,0.25);background:linear-gradient(135deg,rgba(247,201,72,0.04),var(--bg3))">
@@ -4728,17 +4728,7 @@ async function connectWallet(){
     loadPortfolio();
     updateProfilePreview();
   } catch(e){
-    if(!e?.message?.includes('User rejected')){
-          console.error('Wallet error:',e);
-          if(walletAddress){
-            const short=walletAddress.slice(0,4)+'_'+walletAddress.slice(-4);
-            ['home-wallet-btn','scr-wallet-btn'].forEach(id=>{const b=document.getElementById(id);if(!b)return;b.textContent='⚠ '+short;b.style.color='var(--gold)';b.style.borderColor='rgba(247,201,72,0.4)';});
-            const mobBtn=document.querySelector('#mobile-header .btn');
-            if(mobBtn){mobBtn.textContent='⚠ '+short;mobBtn.style.color='var(--gold)';}
-          }
-        }
-  }
-}
+    if(!e?.message?.includes('User rejected')){console.error('Wallet error:',e);}
 
 function updateGates(){
   GATED_SECTIONS.forEach(sec=>{
@@ -6596,40 +6586,73 @@ const CLOWNS = [
   {h:'shuriken_trade',name:'Shuriken',tag:'EXTRACTION FACTORY'},
   {h:'novaterminalsol',name:'Nova Terminal',tag:'EXTRACTION FACTORY'},
   {h:'padre_x',name:'Padre X',tag:'EXTRACTION FACTORY'},
-  {h:'SolIncinerator',name:'Sol Incinerator',tag:'EXTRACTION FACTORY'},
-  {h:'Sol_Incinerator',name:'Sol Incinerator',tag:'EXTRACTION FACTORY'},
   {h:'hypeterminal',name:'Hype Terminal',tag:'EXTRACTION FACTORY'},
   {h:'hype_terminal',name:'Hype Terminal',tag:'EXTRACTION FACTORY'},
-  /* Jay's confirmed list */
-  {h:'CookerFlips',name:'Cooker'},{h:'daumenxyz',name:'daumen'},{h:'gudmansachs',name:'gudmansachs'},
-  {h:'orangie',name:'orangie'},{h:'flipski77',name:'flipski'},{h:'notdecu',name:'notdecu'},{h:'robopboc',name:'robopboc'},
-  /* @UGCabal following list */
-  {h:'feibo03',name:'Cowboy BNB'},{h:'astaso1',name:'asta'},{h:'padrino_sol',name:'Padrino'},
-  {h:'0xIT4I',name:'IT4I'},{h:'Rafi_0x',name:'Rafi_0x'},{h:'xandereef',name:'xander'},
-  {h:'ohbrox',name:'brox'},{h:'NFTDefiFutures',name:'NDF'},{h:'cryptowasta',name:'CRYPTO WASTA'},
-  {h:'jackduval',name:'Jack Duval'},{h:'chasingexes',name:'dubbz'},{h:'Aliaian',name:'Aliaian'},
-  {h:'iamkadense',name:'Kadense Pengu'},{h:'0xSunNFT',name:'0xSun'},{h:'notanicecat69',name:'Wood'},
-  {h:'sernimazaki',name:'nimazaki'},{h:'dankcoldturkey',name:'dankcoldturkey'},{h:'poe_real69',name:'POE'},
-  {h:'patty_fi',name:'PattyIce'},{h:'smokey0x',name:'SmokEy'},{h:'Cupseyy',name:'Cupsey'},
-  {h:'SolportTom',name:'Tom'},{h:'OrangeSBS',name:'Orange'},{h:'adultarts',name:'Jen'},
-  {h:'gromwtf',name:'Grom'},{h:'Loopierr',name:'Loopierr'},{h:'Trenchwarior',name:'1 guy'},
-  {h:'valueandtime',name:'Value & Time'},{h:'bobthebuildaaa',name:'Bob The Builder'},
-  {h:'thisisdjen',name:'DJ.Σn'},{h:'shahh',name:'shah'},{h:'eth_exy',name:'Exy'},
-  {h:'Katuchi_xyz',name:'Katuchi'},{h:'SpiderCrypto0x',name:'SpiderCrypto'},
-  {h:'sullyfromDeets',name:'sully'},{h:'dxrnell',name:'dxrnelljcl'},{h:'metaversejoji',name:'joji'},
-  {h:'cryptofrags',name:'Frags'},{h:'Klutch_Trades',name:'Klutch'},{h:'brommmyy',name:'Brommy'},
-  {h:'0xkitty69',name:'kitty'},{h:'littlemustacho',name:'Little Mustacho'},
-  {h:'Falconcrypto_',name:'FalconCrypto'},{h:'crypt0wu',name:'wuzie'},{h:'Ed_x0101',name:'Ed x'},
-  {h:'stekisteks',name:'///Steki'},{h:'koyla_sol',name:'La Koy'},{h:'cryptolyxe',name:'lyxe'},
+  {h:'CookerFlips',name:'Cooker'},
+  {h:'daumenxyz',name:'daumen'},
+  {h:'gudmansachs',name:'gudmansachs'},
+  {h:'orangie',name:'orangie'},
+  {h:'flipski77',name:'flipski'},
+  {h:'notdecu',name:'notdecu'},
+  {h:'robopboc',name:'robopboc'},
+  {h:'feibo03',name:'Cowboy BNB'},
+  {h:'astaso1',name:'asta'},
+  {h:'padrino_sol',name:'Padrino'},
+  {h:'0xIT4I',name:'IT4I'},
+  {h:'Rafi_0x',name:'Rafi_0x'},
+  {h:'xandereef',name:'xander'},
+  {h:'ohbrox',name:'brox'},
+  {h:'NFTDefiFutures',name:'NDF'},
+  {h:'cryptowasta',name:'CRYPTO WASTA'},
+  {h:'jackduval',name:'Jack Duval'},
+  {h:'chasingexes',name:'dubbz'},
+  {h:'Aliaian',name:'Aliaian'},
+  {h:'iamkadense',name:'Kadense Pengu'},
+  {h:'0xSunNFT',name:'0xSun'},
+  {h:'notanicecat69',name:'Wood'},
+  {h:'sernimazaki',name:'nimazaki'},
+  {h:'dankcoldturkey',name:'dankcoldturkey'},
+  {h:'poe_real69',name:'POE'},
+  {h:'patty_fi',name:'PattyIce'},
+  {h:'smokey0x',name:'SmokEy'},
+  {h:'Cupseyy',name:'Cupsey'},
+  {h:'SolportTom',name:'Tom'},
+  {h:'OrangeSBS',name:'Orange'},
+  {h:'adultarts',name:'Jen'},
+  {h:'gromwtf',name:'Grom'},
+  {h:'Loopierr',name:'Loopierr'},
+  {h:'Trenchwarior',name:'1 guy'},
+  {h:'valueandtime',name:'Value & Time'},
+  {h:'bobthebuildaaa',name:'Bob The Builder'},
+  {h:'thisisdjen',name:'DJ.En'},
+  {h:'shahh',name:'shah'},
+  {h:'eth_exy',name:'Exy'},
+  {h:'Katuchi_xyz',name:'Katuchi'},
+  {h:'SpiderCrypto0x',name:'SpiderCrypto'},
+  {h:'sullyfromDeets',name:'sully'},
+  {h:'dxrnell',name:'dxrnelljcl'},
+  {h:'metaversejoji',name:'joji'},
+  {h:'cryptofrags',name:'Frags'},
+  {h:'Klutch_Trades',name:'Klutch'},
+  {h:'brommmyy',name:'Brommy'},
+  {h:'0xkitty69',name:'kitty'},
+  {h:'littlemustacho',name:'Little Mustacho'},
+  {h:'Falconcrypto_',name:'FalconCrypto'},
+  {h:'crypt0wu',name:'wuzie'},
+  {h:'Ed_x0101',name:'Ed x'},
+  {h:'stekisteks',name:'///Steki'},
+  {h:'koyla_sol',name:'La Koy'},
+  {h:'cryptolyxe',name:'lyxe'},
   {h:'lamaxbt',name:'lama'},
-  /* Added by YAKK — stingy since launch */
   {h:'JupiterExchange',name:'Jupiter',tag:'STINGY'},
-  /* ── EXTRACTION FACTORY TERMINALS ── fee vampires, value extractors, the pump-and-dump infrastructure */
   {h:'pumpdotfun',name:'pump.fun',tag:'EXTRACTION FACTORY'},
+  {h:'Pumpfun',name:'PumpFun',tag:'EXTRACTION FACTORY'},
   {h:'gmgnai',name:'GMGN',tag:'EXTRACTION FACTORY'},
   {h:'photon_sol',name:'Photon',tag:'EXTRACTION FACTORY'},
   {h:'BullX_Neo',name:'BullX',tag:'EXTRACTION FACTORY'},
-  {h:'axiom',name:'Axiom',tag:'EXTRACTION FACTORY'},
+  {h:'bullx_io',name:'BullX',tag:'EXTRACTION FACTORY'},
+  {h:'AxiomExchange',name:'Axiom',tag:'EXTRACTION FACTORY'},
+  {h:'TradingTerminal',name:'Trading Terminal',tag:'EXTRACTION FACTORY'},
   {h:'TrojanOnSolana',name:'Trojan Bot',tag:'EXTRACTION FACTORY'},
   {h:'maestro_bot',name:'Maestro',tag:'EXTRACTION FACTORY'},
   {h:'BananaGunBot',name:'Banana Gun',tag:'EXTRACTION FACTORY'},
@@ -6638,10 +6661,9 @@ const CLOWNS = [
   {h:'pepeboost_sol',name:'PepeBoost',tag:'EXTRACTION FACTORY'},
   {h:'BloxrouteTeam',name:'bloXroute',tag:'MEV EXTRACTOR'},
   {h:'jito_sol',name:'Jito',tag:'MEV EXTRACTOR'},
-  {h:'moonshot_xyz',name:'Moonshot',tag:'EXTRACTION FACTORY'},
-  {h:'LetsCookDeFi',name:'LetsCook',tag:'EXTRACTION FACTORY'},
-  {h:'dextools',name:'DEXTools',tag:'DATA FARMER'},
-  {h:'dexscreener',name:'DEX Screener',tag:'DATA FARMER'},{h:'bloomsolana',name:'Bloom',tag:'EXTRACTION FACTORY'},{h:'shuriken_trade',name:'Shuriken',tag:'EXTRACTION FACTORY'},{h:'novaterminalsol',name:'Nova Terminal',tag:'EXTRACTION FACTORY'},{h:'padre_x',name:'Padre X',tag:'EXTRACTION FACTORY'},{h:'SolIncinerator',name:'Sol Incinerator',tag:'EXTRACTION FACTORY'},{h:'hypeterminal',name:'Hype Terminal',tag:'EXTRACTION FACTORY'}
+  {h:'potionalpha',name:'Potion Alpha',tag:'FEE FARMER'},
+  {h:'PastelAlpha',name:'Pastel Alpha',tag:'FEE FARMER'},
+  {h:'ShockedJS',name:'ShockedJS',tag:'SHILL MERCHANT'}
 ];
 function renderClowns(){
   const g=document.getElementById('clowns-grid');
