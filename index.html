@@ -4652,7 +4652,7 @@ async function connectWallet(){
       b.style.color=btnColor; b.style.borderColor=btnBorder;
     });
     const mobBtn=document.querySelector('#mobile-header .btn');
-    if(mobBtn&&mobBtn.textContent.includes('WALLET')){
+    if(mobBtn){
       mobBtn.textContent=(ystGated?'✓ ':'⚠ ')+short; mobBtn.style.color=btnColor;
     }
     const solBal=document.getElementById('sol-bal');
@@ -4665,7 +4665,15 @@ async function connectWallet(){
     loadPortfolio();
     updateProfilePreview();
   } catch(e){
-    if(!e?.message?.includes('User rejected')) console.error('Wallet error:',e);
+    if(!e?.message?.includes('User rejected')){
+          console.error('Wallet error:',e);
+          if(walletAddress){
+            const short=walletAddress.slice(0,4)+'_'+walletAddress.slice(-4);
+            ['home-wallet-btn','scr-wallet-btn'].forEach(id=>{const b=document.getElementById(id);if(!b)return;b.textContent='⚠ '+short;b.style.color='var(--gold)';b.style.borderColor='rgba(247,201,72,0.4)';});
+            const mobBtn=document.querySelector('#mobile-header .btn');
+            if(mobBtn){mobBtn.textContent='⚠ '+short;mobBtn.style.color='var(--gold)';}
+          }
+        }
   }
 }
 
@@ -6581,7 +6589,7 @@ setTimeout(updateGates, 300);
    Treasury: 7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB
 ═══════════════════════════════════════════════════════════════════════ */
 const YAKK_INVESTIGATION_WALLET = '7P7xYDAyeV13vumm8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB';
-const SOLANA_RPC = 'https://api.mainnet-beta.solana.com';
+const SOLANA_RPC = 'https://rpc.ankr.com/solana';
 let invType = 'account';
 
 function setInvType(t){
