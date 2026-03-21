@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YAKK Studios — Investor Brief 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--pink:#e0607e;--gold:#f7c948;--green:#22c55e;--red:#ef4444;--bg:#050509;--bg2:#0b0b10;--bg3:#0f0f1a;--bg4:#13131f;--border:rgba(255,255,255,0.06);--text:#e8e8f0;--muted:#9898b0;--dim:#5a5a78}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--pink)}
+
+/* LAYOUT */
+.container{max-width:960px;margin:0 auto;padding:0 32px}
+section{padding:80px 0;border-top:1px solid var(--border)}
+section:first-child{border-top:none}
+
+/* COVER */
+.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 32px 60px;position:relative;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(224,96,126,0.12) 0%,transparent 70%)}
+.cover-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.25em;color:var(--gold);margin-bottom:24px}
+.cover-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(44px,7vw,88px);line-height:0.92;letter-spacing:-0.02em;margin-bottom:28px}
+.cover-title .line1{color:var(--text)}
+.cover-title .line2{color:var(--pink)}
+.cover-title .line3{color:var(--gold)}
+.cover-sub{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);line-height:1.8;max-width:520px;border-left:3px solid var(--pink);padding-left:18px;margin-bottom:48px}
+.cover-metrics{display:flex;gap:40px;flex-wrap:wrap;padding-top:40px;border-top:1px solid var(--border)}
+.metric{min-width:120px}
+.metric-val{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--pink);margin-bottom:4px}
+.metric-val.gold{color:var(--gold)}
+.metric-val.green{color:var(--green)}
+.metric-lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.12em}
+.confidential{position:absolute;top:28px;right:32px;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,0.15);letter-spacing:0.18em;border:1px solid rgba(255,255,255,0.08);padding:4px 10px;border-radius:3px}
+
+/* SECTION HEADERS */
+.sec-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.28em;color:var(--dim);margin-bottom:10px}
+.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,3.5vw,44px);line-height:1.05;margin-bottom:18px}
+.sec-bar{width:48px;height:3px;background:linear-gradient(90deg,var(--pink),var(--gold));margin-bottom:28px;border-radius:2px}
+.sec-body{font-size:14px;color:var(--muted);line-height:1.85;max-width:700px}
+.sec-body p{margin-bottom:16px}
+
+/* CARDS */
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:24px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:28px}
+.card-icon{font-size:24px;margin-bottom:12px}
+.card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:6px}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.card-tag{display:inline-block;font-family:'Space Mono',monospace;font-size:8px;padding:2px 8px;border-radius:3px;margin-top:10px}
+.tag-live{background:rgba(34,197,94,0.12);color:var(--green);border:1px solid rgba(34,197,94,0.25)}
+.tag-build{background:rgba(247,201,72,0.12);color:var(--gold);border:1px solid rgba(247,201,72,0.25)}
+.tag-next{background:rgba(224,96,126,0.12);color:var(--pink);border:1px solid rgba(224,96,126,0.25)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;margin-top:22px;font-size:12px}
+.tbl th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--dim);padding:10px 14px;border-bottom:1px solid var(--border);text-align:left}
+.tbl td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--muted)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .highlight td{color:var(--text)}
+.red{color:var(--red);font-weight:600}
+.gold{color:var(--gold)}
+.green{color:var(--green)}
+.pink{color:var(--pink)}
+
+/* TOKENOMICS */
+.tok-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:24px}
+.tok-card{background:var(--bg4);border-radius:8px;padding:16px}
+.tok-label{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.12em;margin-bottom:8px}
+.tok-val{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;margin-bottom:4px}
+.tok-sub{font-size:11px;color:var(--dim)}
+
+/* SPLIT */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.split-text .sec-title{font-size:clamp(22px,2.5vw,34px)}
+
+/* MOAT */
+.moat-row{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border)}
+.moat-row:last-child{border-bottom:none}
+.moat-num{font-family:'Space Mono',monospace;font-size:11px;color:var(--dim);min-width:28px;flex-shrink:0;padding-top:2px}
+.moat-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:4px}
+.moat-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* RISK */
+.risk-item{padding:12px 16px;border-left:3px solid rgba(239,68,68,0.3);margin-bottom:10px;background:rgba(239,68,68,0.03);border-radius:0 6px 6px 0}
+.risk-title{font-size:12px;font-weight:600;margin-bottom:3px}
+.risk-resp{font-size:11px;color:var(--muted)}
+
+/* PHASE */
+.phase{padding:20px 24px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;margin-bottom:12px}
+.phase-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.phase-pill{font-family:'Space Mono',monospace;font-size:8px;padding:2px 8px;border-radius:3px}
+.phase-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px}
+.phase-items{font-size:12px;color:var(--muted)}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(224,96,126,0.08),rgba(247,201,72,0.05));border:1px solid rgba(224,96,126,0.2);border-radius:12px;padding:40px;text-align:center;margin-top:32px}
+.cta-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(24px,3vw,36px);margin-bottom:12px}
+.cta-sub{font-size:13px;color:var(--muted);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.cta-btn{display:inline-block;text-decoration:none;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.08em;padding:11px 24px;border-radius:5px;cursor:pointer;border:none}
+.cta-primary{background:var(--pink);color:#000}
+.cta-outline{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+
+/* DISCLAIMER */
+.disclaimer{font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);line-height:1.8;padding:28px 0;border-top:1px solid var(--border);max-width:700px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .cover{padding:60px 20px 40px}
+  .container{padding:0 20px}
+  section{padding:56px 0}
+  .split{grid-template-columns:1fr}
+  .cover-metrics{gap:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<div class="cover container">
+  <div class="confidential">INVESTOR BRIEF — 2026</div>
+  <div class="cover-eyebrow">YAKK STUDIOS · SOLANA · MARCH 2026</div>
+  <div class="cover-title">
+    <div class="line1">THE DeFi</div>
+    <div class="line2">EVERYTHING</div>
+    <div class="line3">APP.</div>
+  </div>
+  <div class="cover-sub">30+ tools. One interface. Zero custody. Every function a CEX provides — and every function a CEX refuses to. Anti-extraction by design, anti-rug by default, built on Solana.</div>
+  <div class="cover-metrics">
+    <div class="metric"><div class="metric-val">$3.9B+</div><div class="metric-lbl">EXTRACTION DOCUMENTED</div></div>
+    <div class="metric"><div class="metric-val gold">12</div><div class="metric-lbl">INVESTIGATIONS COMPLETE</div></div>
+    <div class="metric"><div class="metric-val green">2,847</div><div class="metric-lbl">VERIFIED CULT MEMBERS</div></div>
+    <div class="metric"><div class="metric-val" style="color:var(--text)">6</div><div class="metric-lbl">REVENUE STREAMS LIVE</div></div>
+    <div class="metric"><div class="metric-val" style="color:var(--text)">74</div><div class="metric-lbl">CLOWNS EXPOSED</div></div>
+  </div>
+</div>
+
+<!-- ══ 01 EXECUTIVE SUMMARY ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">01 — EXECUTIVE SUMMARY</div>
+  <div class="sec-title">The Thesis</div>
+  <div class="sec-bar"></div>
+  <div class="sec-body">
+    <p>The DeFi ecosystem has a structural problem: value is systematically extracted from retail participants by a small class of operators — MEV bots, pump-and-dump terminals, data-farming aggregators, and coordinated cabal wallets. YAKK Studios was built as the antidote.</p>
+    <p>We are a full-stack DeFi application on Solana offering 30+ tools under one interface — from a mult>s ain NFT marketplace (6 s ains) and anti-rug token launchpad, to an OTC desk, yield aggregator, cross-s ain bridge, privacy router, and AI-powered trading intelligence. Every product decision prioritises the user over the platform. No custody. No KYC. Wallet = account.</p>
+    <p>The Rug Ledger — our on-s ain behavioural investigation database with $3.9B+ documented across 12 investigations — is a category-defining moat. It is primary intelligence that Bloomberg, Nansen, and C ainalysis would charge six figures to replicate. We publish it for free to the community as a strategic trust-building mechanism.</p>
+    <p>Revenue model spans 6 streams with real unit economics: $10 screener updates (vs. $300+ competitor), 1.5% NFT marketplace fee, 0.3% OTC fee, 0.1% bridge routing fee, 1 SOL investigation requests, and token launch fees. $YST tokenomics include a 5% transaction tax (2% treasury, 2% staker revshare, 1% burn) and cashback rewards that align user activity with token demand.</p>
+  </div>
+</div>
+</section>
+
+<!-- ══ 02 THE PROBLEM ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">02 — MARKET PROBLEM</div>
+  <div class="sec-title">The Extraction Economy</div>
+  <div class="sec-bar"></div>
+  <div class="sec-body">
+    <p>Since 2020, a documented class of operators has systematically extracted value from Solana retail participants. The mechanisms are consistent: MEV front-running bots skimming every trade, pump terminals charging 1–3% per transaction while encouraging high-frequency speculation, cabal wallet rings coordinating buys and exits across tokens, and data aggregators monetising user behaviour without sharing revenue.</p>
+    <p>YAKK has documented $3.9B+ of these extraction events across 12 token investigations. The same 15 wallet addresses appear in every investigation. The same relay patterns. The same ghost exit signatures. This is not random — it is coordinated infrastructure for retail extraction.</p>
+    <p>Meanwhile, the tools available to retail users are fragmented, expensive, and often operated by the same entities extracting from them. DEX Screener and DEXTools farm data. Pump terminals extract 1–3% per trade. Magic Eden charges 2–2.5% marketplace fees. Jupiter — the dominant Solana DEX aggregator — has been noted by the community for fee structures that don't reflect their dominant position.</p>
+    <p>The market is begging for a neutral, anti-extraction, full-stack alternative.</p>
+  </div>
+  <div class="card" style="margin-top:28px;border-color:rgba(239,68,68,0.2);background:rgba(239,68,68,0.03)">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.15em;margin-bottom:14px">EXTRACTION LEDGER — TOP 5 DOCUMENTED EVENTS</div>
+    <table class="tbl">
+      <thead><tr><th>TOKEN</th><th>EXTRACTION EST.</th><th>PRIMARY MECHANISM</th><th>STATUS</th></tr></thead>
+      <tbody>
+        <tr><td class="pink">$TRUMP</td><td class="red">$1B–$3.9B+</td><td>Political memecoin exploitation, coordinated insider dump</td><td><span style="color:var(--red);font-size:10px">EXPOSED</span></td></tr>
+        <tr><td class="pink">$HOOD</td><td class="red">$12–20M+</td><td>Large-scale dev extraction, insider coordination</td><td><span style="color:var(--red);font-size:10px">EXPOSED</span></td></tr>
+        <tr><td class="pink">$M3M3</td><td class="red">$15–25M+</td><td>Repeat cabal operators, mult>-token extraction ring</td><td><span style="color:var(--red);font-size:10px">EXPOSED</span></td></tr>
+        <tr><td class="pink">$WAR</td><td class="red">$8–15M+</td><td>DSKtmLoz $7.98M silent hold, 44-day infrastructure</td><td><span style="color:var(--red);font-size:10px">EXPOSED</span></td></tr>
+        <tr class="highlight"><td class="pink">$BUTTCOIN</td><td class="red">$5–8M+ net</td><td>57-day investigation, $186.4M tracked, highest ghost ratio documented</td><td><span style="color:var(--red);font-size:10px">EXPOSED</span></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--dim);margin-top:12px;font-style:italic">Cumulative documented: ~$1.043B–$3.98B across 12 investigations. All data on-s ain verifiable.</div>
+  </div>
+</div>
+</section>
+
+<!-- ══ 03 PRODUCT ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">03 — PRODUCT SUITE</div>
+  <div class="sec-title">30+ Tools. One App.</div>
+  <div class="sec-bar"></div>
+  <div class="sec-body">
+    <p>YAKK Studios is a single-interface DeFi application covering every function a power user needs — without the extraction. All tools are non-sustodial; your wallet is your account.</p>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">YAKK Screener</div>
+      <div class="card-desc">On-s ain token metadata updates for $10 SOL (vs. $300+ on competitors). Supports Metaplex MPL + Token-2022. Trusted project badges. Real-time price feeds.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛒</div>
+      <div class="card-title">NFT Marketplace</div>
+      <div class="card-desc">6-s ain marketplace: Solana, Ethereum, BTC Ordinals, BNB, Tron, Monad. 1.5% fee vs Magic Eden's 2–2.5%. Powered by Magic Eden v2 + Reservoir APIs.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏦</div>
+      <div class="card-title">YAKK Ventures</div>
+      <div class="card-desc">Anti-rug token launchpad. Mandatory liquidity lock, YAKKAI AI due diligence on every application. Every project audited before listing.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <div class="card-title">OTC Desk</div>
+      <div class="card-desc">P2P block trades without moving the market. 0.3% escrow-secured settlement fee. No middlemen, no custody.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌉</div>
+      <div class="card-title">Bridge & Swap</div>
+      <div class="card-desc">Cross-s ain via deBridge, Wormhole, Mayan, Allbridge. Best-rate routing. 0.1% routing fee. Move assets without leaving YAKK.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🕵️</div>
+      <div class="card-title">Privacy Router</div>
+      <div class="card-desc">Wallet unlinking, anti-copy-trade shield, transaction obfuscation. Protects alpha from front-runners and copycats.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <div class="card-title">Cabal Investigator</div>
+      <div class="card-desc">On-s ain wallet graph analysis. Detects relay patterns, ghost wallets, convergence signatures. Community-fundable investigations at 1 SOL/request.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <div class="card-title">Yield Finder</div>
+      <div class="card-desc">Best yields across Solana, Ethereum, BNB. Live APY aggregation. LP, lending, staking — filtered by s ain and type.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <div class="card-title">YAKKAI AI Trader</div>
+      <div class="card-desc">AI-powered trading signals built on Kaize Wealth methodology. Discipline, risk management, cabal pattern detection. Powered by Claude API (server-side proxy, no key exposure).</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🪙</div>
+      <div class="card-title">Token Creator</div>
+      <div class="card-desc">Launch a Solana token with 1 SOL gate — pump.fun killer. Mandatory locked liquidity, anti-rug mechanics enforced at contract level.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📱</div>
+      <div class="card-title">TG Trade Bot Builder</div>
+      <div class="card-desc">Build a custom Telegram trading bot without code. YAKKAI-powered configuration, live Solana execution.</div>
+      <div class="card-tag tag-build">⚒ BUILDING</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <div class="card-title">Portfolio Tracker</div>
+      <div class="card-desc">Live wallet holdings, SOL balance, token accounts, transaction history. No spreadsheets, no API keys, just connect wallet.</div>
+      <div class="card-tag tag-live">✓ LIVE</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ 04 TOKENOMICS ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">04 — TOKENOMICS</div>
+  <div class="sec-title">$YST — RevShare Model</div>
+  <div class="sec-bar"></div>
+  <div class="sec-body">
+    <p>$YST is the utility and governance token of the YAKK ecosystem. 1 billion total supply, 40M already burned. Fair-launched on Solana — no VCs, no presale, no insider allocation. The token is designed with a RevShare mechanic that aligns user activity with token demand and rewards long-term stakers.</p>
+  </div>
+  <div class="tok-grid">
+    <div class="tok-card">
+      <div class="tok-label">TOTAL SUPPLY</div>
+      <div class="tok-val" style="color:var(--text)">1B</div>
+      <div class="tok-sub">40M burned to date</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">TRANSACTION TAX</div>
+      <div class="tok-val" style="color:var(--pink)">5%</div>
+      <div class="tok-sub">Buy &amp; sell — all buys and sells</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">STAKER REVSHARE</div>
+      <div class="tok-val" style="color:var(--green)">30%</div>
+      <div class="tok-sub">Of all platform fees, monthly</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">AUTO-BURN</div>
+      <div class="tok-val" style="color:var(--red)">1%</div>
+      <div class="tok-sub">Per transaction, deflationary</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">DEV ALLOCATION</div>
+      <div class="tok-val" style="color:var(--gold)">20%</div>
+      <div class="tok-sub">On-s ain locked, verifiable</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">TREASURY</div>
+      <div class="tok-val" style="color:var(--text)">40%</div>
+      <div class="tok-sub">Of fees → operations &amp; dev</div>
+    </div>
+  </div>
+
+  <div style="margin-top:28px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:24px">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.15em;margin-bottom:16px">TAX DISTRIBUTION — 5% ON ALL TRANSACTIONS</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg4);border-radius:6px">
+        <span style="font-size:12px;color:var(--muted)">Platform Treasury</span>
+        <span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--gold)">2%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg4);border-radius:6px">
+        <span style="font-size:12px;color:var(--muted)">$YST Stakers (RevShare)</span>
+        <span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--green)">2%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg4);border-radius:6px">
+        <span style="font-size:12px;color:var(--muted)">Auto-Burn</span>
+        <span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--red)">1%</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;background:var(--bg3);border:1px solid rgba(34,197,94,0.15);border-radius:10px;padding:24px">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:0.15em;margin-bottom:16px">🎁 CASHBACK REWARDS — USE PLATFORM, EARN $YST</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;font-size:12px">
+      <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg4);border-radius:6px">
+        <span style="color:var(--muted)">Screener update</span>
+        <span style="color:var(--gold);font-family:'Space Mono',monospace">+500 $YST</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg4);border-radius:6px">
+        <span style="color:var(--muted)">Investigation request</span>
+        <span style="color:var(--gold);font-family:'Space Mono',monospace">+2,500 $YST</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg4);border-radius:6px">
+        <span style="color:var(--muted)">NFT marketplace sale</span>
+        <span style="color:var(--gold);font-family:'Space Mono',monospace">0.5% back</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg4);border-radius:6px">
+        <span style="color:var(--muted)">Token launch</span>
+        <span style="color:var(--gold);font-family:'Space Mono',monospace">+5,000 $YST</span>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ 05 REVENUE ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">05 — REVENUE MODEL</div>
+  <div class="sec-title">6 Streams, Real Unit Economics</div>
+  <div class="sec-bar"></div>
+  <div class="sec-body">
+    <p>YAKK Studios generates revenue across six distinct product lines, each with clear unit economics. Revenue is not dependent on token price or speculation — it derives from genuine utility use.</p>
+  </div>
+  <table class="tbl" style="margin-top:24px">
+    <thead>
+      <tr><th>STREAM</th><th>UNIT PRICE</th><th>COMPETITOR PRICE</th><th>ADVANTAGE</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Screener Updates</td><td class="gold">$10 / update</td><td style="color:var(--dim)">$300+ (DEXTools)</td><td class="green">30× cheaper</td></tr>
+      <tr><td>NFT Marketplace</td><td class="gold">1.5% fee</td><td style="color:var(--dim)">2–2.5% (Magic Eden)</td><td class="green">40% cheaper</td></tr>
+      <tr><td>OTC Desk</td><td class="gold">0.3% fee</td><td style="color:var(--dim)">0.5–1% (OTC firms)</td><td class="green">~50% cheaper</td></tr>
+      <tr><td>Bridge Routing</td><td class="gold">0.1% fee</td><td style="color:var(--dim)">0.15–0.3% (aggregators)</td><td class="green">Best rate routing</td></tr>
+      <tr><td>Investigations</td><td class="gold">1 SOL / request</td><td style="color:var(--dim)">N/A — no competitor</td><td class="green">Category creator</td></tr>
+      <tr class="highlight"><td>Token Launches</td><td class="gold">1 SOL + $500 USDC</td><td style="color:var(--dim)">Varies (pump.fun 1%)</td><td class="green">Anti-rug = premium</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:20px;padding:16px 20px;background:rgba(247,201,72,0.04);border:1px solid rgba(247,201,72,0.12);border-radius:8px;font-size:12px;color:var(--muted)">
+    <strong style="color:var(--gold)">Revenue Distribution:</strong> 30% to $YST stakers (monthly) · 40% to treasury/operations · 20% to investigation fund · 10% to marketing/raids. All distributions transparent and on-s ain verifiable via StakePoint.
+  </div>
+</div>
+</section>
+
+<!-- ══ 06 TRACTION ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">06 — TRACTION</div>
+  <div class="sec-title">Real Numbers, On-C ain Verifiable</div>
+  <div class="sec-bar"></div>
+  <div class="sec-body">
+    <p>All metrics below are on-s ain verifiable or observable through public Solana RPC and community data. We do not inflate these numbers.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-top:24px">
+    <div class="tok-card">
+      <div class="tok-label">CULT MEMBERS</div>
+      <div class="tok-val" style="color:var(--pink)">2,847</div>
+      <div class="tok-sub">Verified wallet holders</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">SCREENER UPDATES</div>
+      <div class="tok-val" style="color:var(--gold)">47+</div>
+      <div class="tok-sub">On-s ain metadata updates</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">INVESTIGATIONS</div>
+      <div class="tok-val" style="color:var(--red)">12</div>
+      <div class="tok-sub">Completed, published</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">EXTRACTION DOCUMENTED</div>
+      <div class="tok-val" style="color:var(--red)">$3.9B+</div>
+      <div class="tok-sub">On-s ain verifiable data</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">NFT COLLECTION</div>
+      <div class="tok-val" style="color:var(--text)">3,333</div>
+      <div class="tok-sub">Drop: April 20, 2026</div>
+    </div>
+    <div class="tok-card">
+      <div class="tok-label">STAKEPOINT LOCKS</div>
+      <div class="tok-val" style="color:var(--green)">2</div>
+      <div class="tok-sub">Dev locks on-s ain, verifiable</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;padding:14px 18px;background:var(--bg3);border:1px solid var(--border);border-radius:8px">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:8px">ON-CHAIN LOCK VERIFICATION — STAKEPOINT.APP</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:12px">
+      <div>Lock #1001: <span style="color:var(--gold)">25,398,079 $YST</span> · 30-day lock · Verifiable on StakePoint</div>
+      <div>Lock #1000: <span style="color:var(--gold)">20,000,000 $YST</span> · 365-day lock · Dev commitment lock</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ 07 MOAT ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">07 — COMPETITIVE MOAT</div>
+  <div class="sec-title">Why This Is Defensible</div>
+  <div class="sec-bar"></div>
+  <div class="moat-row">
+    <div class="moat-num">01</div>
+    <div>
+      <div class="moat-title">The Rug Ledger — Primary Intelligence Database</div>
+      <div class="moat-desc">$3.9B+ of on-s ain extraction documented across 12 investigations. This is not scraped data — it is primary investigative work that identifies relay wallets, convergence patterns, and ghost exits. Bloomberg would charge $100,000/year for access to equivalent intelligence. We built it from first principles. No competitor has this.</div>
+    </div>
+  </div>
+  <div class="moat-row">
+    <div class="moat-num">02</div>
+    <div>
+      <div class="moat-title">Anti-Extraction Brand Positioning at Scale</div>
+      <div class="moat-desc">74 extraction operators publicly named and tagged. The community actively campaigns against them. This is a flywheel: every investigation builds trust, every clown listed builds community identity, every trust signal attracts users who want out of extraction. The brand is the moat.</div>
+    </div>
+  </div>
+  <div class="moat-row">
+    <div class="moat-num">03</div>
+    <div>
+      <div class="moat-title">StakePoint Partnership — Distribution + Liquidity</div>
+      <div class="moat-desc">YAKK Studios is the anti-extraction application layer; StakePoint is the DeFi infrastructure layer. $YST is the official StakePoint mascot token. This partnership gives YAKK access to StakePoint's user base and StakePoint access to YAKK's investigation and community infrastructure. Combined, they cover the entire DeFi user journey from on-s ain activity to yield optimization.</div>
+    </div>
+  </div>
+  <div class="moat-row">
+    <div class="moat-num">04</div>
+    <div>
+      <div class="moat-title">6-C ain NFT Market + RevShare Economics = Sticky Users</div>
+      <div class="moat-desc">No other single DeFi app offers NFT trading across Solana, Ethereum, BTC Ordinals, BNB, Tron, and Monad in one interface at 1.5% fees. Combined with cashback rewards that pay users $YST for every platform action, the switching cost compounds with every transaction.</div>
+    </div>
+  </div>
+  <div class="moat-row">
+    <div class="moat-num">05</div>
+    <div>
+      <div class="moat-title">Cult Community = Zero Customer Acquisition Cost</div>
+      <div class="moat-desc">2,847 verified members who actively raid (promote), investigate, and build social proof. The RAID HUB turns community marketing into a gamified XP system. The Certified Clowns list drives controversy and shares organically. CAC is functionally near-zero for this segment.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ 08 MARKET ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">08 — MARKET OPPORTUNITY</div>
+  <div class="sec-title">The TAM is the Entire DeFi Stack</div>
+  <div class="sec-bar"></div>
+  <div class="sec-body">
+    <p>YAKK Studios addresses mult>ple overlapping markets. We are not a niche product — the "everything app" thesis means our TAM is the aggregate of every category we compete in:</p>
+  </div>
+  <table class="tbl" style="margin-top:24px">
+    <thead><tr><th>MARKET</th><th>2025 SIZE</th><th>YAKK ENTRY</th></tr></thead>
+    <tbody>
+      <tr><td>NFT Marketplace Fees (global)</td><td class="gold">$800M+/yr</td><td>Mult>s ain · 1.5% fee</td></tr>
+      <tr><td>Crypto OTC Desk Volume</td><td class="gold">$20B+/yr</td><td>0.3% settlement fee</td></tr>
+      <tr><td>Cross-s ain Bridge Volume</td><td class="gold">$50B+/yr</td><td>0.1% routing fee</td></tr>
+      <tr><td>Token Analytics / Screener</td><td class="gold">$200M+/yr</td><td>$10/update vs $300+</td></tr>
+      <tr><td>DeFi Yield Aggregation</td><td class="gold">$100B+ TVL</td><td>Aggregator referral model</td></tr>
+      <tr class="highlight"><td>On-s ain Intelligence / Investigations</td><td class="gold">$0 (created)</td><td>1 SOL/request — new category</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ══ 09 ROADMAP ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">09 — ROADMAP</div>
+  <div class="sec-title">Q2–Q4 2026</div>
+  <div class="sec-bar"></div>
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-pill" style="background:rgba(34,197,94,0.12);color:var(--green);border:1px solid rgba(34,197,94,0.25)">✅ SHIPPED</span>
+      <div class="phase-title">Foundation — Live Now</div>
+    </div>
+    <div class="phase-items">Screener · Trading Terminal · YAKKAI AI Trader · Prediction Markets · Cabal Investigator · Mult>s ain NFT Market · YAKK Ventures Launchpad · OTC Desk · Yield Finder · Bridge Swap · Privacy Router · Token Creator · Portfolio Tracker · Price Alerts · Discord Bot · X Automation · Whale Club · Raid Hub · NFT Raffle · Feature Requests</div>
+  </div>
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-pill" style="background:rgba(247,201,72,0.12);color:var(--gold);border:1px solid rgba(247,201,72,0.25)">⚒ BUILDING</span>
+      <div class="phase-title">Q2 2026 — Active Development</div>
+    </div>
+    <div class="phase-items">Mobile app (iOS + Android PWA) · Limit orders on Solana · Cross-s ain portfolio tracker · TG trade bot builder · MEV shield · On-s ain cashback reward distribution</div>
+  </div>
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-pill" style="background:rgba(224,96,126,0.12);color:var(--pink);border:1px solid rgba(224,96,126,0.25)">🎯 NEXT</span>
+      <div class="phase-title">Q3–Q4 2026 — Expansion</div>
+    </div>
+    <div class="phase-items">$YST staker revenue share activation · Institutional OTC desk · Mult>-sig treasury · DAO governance · API access for builders · Monad s ain full integration · $YAKKS NFT 3,333 drop (April 20 2026)</div>
+  </div>
+</div>
+</section>
+
+<!-- ══ 10 PARTNERSHIP ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">10 — STRATEGIC PARTNERSHIP</div>
+  <div class="sec-title">StakePoint × YAKK Studios</div>
+  <div class="sec-bar"></div>
+  <div class="split">
+    <div class="split-text">
+      <div class="sec-body">
+        <p>StakePoint is the all-in-one DeFi suite on Solana — staking, locking, yield, and liquidity management. YAKK Studios is the application and intelligence layer on top. Together they cover the entire DeFi user journey.</p>
+        <p>$YST is the official mascot token of StakePoint. This is not a badge partnership — it is structural: YAKK's live $YST staking pool runs on StakePoint, dev wallet locks are on-s ain verifiable through StakePoint, and the Gen II NFT mint launched exclusively on StakePoint.</p>
+        <p>StakePoint provides infrastructure trust (on-s ain lock verification that removes rug risk perception). YAKK provides community, investigation intelligence, and application-layer tools. The combination is a complete DeFi ecosystem.</p>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="border-color:rgba(247,201,72,0.2)">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.15em;margin-bottom:14px">PARTNERSHIP PROOF — ON-CHAIN</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:12px">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Lock #1001</span><span style="color:var(--gold)">25,398,079 $YST · 30d</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Lock #1000</span><span style="color:var(--gold)">20,000,000 $YST · 365d</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Staking pool</span><span style="color:var(--green)">Live on StakePoint</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Verification</span><span style="color:var(--green)">stakepoint.app</span></div>
+        </div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--dim)">This is how you prove you're not a rug. Not promises. Receipts on-s ain.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ 11 RISK FACTORS ══ -->
+<section>
+<div class="container">
+  <div class="sec-label">11 — RISK FACTORS</div>
+  <div class="sec-title">Honest Disclosure</div>
+  <div class="sec-bar"></div>
+  <div style="margin-top:4px">
+    <div class="risk-item">
+      <div class="risk-title">Regulatory Risk — Crypto Classification</div>
+      <div class="risk-resp">$YST is a community memecoin with utility mechanics. Token tax and revenue share features are subject to evolving regulatory frameworks. YAKK does not custody user funds; risk exposure is limited to platform fees and protocol-level operations.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">Technical Risk — Single-File Architecture</div>
+      <div class="risk-resp">Current implementation is a single-file HTML dapp — demonstrating speed of execution but creating scalability constraints. Migration to component-based architecture (React/Next.js) is on the roadmap for Q3 2026 to enable testing, CI/CD, and team scaling.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">API Dependency Risk</div>
+      <div class="risk-resp">Several features depend on public APIs (Solscan, Birdeye, DEX Screener, Magic Eden) that may apply rate limits at scale. Mitigation: dedicated RPC node procurement and premium API key acquisition are budgeted in the treasury roadmap.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">Defamation / Legal Risk — Certified Clowns</div>
+      <div class="risk-resp">The Certified Clowns list names specific accounts. All entries are clearly labelled as community opinion and on-s ain behavioural research, not legal findings. Legal review and strengthened disclaimers are in place. Protected as community commentary and financial research.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">Market Risk — Solana Ecosystem Concentration</div>
+      <div class="risk-resp">Core infrastructure is Solana-native. Mult>s ain expansion (6 s ains in NFT market, bridge integration) mitigates single-s ain exposure. Monad integration is planned as a next-gen ecosystem hedge.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ 12 CTA ══ -->
+<section style="border-top:1px solid var(--border);padding-bottom:80px">
+<div class="container">
+  <div class="sec-label">12 — ENGAGE</div>
+  <div class="sec-title">Join the Fortress</div>
+  <div class="sec-bar"></div>
+  <div class="cta-box">
+    <div class="cta-title">YAKK Studios is live. The investigation continues.<br><span style="color:var(--pink)">The ledger never forgets.</span></div>
+    <div class="cta-sub">For investment inquiries, partnership discussions, or institutional OTC desk access — reach the team via Telegram or X. On-s ain verification available immediately.</div>
+    <div class="cta-links">
+      <a class="cta-btn cta-primary" href="https://yakkstudios.xyz" target="_blank">LAUNCH APP</a>
+      <a class="cta-btn cta-outline" href="https://t.me/yakkcult" target="_blank">TELEGRAM</a>
+      <a class="cta-btn cta-outline" href="https://x.com/YAKKStudios" target="_blank">@YAKKSTUDIOS</a>
+      <a class="cta-btn cta-outline" href="https://stakepoint.app" target="_blank">STAKEPOINT LOCKS</a>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    IMPORTANT DISCLAIMER: This document is for informational purposes only and does not constitute financial advice, investment advice, or a solicitation to buy or sell any security or digital asset. $YST is a speculative memecoin on the Solana blocks ain. All metrics are community-sourced or on-s ain observable — independent verification is encouraged. The Rug Ledger represents on-s ain behavioural research and community opinion, not legal accusation or court findings. Token economics described herein are subject to on-s ain implementation timelines and may be adjusted through DAO governance. Investing in digital assets carries substantial risk including complete loss of capital. Always conduct your own due diligence. YAKK Studios does not custody user funds. Pink Yakk Supremacy © 2026 YAKK Studios. All rights reserved.
+  </div>
+</div>
+</section>
+
+</body>
+</html>
