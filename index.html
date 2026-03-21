@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -70,7 +70,7 @@
 <meta name="twitter:description" content="30+ DeFi tools. Multichain NFT market, anti-rug launchpad, OTC desk, bridge swap, privacy router, AI trader. No KYC. Your keys, your money.">
 <meta name="twitter:image" content="https://yakkstudios.xyz/icons/yakk-logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
+<script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.0/lib/index.iife.min.js'"></script>
 <style>
 /* ══════════════════════════════════════════
    GLOBAL RESET + VARIABLES
@@ -4605,7 +4605,7 @@ const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
 const YST_GATE = 250000;
 const SPT_MINT = '6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7';
 const WHALE_GATE = 10000000; // 10M of BOTH tokens required for Whale Club
-const GATED_SECTIONS = ['screener','terminal','cabal','yakktrader','predictions'];
+const GATED_SECTIONS = ['screener','terminal','cabal','yakktrader','predictions','coach','tgbot'];
 let walletAddress = null, ystBalance = 0, ystGated = false, sptBalance = 0, whaleGated = false;
 
 async function connectWallet(){
