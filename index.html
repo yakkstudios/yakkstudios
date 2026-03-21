@@ -795,7 +795,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       <div class="nav-item" onclick="showSection('otcdesk')"><span class="nav-icon">🤝</span>OTC DESK <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('yieldfinder')"><span class="nav-icon">💰</span>YIELD FINDER <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('alerts')"><span class="nav-icon">🔔</span>PRICE ALERTS <span class="nav-new">NEW</span></div>
-      <div class="nav-item" onclick="showSection('bridge')"><span class="nav-icon">🌉</span>BRIDGE SWAP <span class="nav-new">NEW</span></div>
+      <div class="nav-item" onclick="showSection(&apos;bridge&apos;)"><span class="nav-icon">🌉</span>BRIDGE SWAP <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('privacy')"><span class="nav-icon">🕵️</span>PRIVACY ROUTER <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('tokencreator')"><span class="nav-icon">🪙</span>TOKEN CREATOR <span class="nav-new">NEW</span></div>
       <div class="nav-item" onclick="showSection('tgbot')"><span class="nav-icon">🤖</span>TG TRADE BOT <span class="nav-new">NEW</span></div>
@@ -1038,7 +1038,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
               <div style="font-size:11px;color:var(--muted)">SOL, ETH, BTC Ordinals, BNB, Tron. 6 chains, 1 interface. Only 1.5% fee.</div>
               <div style="margin-top:8px"><span class="badge b-gold">6 CHAINS</span></div>
             </div>
-            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection('bridge')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all 0.15s" onclick="showSection(&apos;bridge&apos;)" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
               <div style="font-size:18px;margin-bottom:7px">🌉</div>
               <div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;margin-bottom:3px">BRIDGE & SWAP</div>
               <div style="font-size:11px;color:var(--muted)">deBridge · Wormhole · Mayan · Allbridge. Cross-chain without leaving YAKK.</div>
@@ -1315,7 +1315,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
                 <span id="swap-title">Swap</span>
                 <div style="display:flex;gap:5px;align-items:center">
                   <span style="font-family:Space Mono,monospace;font-size:8px;color:var(--dim)">via YAKK Swap</span>
-                  <a href="javascript:void(0)" onclick="showSection('bridge')" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.15);border-radius:3px">JUP</a>
+                  <a href="javascript:void(0)" onclick="showSection(&apos;bridge&apos;)" style="font-family:Space Mono,monospace;font-size:8px;color:var(--blue);text-decoration:none;padding:2px 5px;border:1px solid rgba(96,165,250,0.15);border-radius:3px">JUP</a>
                 </div>
               </div>
 
@@ -3352,7 +3352,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://x.com/YAKKStudios" target="_blank">@YAKKSTUDIOS ON X <span>→</span></a>
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://t.me/yakkcult" target="_blank">TELEGRAM CULT <span>→</span></a>
                 <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="https://stakepoint.app" target="_blank">STAKEPOINT <span>→</span></a>
-                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="javascript:void(0)" onclick="showSection('bridge')">SWAP HERE →</a>
+                <a class="btn btn-outline" style="font-size:10px;justify-content:space-between" href="javascript:void(0)" onclick="showSection(&apos;bridge&apos;)">SWAP HERE →</a>
               </div>
             </div>
           </div>
@@ -4745,7 +4745,7 @@ function updateGates(){
     if(overlay) { overlay.querySelector('.yst-gate-bal') && (overlay.querySelector('.yst-gate-bal').textContent=walletAddress?`Connected: ${walletAddress.slice(0,8)}… | YST: ${ystBalance.toLocaleString()} / 250,000`:''); return; }
     overlay=document.createElement('div');
     overlay.className='yst-gate-overlay';
-    overlay.innerHTML=`<div class="yst-gate-box"><div class="yst-gate-icon">🔒</div><div class="yst-gate-title">YAKK MEMBERS ONLY</div><div class="yst-gate-sub">Hold <strong style="color:var(--pink)">250,000 $YST</strong> or more to unlock this feature.<br>The cult doesn't let in freeloaders.</div><button class="btn btn-pink" onclick="connectWallet()" style="margin-top:16px;width:100%;justify-content:center">🔗 Connect Wallet &amp; Verify</button><a class="btn btn-outline" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection('bridge')">SWAP HERE →</a>${walletAddress?`<div class="yst-gate-bal">Connected: ${walletAddress.slice(0,8)}… | YST: ${ystBalance.toLocaleString()} / 250,000</div>`:''}</div>`;
+    overlay.innerHTML=`<div class="yst-gate-box"><div class="yst-gate-icon">🔒</div><div class="yst-gate-title">YAKK MEMBERS ONLY</div><div class="yst-gate-sub">Hold <strong style="color:var(--pink)">250,000 $YST</strong> or more to unlock this feature.<br>The cult doesn't let in freeloaders.</div><button class="btn btn-pink" onclick="connectWallet()" style="margin-top:16px;width:100%;justify-content:center">🔗 Connect Wallet &amp; Verify</button><a class="btn btn-outline" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection(&apos;bridge&apos;)">SWAP HERE →</a>${walletAddress?`<div class="yst-gate-bal">Connected: ${walletAddress.slice(0,8)}… | YST: ${ystBalance.toLocaleString()} / 250,000</div>`:''}</div>`;
     el.style.position='relative';
     el.insertBefore(overlay,el.firstChild);
   });
@@ -4786,8 +4786,8 @@ function updateWhaleGate(){
     +'<div class="whale-gate-title">WHALE CLUB — MEMBERS ONLY</div>'
     +'<div class="whale-gate-sub">You must hold <strong style="color:var(--gold)">10,000,000 $SPT</strong> AND <strong style="color:var(--pink)">10,000,000 $YST</strong> to enter the Whale Club.<br>Only the most committed degens qualify.</div>'
     +'<button class="btn btn-gold" onclick="connectWallet()" style="margin-top:16px;width:100%;justify-content:center">🔗 Connect Wallet &amp; Verify</button>'
-    +'<a class="btn btn-outline" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection('bridge')">SWAP HERE →</a>'
-    +'<a class="btn btn-outline" style="margin-top:6px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection('bridge')">SWAP HERE →</a>'
+    +'<a class="btn btn-outline" style="margin-top:8px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection(&apos;bridge&apos;)">SWAP HERE →</a>'
+    +'<a class="btn btn-outline" style="margin-top:6px;width:100%;justify-content:center;text-decoration:none;display:flex" href="javascript:void(0)" onclick="showSection(&apos;bridge&apos;)">SWAP HERE →</a>'
     +balText
     +'</div>';
   el.style.position = 'relative';
@@ -7997,6 +7997,6 @@ if ('serviceWorker' in navigator) {
   </div>
 </div>
 
-<script>(function(){function u(){var c=document.getElementById('stat-clowns');if(c&&typeof CLOWNS!=='undefined')c.textContent=CLOWNS.length;fetch('https://cdn.syndication.twimg.com/widgets/followbutton/info.json?screen_names=YAKKStudios').then(function(r){return r.json();}).then(function(d){var n=d&&d[0]&&d[0].followers_count;if(n){var e=document.getElementById('stat-community');if(e)e.textContent=n.toLocaleString();}}).catch(function(){});}document.readyState==='loading'?document.addEventListener('DOMContentLoaded',u):u();})()</+</script>
+<script>(function(){function u(){var c=document.getElementById('stat-clowns');if(c&&typeof CLOWNS!=='undefined')c.textContent=CLOWNS.length;fetch('https://cdn.syndication.twimg.com/widgets/followbutton/info.json?screen_names=YAKKStudios').then(function(r){return r.json();}).then(function(d){var n=d&&d[0]&&d[0].followers_count;if(n){var e=document.getElementById('stat-community');if(e)e.textContent=n.toLocaleString();}}).catch(function(){});}document.readyState==='loading'?document.addEventListener('DOMContentLoaded',u):u();})()</script>
 </body>
 </html>
