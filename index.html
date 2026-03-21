@@ -4729,6 +4729,7 @@ async function connectWallet(){
     updateProfilePreview();
   } catch(e){
     if(!e?.message?.includes('User rejected')){console.error('Wallet error:',e);}
+}
 
 function updateGates(){
   GATED_SECTIONS.forEach(sec=>{
