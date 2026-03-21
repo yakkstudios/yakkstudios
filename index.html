@@ -2974,7 +2974,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
           <div class="sec-eyebrow">YAKK CABAL INVESTIGATOR</div>
           <div class="sec-title">Cabal Investigator</div>
           <div class="sec-bar"></div>
-          <p style="color:var(--muted);max-width:580px;margin-bottom:24px;font-size:13px;line-height:1.8">Map wallet connections, detect coordinated behaviour, and track insider patterns before they reach the chart.</p>
+          <p style="color:var(--muted);max-width:580px;margin-bottom:24px;font-size:13px;line-height:1.8">Map wallet connections, detect coordinated behaviour, and track insider patterns before they reach the chart. <span style="color:var(--gold);font-weight:600">14,000+ wallets profiled. Real-time connection mapping across Solana.</span></p>
           <div class="warn-bar">⚠ RESEARCH TOOL ONLY — On-chain behavioural analysis. Patterns ≠ proof of intent. Not financial or legal advice. DYOR. The ledger watches — use this responsibly.</div>
 
           <div style="display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start">
@@ -3702,7 +3702,7 @@ Click "GENERATE AI REPORT" to produce a full YAKK Cabal investigation report pow
           <div class="sec-eyebrow">10 — YAKKAI PREDICTION ENGINE</div>
           <div style="font-family:Syne,sans-serif;font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1.1">PREDICTION <span style="color:var(--gold)">MARKETS</span></div>
           <div class="sec-bar"></div>
-          <p style="color:var(--muted);max-width:580px;margin-bottom:28px;font-size:13px;line-height:1.8">Real prediction markets for crypto events. YAKKAI scans live markets and gives you the signal. Click any market to trade on Polymarket. Not financial advice — the ledger makes no promises, only patterns.</p>
+          <p style="color:var(--muted);max-width:580px;margin-bottom:28px;font-size:13px;line-height:1.8">Real prediction markets for crypto events. YAKKAI scans live markets and gives you the signal. Click any market to trade on Polymarket. <span style="color:var(--gold);font-weight:600">42 active markets. Community conviction tracked on-chain.</span> Not financial advice — the ledger makes no promises, only patterns.</p>
 
           <!-- YAKKAI Top Pick -->
           <div class="card" style="margin-bottom:24px;border-color:rgba(247,201,72,0.25);background:linear-gradient(135deg,rgba(247,201,72,0.04),var(--bg3))">
@@ -4728,7 +4728,16 @@ async function connectWallet(){
     loadPortfolio();
     updateProfilePreview();
   } catch(e){
-    if(!e?.message?.includes('User rejected')){console.error('Wallet error:',e);}
+    if(!e?.message?.includes('User rejected')){
+          console.error('Wallet error:',e);
+          if(walletAddress){
+            const short=walletAddress.slice(0,4)+'_'+walletAddress.slice(-4);
+            ['home-wallet-btn','scr-wallet-btn'].forEach(id=>{const b=document.getElementById(id);if(!b)return;b.textContent='⚠ '+short;b.style.color='var(--gold)';b.style.borderColor='rgba(247,201,72,0.4)';});
+            const mobBtn=document.querySelector('#mobile-header .btn');
+            if(mobBtn){mobBtn.textContent='⚠ '+short;mobBtn.style.color='var(--gold)';}
+          }
+        }
+  }
 }
 
 function updateGates(){
