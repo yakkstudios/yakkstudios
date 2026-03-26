@@ -1,5 +1,4 @@
 'use client';
-
 import { NAV, GATED_SECTIONS } from '@/lib/constants';
 
 interface SidebarProps {
@@ -22,7 +21,7 @@ export default function Sidebar({
   ystBalance = 0,
 }: SidebarProps) {
   const shortAddr = walletAddress
-    ? walletAddress.slice(0, 4) + 'â¦' + walletAddress.slice(-4)
+    ? walletAddress.slice(0, 4) + '…' + walletAddress.slice(-4)
     : '';
 
   const hasAccess = (id: string) => {
@@ -34,27 +33,24 @@ export default function Sidebar({
   return (
     <>
       {/* Mobile overlay */}
-      {isOpen && (
-        <div className="sb-overlay open" onClick={onClose} />
-      )}
+      {isOpen && <div className="sb-overlay open" onClick={onClose} />}
 
       <aside id="sidebar" className={isOpen ? 'open' : ''}>
         <div id="sidebar-inner">
+
           {/* Brand */}
           <div className="sb-brand">
             <div className="sb-brand-name">
               $YAKK <span>STUDIOS</span>
             </div>
-            <div className="sb-brand-sub">Solana DeFi Toolkit</div>
+            <div className="sb-brand-sub">On-Chain. No Middlemen.</div>
           </div>
 
           {/* Wallet status */}
           <div className="sb-wallet-status">
             <div className={`dot ${walletConnected ? 'connected' : ''}`} />
             <span id="sol-status-label">
-              {walletConnected
-                ? shortAddr
-                : 'WALLET NOT CONNECTED'}
+              {walletConnected ? shortAddr : 'WALLET NOT CONNECTED'}
             </span>
           </div>
 
@@ -64,9 +60,9 @@ export default function Sidebar({
               <div key={section.title}>
                 <div className="nav-section">{section.title}</div>
                 {section.items.map((item) => {
-                  const gated = GATED_SECTIONS.has(item.id);
+                  const gated      = GATED_SECTIONS.has(item.id);
                   const accessible = hasAccess(item.id);
-                  const isWhale = item.whaleOnly;
+                  const isWhale    = item.whaleOnly;
 
                   return (
                     <div
@@ -76,8 +72,8 @@ export default function Sidebar({
                       title={
                         gated && !accessible
                           ? isWhale
-                            ? 'Requires 10M $YST staked'
-                            : 'Requires 250K $YST staked'
+                            ? 'Requires 10M $YST held'
+                            : 'Requires 250K $YST held'
                           : item.label
                       }
                     >
@@ -99,33 +95,19 @@ export default function Sidebar({
           {/* Footer */}
           <div className="sb-footer">
             <div className="sb-links">
-              <a
-                className="sb-link"
-                href="https://x.com/YakkStudios"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a className="sb-link" href="https://x.com/YakkStudios" target="_blank" rel="noopener noreferrer">
                 Twitter
               </a>
-              <a
-                className="sb-link"
-                href="https://t.me/yakkstudios"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a className="sb-link" href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer">
                 Telegram
               </a>
-              <a
-                className="sb-link"
-                href="https://stakepoint.app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Stake $YST
+              <a className="sb-link" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
+                StakePoint
               </a>
             </div>
-            <div className="sb-version">v2.0.0 Â· Next.js</div>
+            <div className="sb-version">v2.0.0 · Next.js</div>
           </div>
+
         </div>
       </aside>
     </>
