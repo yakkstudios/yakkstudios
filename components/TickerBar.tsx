@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState, useCallback } from 'react';
 
 interface PriceData {
@@ -28,10 +27,11 @@ function formatNum(n: number): string {
 function formatPrice(p: string): string {
   const n = parseFloat(p);
   if (!n) return '$0.00';
-  if (n < 0.000001) return '$' + n.toExponential(3);
-  if (n < 0.01)     return '$' + n.toFixed(7);
-  if (n < 1)        return '$' + n.toFixed(5);
-  return '$' + n.toFixed(4);
+  if (n < 0.000001) return '$' + n.toExponential(2);   // $1.23e-7
+  if (n < 0.0001)   return '$' + n.toFixed(7);          // $0.0000456
+  if (n < 0.01)     return '$' + n.toFixed(5);          // $0.00456
+  if (n < 1)        return '$' + n.toFixed(4);          // $0.4567
+  return '$' + n.toFixed(4);                             // $1.2345
 }
 
 export default function TickerBar({
@@ -59,18 +59,16 @@ export default function TickerBar({
 
   useEffect(() => {
     fetchPrice();
-    const interval = setInterval(fetchPrice, 30_000); // refresh every 30s
+    const interval = setInterval(fetchPrice, 30_000);
     return () => clearInterval(interval);
   }, [fetchPrice]);
 
-  const changeClass = data
-    ? data.change24h >= 0 ? 'up' : 'down'
-    : '';
-  const changeSign = data && data.change24h >= 0 ? '+' : '';
+  const changeClass = data ? (data.change24h >= 0 ? 'up' : 'down') : '';
+  const changeSign  = data && data.change24h >= 0 ? '+' : '';
 
   return (
     <div id="ticker-bar">
-      {/* Ticker 1 â price */}
+      {/* Ticker 1 – price */}
       <span className="tick-inner" id="t1">
         <span className="tick-label">$YST</span>
         <span className="tick-price">
@@ -83,7 +81,7 @@ export default function TickerBar({
         )}
       </span>
 
-      {/* Ticker 2 â market data */}
+      {/* Ticker 2 – market data (hidden on mobile via CSS) */}
       <span className="tick-inner" id="t2">
         <span className="tick-label">MCAP</span>
         <span className="tick-mcap">
