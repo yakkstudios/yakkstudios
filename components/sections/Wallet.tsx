@@ -12,16 +12,16 @@ export default function Wallet({ walletConnected, ystBalance, onNavigate }: Prop
       <div className="sec-header">
         <div className="sec-bar" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð PROFILE</div>
+          <div className="sec-title">👛 PROFILE</div>
         </div>
         <div className="sec-sub">Your wallet profile. View holdings, staking status & activity.</div>
       </div>
 
       <div className="section-placeholder">
         <div className="section-wip">
-          <div className="section-wip-icon">ð§</div>
+          <div className="section-wip-icon">🔧</div>
           <div className="section-wip-text">
-            <strong>PROFILE</strong> â This section is being migrated to the new React architecture.
+            <strong>PROFILE</strong> — This section is being migrated to the new React architecture.
             Full functionality is available in the{' '}
             <button
               style={{ color: 'var(--pink)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 'inherit' }}

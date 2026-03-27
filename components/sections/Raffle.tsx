@@ -19,9 +19,9 @@ export default function Raffle({ walletConnected, ystBalance, onNavigate }: Prop
 
       <div className="section-placeholder">
         <div className="section-wip">
-          <div className="section-wip-icon">ð§</div>
+          <div className="section-wip-icon">🔧</div>
           <div className="section-wip-text">
-            <strong>NFT RAFFLE</strong> â This section is being migrated to the new React architecture.
+            <strong>NFT RAFFLE</strong> — This section is being migrated to the new React architecture.
             Full functionality is available in the{' '}
             <button
               style={{ color: 'var(--pink)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 'inherit' }}

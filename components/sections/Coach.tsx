@@ -12,7 +12,7 @@ export default function Coach({ walletConnected, ystBalance, onNavigate }: Props
       <div className="sec-header">
         <div className="sec-bar blue" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð§  YAKKAI COACH</div>
+          <div className="sec-title">🧠 YAKKAI COACH</div>
         </div>
         <div className="sec-sub">AI trading coach. Get personalised DeFi strategy advice.</div>
         {/* YST gate badge */}
@@ -25,28 +25,28 @@ export default function Coach({ walletConnected, ystBalance, onNavigate }: Props
       {/* Gate check */}
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">YAKKAI COACH</div>
           <div className="locked-sub">
             Connect your wallet and stake{' '}
             <strong>250,000+ $YST</strong> on StakePoint to access this tool.
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            Stake $YST â
+            Stake $YST →
           </a>
         </div>
       )}
 
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">Insufficient Stake</div>
           <div className="locked-sub">
             You need <strong>250,000+ $YST</strong> staked to access YAKKAI COACH.
             Currently staked: {ystBalance.toLocaleString()} $YST.
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            Stake More $YST â
+            Stake More $YST →
           </a>
         </div>
       )}
@@ -54,9 +54,9 @@ export default function Coach({ walletConnected, ystBalance, onNavigate }: Props
       {walletConnected && ystBalance >= 250_000 && (
         <div className="section-placeholder">
           <div className="section-wip">
-            <div className="section-wip-icon">ð§</div>
+            <div className="section-wip-icon">🔧</div>
             <div className="section-wip-text">
-              <strong>YAKKAI COACH</strong> â This section is being migrated to the new React architecture.
+              <strong>YAKKAI COACH</strong> — This section is being migrated to the new React architecture.
               Full functionality is available in the{' '}
               <button
                 style={{ color: 'var(--pink)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 'inherit' }}

@@ -42,21 +42,8 @@ export default function Sidebar({
           <div className="sb-brand">
             {/* YAKK Logo */}
             <div className="sb-logo-wrap">
-              <svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg" aria-label="YAKK Studios logo">
-                <rect width="48" height="48" rx="6" fill="#3d1525"/>
-                <text
-                  x="24" y="36"
-                  textAnchor="middle"
-                  fontSize="34"
-                  fontWeight="900"
-                  fontStyle="italic"
-                  fontFamily="'Arial Black', Impact, sans-serif"
-                  fill="#FFD700"
-                  stroke="#FF2D78"
-                  strokeWidth="1.5"
-                  paintOrder="stroke"
-                >Y</text>
-              </svg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/yakk-logo.png" alt="YAKK Studios logo" width="48" height="48" style={{ borderRadius: 6, display: 'block' }} />}
             </div>
             <div className="sb-brand-name">
               $YAKK <span>STUDIOS</span>

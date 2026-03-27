@@ -12,7 +12,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
       <div className="sec-header">
         <div className="sec-bar gold" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð¦ YAKK VENTURES</div>
+          <div className="sec-title">🏦 YAKK VENTURES</div>
         </div>
         <div className="sec-sub">Community-vetted token launches. Early access for $YST stakers.</div>
         {/* YST gate badge */}
@@ -25,28 +25,28 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
       {/* Gate check */}
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">YAKK VENTURES</div>
           <div className="locked-sub">
             Connect your wallet and stake{' '}
             <strong>250,000+ $YST</strong> on StakePoint to access this tool.
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            Stake $YST â
+            Stake $YST →
           </a>
         </div>
       )}
 
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">Insufficient Stake</div>
           <div className="locked-sub">
             You need <strong>250,000+ $YST</strong> staked to access YAKK VENTURES.
             Currently staked: {ystBalance.toLocaleString()} $YST.
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            Stake More $YST â
+            Stake More $YST →
           </a>
         </div>
       )}
@@ -54,9 +54,9 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
       {walletConnected && ystBalance >= 250_000 && (
         <div className="section-placeholder">
           <div className="section-wip">
-            <div className="section-wip-icon">ð§</div>
+            <div className="section-wip-icon">🔧</div>
             <div className="section-wip-text">
-              <strong>YAKK VENTURES</strong> â This section is being migrated to the new React architecture.
+              <strong>YAKK VENTURES</strong> — This section is being migrated to the new React architecture.
               Full functionality is available in the{' '}
               <button
                 style={{ color: 'var(--pink)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 'inherit' }}

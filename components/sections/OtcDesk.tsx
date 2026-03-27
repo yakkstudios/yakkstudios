@@ -12,7 +12,7 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
       <div className="sec-header">
         <div className="sec-bar green" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð¤ OTC DESK</div>
+          <div className="sec-title">🤝 OTC DESK</div>
         </div>
         <div className="sec-sub">Peer-to-peer token swaps. No slippage. Private & trustless.</div>
         {/* YST gate badge */}
@@ -25,28 +25,28 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
       {/* Gate check */}
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">OTC DESK</div>
           <div className="locked-sub">
             Connect your wallet and stake{' '}
             <strong>250,000+ $YST</strong> on StakePoint to access this tool.
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            Stake $YST â
+            Stake $YST →
           </a>
         </div>
       )}
 
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">Insufficient Stake</div>
           <div className="locked-sub">
             You need <strong>250,000+ $YST</strong> staked to access OTC DESK.
             Currently staked: {ystBalance.toLocaleString()} $YST.
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            Stake More $YST â
+            Stake More $YST →
           </a>
         </div>
       )}
@@ -54,9 +54,9 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
       {walletConnected && ystBalance >= 250_000 && (
         <div className="section-placeholder">
           <div className="section-wip">
-            <div className="section-wip-icon">ð§</div>
+            <div className="section-wip-icon">🔧</div>
             <div className="section-wip-text">
-              <strong>OTC DESK</strong> â This section is being migrated to the new React architecture.
+              <strong>OTC DESK</strong> — This section is being migrated to the new React architecture.
               Full functionality is available in the{' '}
               <button
                 style={{ color: 'var(--pink)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 'inherit' }}
