@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// ── Constants ──────────────────────────────────────────────────────────────
-const YST_MINT = 'AhqBZEsADHGGFJQEPjAbF4RvHhpfKjaejhxFfMYFDkfz';
+// ── Correct $YST token mint (new token) ────────────────────────────────────
+const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
 const DEX_API  = 'https://api.dexscreener.com';
 
-// Cache for 30 s at the CDN/ISR layer
 export const revalidate = 30;
 
-// ── Simple IP-based rate limiter ───────────────────────────────────────────
+// ── IP-based rate limiter ──────────────────────────────────────────────────
 const RATE_MAP   = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT  = 30;      // 30 price polls per minute is plenty
+const RATE_LIMIT  = 30;
 const RATE_WINDOW = 60_000;
 
 function isRateLimited(ip: string): boolean {
@@ -24,7 +23,6 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
-// ── Upstream fetch with timeout ────────────────────────────────────────────
 async function fetchWithTimeout(url: string, ms = 5000): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), ms);
@@ -40,44 +38,29 @@ async function fetchWithTimeout(url: string, ms = 5000): Promise<Response> {
 }
 
 export async function GET(req: NextRequest) {
-  // Rate limit
   const ip =
     req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
     req.headers.get('x-real-ip') ??
     'unknown';
 
   if (isRateLimited(ip)) {
-    return NextResponse.json(
-      { error: 'rate_limited' },
-      { status: 429, headers: { 'Retry-After': '60' } }
-    );
+    return NextResponse.json({ error: 'rate_limited' }, { status: 429, headers: { 'Retry-After': '60' } });
   }
 
   try {
-    const res = await fetchWithTimeout(
-      `${DEX_API}/tokens/v1/solana/${YST_MINT}`
-    );
+    const res = await fetchWithTimeout(`${DEX_API}/tokens/v1/solana/${YST_MINT}`);
+    if (!res.ok) return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
 
-    if (!res.ok) {
-      return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
-    }
-
-    const data = await res.json();
+    const data  = await res.json();
     const pairs: any[] = Array.isArray(data) ? data : (data.pairs ?? []);
-
-    if (!pairs.length) {
-      return NextResponse.json({ error: 'no_pairs' }, { status: 404 });
-    }
+    if (!pairs.length) return NextResponse.json({ error: 'no_pairs' }, { status: 404 });
 
     const pair = pairs
       .filter((p: any) => p.chainId === 'solana')
       .sort((a: any, b: any) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))[0];
 
-    if (!pair) {
-      return NextResponse.json({ error: 'no_solana_pairs' }, { status: 404 });
-    }
+    if (!pair) return NextResponse.json({ error: 'no_solana_pairs' }, { status: 404 });
 
-    // Only return the fields the client actually needs (minimise data surface)
     return NextResponse.json({
       symbol:      pair.baseToken?.symbol  ?? 'YST',
       price:       pair.priceUsd           ?? '0',
@@ -91,9 +74,7 @@ export async function GET(req: NextRequest) {
       dexUrl:      pair.url,
     });
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'internal';
-    // Don't leak internal error details to the client
-    console.error('[price] upstream fetch failed:', msg);
+    console.error('[price] fetch failed:', err instanceof Error ? err.message : err);
     return NextResponse.json({ error: 'internal' }, { status: 500 });
   }
-      }
+}
