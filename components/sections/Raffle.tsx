@@ -32,7 +32,7 @@ export default function Raffle({ walletConnected, ystBalance, onNavigate }: Prop
                 <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 15 }}>{r.prize}</div>
                 <span className={`badge ${r.badge}`}>PRIZE</span>
               </div>
-              <div style={{ display: 'flex', gap: 16, marginBottom: 10, flewWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 16, marginBottom: 10, flexWrap: 'wrap' }}>
                 {[['TICKET PRICE', r.ticketPrice], ['ENTRIES', `${r.tickets}/${r.maxTickets}`], ['ENDS IN', r.end]].map(([l, v]) => (
                   <div key={l as string}>
                     <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', letterSpacing: '0.1em' }}>{l}</div>
