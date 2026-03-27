@@ -12,10 +12,10 @@ export default function GateBadge({ checked = false, whaleOnly = false }: GateBa
   return (
     <div className="gate-badge">
       <span className="gate-badge-text">
-        <span>{threshold}+ $YST</span> Staked on StakePoint
+        <span>{threshold}+ $YST</span> Held
       </span>
       <span className={`badge ${checked ? 'b-green' : 'b-dim'}`}>
-        {checked ? 'â VERIFIED' : label}
+        {checked ? '✓ VERIFIED' : label}
       </span>
     </div>
   );
