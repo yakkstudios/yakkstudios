@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Full Picture â $YAKK Cabal KOL ExposÃ©</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap');
+
+  :root {
+    --black: #0a0a0a;
+    --red: #e63946;
+    --red-dark: #9b1d23;
+    --gold: #f4a261;
+    --pink: #ff6b9d;
+    --white: #f0ede8;
+    --grey: #1a1a1a;
+    --grey-mid: #2a2a2a;
+    --grey-light: #888;
+    --border: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .masthead {
+    border-bottom: 1px solid var(--border);
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,10,0.97);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  .masthead-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+    color: var(--pink);
+  }
+  .masthead-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--grey-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 3rem;
+    max-width: 860px;
+    margin: 0 auto;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+  }
+  .hero::before {
+    content: 'INVESTIGATION';
+    position: absolute;
+    top: 3rem;
+    left: 2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--red);
+    text-transform: uppercase;
+  }
+  .hero-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 18vw, 14rem);
+    line-height: 0.85;
+    color: var(--grey-mid);
+    position: absolute;
+    top: 4rem;
+    right: -1rem;
+    letter-spacing: -0.02em;
+    user-select: none;
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1.2rem;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  .hero-title span { color: var(--red); }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: #aaa;
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--grey-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-top: 1px solid var(--border);
+    padding-top: 1.2rem;
+  }
+  .hero-meta span { color: var(--white); }
+
+  /* BODY */
+  .article-body {
+    max-width: 860px;
+    margin: 0 auto;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+
+  .section {
+    padding: 3.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: 0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+
+  p {
+    margin-bottom: 1.2rem;
+    font-size: 0.98rem;
+    color: #ccc;
+    line-height: 1.8;
+  }
+
+  strong { color: var(--white); font-weight: 600; }
+
+  /* CALLOUT */
+  .callout {
+    border-left: 3px solid var(--red);
+    background: rgba(230, 57, 70, 0.06);
+    padding: 1.2rem 1.5rem;
+    margin: 2rem 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #ddd;
+  }
+  .callout.gold {
+    border-color: var(--gold);
+    background: rgba(244, 162, 97, 0.06);
+  }
+  .callout.pink {
+    border-color: var(--pink);
+    background: rgba(255, 107, 157, 0.06);
+  }
+
+  /* STAT BLOCKS */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin: 2.5rem 0;
+    border: 1px solid var(--border);
+  }
+  .stat-block {
+    background: var(--black);
+    padding: 1.5rem;
+  }
+  .stat-block .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--red);
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .stat-block .num.gold { color: var(--gold); }
+  .stat-block .num.pink { color: var(--pink); }
+  .stat-block .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--grey-light);
+    line-height: 1.4;
+  }
+
+  /* DIAGRAM */
+  .diagram {
+    background: var(--grey);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 2rem 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 2;
+    color: #aaa;
+  }
+  .diagram .step { color: var(--white); }
+  .diagram .arrow { color: var(--red); }
+  .diagram .highlight { color: var(--gold); }
+
+  /* KOL TABLE */
+  .kol-section { margin: 2rem 0; }
+
+  .tier-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .tier-1 { background: rgba(230, 57, 70, 0.15); color: var(--red); border-left: 3px solid var(--red); }
+  .tier-2 { background: rgba(244, 162, 97, 0.1); color: var(--gold); border-left: 3px solid var(--gold); }
+  .tier-3 { background: rgba(255,255,255,0.03); color: #888; border-left: 3px solid #444; }
+
+  .kol-card {
+    background: var(--grey);
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 1.2rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+    transition: background 0.2s;
+  }
+  .kol-card:hover { background: #1f1f1f; }
+  .kol-card + .kol-card { border-top: none; }
+
+  .kol-handle {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--pink);
+    font-weight: 700;
+  }
+  .kol-sol {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+  .sol-red { color: var(--red); }
+  .sol-gold { color: var(--gold); }
+  .sol-grey { color: #666; }
+
+  .kol-detail {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--grey-light);
+    line-height: 1.6;
+  }
+  .kol-detail .tag {
+    display: inline-block;
+    background: rgba(230,57,70,0.15);
+    color: var(--red);
+    padding: 0.1rem 0.4rem;
+    font-size: 0.58rem;
+    margin-bottom: 0.3rem;
+    border: 1px solid rgba(230,57,70,0.3);
+  }
+  .kol-detail .tag.gold-tag {
+    background: rgba(244,162,97,0.1);
+    color: var(--gold);
+    border-color: rgba(244,162,97,0.3);
+  }
+
+  /* DAUMEN SPECIAL */
+  .special-card {
+    border: 1px solid var(--red);
+    background: rgba(230,57,70,0.05);
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .special-card::before {
+    content: 'â ';
+    position: absolute;
+    top: -0.5rem;
+    right: 1rem;
+    font-size: 6rem;
+    opacity: 0.05;
+    line-height: 1;
+  }
+  .special-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--red);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+  .evidence-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .evidence-block {
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+    border: 1px solid #333;
+  }
+  .evidence-source {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .evidence-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: #ccc;
+    line-height: 1.6;
+  }
+
+  /* WALLET ADDR */
+  .addr {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold);
+    word-break: break-all;
+    background: rgba(244,162,97,0.05);
+    padding: 0.2rem 0.4rem;
+    border: 1px solid rgba(244,162,97,0.15);
+    display: inline;
+  }
+
+  /* CREDIT */
+  .credit-block {
+    background: var(--grey);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 2rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .credit-item {
+    border-left: 2px solid var(--border);
+    padding-left: 1rem;
+  }
+  .credit-item .who {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--pink);
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+  }
+  .credit-item .what {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--grey-light);
+    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    background: #111;
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: #555;
+    line-height: 1.8;
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 860px;
+    margin: 0 auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--grey-light);
+  }
+  footer .brand { color: var(--pink); font-size: 1rem; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.1em; }
+
+  /* PULSE ANIMATION */
+  @keyframes pulse-red { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .live { animation: pulse-red 2s ease-in-out infinite; color: var(--red); }
+
+  /* RESPONSIVE */
+  @media(max-width:640px){
+    .kol-card { grid-template-columns: 1fr; }
+    .evidence-row { grid-template-columns: 1fr; }
+    .credit-block { grid-template-columns: 1fr; }
+    .hero-number { font-size: 6rem; top: 1rem; right: 0; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="masthead">
+  <div class="masthead-logo">$YAKK CABAL</div>
+  <div class="masthead-tag">Anti-Greed Â· On-Chain or Nothing Â· t.me/yakkcult</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-number">12</div>
+  <div class="hero-eyebrow">ð©· The Full Picture â KOL ExposÃ©</div>
+  <h1 class="hero-title">The Dev Wallets.<br>The KOLs.<br><span>The Receipts.</span></h1>
+  <p class="hero-sub">We mapped the extraction layer. Now we map the promotional layer. Same ecosystem. Different floor. All on-chain.</p>
+  <div class="hero-meta">
+    <div>By <span>$YAKK Cabal</span></div>
+    <div>Source data <span>@degengamblah + @postmodernism</span></div>
+    <div>Chain <span>Solana</span></div>
+    <div>Status <span class="live">â LIVE</span></div>
+  </div>
+</section>
+
+<main class="article-body">
+
+  <!-- SECTION 1: CONTEXT -->
+  <section class="section">
+    <div class="section-label">Context</div>
+    <h2 class="section-title">Eleven Tokens. One Pattern. Now The Other Half.</h2>
+    <p>The $YAKK Cabal has spent months documenting the <strong>extraction layer</strong> of the Solana memecoin ecosystem. Eleven tokens. $87 billion in tracked transfer volume. The same 15 wallet addresses appearing in every single investigation â routing, accumulating, and exiting into retail liquidity while most holders had no idea what was happening inside the chain.</p>
+    <p>But that's only half the picture. For every extraction network operating inside a token, there's a <strong>promotional layer on the outside</strong> â KOLs being paid by the same dev wallets to shill tokens to their audiences. Retail gets hit twice: once by the infrastructure extracting from inside the token, and once by the influencers who were already paid to bring them in.</p>
+    <p>Two independent researchers â <strong>@degengamblah</strong> and <strong>@postmodernism</strong> â have now mapped that outer layer. @degengamblah documented 113+ deployer wallets farming their own deploys. @postmodernism then ran each of those dev wallets through <strong>solscanner.app</strong> at maximum depth, tracing every direct and indirect SOL transfer to known KOL wallets.</p>
+    <p>This article combines both bodies of research with our own 11-investigation series to present the complete picture for the first time.</p>
+
+    <div class="stat-grid">
+      <div class="stat-block"><span class="num">11</span><div class="label">YAKK Cabal<br>investigations</div></div>
+      <div class="stat-block"><span class="num gold">$87B+</span><div class="label">Total tracked<br>transfer volume</div></div>
+      <div class="stat-block"><span class="num pink">113+</span><div class="label">Dev wallets<br>blacklisted</div></div>
+      <div class="stat-block"><span class="num">39</span><div class="label">KOL wallets<br>connected on-chain</div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: THE TWO LAYERS -->
+  <section class="section">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">The Full Extraction Stack</h2>
+    <p>The ecosystem operates in two distinct but connected layers. Until now, most research has focused on one or the other. Here's how they connect:</p>
+
+    <div class="diagram">
+      <div><span class="step">LAYER 1 â THE PROMO LAYER</span> <span style="color:#555">(mapped by @degengamblah + @postmodernism)</span></div>
+      <div><span class="arrow">  â</span></div>
+      <div><span class="highlight">Dev wallet deploys token</span></div>
+      <div><span class="arrow">  â</span></div>
+      <div><span class="highlight">Dev wallet sends SOL directly to KOL wallets</span></div>
+      <div><span class="arrow">  â</span></div>
+      <div>KOLs shill token to their audiences</div>
+      <div><span class="arrow">  â</span></div>
+      <div>Retail buys in on the hype</div>
+      <div>&nbsp;</div>
+      <div><span class="step">LAYER 2 â THE EXTRACTION LAYER</span> <span style="color:#555">(mapped by $YAKK Cabal across 11 investigations)</span></div>
+      <div><span class="arrow">  â</span></div>
+      <div><span class="highlight">Hub wallets + relay chains activate inside the token</span></div>
+      <div><span class="arrow">  â</span></div>
+      <div><span class="highlight">Ping-pong pairs generate artificial volume</span></div>
+      <div><span class="arrow">  â</span></div>
+      <div><span class="highlight">Silent accumulators collect at peak valuation</span></div>
+      <div><span class="arrow">  â</span></div>
+      <div>Ghost exits â $0 cost basis, sold into retail demand</div>
+      <div><span class="arrow">  â</span></div>
+      <div style="color:var(--red)">Retail holds the bag. Infrastructure moves to the next token.</div>
+    </div>
+
+    <div class="callout">
+      â ï¸ IMPORTANT: Not all KOL connections documented below are guaranteed to represent intentional coordination. One-time transfers may have innocent explanations. The article's own authors note this clearly. Readers should reach their own conclusions based on the pattern of connections, amounts, and frequency. Patterns â  proof of wrongdoing.
+    </div>
+  </section>
+
+  <!-- SECTION 3: KOL TABLE -->
+  <section class="section">
+    <div class="section-label">On-Chain Connections</div>
+    <h2 class="section-title">The KOL Payment Trail</h2>
+    <p>The following connections were identified by @postmodernism by scanning each of @degengamblah's 113+ blacklisted dev wallets at maximum depth on solscanner.app. Where direct or indirect transfers to known KOL wallets were found, they are documented below.</p>
+    <p>Sorted by total SOL received from flagged dev wallets.</p>
+
+    <div class="kol-section">
+
+      <div class="tier-label tier-1">â¬ TIER 1 â HIGHEST CONVICTION</div>
+
+      <!-- runitbackghost -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@runitbackghost</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "S"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">~3,229 SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$1,118,549</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">2 DEV WALLETS</div><br>
+          Dev 1: <span class="addr">Etg3VP...</span> â 1,069 SOL (~$368K) DIRECT<br>
+          Dev 2: <span class="addr">TffSoh...</span> â 2,159 SOL (~$750K) DIRECT<br>
+          <span style="color:var(--red)">Largest total received in entire report.</span>
+        </div>
+      </div>
+
+      <!-- chester -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@Chestererer</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "chester"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">2,590 SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$439,049</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">1 DEV WALLET</div><br>
+          Dev: <span class="addr">8NJ7Uj...</span> â 2,590 SOL DIRECT<br>
+          Second largest single transfer in entire report.
+        </div>
+      </div>
+
+      <!-- risk100x -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@risk100x</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "Risk"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">2,895+ SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$265,358+</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">3 DEV WALLETS</div><br>
+          Dev 1: <span class="addr">2ED78G...</span> â 2,895 SOL (~$265K) DIRECT<br>
+          Dev 2: <span class="addr">EaVboa...</span> â token transfer DIRECT<br>
+          Dev 3: <span class="addr">F5XvCe...</span> â token transfer DIRECT<br>
+          <span style="color:var(--red)">Most dev wallet appearances of any KOL.</span>
+        </div>
+      </div>
+
+      <!-- fnmilito -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@fnmilito</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "milito"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">1,085 SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$154,378</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">1 DEV WALLET</div><br>
+          Dev: <span class="addr">EdNcBD...</span> â 1,085 SOL DIRECT<br>
+          Over 1,000 SOL in a single direct transfer.
+        </div>
+      </div>
+
+      <!-- ClownsTrenches -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@ClownsTrenches</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "Clown"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">902 SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$105,635</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">1 DEV WALLET</div><br>
+          Dev: <span class="addr">CzbN6T...</span> â 902 SOL DIRECT<br>
+          Same dev wallet also connected to @theunipcs + @gr3gor14n.
+        </div>
+      </div>
+
+      <!-- zukiweb3 -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@zukiweb3</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "Zuki"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">888+ SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$82,306+</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">3 DEV WALLETS</div><br>
+          Dev 1: <span class="addr">3MAmJ5...</span> â 888 SOL (~$82K) DIRECT<br>
+          Dev 2: <span class="addr">7Xtzn7...</span> â via intermediary INDIRECT<br>
+          Dev 3: <span class="addr">6XgWuG...</span> â 1-5 SOL INDIRECT
+        </div>
+      </div>
+
+      <!-- Cented7 -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@Cented7</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "Cented"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">777+ SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$71,217+</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">4 DEV WALLETS</div><div class="tag" style="margin-left:0.3rem">OWN WALLET FLAGGED</div><br>
+          Own wallet <span class="addr">CyaE1V...</span> flagged as dev wallet itself.<br>
+          Dev 1: <span class="addr">8YcbyX...</span> â 767 SOL (~$70K) DIRECT<br>
+          Dev 2: <span class="addr">EaVboa...</span> â 9.34 SOL DIRECT<br>
+          Also connected to @cladzsol + @kadenox + @TheRealZrool via own wallet.<br>
+          <span style="color:var(--red)">Most complex entry â appears as both recipient AND operator.</span>
+        </div>
+      </div>
+
+      <!-- Qavecc -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@Qavecc</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "Qavec"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">657+ SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$60,717+</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">2 DEV WALLETS</div><br>
+          Dev 1: <span class="addr">DqeVuN...</span> â 657 SOL (~$61K) DIRECT<br>
+          Dev 2: <span class="addr">7Xtzn7...</span> â via 3aYE intermediary INDIRECT
+        </div>
+      </div>
+
+      <!-- notdecu -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@notdecu</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">"decu"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">>$100K</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">in transfers (indirect)</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">1 DEV WALLET</div><br>
+          Dev: <span class="addr">7Xtzn7...</span> â via intermediary <span class="addr">3aYEDB...</span><br>
+          1.5K SOL from blacklisted dev â intermediary â @notdecu.<br>
+          Article flags this as "particularly notable given the size."
+        </div>
+      </div>
+
+      <!-- finnbags -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@finnbags</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">Known as "FINN"</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">60+ SOL</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$5,500+ across 4 wallets</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">4 DEV WALLETS</div><br>
+          Dev 1: <span class="addr">AqsW2q...</span> â 12.63 SOL DIRECT<br>
+          Dev 2: <span class="addr">DoDMGU...</span> â 44.86 SOL (~$4.2K) DIRECT<br>
+          Dev 3: <span class="addr">36DWP5...</span> â 1-3 SOL DIRECT<br>
+          Dev 4: <span class="addr">8ZN71X...</span> â 3 SOL DIRECT<br>
+          <span style="color:var(--gold)">Article: "consistently receiving SOL from flagged addresses."</span>
+        </div>
+      </div>
+
+      <!-- coinsolmaxi -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@coinsolmaxi</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-gold">Unknown</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">3 connections</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">3 DEV WALLETS</div><br>
+          Dev 1: <span class="addr">8L7Xg4...</span> â INDIRECT<br>
+          Dev 2: <span class="addr">65qE1y...</span> â INDIRECT<br>
+          Dev 3: <span class="addr">CVvJnD...</span> â DIRECT<br>
+          <span style="color:var(--gold)">Article: "most frequently linked influencers in this report."</span>
+        </div>
+      </div>
+
+      <!-- Megga -->
+      <div class="kol-card">
+        <div>
+          <div class="kol-handle">@Megga</div>
+        </div>
+        <div>
+          <div class="kol-sol sol-red">HBÇH5dbö>
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">"Very strong connection"</div>
+        </div>
+        <div class="kol-detail">
+          <div class="tag">1 DEV WALLET</div><br>
+          Dev: <span class="addr">8VUwMy...</span> â "very strong connection" flagged<br>
+          Described as "a particularly high-conviction link."
+        </div>
+      </div>
+
+      <div class="tier-label tier-2">âª TIER 2 â MEDIUM CONVICTION</div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@meechie</div></div>
+        <div><div class="kol-sol sol-gold">OWN WALLET</div><div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">flagged as dev wallet</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">DEV OPERATOR</div><br>Wallet <span class="addr">9iaawV...</span> listed as @meechie's main wallet AND flagged as a dev wallet itself.</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@donuttcrypto</div></div>
+        <div><div class="kol-sol sol-gold">119.97 SOL</div><div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$11,039</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">1 DEV WALLET</div><br>Dev: <span class="addr">Emp7d1...</span> â 119.97 SOL DIRECT</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@ImTheBetman</div></div>
+        <div><div class="kol-sol sol-gold">43.15 SOL</div><div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$3,987</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">1 DEV WALLET</div><br>Dev: <span class="addr">Gtnc2X...</span> â 43.15 SOL DIRECT</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@kadenox</div></div>
+        <div><div class="kol-sol sol-gold">4.30 SOL</div><div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">+ indirect via Cented wallet</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">2 CONNECTIONS</div><br>Dev: <span class="addr">7moqFj...</span> â 4.30 SOL DIRECT<br>Also connected via @Cented7's flagged wallet.</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@Yennii56</div></div>
+        <div><div class="kol-sol sol-gold">10.00 SOL</div><div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$926</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">1 DEV WALLET</div><br>Dev: <span class="addr">BtMBMP...</span> â 10 SOL DIRECT</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@igndex</div></div>
+        <div><div class="kol-sol sol-gold">10.40 SOL</div><div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#888;margin-top:0.2rem;">~$953</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">1 DEV WALLET</div><br>Dev: <span class="addr">DEVsZn...</span> â 10.40 SOL DIRECT</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@theunipcs</div><div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">"Bonk Guy"</div></div>
+        <div><div class="kol-sol sol-gold">Token transfer</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">1 DEV WALLET</div><br>Dev: <span class="addr">CzbN6T...</span> â token transfer DIRECT<br>(Same wallet also sent 902 SOL to @ClownsTrenches)</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@gr3gor14n</div></div>
+        <div><div class="kol-sol sol-gold">Token transfer</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">1 DEV WALLET</div><br>Dev: <span class="addr">CzbN6T...</span> â token transfer DIRECT</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@notdecu connections</div><div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#666;margin-top:0.3rem;">via 3aYE intermediary</div></div>
+        <div><div class="kol-sol sol-gold">Multi-KOL</div></div>
+        <div class="kol-detail">Same intermediary <span class="addr">3aYEDB...</span> also fans to:<br>@Qavecc Â· @zukiweb3 Â· @Blueycryp Â· @lyftical</div>
+      </div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle">@himothy</div></div>
+        <div><div class="kol-sol sol-gold">Small (x2)</div></div>
+        <div class="kol-detail"><div class="tag gold-tag">2 CONNECTIONS</div><br>Via FnHk intermediary (indirect) + <span class="addr">6XgWuG...</span> 1-5 SOL indirect</div>
+      </div>
+
+      <div class="tier-label tier-3">â« TIER 3 â WEAK / NOTABLE CONTEXT</div>
+
+      <div class="kol-card">div>
+      </div>
+
+      <div class="tier-label tier-3">â« TIER 3 â WEAK / NOTABLE CONTEXT</div>
+
+      <div class="kol-card">
+        <div><div class="kol-handle" style="color:#888;">@TheRealZrool Â· @s1mple_s1mple Â· @cladzsol Â· @tdmilky Â· @im0pnl Â· @Al4neu Â· @slingoorio Â· @ColerCooks Â· @NADGEMS Â· @fz7 Â· @LeckSol Â· @CookerFlips Â· @vibed333 Â· @treysocial Â· @imsheepsol Â· @Log100x Â· @zXDuckyXz Â· @matsu_sol Â· @yodefv Â· @SmokezXBT Â· @radiancebrr Â· @kreo444 Â· @beaverd</div></div>
+        <div><div class="kol-sol sol-grey">0.002â5 SOL</div></div>
+        <div class="kol-detail">Small to very small amounts. Many indirect. Most in the 1-5 SOL range. Article authors note many of these may be innocent. Listed for completeness.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4: DAUMENXYZ -->
+  <section class="section">
+    <div class="section-label">Cross-Reference â YAKK Series</div>
+    <h2 class="section-title">The @daumenxyz File</h2>
+    <p>One name appears in both this article's findings <strong>and</strong> the $YAKK Cabal's own investigation series â flagged independently by two completely separate research efforts using different data sources and different methodologies.</p>
+
+    <div class="special-card">
+      <h3>TWO SOURCES. ONE NAME.</h3>
+      <div class="evidence-row">
+        <div class="evidence-block">
+          <div class="evidence-source">Source 1 â @postmodernism article</div>
+          <div class="evidence-text">
+            Dev wallet:<br>
+            <span class="addr">7GhWwhaMgbKiRWxF93Bud6HnHMci6NCLTJyTxG8zFH51</span><br><br>
+            â 0.53 SOL (~$49) sent DIRECTLY to @daumenxyz's wallet.<br><br>
+            A direct on-chain SOL transfer from a blacklisted deployer to the KOL's documented wallet address.
+          </div>
+        </div>
+        <div class="evidence-block">
+          <div class="evidence-source">Source 2 â $YAKK Cabal $PUNCH Investigation</div>
+          <div class="evidence-text">
+            Wallet:<br>
+            <span class="addr">FfyLxGLJu6WnCMahP9AKEDkC3VFWRvcH8wUx42CQTGhB</span><br><br>
+            â $241,191 sent to AgmLJBMD â our confirmed multi-token hub router present across 9+ investigations.<br><br>
+            @daumenxyz publicly challenged our $PUNCH findings on X. This is the wallet our data flagged.
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:1.5rem;margin-bottom:0;">
+        Note: FfyLxGLJ and 7GhWwhaMg are NOT the same wallet. These are two independent on-chain data points from two separate research efforts. Both involve @daumenxyz. Both are publicly verifiable on Solscan.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: YAKK SERIES RECAP -->
+  <section class="section">
+    <div class="section-label">Our Work â 11 Investigations</div>
+    <h2 class="section-title">The Extraction Layer: What We Found</h2>
+    <p>While the above documents the promotional payment layer, the $YAKK Cabal's 11 investigations documented what happens inside the tokens themselves. Here is the cumulative ledger.</p>
+
+    <div class="stat-grid">
+      <div class="stat-block"><span class="num red">$87B+</span><div class="label">Combined tracked<br>transfer volume</div></div>
+      <div class="stat-block"><span class="num gold">$3.98B+</span><div class="label">Estimated<br>extraction floor</div></div>
+      <div class="stat-block"><span class="num pink">15</span><div class="label">Recurring wallets<br>across all 11 tokens</div></div>
+      <div class="stat-block"><span class="num">11</span><div class="label">Tokens<br>investigated</div></div>
+    </div>
+
+    <div class="callout gold">
+      The serial router ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn appeared in every single one of the 11 tokens investigated. The same HOOD cluster of 8 wallets ran $760Mâ$820M each through $TRUMP alone. The $WAR silent vault collected $7.98M with $0 sent outbound, timed precisely to the price wick. $BUTTCOIN's top 13 traders included 6 with $0 cost basis â $516,200 extracted from nothing.
+    </div>
+
+    <p>The tokens investigated: <strong>$BER Â· $PUNCH Â· $JELLYBEAN Â· $URANUS Â· $PIGEON Â· $HOOD Â· $M3M3 Â· $TRUMP Â· $WATDOG Â· $WAR Â· $BUTTCOIN</strong></p>
+    <p>Full investigation threads and wallet registries are available at <strong>t.me/yakkcult</strong>.</p>
+  </section>
+
+  <!-- SECTION 6: CREDIT -->
+  <section class="section">
+    <div class="section-label">Research Credit</div>
+    <h2 class="section-title">Three Research Efforts. One Ecosystem.</h2>
+    <p>This article combines three independent bodies of on-chain research. Credit where it is fully due:</p>
+
+    <div class="credit-block">
+      <div class="credit-item">
+        <div class="who">@degengamblah</div>
+        <div class="what">Compiled the original blacklist of 113+ deployer wallets flagged for farming their own token deploys. The foundation that made the KOL mapping possible.</div>
+      </div>
+      <div class="credit-item">
+        <div class="who">@postmodernism</div>
+        <div class="what">Ran each blacklisted dev wallet through solscanner.app at maximum depth, tracing direct and indirect SOL transfers to known KOL wallets. The KOL connection mapping in this article is their work.</div>
+      </div>
+      <div class="credit-item">
+        <div class="who">$YAKK Cabal</div>
+        <div class="what">11 independent token investigations across $87B+ in tracked Solana transfer volume. Hub mapping, relay chains, silent accumulators, ghost exits, and cross-token wallet registry. t.me/yakkcult</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="disclaimer">
+  â ï¸ MANDATORY DISCLAIMER: This article is for educational purposes only and is NOT financial advice. All data referenced is publicly available on the Solana blockchain and is independently verifiable via Solscan.io, DexScreener.com, and solscanner.app. Patterns and on-chain connections documented herein do not constitute proof of wrongdoing. Not all transfers between wallets indicate intentional coordination â one-time or incidental transfers may have innocent explanations. No individual or project is formally accused of illegal activity. The $YAKK Cabal makes no guarantees of accuracy. Cross-token wallet appearances and KOL connections shown are factual on-chain observations that require further context to establish legal or ethical conclusions. Readers should conduct their own research and reach their own conclusions. The $YAKK Cabal is an educational and community research organisation. DYOR. Never invest more than you can afford to lose.
+</div>
+
+<footer>
+  <div>
+    <div class="brand">$YAKK CABAL</div>
+    <div style="margin-top:0.3rem;">Anti-Greed Â· On-Chain or Nothing</div>
+  </div>
+  <div style="text-align:right;">
+    <div>t.me/yakkcult</div>
+    <div style="margin-top:0.3rem;">@YAKKStudios Â· yakkstudios.xyz</div>
+  </div>
+</footer>
+
+</body>
+</html>
