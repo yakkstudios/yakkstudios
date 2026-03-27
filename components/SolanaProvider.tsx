@@ -12,9 +12,10 @@ import {
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 // Use a custom RPC if provided — strongly recommended in production
-// Set NEXT_PUBLIC_RPC_URL in Vercel env vars (e.g. Helius or QuickNode free tier)
+// Set NEXT_PUBLIC_RPC_URL in Vercel env vars to override
 const RPC_ENDPOINT =
-  process.env.NEXT_PUBLIC_RPC_URL ?? 'https://rpc.ankr.com/solana';
+  process.env.NEXT_PUBLIC_RPC_URL ??
+  'https://mainnet.helius-rpc.com/?api-key=23af02bd-f080-466e-a18b-ae51f2b2de76';
 
 export function SolanaProvider({ children }: { children: ReactNode }) {
   const wallets = useMemo(
