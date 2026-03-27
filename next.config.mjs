@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-// ── Security Headers ───────────────────────────────────────────────────────
+// ââ Security Headers âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const CSP = [
   "default-src 'self'",
   // Next.js requires unsafe-inline for styles; tighten with nonce in future
@@ -14,7 +14,7 @@ const CSP = [
   // Microphone for voice lounge only; block camera, geolocation, etc.
   "media-src 'self' blob:",
   "font-src 'self'",
-  "frame-ancestors 'none'",
+  "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",
 ].join('; ');
@@ -23,7 +23,7 @@ const SECURITY_HEADERS = [
   // Force HTTPS for 2 years; include subdomains; eligible for preload list
   { key: 'Strict-Transport-Security',     value: 'max-age=63072000; includeSubDomains; preload' },
   // Block clickjacking
-  { key: 'X-Frame-Options',              value: 'DENY' },
+  { key: 'X-Frame-Options',              value: 'SAMEORIGIN' },
   // Prevent MIME sniffing
   { key: 'X-Content-Type-Options',       value: 'nosniff' },
   // Limit referrer to origin only on cross-origin requests
@@ -37,7 +37,7 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig = {
-  // Re-enable TypeScript checking — hiding errors masks security bugs
+  // Re-enable TypeScript checking â hiding errors masks security bugs
   typescript: {
     ignoreBuildErrors: false,
   },
