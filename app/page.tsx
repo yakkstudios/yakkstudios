@@ -36,12 +36,13 @@ import Members     from '@/components/sections/Members';
 import WhaleClub   from '@/components/sections/WhaleClub';
 import Ledger      from '@/components/sections/Ledger';
 import Whitepaper  from '@/components/sections/Whitepaper';
+import News        from '@/components/sections/News';
 
 // ── Correct $YST mint address ─────────────────────────────────────────────
 const YST_MINT = new PublicKey('jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV');
 
 type SectionId =
-  | 'home' | 'screener' | 'terminal' | 'update' | 'trusted' | 'clowns'
+  | 'home' | 'news' | 'screener' | 'terminal' | 'update' | 'trusted' | 'clowns'
   | 'yakktrader' | 'predictions' | 'cabal' | 'nftmarket' | 'launchpad'
   | 'otcdesk' | 'yieldfinder' | 'alerts' | 'privacy' | 'tokencreator'
   | 'tgbot' | 'features' | 'portfolio' | 'stakepoint' | 'artlab' | 'coach'
@@ -111,6 +112,7 @@ export default function App() {
   useEffect(() => {
     const titles: Record<string, string> = {
       home: '$YAKK Studios',
+      news: 'YAKK News',
       screener: 'YAKK Screener',
       terminal: 'YAKK Terminal',
       yakktrader: 'YAKK AI Trader',
@@ -166,6 +168,7 @@ export default function App() {
         />
         <div id="main">
           <div className={`page-section ${section==='home'?'active':''}`}><Home {...sectionProps}/></div>
+          <div className={`page-section ${section==='news'?'active':''}`}><News {...sectionProps}/></div>
           <div className={`page-section ${section==='screener'?'active':''}`}><Screener {...sectionProps}/></div>
           <div className={`page-section ${section==='terminal'?'active':''}`}><Terminal {...sectionProps}/></div>
           <div className={`page-section ${section==='update'?'active':''}`}><Update {...sectionProps}/></div>
