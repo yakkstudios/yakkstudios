@@ -329,7 +329,7 @@ export default function WhaleClub({ walletConnected, walletAddress, ystBalance, 
             {pct.toFixed(1)}% of the way there
           </p>
           <a
-            href="https://raydium.io/swap/?outputMint=YSTyyyyyyy"
+            href="https://raydium.io/swap/?outputMint=jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary"
