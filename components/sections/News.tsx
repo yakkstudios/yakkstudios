@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 
 interface SectionProps {
@@ -30,8 +29,7 @@ const ARTICLES: Article[] = [
     dateLabel: 'March 2025',
     category: 'INVESTIGATION',
     title: 'The Dev Wallets. The KOLs. The Receipts.',
-    subtitle:
-      'We mapped the extraction layer. Now we map the promotional layer. 113+ blacklisted dev wallets. 39 KOL wallets connected on-chain. Same ecosystem. Different floor. All on-chain.',
+    subtitle: 'We mapped the extraction layer. Now we map the promotional layer. 113+ blacklisted dev wallets. 39 KOL wallets connected on-chain. Same ecosystem. Different floor. All on-chain.',
     author: '$YAKK Cabal',
     sources: '@degengamblah · @postmodernism',
     tags: ['KOL EXPOSE', 'ON-CHAIN', 'SOLANA', 'INVESTIGATION'],
@@ -42,7 +40,7 @@ const ARTICLES: Article[] = [
 
 function ArticleViewer({ article, onBack }: { article: Article; onBack: () => void }) {
   return (
-    <div className="news-viewer">
+    <div className="news-viewer" style={{ height: 'calc(100vh - var(--ticker-h))' }}>
       <div className="news-viewer-bar">
         <button className="btn btn-ghost btn-sm" onClick={onBack}>
           ← Back to News
@@ -60,7 +58,7 @@ function ArticleViewer({ article, onBack }: { article: Article; onBack: () => vo
         src={article.slug}
         className="news-iframe"
         title={article.title}
-        sandbox="allow-same-origin allow-scripts"
+        sandbox="allow-same-origin allow-scripts allow-popups"
       />
     </div>
   );
@@ -102,10 +100,8 @@ export default function News({ }: SectionProps) {
                 {article.dateLabel} · {article.readTime}
               </span>
             </div>
-
             <h2 className="news-card-title">{article.title}</h2>
             <p className="news-card-sub">{article.subtitle}</p>
-
             <div className="news-card-footer">
               <div>
                 <span className="news-author">{article.author}</span>
@@ -115,7 +111,6 @@ export default function News({ }: SectionProps) {
               </div>
               <span className="news-read-cta">READ ARTICLE →</span>
             </div>
-
             {article.featured && (
               <div className="news-featured-strip">
                 <span>11 Tokens · $87B+ tracked · 113+ dev wallets · 39 KOL connections</span>
@@ -126,24 +121,14 @@ export default function News({ }: SectionProps) {
       </div>
 
       <div className="news-footer-note">
-        More investigations and updates coming soon. Follow{' '}
-        <a
-          href="https://x.com/YakkStudios"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="news-link"
-        >
+        More investigations and updates coming soon. Follow{" "}
+        <a href="https://x.com/YakkStudios" target="_blank" rel="noopener noreferrer" className="news-link">
           @YakkStudios
-        </a>{' '}
-        and join{' '}
-        <a
-          href="https://t.me/yakkcult"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="news-link"
-        >
+        </a>{" "}
+        and join{" "}
+        <a href="https://t.me/yakkcult" target="_blank" rel="noopener noreferrer" className="news-link">
           t.me/yakkcult
-        </a>{' '}
+        </a>{" "}
         for live updates.
       </div>
     </div>
