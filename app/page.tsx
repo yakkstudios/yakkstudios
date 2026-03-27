@@ -71,31 +71,30 @@ export default function App() {
 
     let cancelled = false;
 
-async function fetchBalance() {
-        // Try multiple RPCs in order — improves reliability on mobile / iPad
-              const rpcs = [
-                      connection,
-                              new Connection('https://api.mainnet-beta.solana.com', 'confirmed'),
-                                      new Connection('https://solana-api.projectserum.com', 'confirmed'),
-                                            ];
-                                                  for (const conn of rpcs) {
-                                                          try {
-                                                                    const accounts = await conn.getParsedTokenAccountsByOwner(
-                                                                                publicKey!,
-                                                                                            { mint: YST_MINT }
-                                                                                                      );
-                                                                                                                if (cancelled) return;
-                                                                                                                          const bal: number =
-                                                                                                                                      accounts.value[0]?.account.data.parsed.info.tokenAmount.uiAmount ?? 0;
-                                                                                                                                                setYstBalance(bal);
-                                                                                                                                                          return;
-                                                                                                                                                                  } catch {
-                                                                                                                                                                            // try next RPC
-                                                                                                                                                                                    }
-                                                                                                                                                                                          }
-                                                                                                                                                                                                if (!cancelled) setYstBalance(0);
-                                                                                                                                                                                                    }
-}
+    async function fetchBalance() {
+      // Try multiple RPCs in order — improves reliability on mobile / iPad
+      const rpcs = [
+        connection,
+        new Connection('https://api.mainnet-beta.solana.com', 'confirmed'),
+        new Connection('https://solana-api.projectserum.com', 'confirmed'),
+      ];
+      for (const conn of rpcs) {
+        try {
+          const accounts = await conn.getParsedTokenAccountsByOwner(
+            publicKey!,
+            { mint: YST_MINT }
+          );
+          if (cancelled) return;
+          const bal: number =
+            accounts.value[0]?.account.data.parsed.info.tokenAmount.uiAmount ?? 0;
+          setYstBalance(bal);
+          return;
+        } catch {
+          // try next RPC
+        }
+      }
+      if (!cancelled) setYstBalance(0);
+    }
 
     fetchBalance();
     // Re-check every 60 s so balance stays current without page refresh
