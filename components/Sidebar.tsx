@@ -43,7 +43,7 @@ export default function Sidebar({
             {/* YAKK Logo */}
             <div className="sb-logo-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/yakk-logo.png" alt="YAKK Studios logo" width="48" height="48" style={{ borderRadius: 6, display: 'block' }} />}
+              <img src="/yakk-logo.png" alt="YAKK Studios logo" width="48" height="48" style={{ borderRadius: 6, display: 'block' }} />
             </div>
             <div className="sb-brand-name">
               $YAKK <span>STUDIOS</span>
