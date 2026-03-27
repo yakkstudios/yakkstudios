@@ -17,7 +17,7 @@ export default function Cabal({ walletConnected, ystBalance, onNavigate }: Props
         <div className="sec-sub">On-chain wallet analysis. Track influencers, whales & insider wallets.</div>
         {/* YST gate badge */}
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> Staked on StakePoint</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙Held</span>
           <span className="badge b-dim">NOT CHECKED</span>
         </div>
       </div>
@@ -28,11 +28,11 @@ export default function Cabal({ walletConnected, ystBalance, onNavigate }: Props
           <div className="locked-icon">🔒</div>
           <div className="locked-title">CABAL INVESTIGATOR</div>
           <div className="locked-sub">
-            Connect your wallet and stake{' '}
+            Connect your wallet and hold{' '}
             <strong>250,000+ $YST</strong> on StakePoint to access this tool.
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            Stake $YST →
+            StakePoint →
           </a>
         </div>
       )}
@@ -40,10 +40,10 @@ export default function Cabal({ walletConnected, ystBalance, onNavigate }: Props
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
           <div className="locked-icon">🔒</div>
-          <div className="locked-title">Insufficient Stake</div>
+          <div className="locked-title">Insufficient $YST</div>
           <div className="locked-sub">
-            You need <strong>250,000+ $YST</strong> staked to access CABAL INVESTIGATOR.
-            Currently staked: {ystBalance.toLocaleString()} $YST.
+            You need <strong>250,000+ $YST</strong> to access CABAL INVESTIGATOR.
+            Your balance: {ystBalance.toLocaleString()} $YST.
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
             Stake More $YST →
