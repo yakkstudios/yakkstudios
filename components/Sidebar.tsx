@@ -40,6 +40,24 @@ export default function Sidebar({
 
           {/* Brand */}
           <div className="sb-brand">
+            {/* YAKK Logo */}
+            <div className="sb-logo-wrap">
+              <svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg" aria-label="YAKK Studios logo">
+                <rect width="48" height="48" rx="6" fill="#3d1525"/>
+                <text
+                  x="24" y="36"
+                  textAnchor="middle"
+                  fontSize="34"
+                  fontWeight="900"
+                  fontStyle="italic"
+                  fontFamily="'Arial Black', Impact, sans-serif"
+                  fill="#FFD700"
+                  stroke="#FF2D78"
+                  strokeWidth="1.5"
+                  paintOrder="stroke"
+                >Y</text>
+              </svg>
+            </div>
             <div className="sb-brand-name">
               $YAKK <span>STUDIOS</span>
             </div>
@@ -60,10 +78,9 @@ export default function Sidebar({
               <div key={section.title}>
                 <div className="nav-section">{section.title}</div>
                 {section.items.map((item) => {
-                  const gated      = GATED_SECTIONS.has(item.id);
+                  const gated = GATED_SECTIONS.has(item.id);
                   const accessible = hasAccess(item.id);
-                  const isWhale    = item.whaleOnly;
-
+                  const isWhale = item.whaleOnly;
                   return (
                     <div
                       key={item.id}
@@ -95,15 +112,9 @@ export default function Sidebar({
           {/* Footer */}
           <div className="sb-footer">
             <div className="sb-links">
-              <a className="sb-link" href="https://x.com/YakkStudios" target="_blank" rel="noopener noreferrer">
-                Twitter
-              </a>
-              <a className="sb-link" href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer">
-                Telegram
-              </a>
-              <a className="sb-link" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-                StakePoint
-              </a>
+              <a className="sb-link" href="https://x.com/YakkStudios" target="_blank" rel="noopener noreferrer">Twitter</a>
+              <a className="sb-link" href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer">Telegram</a>
+              <a className="sb-link" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Buy $YST</a>
             </div>
             <div className="sb-version">v2.0.0 · Next.js</div>
           </div>
