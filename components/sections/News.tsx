@@ -33,7 +33,7 @@ const ARTICLES: Article[] = [
     subtitle:
       'We mapped the extraction layer. Now we map the promotional layer. 113+ blacklisted dev wallets. 39 KOL wallets connected on-chain. Same ecosystem. Different floor. All on-chain.',
     author: '$YAKK Cabal',
-    sources: '@degengamblah \u00b7 @postmodernism',
+    sources: '@degengamblah · @postmodernism',
     tags: ['KOL EXPOSE', 'ON-CHAIN', 'SOLANA', 'INVESTIGATION'],
     readTime: '8 min',
     featured: true,
@@ -45,7 +45,7 @@ function ArticleViewer({ article, onBack }: { article: Article; onBack: () => vo
     <div className="news-viewer">
       <div className="news-viewer-bar">
         <button className="btn btn-ghost btn-sm" onClick={onBack}>
-          \u2190 Back to News
+          ← Back to News
         </button>
         <a
           className="btn btn-ghost btn-sm"
@@ -53,7 +53,7 @@ function ArticleViewer({ article, onBack }: { article: Article; onBack: () => vo
           target="_blank"
           rel="noopener noreferrer"
         >
-          Open Full \u2197
+          Open Full ↗
         </a>
       </div>
       <iframe
@@ -99,7 +99,7 @@ export default function News({ }: SectionProps) {
                 <span key={tag} className="news-tag">{tag}</span>
               ))}
               <span className="news-meta-right">
-                {article.dateLabel} \u00b7 {article.readTime}
+                {article.dateLabel} · {article.readTime}
               </span>
             </div>
 
@@ -110,15 +110,15 @@ export default function News({ }: SectionProps) {
               <div>
                 <span className="news-author">{article.author}</span>
                 {article.sources && (
-                  <span className="news-sources"> \u00b7 Source: {article.sources}</span>
+                  <span className="news-sources"> · Source: {article.sources}</span>
                 )}
               </div>
-              <span className="news-read-cta">READ ARTICLE \u2192</span>
+              <span className="news-read-cta">READ ARTICLE →</span>
             </div>
 
             {article.featured && (
               <div className="news-featured-strip">
-                <span>11 Tokens \u00b7 $87B+ tracked \u00b7 113+ dev wallets \u00b7 39 KOL connections</span>
+                <span>11 Tokens · $87B+ tracked · 113+ dev wallets · 39 KOL connections</span>
               </div>
             )}
           </div>
