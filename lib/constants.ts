@@ -1,5 +1,5 @@
 // ── Token config ─────────────────────────────────────────────────────────────
-export const YST_MINT = 'AhqBZEsADHGGFJQEPjAbF4RvHhpfKjaejhxFfMYFDkfz';
+export const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
 export const YST_GATE = 250_000;
 export const WHALE_GATE = 10_000_000;
 
