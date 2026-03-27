@@ -31,6 +31,7 @@ export const NAV: NavSection[] = [
     title: 'OVERVIEW',
     items: [
       { id: 'home', label: 'HOME / DEN', icon: '🏠' },
+      { id: 'news', label: 'YAKK NEWS',  icon: '📰' },
     ],
   },
   {
