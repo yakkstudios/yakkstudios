@@ -30,7 +30,14 @@
     "eslint-config-next": "14.2.29"
   },
   "overrides": {
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0"
+    "@solana/wallet-adapter-react": {
+      "@types/react": "^18.0.0"
+    },
+    "@solana/wallet-adapter-react-ui": {
+      "@types/react": "^18.0.0"
+    },
+    "@solana/wallet-adapter-wallets": {
+      "@types/react": "^18.0.0"
+    }
   }
 }
