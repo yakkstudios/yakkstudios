@@ -8,9 +8,9 @@
 //   - Rate limiting: 10 requests per IP per minute
 //   - Input validation: max 2000 chars per message, max 20 history items
 //   - No streaming (simplifies security surface)
-//   - CORS restricted to yakkstudios.com domains
+//   - CORS restricted to yakkstudios.xyz domains
 
-/* Security Audit v1.2: removed old yakkstudios.com domain from allowlist */
+/* Security Audit v1.2: removed old yakkstudios.xyz domain from allowlist */
 const ALLOWED_ORIGINS = [
   'https://yakkstudios.xyz',
   'https://www.yakkstudios.xyz',

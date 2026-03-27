@@ -25,7 +25,7 @@ export default function Features({ walletConnected, ystBalance, onNavigate }: Pr
             Full functionality is available in the{' '}
             <button
               style={{ color: 'var(--pink)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 'inherit' }}
-              onClick={() => window.open('https://yakkstudios.com', '_blank')}
+              onClick={() => window.open('https://yakkstudios.xyz', '_blank')}
             >
               legacy version
             </button>.
