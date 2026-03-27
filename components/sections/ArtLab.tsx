@@ -1,71 +1,127 @@
 'use client';
+import { useState } from 'react';
 
-interface Props {
-  walletConnected: boolean;
-  ystBalance: number;
-  onNavigate: (id: string) => void;
-}
+interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
+
+const GALLERY = [
+  { id: 1, title: 'YAKK Genesis Banner', type: 'BANNER', size: '1500Ã500', img: 'ð¦', badge: 'b-gold' },
+  { id: 2, title: 'Clown Card PFP', type: 'PFP', size: '1000Ã1000', img: 'ð¤¡', badge: 'b-yakk' },
+  { id: 3, title: 'Whale Club Pass', type: 'NFT ART', size: '2000Ã2000', img: 'ð', badge: 'b-blue' },
+  { id: 4, title: 'YAKK Logo Pack', type: 'BRAND', size: 'SVG', img: 'ð¨', badge: 'b-green' },
+  { id: 5, title: 'Raid Trophy #1', type: 'TROPHY', size: '800Ã800', img: 'âï¸', badge: 'b-dim' },
+  { id: 6, title: 'Token Launch Art', type: 'PROMO', size: '1200Ã630', img: 'ð', badge: 'b-yakk' },
+];
+
+const TOOLS = [
+  { name: 'PFP Generator', desc: 'Generate custom YAKK PFP overlays with your wallet address embedded.', icon: 'ð¤', status: 'LIVE', badge: 'b-green' },
+  { name: 'Banner Maker', desc: 'Create Twitter/X banners with YAKK branding and holder badge.', icon: 'ð¼ï¸', status: 'LIVE', badge: 'b-green' },
+  { name: 'Meme Generator', desc: 'Drop YAKK memes fast â pre-loaded templates, custom text.', icon: 'ð', status: 'BETA', badge: 'b-yakk' },
+  { name: 'AI Art Studio', desc: 'Generate AI art with YAKK-themed styles and prompts.', icon: 'ð¤', status: 'SOON', badge: 'b-dim' },
+];
 
 export default function ArtLab({ walletConnected, ystBalance, onNavigate }: Props) {
+  const hasAccess = walletConnected && ystBalance >= 250_000;
+  const [activeTab, setActiveTab] = useState<'gallery' | 'tools'>('gallery');
+  const [prompt, setPrompt] = useState('');
+
   return (
     <div className="sec-pad">
       <div className="sec-header">
-        <div className="sec-bar" />
+        <div className="sec-bar" style={{ background: 'linear-gradient(90deg,#a855f7,var(--pink))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">🎨 ART LAB</div>
+          <div className="sec-title">ð¨ ART LAB</div>
+          <span className="badge b-yakk">CREATIVE</span>
         </div>
-        <div className="sec-sub">AI-powered NFT art generation for the YAKK ecosystem.</div>
-        {/* YST gate badge */}
+        <div className="sec-sub">Create YAKK-branded art, PFPs, banners &amp; memes. Holder-exclusive creative suite.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙Held</span>
-          <span className="badge b-dim">NOT CHECKED</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Required</span>
+          {hasAccess
+            ? <span className="badge b-green">â ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
         </div>
       </div>
 
-      {/* Gate check */}
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">ART LAB</div>
-          <div className="locked-sub">
-            Connect your wallet and hold{' '}
-            <strong>250,000+ $YST</strong> on StakePoint to access this tool.
-          </div>
-          <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            StakePoint →
-          </a>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>ð¨</div>
+          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Art Lab â Holders Only</div>
+          <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>Connect your wallet &amp; hold 250K+ $YST to access the creative suite.</div>
+          <w-sol-button style={{ '--wsol-border-radius': '6px', '--wsol-font-size': '12px' } as any} />
         </div>
       )}
 
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">Insufficient $YST</div>
-          <div className="locked-sub">
-            You need <strong>250,000+ $YST</strong> to access ART LAB.
-            Your balance: {ystBalance.toLocaleString()} $YST.
+          <div style={{ fontSize: 40, marginBottom: 12 }}>ð</div>
+          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Need 250,000 $YST</div>
+          <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 8 }}>You have {ystBalance.toLocaleString()} $YST. Need {(250_000 - ystBalance).toLocaleString()} more.</div>
+          <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 16px' }}>
+            <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
           </div>
-          <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            Stake More $YST →
-          </a>
+          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter â</a>
         </div>
       )}
 
-      {walletConnected && ystBalance >= 250_000 && (
-        <div className="section-placeholder">
-          <div className="section-wip">
-            <div className="section-wip-icon">🔧</div>
-            <div className="section-wip-text">
-              <strong>ART LAB</strong> — This section is being migrated to the new React architecture.
-              Full functionality is available in the{' '}
-              <button
-                style={{ color: 'var(--pink)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 'inherit' }}
-                onClick={() => window.open('https://yakkstudios.xyz', '_blank')}
-              >
-                legacy version
-              </button>.
-            </div>
+      {hasAccess && (
+        <div>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+            {(['gallery', 'tools'] as const).map(t => (
+              <button key={t} className={`mode-pill ${activeTab === t ? 'active' : ''}`} onClick={() => setActiveTab(t)}>
+                {t === 'gallery' ? 'ð¼ï¸ Gallery' : 'ð§ Tools'}
+              </button>
+            ))}
           </div>
+
+          {activeTab === 'gallery' && (
+            <div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 11, color: 'var(--muted)', letterSpacing: 1.2, marginBottom: 12 }}>YAKK ASSET LIBRARY</div>
+              <div className="grid3" style={{ marginBottom: 20 }}>
+                {GALLERY.map(item => (
+                  <div key={item.id} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+                    <div style={{ height: 100, background: 'var(--bg4)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>{item.img}</div>
+                    <div style={{ padding: '12px 14px' }}>
+                      <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>{item.title}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <span className={`badge ${item.badge}`}>{item.type}</span>
+                        <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>{item.size}</span>
+                      </div>
+                      <button className="btn btn-outline" style={{ width: '100%', fontSize: 10, justifyContent: 'center' }}>Download</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'tools' && (
+            <div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 11, color: 'var(--muted)', letterSpacing: 1.2, marginBottom: 12 }}>CREATIVE TOOLS</div>
+              {TOOLS.map(tool => (
+                <div key={tool.name} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '16px 20px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ fontSize: 32, width: 48, height: 48, background: 'var(--bg4)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{tool.icon}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>{tool.name}</div>
+                      <span className={`badge ${tool.badge}`}>{tool.status}</span>
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--muted)' }}>{tool.desc}</div>
+                  </div>
+                  <button className={`btn ${tool.status === 'SOON' ? 'btn-outline' : 'btn-pink'}`} style={{ fontSize: 10, whiteSpace: 'nowrap' }} disabled={tool.status === 'SOON'}>
+                    {tool.status === 'SOON' ? 'Coming Soon' : 'Launch â'}
+                  </button>
+                </div>
+              ))}
+
+              <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '18px 20px', marginTop: 16 }}>
+                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 10 }}>ð¤ AI ART PROMPT</div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <input className="field-inp" placeholder="Describe your YAKK-themed art..." value={prompt} onChange={e => setPrompt(e.target.value)} style={{ flex: 1 }} />
+                  <button className="btn btn-pink" style={{ whiteSpace: 'nowrap' }}>Generate</button>
+                </div>
+                <div style={{ marginTop: 10, fontSize: 11, color: 'var(--muted)' }}>AI art generation coming soon â powered by YAKK Studios API.</div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
