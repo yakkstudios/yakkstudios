@@ -1,38 +1,44 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import { PublicKey } from '@solana/web3.js';
 import Sidebar from '@/components/Sidebar';
 import TickerBar from '@/components/TickerBar';
 // Sections
-import Home       from '@/components/sections/Home';
-import Screener   from '@/components/sections/Screener';
-import Terminal   from '@/components/sections/Terminal';
-import Update     from '@/components/sections/Update';
-import Trusted    from '@/components/sections/Trusted';
-import Clowns     from '@/components/sections/Clowns';
-import YakkTrader from '@/components/sections/YakkTrader';
+import Home        from '@/components/sections/Home';
+import Screener    from '@/components/sections/Screener';
+import Terminal    from '@/components/sections/Terminal';
+import Update      from '@/components/sections/Update';
+import Trusted     from '@/components/sections/Trusted';
+import Clowns      from '@/components/sections/Clowns';
+import YakkTrader  from '@/components/sections/YakkTrader';
 import Predictions from '@/components/sections/Predictions';
-import Cabal      from '@/components/sections/Cabal';
-import NftMarket  from '@/components/sections/NftMarket';
-import Launchpad  from '@/components/sections/Launchpad';
-import OtcDesk    from '@/components/sections/OtcDesk';
+import Cabal       from '@/components/sections/Cabal';
+import NftMarket   from '@/components/sections/NftMarket';
+import Launchpad   from '@/components/sections/Launchpad';
+import OtcDesk     from '@/components/sections/OtcDesk';
 import YieldFinder from '@/components/sections/YieldFinder';
-import Alerts     from '@/components/sections/Alerts';
-import Privacy    from '@/components/sections/Privacy';
+import Alerts      from '@/components/sections/Alerts';
+import Privacy     from '@/components/sections/Privacy';
 import TokenCreator from '@/components/sections/TokenCreator';
-import TgBot      from '@/components/sections/TgBot';
-import Features   from '@/components/sections/Features';
-import Portfolio  from '@/components/sections/Portfolio';
-import Stakepoint from '@/components/sections/Stakepoint';
-import ArtLab    from '@/components/sections/ArtLab';
-import Coach     from '@/components/sections/Coach';
-import Raids     from '@/components/sections/Raids';
-import Raffle    from '@/components/sections/Raffle';
-import Wallet    from '@/components/sections/Wallet';
-import Members   from '@/components/sections/Members';
-import WhaleClub from '@/components/sections/WhaleClub';
-import Ledger    from '@/components/sections/Ledger';
-import Whitepaper from '@/components/sections/Whitepaper';
+import TgBot       from '@/components/sections/TgBot';
+import Features    from '@/components/sections/Features';
+import Portfolio   from '@/components/sections/Portfolio';
+import Stakepoint  from '@/components/sections/Stakepoint';
+import ArtLab      from '@/components/sections/ArtLab';
+import Coach       from '@/components/sections/Coach';
+import Raids       from '@/components/sections/Raids';
+import Raffle      from '@/components/sections/Raffle';
+import Wallet      from '@/components/sections/Wallet';
+import Members     from '@/components/sections/Members';
+import WhaleClub   from '@/components/sections/WhaleClub';
+import Ledger      from '@/components/sections/Ledger';
+import Whitepaper  from '@/components/sections/Whitepaper';
+
+// ── Correct $YST mint address ─────────────────────────────────────────────
+const YST_MINT = new PublicKey('jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV');
 
 type SectionId =
   | 'home' | 'screener' | 'terminal' | 'update' | 'trusted' | 'clowns'
@@ -43,13 +49,47 @@ type SectionId =
   | 'whitepaper';
 
 export default function App() {
-  const [section, setSection]           = useState<SectionId>('home');
-  const [sidebarOpen, setSidebarOpen]   = useState(false);
+  const [section, setSection]         = useState<SectionId>('home');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [ystBalance, setYstBalance]   = useState(0);
 
-  // Wallet state (connect logic TBD - Solana wallet adapter)
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress]     = useState<string | undefined>();
-  const [ystBalance, setYstBalance]           = useState(0);
+  // ── Real wallet state from Solana wallet adapter ──────────────────────
+  const { publicKey, connected, disconnect } = useWallet();
+  const { connection }                        = useConnection();
+  const { setVisible: openWalletModal }       = useWalletModal();
+
+  const walletConnected = connected && !!publicKey;
+  const walletAddress   = publicKey?.toBase58();
+
+  // ── Fetch $YST balance whenever wallet connects / changes ─────────────
+  useEffect(() => {
+    if (!walletConnected || !publicKey) {
+      setYstBalance(0);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function fetchBalance() {
+      try {
+        const accounts = await connection.getParsedTokenAccountsByOwner(
+          publicKey!,
+          { mint: YST_MINT }
+        );
+        if (cancelled) return;
+        const bal: number =
+          accounts.value[0]?.account.data.parsed.info.tokenAmount.uiAmount ?? 0;
+        setYstBalance(bal);
+      } catch {
+        if (!cancelled) setYstBalance(0);
+      }
+    }
+
+    fetchBalance();
+    // Re-check every 60 s so balance stays current without page refresh
+    const interval = setInterval(fetchBalance, 60_000);
+    return () => { cancelled = true; clearInterval(interval); };
+  }, [walletConnected, publicKey, connection]);
 
   const navigate = useCallback((id: string) => {
     setSection(id as SectionId);
@@ -58,16 +98,16 @@ export default function App() {
     if (mainEl) mainEl.scrollTop = 0;
   }, []);
 
+  // Opens wallet selection modal on connect, disconnects on click when connected
   const toggleWallet = useCallback(() => {
     if (walletConnected) {
-      setWalletConnected(false);
-      setWalletAddress(undefined);
-      setYstBalance(0);
+      disconnect();
     } else {
-      alert('Wallet adapter integration coming soon. Stake $YST at stakepoint.app to unlock tools.');
+      openWalletModal(true);
     }
-  }, [walletConnected]);
+  }, [walletConnected, disconnect, openWalletModal]);
 
+  // ── Document title ────────────────────────────────────────────────────
   useEffect(() => {
     const titles: Record<string, string> = {
       home: '$YAKK Studios',
@@ -91,26 +131,22 @@ export default function App() {
     ? walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4)
     : '';
 
-  const sectionProps = {
-    walletConnected,
-    walletAddress,
-    ystBalance,
-    onNavigate: navigate,
-  };
+  const sectionProps = { walletConnected, walletAddress, ystBalance, onNavigate: navigate };
 
   return (
     <div id="app">
+      {/* Mobile Header */}
       <div id="mobile-header">
         <button id="mob-menu-btn" onClick={() => setSidebarOpen(true)} aria-label="Menu">
           &#9776;
         </button>
-        <div id="mob-brand">
-          $YAKK <span>STUDIOS</span>
-        </div>
+        <div id="mob-brand">$YAKK <span>STUDIOS</span></div>
         <button className="btn btn-ghost btn-sm" onClick={toggleWallet}>
           {walletConnected ? walletLabel : 'CONNECT'}
         </button>
       </div>
+
+      {/* Sidebar */}
       <Sidebar
         activeSection={section}
         onNavigate={navigate}
@@ -120,6 +156,8 @@ export default function App() {
         walletAddress={walletAddress}
         ystBalance={ystBalance}
       />
+
+      {/* Main */}
       <div id="main-wrap">
         <TickerBar
           onConnectWallet={toggleWallet}
@@ -160,4 +198,4 @@ export default function App() {
       </div>
     </div>
   );
-}
+    }
