@@ -1,0 +1,245 @@
+{
+  "name": "YST Price Tracker",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000001",
+      "name": "Schedule Trigger (15min)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "yst-stats",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000002",
+      "name": "Webhook GET /yst-stats",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 480],
+      "webhookId": "yst-stats-webhook"
+    },
+    {
+      "parameters": {
+        "url": "https://api.dexscreener.com/latest/dex/tokens/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000003",
+      "name": "DexScreener API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 380]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract YST pair data from DexScreener response\nconst data = $input.first().json;\n\n// DexScreener returns array of pairs; find SOL pair\nconst pairs = data.pairs || [];\nconst ystPair = pairs.find(p => \n  p.quoteToken && p.quoteToken.symbol === 'SOL'\n) || pairs[0] || {};\n\nconst priceUsd = parseFloat(ystPair.priceUsd || 0);\nconst priceNative = parseFloat(ystPair.priceNative || 0);\nconst volume24h = ystPair.volume?.h24 || 0;\nconst priceChange24h = ystPair.priceChange?.h24 || 0;\nconst liquidity = ystPair.liquidity?.usd || 0;\nconst fdv = ystPair.fdv || 0;\nconst marketCap = ystPair.marketCap || 0;\nconst buys24h = ystPair.txns?.h24?.buys || 0;\nconst sells24h = ystPair.txns?.h24?.sells || 0;\nconst pairAddress = ystPair.pairAddress || 'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM';\n\nreturn [{\n  json: {\n    dexscreener: {\n      priceUsd,\n      priceNative,\n      volume24h,\n      priceChange24h,\n      liquidity,\n      fdv,\n      marketCap,\n      buys24h,\n      sells24h,\n      pairAddress,\n      pairUrl: ystPair.url || `https://dexscreener.com/solana/${pairAddress}`\n    }\n  }\n}];"
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000004",
+      "name": "Extract DexScreener Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 380]
+    },
+    {
+      "parameters": {
+        "url": "https://public-api.birdeye.so/defi/token_overview",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "address",
+              "value": "jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "={{$credentials.birdeyeApi}}"
+            },
+            {
+              "name": "x-chain",
+              "value": "solana"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000005",
+      "name": "Birdeye API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 540]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000006",
+      "name": "Merge Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [960, 460]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Combine DexScreener + Birdeye data into final payload\nconst items = $input.all();\n\n// Find dexscreener and birdeye data from merged inputs\nconst dexItem = items.find(i => i.json.dexscreener) || items[0];\nconst birdeyeItem = items.find(i => i.json.data) || items[1];\n\nconst dex = dexItem?.json?.dexscreener || {};\nconst bird = birdeyeItem?.json?.data || {};\n\nconst timestamp = new Date().toISOString();\n\nconst output = {\n  token: 'YST',\n  name: 'Yakk Studios Token',\n  mint: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',\n  chain: 'solana',\n  timestamp,\n  price: {\n    usd: dex.priceUsd || bird.price || 0,\n    sol: dex.priceNative || 0\n  },\n  change24h: dex.priceChange24h || bird.priceChange24hPercent || 0,\n  volume: {\n    h24: dex.volume24h || bird.v24hUSD || 0\n  },\n  liquidity: {\n    usd: dex.liquidity || 0\n  },\n  marketCap: dex.marketCap || bird.mc || 0,\n  fdv: dex.fdv || bird.fdv || 0,\n  transactions: {\n    buys24h: dex.buys24h || 0,\n    sells24h: dex.sells24h || 0,\n    total24h: (dex.buys24h || 0) + (dex.sells24h || 0)\n  },\n  holders: bird.holder || 0,\n  supply: {\n    total: bird.supply || 0,\n    circulating: bird.circulatingSupply || 0\n  },\n  links: {\n    dexscreener: dex.pairUrl || 'https://dexscreener.com/solana/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM',\n    birdeye: `https://birdeye.so/token/jYwmSavfx69a35JEkpUrxu9JUjvswEvfnhLCDV9vREV?chain=solana`,\n    solscan: 'https://solscan.io/token/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV'\n  }\n};\n\nreturn [{ json: output }];"
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000007",
+      "name": "Format Final Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 460]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000008",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1440, 460]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (15min)": {
+      "main": [
+        [
+          {
+            "node": "DexScreener API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook GET /yst-stats": {
+      "main": [
+        [
+          {
+            "node": "DexScreener API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DexScreener API": {
+      "main": [
+        [
+          {
+            "node": "Extract DexScreener Data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Birdeye API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract DexScreener Data": {
+      "main": [
+        [
+          {
+            "node": "Merge Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Birdeye API": {
+      "main": [
+        [
+          {
+            "node": "Merge Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Data": {
+      "main": [
+        [
+          {
+            "node": "Format Final Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Final Payload": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2026-03-28T19:15:00.000Z",
+      "updatedAt": "2026-03-28T19:15:00.000Z",
+      "id": "yst-tag-1",
+      "name": "YakkStudios"
+    }
+  ],
+  "triggerCount": 2,
+  "updatedAt": "2026-03-28T19:15:00.000Z",
+  "versionId": "yst-price-tracker-v1"
+}
