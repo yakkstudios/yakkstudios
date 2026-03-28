@@ -1,0 +1,9 @@
+# robots.txt for yakkstudios.xyz
+User-agent: *
+Allow: /
+
+# Block API routes from indexing
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://www.yakkstudios.xyz/sitemap.xml
