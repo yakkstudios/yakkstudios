@@ -1,151 +1,183 @@
 'use client';
+import { useState } from 'react';
 
 interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
 
-const LAUNCHES = [
+const ACTIVE_LAUNCHES = [
   {
-    name: 'YAKK Meme Index',
-    ticker: '$YMEME',
-    desc: 'A curated index of top Solana meme coins weighted by YAKK community sentiment and on-chain activity.',
-    raise: '150,000 USDC',
-    raised: 87_500,
-    goal: 150_000,
-    tier: 'WHITELIST',
-    badge: 'b-gold',
+    name: 'YAKK Studios',
+    ticker: '$YST — Solana',
     status: 'LIVE',
-    end: '3d 12h',
-    img: '🎰',
+    statusBg: 'rgba(100,220,100,0.15)',
+    statusColor: '#64dc64',
+    pct: 73,
+    pctColor: 'var(--pink)',
+    leftLabel: '73% raised',
+    rightLabel: 'Liq locked 365d',
   },
   {
-    name: 'YAKK NFT Aggregator',
-    ticker: '$YAGG',
-    desc: 'Aggregated NFT marketplace with AI-powered floor price analytics and cross-marketplace routing.',
-    raise: '80,000 USDC',
-    raised: 80_000,
-    goal: 80_000,
-    tier: 'SOLD OUT',
-    badge: 'b-dim',
-    status: 'CLOSED',
-    end: 'Ended',
-    img: '🖼️',
-  },
-  {
-    name: 'StakePoint Governance',
-    ticker: '$SPG',
-    desc: 'Governance token for StakePoint protocol. YST holders get guaranteed whitelist allocation.',
-    raise: '200,000 USDC',
-    raised: 12_000,
-    goal: 200_000,
-    tier: 'UPCOMING',
-    badge: 'b-blue',
-    status: 'SOON',
-    end: 'In 7d',
-    img: '🏆',
+    name: 'YakkBlinders',
+    ticker: '$YBLIND — Solana · Test Launch',
+    status: 'PENDING',
+    statusBg: 'rgba(247,201,72,0.15)',
+    statusColor: 'var(--gold)',
+    pct: 12,
+    pctColor: 'var(--gold)',
+    leftLabel: '12% raised — First test token',
+    rightLabel: 'Liq lock: 30d',
   },
 ];
 
 export default function Launchpad({ walletConnected, ystBalance, onNavigate }: Props) {
-  const hasAccess = walletConnected && ystBalance >= 250_000;
+  const ystHeld = walletConnected && ystBalance >= 250_000;
+
+  const [name, setName] = useState('');
+  const [ticker, setTicker] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [website, setWebsite] = useState('');
+  const [lock, setLock] = useState('');
+  const [desc, setDesc] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const inputStyle: React.CSSProperties = {
+    background: 'var(--bg4)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: 6,
+    padding: '8px 12px',
+    color: 'var(--text)',
+    fontFamily: "'Space Mono',monospace",
+    fontSize: 11,
+    outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box',
+  };
+
+  const handleSubmit = () => {
+    if (!name || !ticker) return;
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 3000);
+    setName(''); setTicker(''); setTwitter(''); setWebsite(''); setLock(''); setDesc('');
+  };
 
   return (
     <div className="sec-pad">
-      <div className="sec-header">
-        <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--pink),var(--gold))' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">🚀 LAUNCHPAD</div>
-          <span className="badge b-pink">EXCLUSIVE</span>
-        </div>
-        <div className="sec-sub">Early-access token launches &amp; IDOs. $YST holders get whitelist priority.</div>
-        <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Required</span>
-          {hasAccess
-            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
-        </div>
+      <div className="sec-eyebrow">YAKK VENTURES</div>
+      <div className="sec-title">YAKK Ventures</div>
+      <div className="sec-bar"></div>
+
+      {/* Token gate row */}
+      <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 8 }}>
+        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span className={`badge ${walletConnected ? (ystHeld ? 'b-green' : 'b-red') : 'b-dim'}`}>
+          {walletConnected ? (ystHeld ? '✓ ACCESS GRANTED' : '✗ NEED MORE YST') : 'NOT CHECKED'}
+        </span>
       </div>
+      <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
+        Launch your token with locked liquidity, KYC optional, vesting enforcement. Every project audited by YAKKAI before listing.
+      </p>
 
-      {!walletConnected && (
-        <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>🚀</div>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Launchpad — Holders Only</div>
-          <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>Connect wallet &amp; hold 250K+ $YST for guaranteed whitelist access to all launches.</div>
-          <w-sol-button style={{ '--wsol-border-radius': '6px', '--wsol-font-size': '12px' } as any} />
-        </div>
-      )}
-
-      {walletConnected && ystBalance < 250_000 && (
-        <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Need 250,000 $YST</div>
-          <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 8 }}>You have {ystBalance.toLocaleString()} $YST. Need {(250_000 - ystBalance).toLocaleString()} more to access launchpad.</div>
-          <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 16px' }}>
-            <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
-          </div>
-          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter →</a>
-        </div>
-      )}
-
-      {hasAccess && (
-        <div>
-          <div className="grid4" style={{ marginBottom: 20 }}>
-            {[
-              { l: 'TOTAL RAISED', v: '$317K', c: 'var(--gold)' },
-              { l: 'LAUNCHES', v: '3', c: 'var(--blue)' },
-              { l: 'YOUR TIER', v: ystBalance >= 10_000_000 ? 'WHALE' : 'HOLDER', c: ystBalance >= 10_000_000 ? 'var(--gold)' : 'var(--green)' },
-              { l: 'ALLOCATION BOOST', v: ystBalance >= 10_000_000 ? '5×' : '2×', c: 'var(--pink)' },
-            ].map(s => (
-              <div key={s.l} className="stat-card">
-                <div className="slbl">{s.l}</div>
-                <div className="sval" style={{ color: s.c }}>{s.v}</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        {/* Submit project */}
+        <div className="card-sm">
+          <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', letterSpacing: '0.12em', marginBottom: 14 }}>SUBMIT PROJECT</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <input
+              type="text"
+              placeholder="Project name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              style={inputStyle}
+            />
+            <input
+              type="text"
+              placeholder="Token ticker (e.g. $YAKK)"
+              value={ticker}
+              onChange={e => setTicker(e.target.value)}
+              style={inputStyle}
+            />
+            <input
+              type="text"
+              placeholder="Twitter / X handle"
+              value={twitter}
+              onChange={e => setTwitter(e.target.value)}
+              style={inputStyle}
+            />
+            <input
+              type="text"
+              placeholder="Website URL"
+              value={website}
+              onChange={e => setWebsite(e.target.value)}
+              style={inputStyle}
+            />
+            <select
+              value={lock}
+              onChange={e => setLock(e.target.value)}
+              style={inputStyle}
+            >
+              <option value="">Liquidity lock duration</option>
+              <option value="30">30 days</option>
+              <option value="180">6 months</option>
+              <option value="365">1 year</option>
+              <option value="730">2 years</option>
+              <option value="perm">Permanent burn</option>
+            </select>
+            <textarea
+              placeholder="Short description (max 300 chars)"
+              maxLength={300}
+              rows={3}
+              value={desc}
+              onChange={e => setDesc(e.target.value)}
+              style={{ ...inputStyle, resize: 'vertical' }}
+            />
+            {submitted ? (
+              <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--green)', padding: '8px 0' }}>
+                ✓ Submitted for review!
               </div>
-            ))}
+            ) : (
+              <button
+                className="btn btn-pink"
+                style={{ width: '100%' }}
+                onClick={handleSubmit}
+                disabled={!walletConnected}
+              >
+                SUBMIT FOR REVIEW
+              </button>
+            )}
+            <p style={{ fontSize: 9, color: 'var(--dim)', textAlign: 'center', margin: 0 }}>
+              Reviewed by YAKKAI within 48h. Requires $500 USDC listing fee + locked liq proof.
+            </p>
           </div>
+        </div>
 
-          {LAUNCHES.map(launch => (
-            <div key={launch.name} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 12, padding: '20px 24px', marginBottom: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap', marginBottom: 14 }}>
-                <div style={{ fontSize: 40, width: 60, height: 60, background: 'var(--bg4)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{launch.img}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
-                    <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 16 }}>{launch.name}</div>
-                    <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--muted)' }}>{launch.ticker}</span>
-                    <span className={`badge ${launch.badge}`}>{launch.status}</span>
+        {/* Active launches */}
+        <div className="card-sm">
+          <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', letterSpacing: '0.12em', marginBottom: 14 }}>ACTIVE LAUNCHES</div>
+          <div>
+            {ACTIVE_LAUNCHES.map((launch) => (
+              <div key={launch.name} style={{ padding: 14, background: 'var(--bg4)', borderRadius: 8, marginBottom: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 13 }}>{launch.name}</div>
+                    <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 2 }}>{launch.ticker}</div>
                   </div>
-                  <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.5, marginBottom: 10, maxWidth: 500 }}>{launch.desc}</div>
-                  <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-                    {[['TARGET RAISE', launch.raise], ['ENDS', launch.end], ['ACCESS', launch.tier]].map(([l, v]) => (
-                      <div key={l as string}>
-                        <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', letterSpacing: '0.1em' }}>{l}</div>
-                        <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12 }}>{v}</div>
-                      </div>
-                    ))}
-                  </div>
+                  <span className="badge" style={{ background: launch.statusBg, color: launch.statusColor }}>{launch.status}</span>
+                </div>
+                <div style={{ marginTop: 10, height: 6, background: 'var(--bg2)', borderRadius: 3, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${launch.pct}%`, background: launch.pctColor, borderRadius: 3 }}></div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
+                  <span style={{ fontSize: 9, color: 'var(--dim)' }}>{launch.leftLabel}</span>
+                  <span style={{ fontSize: 9, color: 'var(--dim)' }}>{launch.rightLabel}</span>
                 </div>
               </div>
-              <div className="prog-bar" style={{ marginBottom: 8 }}>
-                <div className="prog-fill" style={{ width: Math.min(100, (launch.raised / launch.goal) * 100) + '%', background: launch.status === 'CLOSED' ? 'var(--dim)' : undefined }} />
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-                <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>${launch.raised.toLocaleString()} raised</span>
-                <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>{Math.round(launch.raised / launch.goal * 100)}%</span>
-              </div>
-              <button
-                className={`btn ${launch.status === 'LIVE' ? 'btn-pink' : launch.status === 'SOON' ? 'btn-outline' : 'btn-outline'}`}
-                style={{ fontSize: 11 }}
-                disabled={launch.status !== 'LIVE'}
-              >
-                {launch.status === 'LIVE' ? '🚀 Participate Now' : launch.status === 'SOON' ? '🔔 Notify Me' : '✓ Closed'}
-              </button>
+            ))}
+            <div style={{ fontSize: 10, color: 'var(--dim)', textAlign: 'center', padding: 14 }}>
+              More launches coming. Submit yours above.
             </div>
-          ))}
-
-          <div style={{ background: 'rgba(236,72,153,0.04)', border: '1px solid rgba(236,72,153,0.15)', borderRadius: 10, padding: '16px 20px', marginTop: 8 }}>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, color: 'var(--pink)', marginBottom: 6 }}>Apply for Launchpad</div>
-            <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 10 }}>Building a Solana project? Apply to launch with YAKK Studios and tap into our holder community.</div>
-            <a href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer" className="btn btn-pink" style={{ fontSize: 11 }}>Apply via Telegram →</a>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
+
