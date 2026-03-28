@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0d0d0d"/>
+
+  <!-- Subtle grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="pinkGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8206a;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#0d0d0d;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="600" height="630" fill="url(#pinkGlow)"/>
+
+  <!-- Pink accent border left -->
+  <rect x="0" y="0" width="6" height="630" fill="#e8206a"/>
+
+  <!-- Gold accent border bottom -->
+  <rect x="0" y="618" width="1200" height="6" fill="#d4af37" rx="2"/>
+
+  <!-- YAKK logo mark (stylised Y) -->
+  <text x="80" y="120" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="80" fill="#e8206a" opacity="0.9">$</text>
+
+  <!-- Main title -->
+  <text x="80" y="280" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="130" fill="#ffffff" letter-spacing="-2">YAKK</text>
+  <text x="80" y="400" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="130" fill="#e8206a" letter-spacing="-2">STUDIOS</text>
+
+  <!-- Tagline -->
+  <text x="80" y="470" font-family="Arial, sans-serif" font-weight="400" font-size="36" fill="#999999" letter-spacing="4">ON-CHAIN. NO MIDDLEMEN.</text>
+
+  <!-- Feature pills -->
+  <rect x="80" y="510" width="180" height="44" rx="22" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="170" y="538" font-family="Arial, sans-serif" font-size="18" fill="#cccccc" text-anchor="middle">Token Screener</text>
+
+  <rect x="272" y="510" width="140" height="44" rx="22" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="342" y="538" font-family="Arial, sans-serif" font-size="18" fill="#cccccc" text-anchor="middle">AI Trader</text>
+
+  <rect x="424" y="510" width="160" height="44" rx="22" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="504" y="538" font-family="Arial, sans-serif" font-size="18" fill="#cccccc" text-anchor="middle">OTC Desk</text>
+
+  <rect x="596" y="510" width="180" height="44" rx="22" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="686" y="538" font-family="Arial, sans-serif" font-size="18" fill="#cccccc" text-anchor="middle">Yield Finder</text>
+
+  <!-- Domain -->
+  <text x="1120" y="590" font-family="Arial, sans-serif" font-size="22" fill="#555555" text-anchor="end">yakkstudios.xyz</text>
+
+  <!-- Solana badge -->
+  <rect x="1040" y="60" width="120" height="40" rx="20" fill="#1a1a1a" stroke="#9945ff" stroke-width="1.5"/>
+  <text x="1100" y="86" font-family="Arial, sans-serif" font-size="16" fill="#9945ff" text-anchor="middle" font-weight="bold">SOLANA</text>
+</svg>
