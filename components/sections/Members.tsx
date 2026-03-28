@@ -21,7 +21,7 @@ function getTier(balance: number) {
   return [...TIERS].reverse().find(t => balance >= t.min) || TIERS[0];
 }
 
-export default function Members({ walletConnected, ystBalance, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
+export default function Members({ walletConnected = false, ystBalance = 0, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
   const [profile, setProfile] = useState<Profile>({ name: '', xHandle: '', telegram: '', bio: '', website: '' });
   const [saved, setSaved] = useState(false);
   const gated = !walletConnected || ystBalance < 250000;
