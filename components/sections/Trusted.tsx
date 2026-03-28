@@ -6,7 +6,7 @@ const TRUSTED = [
   { handle: '@ZachXBT', name: 'ZachXBT', role: 'Fraud Investigator', score: 98, tags: ['VERIFIED', 'ON-CHAIN SLEUTH'], badge: 'b-green', x: 'https://x.com/zachxbt' },
   { handle: '@0xfoobar', name: '0xfoobar', role: 'Security Researcher', score: 95, tags: ['VERIFIED', 'DEV'], badge: 'b-green', x: 'https://x.com/0xfoobar' },
   { handle: '@MustStopMurad', name: 'Murad', role: 'Memecoin Analyst', score: 89, tags: ['ANALYST', 'LONG TERM'], badge: 'b-blue', x: 'https://x.com/MustStopMurad' },
-  { handle: '@ansem¨t', name: 'Ansem', role: 'Macro / Solana Trader', score: 82, tags: ['TRADER', 'SOLANA OG'], badge: 'b-blue', x: 'https://x.com/blknoiz06' },
+  { handle: '@ansem�t', name: 'Ansem', role: 'Macro / Solana Trader', score: 82, tags: ['TRADER', 'SOLANA OG'], badge: 'b-blue', x: 'https://x.com/blknoiz06' },
   { handle: '@cobie', name: 'Cobie', role: 'CT Legend / Alpha', score: 91, tags: ['VERIFIED', 'LEGEND'], badge: 'b-green', x: 'https://x.com/cobie' },
   { handle: '@gainzy222', name: 'Gainzy', role: 'Solana Degen Trader', score: 79, tags: ['DEGEN', 'SOLANA'], badge: 'b-yakk', x: 'https://x.com/gainzy222' },
   { handle: '@inversebrah', name: 'InverseBrah', role: 'Contrarian Analysis', score: 84, tags: ['ANALYST'], badge: 'b-blue', x: 'https://x.com/inversebrah' },
@@ -19,13 +19,13 @@ export default function Trusted({ walletConnected, ystBalance, onNavigate }: Pro
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--green),var(--blue))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">âï¸ TRUSTED LIST</div>
+          <div className="sec-title">⛈️ TRUSTED LIST</div>
           <span className="badge b-green">PUBLIC</span>
         </div>
         <div className="sec-sub">YAKK-vetted CT analysts &amp; wallets with verified track records. Do your own research.</div>
       </div>
 
-      <div className="warn-bar">âï¸ This list is curated by the YAKK community and updated regularly. It is NOT an endorsement. Always DYOR.</div>
+      <div className="warn-bar">⛈️ This list is curated by the YAKK community and updated regularly. It is NOT an endorsement. Always DYOR.</div>
 
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
         {['ALL', 'VERIFIED', 'ANALYST', 'ON-CHAIN', 'TRADER'].map(f => (
@@ -50,18 +50,18 @@ export default function Trusted({ walletConnected, ystBalance, onNavigate }: Pro
             <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 10 }}>
               {t.tags.map(tag => <span key={tag} className={`badge ${t.badge}`}>{tag}</span>)}
             </div>
-            <a href={t.x} target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ fontSize: 9, padding: '3px 10px' }}>View on X â</a>
+            <a href={t.x} target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ fontSize: 9, padding: '3px 10px' }}>View on X ↗</a>
           </div>
         ))}
       </div>
 
       <div style={{ marginTop: 20, background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <span style={{ fontSize: 20 }}>âï¸</span>
+        <span style={{ fontSize: 20 }}>✉️</span>
         <div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>Nominate someone</div>
-          <div style={{ fontSize: 11, color: 'var(--muted)' }}>Think someone deserves to be on the trusted list? DM us on X â community votes decide.</div>
+          <div style={{ fontSize: 11, color: 'var(--muted)' }}>Think someone deserves to be on the trusted list? DM us on X — community votes decide.</div>
         </div>
-        <a href="https://x.com/YAKKStudios" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ whiteSpace: 'nowrap' }}>DM on X â</a>
+        <a href="https://x.com/YAKKStudios" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ whiteSpace: 'nowrap' }}>DM on X ↗</a>
       </div>
     </div>
   );
