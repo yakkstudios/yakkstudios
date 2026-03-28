@@ -120,14 +120,14 @@ export default function App() {
     <div id="app">
       <div id="mobile-header">
         <button id="mob-menu-btn" onClick={() => setSidebarOpen(true)} aria-label="Menu">
-          â°
+          ☰
         </button>
         <div id="mob-brand">
           $YAKK <span>STUDIOS</span>
         </div>
         {walletConnected ? (
           <button className="btn btn-ghost btn-sm" onClick={handleDisconnect}>
-            {walletLabel}{balanceLoading ? ' â¦' : ` Â· ${ystBalance.toLocaleString()} YST`}
+            {walletLabel}{balanceLoading ? ' …' : ` · ${ystBalance.toLocaleString()} YST`}
           </button>
         ) : (
           <w-sol-button style={{ '--wsol-border-radius': '4px', '--wsol-font-size': '11px' } as any} />
