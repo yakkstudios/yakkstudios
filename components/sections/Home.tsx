@@ -26,7 +26,7 @@ const FEATURES = [
   { name: 'Bridge',            dex: false, bird: false },
 ];
 
-export default function Home({ onNav }: { onNav?: (s: string) => void }) {
+export default function Home({ walletConnected, ystBalance, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
   const [pep, setPep] = useState(PEPS[0]);
   const [nftDays, setNftDays] = useState({ d: '00', h: '00', m: '00', s: '00' });
 
@@ -69,11 +69,11 @@ export default function Home({ onNav }: { onNav?: (s: string) => void }) {
           <strong style={{ color: '#fff' }}>Everything DeFi needs. Nothing CEXs want you to have.</strong>
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button onClick={() => onNav?.('screener')}
+          <button onClick={() => onNavigate?.('screener')}
             style={{ background: '#e8206a', border: 'none', color: '#fff', padding: '10px 20px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>
             🔍 SCREENER
           </button>
-          <button onClick={() => onNav?.('terminal')}
+          <button onClick={() => onNavigate?.('terminal')}
             style={{ background: '#111', border: '1px solid #e8206a', color: '#e8206a', padding: '10px 20px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>
             ⚡ SWAP
           </button>
@@ -141,7 +141,7 @@ export default function Home({ onNav }: { onNav?: (s: string) => void }) {
             style={{ background: 'none', border: '1px solid #333', color: '#888', padding: '5px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 11 }}>
             ↻ NEW PEP
           </button>
-          <button onClick={() => onNav?.('coach')}
+          <button onClick={() => onNavigate?.('coach')}
             style={{ background: 'none', border: 'none', color: '#e8206a', cursor: 'pointer', fontSize: 11, fontWeight: 700 }}>
             YAKKAI →
           </button>
@@ -198,7 +198,7 @@ export default function Home({ onNav }: { onNav?: (s: string) => void }) {
             </div>
           ))}
         </div>
-        <button onClick={() => onNav?.('whitepaper')}
+        <button onClick={() => onNavigate?.('whitepaper')}
           style={{ background: 'none', border: '1px solid #333', color: '#888', padding: '8px 16px', borderRadius: 4, cursor: 'pointer', fontSize: 11, fontWeight: 700 }}>
           VIEW FULL TOKENOMICS →
         </button>
