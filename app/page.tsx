@@ -174,8 +174,8 @@ export default function App() {
           <div className={`page-section ${section === 'ledger' ? 'active' : ''}`}><Ledger {...sectionProps} /></div>
           <div className={`page-section ${section === 'whitepaper' ? 'active' : ''}`}><Whitepaper {...sectionProps} /></div>
           <div className={`page-section ${section === 'news' ? 'active' : ''}`}><News {...sectionProps} /></div>
-          <div className={`page-section ${section === 'services' ? 'active' : ''}`}><Services {...sectionProps} /></div>
-          <div className={`page-section ${section === 'wren' ? 'active' : ''}`}><Wren {...sectionProps} /></div>
+          <div className={`page-section ${section === 'services' ? 'active' : ''}`}><Services /></div>
+          <div className={`page-section ${section === 'wren' ? 'active' : ''}`}><Wren /></div>
         </div>
       </div>
     </div>
