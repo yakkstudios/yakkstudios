@@ -4,7 +4,7 @@ interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id:
 
 const ALPHA = [
   { type: 'WALLET WATCH', time: '2h ago', title: 'Tier 1 whale moved 8M $YST to fresh wallet', detail: 'Accumulation pattern. 3 transactions over 6 hours. Consistent buying. Not selling.', badge: 'b-green' },
-  { type: 'LAUNCH ALERT', time: '5h ago', title: 'Private launchpad slot opening â details below', detail: 'Whitelist opens for ð members only. Project has $2M backing. NDA lifted Sunday.', badge: 'b-yakk' },
+  { type: 'LAUNCH ALERT', time: '5h ago', title: 'Private launchpad slot opening — details below', detail: 'Whitelist opens for 🐋 members only. Project has $2M backing. NDA lifted Sunday.', badge: 'b-yakk' },
   { type: 'SIGNAL', time: '1d ago', title: '$BONK large OTC block being absorbed quietly', detail: 'Fund wallet accumulating sub-floor. Price suppressed artificially. Spring incoming.', badge: 'b-gold' },
 ];
 
@@ -17,29 +17,29 @@ export default function WhaleClub({ walletConnected, ystBalance, onNavigate }: P
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--blue),var(--gold))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð WHALE CLUB</div>
+          <div className="sec-title">🐋 WHALE CLUB</div>
           <span className="badge b-gold">WHALE ONLY</span>
         </div>
         <div className="sec-sub">Exclusive alpha, private signals &amp; launch allocations for top $YST holders only.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>10,000,000+ $YST</span> ð Required</span>
+          <span className="gate-badge-text"><span>10,000,000+ $YST</span> 🐋 Required</span>
           {hasWhaleAccess
-            ? <span className="badge b-green">â WHALE CONFIRMED</span>
-            : <span className="badge b-gold">{walletConnected ? `${ystBalance.toLocaleString()} / 10M` : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ WHALE CONFIRMED</span>
+            : <span className="badge b-gold">{walletConnected ? `${ystBalance.toLocaleString()} / 10M` : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🐋</div>
           <div className="locked-title">WHALE CLUB</div>
           <div className="locked-sub">Connect your wallet and hold <strong>10,000,000+ $YST</strong> to join the Whale Club.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
         </div>
       )}
       {walletConnected && !hasWhaleAccess && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🐋</div>
           <div className="locked-title">Not Enough $YST</div>
           <div className="locked-sub">
             You hold <strong>{ystBalance.toLocaleString()} $YST</strong>.<br />
@@ -54,17 +54,17 @@ export default function WhaleClub({ walletConnected, ystBalance, onNavigate }: P
               {((ystBalance / 10_000_000) * 100).toFixed(1)}% to Whale Club
             </div>
           </div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Accumulate More $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Accumulate More $YST 🪙</a>
         </div>
       )}
 
       {hasWhaleAccess && (
         <div>
           <div style={{ background: 'rgba(247,201,72,0.06)', border: '1px solid rgba(247,201,72,0.2)', borderRadius: 10, padding: '14px 18px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ fontSize: 32 }}>ð</div>
+            <div style={{ fontSize: 32 }}>🐋</div>
             <div>
               <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 14, color: 'var(--gold)', marginBottom: 3 }}>WHALE CONFIRMED</div>
-              <div style={{ fontSize: 11, color: 'var(--muted)' }}>You hold {ystBalance.toLocaleString()} $YST â exclusive access granted.</div>
+              <div style={{ fontSize: 11, color: 'var(--muted)' }}>You hold {ystBalance.toLocaleString()} $YST — exclusive access granted.</div>
             </div>
           </div>
 
@@ -83,10 +83,10 @@ export default function WhaleClub({ walletConnected, ystBalance, onNavigate }: P
           ))}
 
           <div style={{ marginTop: 20, background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '16px 18px' }}>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 13, marginBottom: 10 }}>ð WHALE PERKS</div>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 13, marginBottom: 10 }}>🐋 WHALE PERKS</div>
             {['Private alpha channel access', 'Priority launchpad allocations', 'OTC desk priority matching', 'Monthly whale-only calls', 'Revenue share tier 3 (highest)', 'Governance voting weight 10x'].map(p => (
               <div key={p} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
-                <span style={{ color: 'var(--green)' }}>â</span>
+                <span style={{ color: 'var(--green)' }}>✓</span>
                 <span style={{ color: 'var(--text)' }}>{p}</span>
               </div>
             ))}
