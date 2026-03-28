@@ -51,9 +51,7 @@ async function fetchYstBalance(connection: any, walletPk: PublicKey): Promise<nu
     const accounts = await connection.getParsedTokenAccountsByOwner(walletPk, { mint });
     const bal = accounts.value[0]?.account?.data?.parsed?.info?.tokenAmount?.uiAmount ?? 0;
     return Math.floor(bal);
-  } catch {
-    return 0;
-  }
+  } catch { return 0; }
 }
 
 export default function App() {
@@ -61,29 +59,17 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [ystBalance, setYstBalance] = useState(0);
   const [balanceLoading, setBalanceLoading] = useState(false);
-
   const { connected, publicKey, disconnect } = useWallet();
   const { connection } = useConnection();
-
   const walletConnected = connected && !!publicKey;
   const walletAddress = publicKey?.toBase58();
 
   // Fetch YST balance whenever wallet connects
   useEffect(() => {
-    if (!walletConnected || !publicKey) {
-      setYstBalance(0);
-      return;
-    }
-
-    // 1. Snapshot is the primary source of truth — instant, no RPC needed
+    if (!walletConnected || !publicKey) { setYstBalance(0); return; }
     const addr = publicKey.toBase58();
     const snapshotBal = HOLDER_SNAPSHOT[addr] ?? -1;
-    if (snapshotBal >= 0) {
-      setYstBalance(snapshotBal);
-      return; // snapshot is definitive — skip live RPC entirely
-    }
-
-    // 2. Not in snapshot — try live RPC for recently-acquired wallets
+    if (snapshotBal >= 0) { setYstBalance(snapshotBal); return; }
     setBalanceLoading(true);
     fetchYstBalance(connection, publicKey)
       .then(live => { setYstBalance(live); })
@@ -105,11 +91,19 @@ export default function App() {
   // Update document title on section change
   useEffect(() => {
     const titles: Record<string, string> = {
-      home: '$YAKK Studios', screener: 'YAKK Screener', terminal: 'YAKK Terminal',
-      yakktrader: 'YAKK AI Trader', predictions: 'Prediction Markets',
-      cabal: 'Cabal Investigator', launchpad: 'YAKK Ventures', otcdesk: 'OTC Desk',
-      yieldfinder: 'Yield Finder', stakepoint: 'StakePoint', wallet: 'Profile',
-      members: 'Members', whaleclub: 'Whale Club',
+      home: 'Home',
+      screener: 'YAKK Screener',
+      terminal: 'YAKK Terminal',
+      yakktrader: 'YAKK AI Trader',
+      predictions: 'Prediction Markets',
+      cabal: 'Cabal Investigator',
+      launchpad: 'YAKK Ventures',
+      otcdesk: 'OTC Desk',
+      yieldfinder: 'Yield Finder',
+      stakepoint: 'StakePoint',
+      wallet: 'Profile',
+      members: 'Members',
+      whaleclub: 'Whale Club',
     };
     document.title = (titles[section] ?? section.toUpperCase()) + ' | $YAKK Studios';
   }, [section]);
@@ -117,37 +111,31 @@ export default function App() {
   const walletLabel = walletAddress
     ? walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4)
     : '';
-
   const sectionProps = { walletConnected, ystBalance, onNavigate: navigate };
 
   return (
     <div id="app">
       <div id="mobile-header">
         <button id="mob-menu-btn" onClick={() => setSidebarOpen(true)} aria-label="Menu">
-          ☰
+          â°
         </button>
         <div id="mob-brand">
           $YAKK <span>STUDIOS</span>
         </div>
         {walletConnected ? (
           <button className="btn btn-ghost btn-sm" onClick={handleDisconnect}>
-            {walletLabel}{balanceLoading ? ' …' : ` · ${ystBalance.toLocaleString()} YST`}
+            {walletLabel}{balanceLoading ? ' â¦' : ` Â· ${ystBalance.toLocaleString()} YST`}
           </button>
         ) : (
           <w-sol-button style={{ '--wsol-border-radius': '4px', '--wsol-font-size': '11px' } as any} />
         )}
       </div>
-
       <Sidebar
-        activeSection={section}
-        onNavigate={navigate}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        walletConnected={walletConnected}
-        walletAddress={walletAddress}
+        activeSection={section} onNavigate={navigate}
+        isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)}
+        walletConnected={walletConnected} walletAddress={walletAddress}
         ystBalance={ystBalance}
       />
-
       <div id="main-wrap">
         <TickerBar onConnectWallet={() => {}} walletConnected={walletConnected} walletLabel={walletLabel} />
         <div id="main">
@@ -184,4 +172,4 @@ export default function App() {
       </div>
     </div>
   );
-                               }
+}
