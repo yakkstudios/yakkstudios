@@ -8,14 +8,14 @@ export default function Wallet({ walletConnected, ystBalance, onNavigate }: Prop
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--blue),var(--green))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð¤ PROFILE</div>
+          <div className="sec-title">👤 PROFILE</div>
         </div>
         <div className="sec-sub">Your YAKK Studios profile, holdings, access tier &amp; activity.</div>
       </div>
 
       {!walletConnected ? (
         <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>ð¤</div>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>👤</div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Connect Your Wallet</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', maxWidth: 400, margin: '0 auto 20px' }}>Connect your Solana wallet to view your profile, check your $YST balance and access tier.</div>
           <w-sol-button style={{ '--wsol-border-radius': '6px', '--wsol-font-size': '12px' } as any} />
@@ -23,13 +23,13 @@ export default function Wallet({ walletConnected, ystBalance, onNavigate }: Prop
       ) : (
         <div>
           <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 12, padding: '20px 24px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 20 }}>
-            <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg,var(--pink),var(--gold))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>ð¾</div>
+            <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg,var(--pink),var(--gold))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>👾</div>
             <div>
               <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 16, marginBottom: 4 }}>YAKK Member</div>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--muted)' }}>Solana Wallet Connected</div>
               <div style={{ marginTop: 6 }}>
                 <span className={`badge ${ystBalance >= 10_000_000 ? 'b-gold' : ystBalance >= 250_000 ? 'b-green' : 'b-dim'}`}>
-                  {ystBalance >= 10_000_000 ? 'ð WHALE' : ystBalance >= 250_000 ? 'ðª HOLDER' : 'â  BELOW THRESHOLD'}
+                  {ystBalance >= 10_000_000 ? '🐋 WHALE' : ystBalance >= 250_000 ? '🪙 HOLDER' : '⚠ BELOW THRESHOLD'}
                 </span>
               </div>
             </div>
@@ -57,7 +57,7 @@ export default function Wallet({ walletConnected, ystBalance, onNavigate }: Prop
                 <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
               </div>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--muted)', marginBottom: 12 }}>{ystBalance.toLocaleString()} / 250,000 $YST</div>
-              <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get More $YST on Jupiter â</a>
+              <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get More $YST on Jupiter →</a>
             </div>
           )}
 
@@ -65,9 +65,9 @@ export default function Wallet({ walletConnected, ystBalance, onNavigate }: Prop
             QUICK LINKS
           </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <a href="https://solscan.io" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Solscan â</a>
-            <a href="https://birdeye.so" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Birdeye â</a>
-            <a href="https://stakepoint.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">StakePoint â</a>
+            <a href="https://solscan.io" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Solscan ↗</a>
+            <a href="https://birdeye.so" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Birdeye ↗</a>
+            <a href="https://stakepoint.app" target="_blank" rel="noopener noreferrer" className="btn btn-gold">StakePoint ↗</a>
           </div>
         </div>
       )}
