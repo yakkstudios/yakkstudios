@@ -13,20 +13,28 @@ const PEPS = [
 ];
 
 const FEATURES = [
-  { name: 'SWAP',              dex: false, bird: false },
-  { name: 'Rug Ledger',        dex: false, bird: false },
+  { name: 'SWAP', dex: false, bird: false },
+  { name: 'Rug Ledger', dex: false, bird: false },
   { name: 'NFT Market (6 chains)', dex: false, bird: false },
-  { name: 'AI Coach',          dex: false, bird: false },
-  { name: 'Privacy Router',    dex: false, bird: false },
-  { name: 'OTC Desk',          dex: false, bird: false },
-  { name: 'Anti-rug Launchpad',dex: false, bird: false },
-  { name: 'Prediction Markets',dex: false, bird: false },
-  { name: 'No KYC / Email',    dex: false, bird: false },
-  { name: 'Token Creator',     dex: false, bird: false },
-  { name: 'Bridge',            dex: false, bird: false },
+  { name: 'AI Coach', dex: false, bird: false },
+  { name: 'Privacy Router', dex: false, bird: false },
+  { name: 'OTC Desk', dex: false, bird: false },
+  { name: 'Anti-rug Launchpad', dex: false, bird: false },
+  { name: 'Prediction Markets', dex: false, bird: false },
+  { name: 'No KYC / Email', dex: false, bird: false },
+  { name: 'Token Creator', dex: false, bird: true },
+  { name: 'Bridge', dex: false, bird: true },
 ];
 
-export default function Home({ walletConnected, ystBalance, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
+export default function Home({
+  walletConnected,
+  ystBalance,
+  onNavigate,
+}: {
+  walletConnected?: boolean;
+  ystBalance?: number;
+  onNavigate?: (s: string) => void;
+}) {
   const [pep, setPep] = useState(PEPS[0]);
   const [nftDays, setNftDays] = useState({ d: '00', h: '00', m: '00', s: '00' });
 
@@ -53,163 +61,204 @@ export default function Home({ walletConnected, ystBalance, onNavigate }: { wall
   };
 
   return (
-    <section id="section-home" style={{ padding: '0 0 60px' }}>
-
-      {/* Hero */}
-      <div className="home-hero" style={{ padding: '32px 20px 24px', borderBottom: '1px solid #1a1a1a' }}>
-        <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, marginBottom: 8, textTransform: 'uppercase' }}>
-          01 — THE DEN IS OPEN
-        </div>
-        <h1 style={{ fontSize: 'clamp(18px,4vw,28px)', fontWeight: 700, color: '#fff', lineHeight: 1.3, margin: '0 0 12px' }}>
-          Anti-greed Solana infrastructure.
-        </h1>
-        <p style={{ fontSize: 13, color: '#aaa', lineHeight: 1.6, maxWidth: 520, margin: '0 0 20px' }}>
-          Real-time screener. Multichain NFT market. Anti-rug launchpad. OTC desk.
-          Yield finder. Bridge. Privacy router. Token creator.{' '}
-          <strong style={{ color: '#fff' }}>Everything DeFi needs. Nothing CEXs want you to have.</strong>
-        </p>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button onClick={() => onNavigate?.('screener')}
-            style={{ background: '#e8206a', border: 'none', color: '#fff', padding: '10px 20px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>
-            🔍 SCREENER
-          </button>
-          <button onClick={() => onNavigate?.('terminal')}
-            style={{ background: '#111', border: '1px solid #e8206a', color: '#e8206a', padding: '10px 20px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>
-            ⚡ SWAP
-          </button>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: 1, borderBottom: '1px solid #1a1a1a', background: '#111' }}>
-        {[
-          { v: '$3.9B+', l: 'TRACKED' },
-          { v: '12', l: 'CLOWNS EXPOSED 🤡' },
-          { v: '30+', l: 'TOOLS' },
-          { v: '3,333', l: 'NFT COLLECTION' },
-        ].map(({ v, l }) => (
-          <div key={l} style={{ background: '#0d0d0d', padding: '18px 16px', textAlign: 'center' }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#e8206a' }}>{v}</div>
-            <div style={{ fontSize: 10, color: '#666', letterSpacing: 1.5, marginTop: 4, textTransform: 'uppercase' }}>{l}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* NFT Countdown */}
-      <div style={{ background: '#0d0d0d', borderBottom: '1px solid #1a1a1a', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+    <div className="sec-pad">
+      {/* HERO */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 26, flexWrap: 'wrap', gap: 14 }}>
         <div>
-          <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, textTransform: 'uppercase' }}>YAKKS NFT DROP · 3,333 PIECES</div>
-          <div style={{ fontSize: 10, color: '#555', marginTop: 2 }}>Drop: Apr 20 2026 · 33.3% paperhands tax mechanic</div>
-        </div>
-        <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
-          {[['DAYS', nftDays.d], ['HRS', nftDays.h], ['MIN', nftDays.m], ['SEC', nftDays.s]].map(([l, v]) => (
-            <div key={l} style={{ textAlign: 'center', minWidth: 40 }}>
-              <div style={{ fontSize: 20, fontWeight: 800, color: '#fff', fontVariantNumeric: 'tabular-nums' }}>{v}</div>
-              <div style={{ fontSize: 9, color: '#555', letterSpacing: 1 }}>{l}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ width: '100%' }}>
-          <div style={{ height: 4, background: '#1a1a1a', borderRadius: 2 }}>
-            <div style={{ height: 4, width: '38%', background: '#e8206a', borderRadius: 2 }} />
+          <div className="sec-eyebrow">01 — THE DEN IS OPEN</div>
+          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 'clamp(36px,5vw,66px)', lineHeight: 0.95, letterSpacing: '-0.02em' }}>
+            <div>PINK</div>
+            <div style={{ color: 'var(--pink)' }}>YAKK</div>
+            <div style={{ color: 'var(--gold)' }}>SUPREMACY</div>
           </div>
-          <div style={{ fontSize: 10, color: '#555', marginTop: 4 }}>38% PROGRESS</div>
+          <div className="sec-bar" />
+          <p style={{ color: 'var(--muted)', maxWidth: 440, fontSize: 13, lineHeight: 1.8 }}>
+            Anti-greed Solana infrastructure. Real-time screener. Multichain NFT market. Anti-rug launchpad.
+            OTC desk. Yield finder. Bridge. Privacy router. Token creator.
+            Everything DeFi needs. Nothing CEXs want you to have.
+          </p>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', flexWrap: 'wrap', marginTop: 16 }}>
+            <button className="btn btn-pink" onClick={() => onNavigate?.('screener')}>📊 YAKK SCREENER</button>
+            <button className="btn btn-outline" onClick={() => onNavigate?.('terminal')}>🔗 SWAP TERMINAL</button>
+          </div>
+          <div style={{ marginTop: 10, fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', lineHeight: 1.6 }}>
+            🔑 Your keys, your money — you don&apos;t make an account with us. Your wallet <em>is</em> your account.
+          </div>
+        </div>
+        <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img
+            src="/icons/icon-512.png"
+            alt="YAKK mascot"
+            style={{ width: 'clamp(120px,14vw,200px)', height: 'auto', filter: 'drop-shadow(0 0 32px rgba(224,96,126,0.4))', animation: 'yakk-float 4s ease-in-out infinite' }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
         </div>
       </div>
 
-      {/* Live Badges */}
-      <div style={{ padding: '16px 20px', borderBottom: '1px solid #1a1a1a', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      {/* LIVE DEX BANNER */}
+      <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 16px', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 0, overflowX: 'auto', flexWrap: 'nowrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingRight: 20, borderRight: '1px solid var(--border)', flexShrink: 0 }}>
+          <div style={{ fontSize: 20 }}>🩷</div>
+          <div>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 13 }}>$YST / SOL</div>
+            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)' }}>Meteora DBC · Solana</div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24, padding: '0 20px', flexWrap: 'nowrap' }}>
+          {[
+            ['PRICE USD', '—'],
+            ['24H VOLUME', '—'],
+            ['MARKET CAP', '—'],
+            ['LIQUIDITY', '—'],
+            ['BUYS / SELLS', '— / —'],
+            ['HOLDERS', '—'],
+          ].map(([label, val], i) => (
+            <div key={label} style={{ flexShrink: 0, borderLeft: i > 0 ? '1px solid var(--border)' : 'none', paddingLeft: i > 0 ? 20 : 0 }}>
+              <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', marginBottom: 2 }}>{label}</div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>{val}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 7, flexShrink: 0, paddingLeft: 16 }}>
+          <button className="btn btn-ghost" style={{ fontSize: 9, padding: '5px 11px' }} onClick={() => onNavigate?.('terminal')}>📈 TRADE</button>
+          <button className="btn btn-outline" style={{ fontSize: 9, padding: '5px 11px' }} onClick={() => onNavigate?.('screener')}>📊 SCREENER</button>
+        </div>
+      </div>
+
+      {/* STAT CARDS */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(148px,1fr))', gap: 12, marginBottom: 22 }}>
+        <div className="stat-card"><div className="slbl">$YST PRICE</div><div className="sval" style={{ color: 'var(--pink)' }}>—</div><div className="ssub">Fetching...</div></div>
+        <div className="stat-card"><div className="slbl">EXTRACTED TRACKED</div><div className="sval" style={{ color: 'var(--gold)' }}>$3.9B+</div><div className="ssub">12 investigations</div></div>
+        <div className="stat-card"><div className="slbl">CLOWNS EXPOSED</div><div className="sval" style={{ color: 'var(--red)' }}>74</div><div className="ssub">&amp; counting 🤡</div></div>
+        <div className="stat-card"><div className="slbl">YST HOLDERS</div><div className="sval" style={{ color: 'var(--gold)' }}>0</div><div className="ssub">and growing</div></div>
+        <div className="stat-card"><div className="slbl">NFT COLLECTION</div><div className="sval">3,333</div><div className="ssub">Drop: Apr 20 2026</div></div>
+      </div>
+
+      {/* NFT DROP + PEP */}
+      <div className="grid2" style={{ marginBottom: 20 }}>
+        <div className="card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>YAKKS NFT DROP</div>
+            <span className="badge b-gold">3,333 PIECES</span>
+          </div>
+          <div style={{ display: 'flex', gap: 9, marginBottom: 12 }}>
+            {[['DAYS', nftDays.d], ['HRS', nftDays.h], ['MIN', nftDays.m], ['SEC', nftDays.s]].map(([l, v]) => (
+              <div key={l} className="cd-block">
+                <div className="cd-num">{v}</div>
+                <div className="cd-lbl">{l}</div>
+              </div>
+            ))}
+          </div>
+          <div className="prog-bar"><div className="prog-fill" style={{ width: '38%' }} /></div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)' }}><span>PROGRESS</span><span>38%</span></div>
+          <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 9 }}>Drops 1+2 rebooted + 2,333 additional. 33.3% paperhands tax mechanic incoming.</p>
+        </div>
+        <div className="card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 11 }}>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>DAILY YAKKAI PEP</div>
+            <span className="badge b-yakk">AI</span>
+          </div>
+          <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.8, minHeight: 68, fontStyle: 'italic' }}>&quot;{pep}&quot;</div>
+          <div style={{ marginTop: 12, display: 'flex', gap: 7 }}>
+            <button className="btn btn-ghost" style={{ fontSize: 10, padding: '5px 11px' }} onClick={newPep}>↻ NEW PEP</button>
+            <button className="btn btn-outline" style={{ fontSize: 10, padding: '5px 11px' }} onClick={() => onNavigate?.('coach')}>YAKKAI →</button>
+          </div>
+        </div>
+      </div>
+
+      {/* QUICK ACTIONS */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: 9, marginBottom: 22 }}>
         {[
-          { label: '🤖 YAKK AI TRADER', status: 'LIVE', col: '#00c896' },
-          { label: '🎮 PREDICTION MARKETS', status: 'LIVE', col: '#00c896' },
-          { label: '📊 DEXSCREENER CHARTS', status: 'FIXED', col: '#e8c440' },
-          { label: '🔍 CABAL SCANNER', status: 'V2', col: '#e8206a' },
-        ].map(({ label, status, col }) => (
-          <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#111', border: '1px solid #1a1a1a', borderRadius: 20, padding: '5px 12px', fontSize: 11 }}>
-            <span style={{ color: '#ccc' }}>{label}</span>
-            <span style={{ color: col, fontWeight: 700, fontSize: 10 }}>→ {status}</span>
+          { icon: '📊', title: 'YAKK SCREENER', desc: '$10 SOL to update your token on-chain. Supports Metaplex MPL + Token-2022 (pump.fun). Trusted projects featured.', badge: '$10 vs $300+', badgeClass: 'b-green', section: 'screener' },
+          { icon: '📖', title: 'RUG LEDGER', desc: '$3.9B+ documented. 12 investigations. The same 15 wallets every time.', badge: '$3.9B+ TRACKED', badgeClass: 'b-red', section: 'ledger' },
+          { icon: '🧠', title: 'YAKKAI COACH', desc: 'Discipline. Raid strategy. Risk management. Your mafia consigliere.', section: 'coach' },
+          { icon: '⚔️', title: 'RAID HUB', desc: 'Daily targets. Earn XP. Climb the leaderboard. GET YAKKED.', section: 'raids' },
+          { icon: '🛒', title: 'NFT MARKET', desc: 'SOL, ETH, BTC Ordinals, BNB, Tron. 6 chains, 1 interface. Only 1.5% fee.', badge: '6 CHAINS', badgeClass: 'b-gold', section: 'nftmarket' },
+          { icon: '🌉', title: 'BRIDGE & SWAP', desc: 'deBridge · Wormhole · Mayan · Allbridge. Cross-chain without leaving YAKK.', badge: '0.1% FEE', badgeClass: 'b-green', section: 'terminal' },
+          { icon: '📈', title: 'PORTFOLIO TRACKER', desc: 'Live wallet holdings, SOL balance, token accounts, recent transactions. No spreadsheets.', section: 'portfolio' },
+        ].map(card => (
+          <div key={card.title} onClick={() => onNavigate?.(card.section)} className="card-sm" style={{ cursor: 'pointer', padding: 16 }}>
+            <div style={{ fontSize: 18, marginBottom: 7 }}>{card.icon}</div>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>{card.title}</div>
+            <div style={{ fontSize: 11, color: 'var(--muted)' }}>{card.desc}</div>
+            {card.badge && <div style={{ marginTop: 8 }}><span className={`badge ${card.badgeClass}`}>{card.badge}</span></div>}
           </div>
         ))}
       </div>
 
-      {/* YAKKAI PEP */}
-      <div style={{ background: '#0d0d0d', borderBottom: '1px solid #1a1a1a', padding: '16px 20px' }}>
-        <div style={{ fontSize: 10, color: '#555', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>DAILY YAKKAI PEP</div>
-        <p style={{ fontSize: 13, color: '#ccc', fontStyle: 'italic', margin: '0 0 10px', lineHeight: 1.5 }}>"{pep}"</p>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <button onClick={newPep}
-            style={{ background: 'none', border: '1px solid #333', color: '#888', padding: '5px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 11 }}>
-            ↻ NEW PEP
-          </button>
-          <button onClick={() => onNavigate?.('coach')}
-            style={{ background: 'none', border: 'none', color: '#e8206a', cursor: 'pointer', fontSize: 11, fontWeight: 700 }}>
-            YAKKAI →
-          </button>
+      {/* ROADMAP */}
+      <div className="card-sm" style={{ marginBottom: 16, borderLeft: '3px solid var(--gold)' }}>
+        <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)', letterSpacing: '0.12em', marginBottom: 12 }}>ROADMAP — Q2/Q3 2026</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: 10 }}>
+          <div style={{ padding: 10, background: 'var(--bg4)', borderRadius: 7 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#64dc64', marginBottom: 3 }}>✅ SHIPPED</div>
+            <div style={{ fontSize: 10, color: 'var(--dim)' }}>Screener · Terminal · AI Trader · Predictions · Cabal · NFT Market · Launchpad · OTC · Yield · Bridge · Privacy · Token Creator · Discord Bot · X Automation</div>
+          </div>
+          <div style={{ padding: 10, background: 'var(--bg4)', borderRadius: 7 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--gold)', marginBottom: 3 }}>🔨 BUILDING</div>
+            <div style={{ fontSize: 10, color: 'var(--dim)' }}>Mobile app · Limit orders · Cross-chain portfolio · Tokenised equity IPOs · TG trade bot · MEV shield</div>
+          </div>
+          <div style={{ padding: 10, background: 'var(--bg4)', borderRadius: 7 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--pink)', marginBottom: 3 }}>🎯 NEXT</div>
+            <div style={{ fontSize: 10, color: 'var(--dim)' }}>Revenue share for $YST stakers · Institutional OTC desk · Multi-sig treasury · DAO governance · API access for builders</div>
+          </div>
         </div>
       </div>
 
-      {/* YAKK vs The Rest */}
-      <div style={{ padding: '20px 20px 0', borderBottom: '1px solid #1a1a1a' }}>
-        <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 14 }}>YAKK VS THE REST</div>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-            <thead>
-              <tr>
-                {['FEATURE', 'DEXSCR', 'BIRDEYE', 'YAKK'].map((h, i) => (
-                  <th key={h} style={{
-                    padding: '8px 10px', textAlign: i === 0 ? 'left' : 'center',
-                    color: i === 3 ? '#e8206a' : '#555', fontWeight: 700,
-                    fontSize: 10, letterSpacing: 1, borderBottom: '1px solid #1a1a1a'
-                  }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {FEATURES.map(({ name, dex, bird }) => (
-                <tr key={name} style={{ borderBottom: '1px solid #0f0f0f' }}>
-                  <td style={{ padding: '8px 10px', color: '#ccc', fontSize: 12 }}>{name}</td>
-                  <td style={{ padding: '8px 10px', textAlign: 'center', color: '#444' }}>{dex ? '✓' : '✗'}</td>
-                  <td style={{ padding: '8px 10px', textAlign: 'center', color: '#444' }}>{bird ? '✓' : '✗'}</td>
-                  <td style={{ padding: '8px 10px', textAlign: 'center', color: '#00c896', fontWeight: 700 }}>✓</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* REVENUE STREAMS */}
+      <div className="card-sm" style={{ marginBottom: 16, background: 'linear-gradient(135deg,rgba(100,220,100,0.06),rgba(5,5,9,0.8))', borderColor: 'rgba(100,220,100,0.2)' }}>
+        <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: '#64dc64', letterSpacing: '0.12em', marginBottom: 10 }}>💰 REVENUE STREAMS</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 8, fontSize: 10 }}>
+          <div>🔍 Screener updates: <strong>$10/update</strong></div>
+          <div>🚀 Token launches: <strong>1 SOL/app</strong></div>
+          <div>🛒 NFT marketplace: <strong>1.5% fee</strong></div>
+          <div>🤝 OTC desk: <strong>0.3% fee</strong></div>
+          <div>🔍 Investigations: <strong>1 SOL/request</strong></div>
+          <div>🌉 Bridge: <strong>0.1% routing fee</strong></div>
         </div>
-        <p style={{ fontSize: 11, color: '#555', margin: '12px 0 16px', fontStyle: 'italic' }}>
-          your wallet is your account — no email, no KYC, no extraction
-        </p>
       </div>
 
-      {/* Tokenomics */}
-      <div style={{ padding: '20px', borderBottom: '1px solid #1a1a1a' }}>
-        <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 14 }}>$YST TOKENOMICS</div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(120px,1fr))', gap: 8, marginBottom: 14 }}>
-          {[
-            { pct: '2%', label: 'tax → treasury', icon: '🏛️' },
-            { pct: '2%', label: 'tax → $YST stakers', icon: '💰' },
-            { pct: '1%', label: 'tax → burn', icon: '🔥' },
-            { pct: '20%', label: 'dev fee locked', icon: '🔒' },
-          ].map(({ pct, label, icon }) => (
-            <div key={label} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 6, padding: '12px', textAlign: 'center' }}>
-              <div style={{ fontSize: 20 }}>{icon}</div>
-              <div style={{ fontSize: 16, fontWeight: 800, color: '#e8206a', margin: '4px 0 2px' }}>{pct}</div>
-              <div style={{ fontSize: 10, color: '#666' }}>{label}</div>
-            </div>
-          ))}
+      {/* TOKENOMICS REVSHARE */}
+      <div className="card-sm" style={{ marginBottom: 16, background: 'linear-gradient(135deg,rgba(247,201,72,0.06),rgba(5,5,9,0.9))', borderColor: 'rgba(247,201,72,0.2)' }}>
+        <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)', letterSpacing: '0.12em', marginBottom: 12 }}>⚡ $YST REVSHARE TOKENOMICS</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8, textAlign: 'center', marginBottom: 10 }}>
+          <div style={{ background: 'var(--bg4)', borderRadius: 7, padding: '10px 6px' }}>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, color: 'var(--pink)' }}>5%</div>
+            <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 2 }}>TX TAX</div>
+            <div style={{ fontSize: 8, color: 'var(--dim)', opacity: 0.7 }}>buy &amp; sell</div>
+          </div>
+          <div style={{ background: 'var(--bg4)', borderRadius: 7, padding: '10px 6px' }}>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, color: 'var(--green)' }}>30%</div>
+            <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 2 }}>TO STAKERS</div>
+            <div style={{ fontSize: 8, color: 'var(--dim)', opacity: 0.7 }}>of platform fees</div>
+          </div>
+          <div style={{ background: 'var(--bg4)', borderRadius: 7, padding: '10px 6px' }}>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, color: 'var(--gold)' }}>🎁</div>
+            <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 2 }}>CASHBACK</div>
+            <div style={{ fontSize: 8, color: 'var(--dim)', opacity: 0.7 }}>use platform → earn $YST</div>
+          </div>
         </div>
-        <button onClick={() => onNavigate?.('whitepaper')}
-          style={{ background: 'none', border: '1px solid #333', color: '#888', padding: '8px 16px', borderRadius: 4, cursor: 'pointer', fontSize: 11, fontWeight: 700 }}>
-          VIEW FULL TOKENOMICS →
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 9, color: 'var(--dim)', flexWrap: 'wrap', gap: 4 }}>
+          <span>2% tax → treasury</span>
+          <span>2% tax → $YST stakers</span>
+          <span>1% tax → burn 🔥</span>
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <button className="btn btn-outline" style={{ fontSize: 9, padding: '4px 12px' }} onClick={() => onNavigate?.('whitepaper')}>VIEW FULL TOKENOMICS →</button>
+        </div>
       </div>
 
-      {/* CTA footer */}
-      <div style={{ padding: '24px 20px', textAlign: 'center' }}>
-        <div style={{ fontSize: 13, color: '#555', marginBottom: 4 }}>The empire is building. The mountain delivers.</div>
-        <div style={{ fontSize: 20, fontWeight: 800, color: '#e8206a', letterSpacing: 3 }}>GET YAKKED.</div>
+      {/* NEWLY LIVE BANNER */}
+      <div style={{ padding: '18px 22px', background: 'rgba(247,201,72,0.03)', border: '1px solid rgba(247,201,72,0.1)', borderRadius: 9 }}>
+        <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)', letterSpacing: '0.18em', marginBottom: 9 }}>NEWLY LIVE — YAKK DEFI SUITE</div>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <span onClick={() => onNavigate?.('yakktrader')} className="cs-tag" style={{ cursor: 'pointer', borderColor: 'rgba(224,96,126,0.4)', color: 'var(--pink)' }}>🤖 YAKK AI TRADER ✓ LIVE</span>
+          <span onClick={() => onNavigate?.('predictions')} className="cs-tag" style={{ cursor: 'pointer', borderColor: 'rgba(247,201,72,0.4)', color: 'var(--gold)' }}>🔮 PREDICTION MARKETS ✓ LIVE</span>
+          <span className="cs-tag">📊 DEXSCREENER CHARTS ✓ FIXED</span>
+          <span className="cs-tag">🔍 CABAL SCANNER V2</span>
+        </div>
+        <p style={{ fontSize: 11, color: 'var(--dim)', marginTop: 9 }}>The empire is building. The mountain delivers. GET YAKKED.</p>
       </div>
-
-    </section>
+    </div>
   );
 }
