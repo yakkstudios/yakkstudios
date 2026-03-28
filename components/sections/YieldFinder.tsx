@@ -3,94 +3,198 @@ import { useState } from 'react';
 
 interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
 
-const PROTOCOLS = [
-  { name: 'Kamino Finance', type: 'Lending', apy: '12.4%', tvl: '$1.2B', risk: 'Low', badge: 'b-green', token: 'SOL/USDC' },
-  { name: 'Marinade Finance', type: 'Liquid Staking', apy: '7.8%', tvl: '$890M', risk: 'Low', badge: 'b-green', token: 'mSOL' },
-  { name: 'Jito', type: 'Liquid Staking', apy: '8.2%', tvl: '$2.1B', risk: 'Low', badge: 'b-green', token: 'jitoSOL' },
-  { name: 'Raydium', type: 'LP / AMM', apy: '34.7%', tvl: '$320M', risk: 'Medium', badge: 'b-gold', token: 'RAY/SOL' },
-  { name: 'Orca', type: 'Concentrated LP', apy: '58.2%', tvl: '$180M', risk: 'Medium', badge: 'b-gold', token: 'BONK/SOL' },
-  { name: 'Drift Protocol', type: 'Perps', apy: '18.9%', tvl: '$240M', risk: 'Medium', badge: 'b-gold', token: 'USDC' },
-  { name: 'Meteora', type: 'Dynamic LP', apy: '142%', tvl: '$89M', risk: 'High', badge: 'b-red', token: 'YST/SOL' },
-  { name: 'Francium', type: 'Leveraged LP', apy: '220%', tvl: '$22M', risk: 'High', badge: 'b-red', token: 'BONK/SOL' },
+interface YieldCard {
+  name: string;
+  subtitle: string;
+  chain: string;
+  type: string;
+  apy: string;
+  apyColor: string;
+  borderColor: string;
+  tvl: string;
+  risk: string;
+  url: string;
+}
+
+const YIELDS: YieldCard[] = [
+  {
+    name: 'Raydium',
+    subtitle: 'YST/SOL LP',
+    chain: 'solana',
+    type: 'lp',
+    apy: '847%',
+    apyColor: 'var(--pink)',
+    borderColor: 'var(--pink)',
+    tvl: '$124K',
+    risk: 'Medium',
+    url: 'https://raydium.io',
+  },
+  {
+    name: 'Marinade',
+    subtitle: 'mSOL Staking',
+    chain: 'solana',
+    type: 'staking',
+    apy: '7.2%',
+    apyColor: 'var(--gold)',
+    borderColor: 'var(--gold)',
+    tvl: '$1.8B',
+    risk: 'Low',
+    url: 'https://marinade.finance',
+  },
+  {
+    name: 'Kamino',
+    subtitle: 'USDC Lending',
+    chain: 'solana',
+    type: 'lending',
+    apy: '12.4%',
+    apyColor: '#7fdbff',
+    borderColor: '#7fdbff',
+    tvl: '$340M',
+    risk: 'Low',
+    url: 'https://kamino.finance',
+  },
+  {
+    name: 'Orca',
+    subtitle: 'SOL/USDC LP',
+    chain: 'solana',
+    type: 'lp',
+    apy: '34%',
+    apyColor: 'var(--pink)',
+    borderColor: 'var(--pink)',
+    tvl: '$89M',
+    risk: 'Medium',
+    url: 'https://orca.so',
+  },
+  {
+    name: 'PancakeSwap',
+    subtitle: 'BNB/USDT LP',
+    chain: 'bnb',
+    type: 'lp',
+    apy: '28%',
+    apyColor: 'var(--gold)',
+    borderColor: 'var(--gold)',
+    tvl: '$210M',
+    risk: 'Medium',
+    url: 'https://pancakeswap.finance',
+  },
+  {
+    name: 'Uniswap',
+    subtitle: 'ETH/USDC LP',
+    chain: 'ethereum',
+    type: 'lp',
+    apy: '18%',
+    apyColor: '#7fdbff',
+    borderColor: '#7fdbff',
+    tvl: '$4.1B',
+    risk: 'Low',
+    url: 'https://app.uniswap.org',
+  },
 ];
 
-export default function YieldFinder({ walletConnected, ystBalance, onNavigate }: Props) {
-  const [filter, setFilter] = useState('All');
-  const hasAccess = walletConnected && ystBalance >= 250_000;
+const selectStyle: React.CSSProperties = {
+  background: 'var(--bg2)',
+  border: '1px solid rgba(255,255,255,0.1)',
+  borderRadius: 7,
+  padding: '8px 14px',
+  color: 'var(--text)',
+  fontFamily: "'Space Mono',monospace",
+  fontSize: 11,
+  outline: 'none',
+  cursor: 'pointer',
+};
 
-  const filtered = filter === 'All' ? PROTOCOLS : PROTOCOLS.filter(p => p.risk === filter);
+export default function YieldFinder({ walletConnected, ystBalance, onNavigate }: Props) {
+  const ystHeld = walletConnected && ystBalance >= 250_000;
+  const [chain, setChain] = useState('all');
+  const [type, setType] = useState('all');
+
+  const filtered = YIELDS.filter(y => {
+    const chainMatch = chain === 'all' || y.chain === chain;
+    const typeMatch = type === 'all' || y.type === type;
+    return chainMatch && typeMatch;
+  });
 
   return (
     <div className="sec-pad">
-      <div className="sec-header">
-        <div className="sec-bar green" />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">💰 YIELD FINDER</div>
-          <span className="badge b-green">LIVE</span>
-        </div>
-        <div className="sec-sub">Discover the best yield opportunities across Solana DeFi protocols.</div>
-        <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Held</span>
-          {hasAccess
-            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
-        </div>
+      <div className="sec-eyebrow">MULTICHAIN</div>
+      <div className="sec-title">Yield Finder</div>
+      <div className="sec-bar"></div>
+
+      {/* Token gate row */}
+      <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 8 }}>
+        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span className={`badge ${walletConnected ? (ystHeld ? 'b-green' : 'b-red') : 'b-dim'}`}>
+          {walletConnected ? (ystHeld ? '✓ ACCESS GRANTED' : '✗ NEED MORE YST') : 'NOT CHECKED'}
+        </span>
+      </div>
+      <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
+        Best yields across DeFi protocols. Live APY data. No KYC, no custody.
+      </p>
+
+      {/* Filters */}
+      <div style={{ display: 'flex', gap: 10, marginBottom: 18, flexWrap: 'wrap', alignItems: 'center' }}>
+        <select value={chain} onChange={e => setChain(e.target.value)} style={selectStyle}>
+          <option value="all">All chains</option>
+          <option value="solana">Solana</option>
+          <option value="ethereum">Ethereum</option>
+          <option value="bnb">BNB Chain</option>
+        </select>
+        <select value={type} onChange={e => setType(e.target.value)} style={selectStyle}>
+          <option value="all">All types</option>
+          <option value="lp">LP / AMM</option>
+          <option value="lending">Lending</option>
+          <option value="staking">Staking</option>
+        </select>
+        <button
+          className="btn btn-pink"
+          style={{ padding: '8px 16px', fontSize: 10 }}
+          onClick={() => { setChain('all'); setType('all'); }}
+        >
+          ↻ REFRESH
+        </button>
       </div>
 
-      {!walletConnected && (
-        <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">YIELD FINDER</div>
-          <div className="locked-sub">Connect your wallet and hold <strong>250,000+ $YST</strong> to access yield opportunities.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
-        </div>
-      )}
-      {walletConnected && ystBalance < 250_000 && (
-        <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">Insufficient $YST</div>
-          <div className="locked-sub">You need <strong>250,000+ $YST</strong>. You hold: {ystBalance.toLocaleString()} $YST.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST 🪙</a>
-        </div>
-      )}
+      {/* Yield cards grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(260px,1fr))', gap: 14 }}>
+        {filtered.map(y => (
+          <div key={y.name} className="card-sm" style={{ borderLeft: `3px solid ${y.borderColor}` }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>{y.name}</div>
+                <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 2 }}>
+                  {y.subtitle} • {y.chain === 'solana' ? 'Solana' : y.chain === 'ethereum' ? 'Ethereum' : 'BNB Chain'}
+                </div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: 22, fontWeight: 700, color: y.apyColor }}>{y.apy}</div>
+                <div style={{ fontSize: 8, color: 'var(--dim)' }}>APY</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, fontSize: 10, color: 'var(--dim)' }}>
+              <span>TVL: {y.tvl}</span>
+              <span>Risk: {y.risk}</span>
+            </div>
+            <a
+              href={y.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-pink"
+              style={{ display: 'block', width: '100%', textAlign: 'center', marginTop: 10, textDecoration: 'none', fontSize: 10, padding: 7, boxSizing: 'border-box' }}
+            >
+              DEPOSIT →
+            </a>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: 32, color: 'var(--dim)', fontFamily: 'Space Mono,monospace', fontSize: 11 }}>
+            No yields match the selected filters.
+          </div>
+        )}
+      </div>
 
-      {hasAccess && (
-        <div>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, color: 'var(--muted)', fontFamily: 'Space Mono,monospace' }}>RISK:</span>
-            {['All','Low','Medium','High'].map(r => (
-              <button key={r} className={`mode-pill ${filter===r?'active':''}`} onClick={() => setFilter(r)}>{r}</button>
-            ))}
-            <span style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--dim)', fontFamily: 'Space Mono,monospace' }}>APY ESTIMATES · NOT FINANCIAL ADVICE</span>
-          </div>
-
-          <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
-            <table className="tbl">
-              <thead>
-                <tr>
-                  <th>PROTOCOL</th><th>TYPE</th><th>PAIR / TOKEN</th><th>EST. APY</th><th>TVL</th><th>RISK</th><th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map(p => (
-                  <tr key={p.name}>
-                    <td style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12 }}>{p.name}</td>
-                    <td style={{ color: 'var(--muted)', fontSize: 11 }}>{p.type}</td>
-                    <td style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--blue)' }}>{p.token}</td>
-                    <td style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 14, color: 'var(--green)' }}>{p.apy}</td>
-                    <td style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--muted)' }}>{p.tvl}</td>
-                    <td><span className={`badge ${p.badge}`}>{p.risk}</span></td>
-                    <td><a href="https://app.kamino.finance" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ padding: '3px 9px', fontSize: 9 }}>ENTER ↗</a></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div style={{ fontSize: 10, color: 'var(--dim)', marginTop: 10, fontFamily: 'Space Mono,monospace' }}>
-            ⚠ APY estimates are indicative only. DeFi yields are variable. Always DYOR before depositing funds.
-          </div>
-        </div>
-      )}
+      <p style={{ fontSize: 9, color: 'var(--dim)', marginTop: 16, textAlign: 'center' }}>
+        APYs are indicative only. Always DYOR. Not financial advice.
+      </p>
     </div>
   );
 }
