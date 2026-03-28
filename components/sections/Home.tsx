@@ -31,9 +31,9 @@ export default function Home({ walletConnected, ystBalance, onNavigate }: Props)
           <span className="badge b-pink">BETA</span>
         </div>
         <p style={{ color: 'var(--muted)', fontSize: 13, maxWidth: 540, lineHeight: 1.7 }}>
-          Crypto was built for DEXs â not banks with ticker symbols. YAKK Studios is the
+          Crypto was built for DEXs — not banks with ticker symbols. YAKK Studios is the
           professional on-chain trading platform built by the community, for the community.
-          Screen tokens, investigate wallets, trade with AI, and earn yield â no KYC, no
+          Screen tokens, investigate wallets, trade with AI, and earn yield — no KYC, no
           custody, no middlemen. Just tools for traders who know better, powered by{' '}
           <strong style={{ color: 'var(--gold)' }}>$YST</strong>.
         </p>
@@ -85,14 +85,14 @@ export default function Home({ walletConnected, ystBalance, onNavigate }: Props)
           ))}
           {/* Roadmap card */}
           <div className="home-card" style={{ borderStyle: 'dashed', opacity: 0.55 }}>
-            <div className="home-card-icon">ðºï¸</div>
+            <div className="home-card-icon">🗺️</div>
             <div className="home-card-title">ROADMAP</div>
             <div className="home-card-desc">More tools shipping. Governance, cross-chain analytics &amp; advanced AI ahead.</div>
           </div>
         </div>
       </div>
 
-      {/* CTA banner â shown when wallet not connected */}
+      {/* CTA banner — shown when wallet not connected */}
       {!walletConnected && (
         <div style={{
           background: 'linear-gradient(135deg, var(--bg3) 0%, rgba(247,201,72,0.04) 100%)',
@@ -102,7 +102,7 @@ export default function Home({ walletConnected, ystBalance, onNavigate }: Props)
         }}>
           <div>
             <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 14, marginBottom: 5 }}>
-              ð Unlock the full YAKK arsenal
+              🔐 Unlock the full YAKK arsenal
             </div>
             <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.6 }}>
               Hold{' '}
@@ -113,19 +113,19 @@ export default function Home({ walletConnected, ystBalance, onNavigate }: Props)
             </div>
           </div>
           <a className="btn btn-gold" href="https://stakepoint.app" target="_blank" rel="noopener noreferrer">
-            StakePoint â
+            StakePoint →
           </a>
         </div>
       )}
 
-      {/* Partial access â connected but below threshold */}
+      {/* Partial access — connected but below threshold */}
       {walletConnected && ystBalance > 0 && ystBalance < 250_000 && (
         <div style={{
           background: 'rgba(247,201,72,0.04)', border: '1px solid rgba(247,201,72,0.15)',
           borderRadius: 12, padding: '14px 20px', display: 'flex', alignItems: 'center',
           gap: 10, marginTop: 8,
         }}>
-          <span style={{ fontSize: 16 }}>â¡</span>
+          <span style={{ fontSize: 16 }}>⚡</span>
           <div>
             <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 13, color: 'var(--gold)' }}>
               Almost there
@@ -137,20 +137,20 @@ export default function Home({ walletConnected, ystBalance, onNavigate }: Props)
         </div>
       )}
 
-      {/* Full access â holding 250K+ */}
+      {/* Full access — holding 250K+ */}
       {walletConnected && ystBalance >= 250_000 && (
         <div style={{
           background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)',
           borderRadius: 12, padding: '14px 20px', display: 'flex', alignItems: 'center',
           gap: 10, marginTop: 8,
         }}>
-          <span style={{ fontSize: 16 }}>â</span>
+          <span style={{ fontSize: 16 }}>✓</span>
           <div>
             <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 13, color: 'var(--green)' }}>
               Full access unlocked
             </div>
             <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>
-              You hold {ystBalance.toLocaleString()} $YST â all tools active, rev-share rewards unlocked.
+              You hold {ystBalance.toLocaleString()} $YST — all tools active, rev-share rewards unlocked.
             </div>
           </div>
         </div>
