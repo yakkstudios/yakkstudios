@@ -20,38 +20,38 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--pink),var(--gold))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð¯ PREDICTION MARKETS</div>
+          <div className="sec-title">🎯 PREDICTION MARKETS</div>
           <span className="badge b-yakk">BETA</span>
         </div>
         <div className="sec-sub">Bet on crypto outcomes with $YST. Community-driven prediction markets on Solana.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Held</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Held</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">PREDICTION MARKETS</div>
           <div className="locked-sub">Connect your wallet and hold <strong>250,000+ $YST</strong> to access prediction markets.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
         </div>
       )}
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">Insufficient $YST</div>
           <div className="locked-sub">You need <strong>250,000+ $YST</strong>. You hold: {ystBalance.toLocaleString()} $YST.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST 🪙</a>
         </div>
       )}
 
       {hasAccess && (
         <div>
-          <div className="warn-bar">ð¯ BETA â Markets are for entertainment &amp; community engagement. Payouts are in $YST. Not financial advice.</div>
+          <div className="warn-bar">🎯 BETA — Markets are for entertainment &amp; community engagement. Payouts are in $YST. Not financial advice.</div>
           {MARKETS.map((m, i) => (
             <div key={i} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '16px 18px', marginBottom: 12 }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
@@ -68,13 +68,13 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
                 <div className="prog-bar"><div className="prog-fill" style={{ width: m.yes + '%' }} /></div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <button className={`btn ${bet[i]==='yes' ? 'btn-green' : 'btn-outline'}`} style={{ fontSize: 10 }} onClick={() => setBet(b => ({ ...b, [i]: 'yes' }))}>YES â</button>
-                <button className={`btn ${bet[i]==='no' ? 'btn-pink' : 'btn-outline'}`} style={{ fontSize: 10 }} onClick={() => setBet(b => ({ ...b, [i]: 'no' }))}>NO â</button>
+                <button className={`btn ${bet[i]==='yes' ? 'btn-green' : 'btn-outline'}`} style={{ fontSize: 10 }} onClick={() => setBet(b => ({ ...b, [i]: 'yes' }))}>YES ↑</button>
+                <button className={`btn ${bet[i]==='no' ? 'btn-pink' : 'btn-outline'}`} style={{ fontSize: 10 }} onClick={() => setBet(b => ({ ...b, [i]: 'no' }))}>NO ↓</button>
                 <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', marginLeft: 'auto' }}>Vol: {m.vol}</span>
               </div>
               {bet[i] && (
                 <div style={{ marginTop: 10, padding: '8px 12px', background: 'var(--bg4)', borderRadius: 6, fontSize: 11, color: 'var(--muted)' }}>
-                  â Position: <strong style={{ color: bet[i] === 'yes' ? 'var(--green)' : 'var(--red)' }}>{bet[i]?.toUpperCase()}</strong> â Integration with on-chain escrow coming in V2.
+                  ✓ Position: <strong style={{ color: bet[i] === 'yes' ? 'var(--green)' : 'var(--red)' }}>{bet[i]?.toUpperCase()}</strong> — Integration with on-chain escrow coming in V2.
                 </div>
               )}
             </div>
