@@ -30,8 +30,9 @@ export const NAV: NavSection[] = [
   {
     title: 'OVERVIEW',
     items: [
-      { id: 'home', label: 'HOME / DEN', icon: '🏠' },
-      { id: 'news', label: 'YAKK NEWS',  icon: '📰' },
+      { id: 'home',     label: 'HOME / DEN',  icon: '🏠' },
+      { id: 'news',     label: 'YAKK NEWS',   icon: '📰' },
+      { id: 'services', label: 'AI SERVICES', icon: '💼' },
     ],
   },
   {
@@ -85,6 +86,7 @@ export const NAV: NavSection[] = [
     items: [
       { id: 'raids',    label: 'RAID HUB',         icon: '⚔️', gated: true },
       { id: 'features', label: 'FEATURE REQUESTS', icon: '💡' },
+      { id: 'wren',     label: 'SAVING THE WREN',  icon: '🌱' },
     ],
   },
   {
@@ -118,7 +120,7 @@ export const HOME_CARDS: HomeCard[] = [
   { id: 'launchpad',   emoji: '🦅', title: 'YAKK VENTURES',      desc: 'Community-vetted token launches. Early access for $YST holders.',             accent: 'var(--gold)'  },
   { id: 'yieldfinder', emoji: '💰', title: 'YIELD FINDER',       desc: 'Discover the best yield opportunities across Solana DeFi.',                    accent: 'var(--green)' },
   { id: 'nftmarket',   emoji: '🖼️', title: 'NFT MARKET',         desc: 'Browse and trade YAKK ecosystem NFTs. Floor prices live.',                    accent: 'var(--blue)'  },
-  { id: 'stakepoint',  emoji: '🏆', title: 'STAKEPOINT',         desc: 'Stake your $YST to earn rewards and unlock all platform tools.',              accent: 'var(--gold)'  },
+  { id: 'stakepoint',  emoji: '🏆', title: 'STAKEPOINT',         desc: 'Stake your $YST to earn rewards and unlock all platform tools.',               accent: 'var(--gold)'  },
   { id: 'portfolio',   emoji: '📊', title: 'PORTFOLIO TRACKER',  desc: 'Track your Solana portfolio P&L and holdings in real time.',                  accent: 'var(--green)' },
   { id: 'raids',       emoji: '⚔️', title: 'RAID HUB',           desc: 'Coordinate community raids. Boost visibility for $YAKK.',                    accent: 'var(--pink)'  },
 ];
