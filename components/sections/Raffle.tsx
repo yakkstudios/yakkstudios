@@ -4,9 +4,9 @@ import { useState } from 'react';
 interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
 
 const RAFFLES = [
-  { id: 1, prize: 'YAKK Genesis NFT #001', ticketPrice: '100K YST', tickets: 42, maxTickets: 100, end: '24h 32m', img: 'ð¦', badge: 'b-gold' },
-  { id: 2, prize: '500K $YST Airdrop', ticketPrice: '50K YST', tickets: 78, maxTickets: 200, end: '2d 14h', img: 'ðª', badge: 'b-yakk' },
-  { id: 3, prize: 'Whale Club Lifetime Pass', ticketPrice: '250K YST', tickets: 12, maxTickets: 50, end: '5d 6h', img: 'ð', badge: 'b-blue' },
+  { id: 1, prize: 'YAKK Genesis NFT #001', ticketPrice: '100K YST', tickets: 42, maxTickets: 100, end: '24h 32m', img: '🦅', badge: 'b-gold' },
+  { id: 2, prize: '500K $YST Airdrop', ticketPrice: '50K YST', tickets: 78, maxTickets: 200, end: '2d 14h', img: '🪙', badge: 'b-yakk' },
+  { id: 3, prize: 'Whale Club Lifetime Pass', ticketPrice: '250K YST', tickets: 12, maxTickets: 50, end: '5d 6h', img: '🐋', badge: 'b-blue' },
 ];
 
 export default function Raffle({ walletConnected, ystBalance, onNavigate }: Props) {
@@ -17,7 +17,7 @@ export default function Raffle({ walletConnected, ystBalance, onNavigate }: Prop
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--gold),var(--pink))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ðï¸ NFT RAFFLE</div>
+          <div className="sec-title">🎟️ NFT RAFFLE</div>
           <span className="badge b-gold">LIVE</span>
         </div>
         <div className="sec-sub">Enter NFT raffles &amp; win exclusive YAKK ecosystem prizes. Powered by $YST tokens.</div>
@@ -44,7 +44,7 @@ export default function Raffle({ walletConnected, ystBalance, onNavigate }: Prop
                 <div className="prog-fill" style={{ width: (r.tickets / r.maxTickets * 100) + '%' }} />
               </div>
               {entered.includes(r.id) ? (
-                <span className="badge b-green" style={{ fontSize: 10, padding: '4px 10px' }}>â ENTERED</span>
+                <span className="badge b-green" style={{ fontSize: 10, padding: '4px 10px' }}>✓ ENTERED</span>
               ) : (
                 <button
                   className="btn btn-gold"
@@ -52,7 +52,7 @@ export default function Raffle({ walletConnected, ystBalance, onNavigate }: Prop
                   onClick={() => walletConnected && setEntered(e => [...e, r.id])}
                   disabled={!walletConnected}
                 >
-                  {walletConnected ? 'ðï¸ Enter Raffle' : 'Connect Wallet to Enter'}
+                  {walletConnected ? '🎟️ Enter Raffle' : 'Connect Wallet to Enter'}
                 </button>
               )}
             </div>
