@@ -14,7 +14,7 @@ const LAUNCHES = [
     badge: 'b-gold',
     status: 'LIVE',
     end: '3d 12h',
-    img: 'ð°',
+    img: '🎰',
   },
   {
     name: 'YAKK NFT Aggregator',
@@ -27,7 +27,7 @@ const LAUNCHES = [
     badge: 'b-dim',
     status: 'CLOSED',
     end: 'Ended',
-    img: 'ð¼ï¸',
+    img: '🖼️',
   },
   {
     name: 'StakePoint Governance',
@@ -40,7 +40,7 @@ const LAUNCHES = [
     badge: 'b-blue',
     status: 'SOON',
     end: 'In 7d',
-    img: 'ð',
+    img: '🏆',
   },
 ];
 
@@ -52,22 +52,22 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--pink),var(--gold))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð LAUNCHPAD</div>
+          <div className="sec-title">🚀 LAUNCHPAD</div>
           <span className="badge b-pink">EXCLUSIVE</span>
         </div>
         <div className="sec-sub">Early-access token launches &amp; IDOs. $YST holders get whitelist priority.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Required</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Required</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ð</div>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Launchpad â Holders Only</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🚀</div>
+          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Launchpad — Holders Only</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>Connect wallet &amp; hold 250K+ $YST for guaranteed whitelist access to all launches.</div>
           <w-sol-button style={{ '--wsol-border-radius': '6px', '--wsol-font-size': '12px' } as any} />
         </div>
@@ -75,13 +75,13 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
 
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ð</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Need 250,000 $YST</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 8 }}>You have {ystBalance.toLocaleString()} $YST. Need {(250_000 - ystBalance).toLocaleString()} more to access launchpad.</div>
           <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 16px' }}>
             <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
           </div>
-          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter â</a>
+          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter →</a>
         </div>
       )}
 
@@ -92,7 +92,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
               { l: 'TOTAL RAISED', v: '$317K', c: 'var(--gold)' },
               { l: 'LAUNCHES', v: '3', c: 'var(--blue)' },
               { l: 'YOUR TIER', v: ystBalance >= 10_000_000 ? 'WHALE' : 'HOLDER', c: ystBalance >= 10_000_000 ? 'var(--gold)' : 'var(--green)' },
-              { l: 'ALLOCATION BOOST', v: ystBalance >= 10_000_000 ? '5Ã' : '2Ã', c: 'var(--pink)' },
+              { l: 'ALLOCATION BOOST', v: ystBalance >= 10_000_000 ? '5×' : '2×', c: 'var(--pink)' },
             ].map(s => (
               <div key={s.l} className="stat-card">
                 <div className="slbl">{s.l}</div>
@@ -134,7 +134,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
                 style={{ fontSize: 11 }}
                 disabled={launch.status !== 'LIVE'}
               >
-                {launch.status === 'LIVE' ? 'ð Participate Now' : launch.status === 'SOON' ? 'ð Notify Me' : 'â Closed'}
+                {launch.status === 'LIVE' ? '🚀 Participate Now' : launch.status === 'SOON' ? '🔔 Notify Me' : '✓ Closed'}
               </button>
             </div>
           ))}
@@ -142,7 +142,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
           <div style={{ background: 'rgba(236,72,153,0.04)', border: '1px solid rgba(236,72,153,0.15)', borderRadius: 10, padding: '16px 20px', marginTop: 8 }}>
             <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, color: 'var(--pink)', marginBottom: 6 }}>Apply for Launchpad</div>
             <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 10 }}>Building a Solana project? Apply to launch with YAKK Studios and tap into our holder community.</div>
-            <a href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer" className="btn btn-pink" style={{ fontSize: 11 }}>Apply via Telegram â</a>
+            <a href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer" className="btn btn-pink" style={{ fontSize: 11 }}>Apply via Telegram →</a>
           </div>
         </div>
       )}
