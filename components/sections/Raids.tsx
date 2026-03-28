@@ -27,21 +27,21 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--red),var(--pink))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">âï¸ RAIDS</div>
+          <div className="sec-title">⚔️ RAIDS</div>
           <span className="badge b-pink">LIVE</span>
         </div>
         <div className="sec-sub">Coordinate Twitter/X raids with the YAKK community. Earn $YST for participation.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Required</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Required</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>âï¸</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>⚔️</div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Join the Raid Squad</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>Connect wallet &amp; hold 250K+ $YST to earn $YST by raiding with the community.</div>
           <w-sol-button style={{ '--wsol-border-radius': '6px', '--wsol-font-size': '12px' } as any} />
@@ -50,13 +50,13 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
 
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ð</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Need 250,000 $YST</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 8 }}>You have {ystBalance.toLocaleString()} $YST. Need {(250_000 - ystBalance).toLocaleString()} more to unlock raids.</div>
           <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 16px' }}>
             <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
           </div>
-          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter â</a>
+          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter →</a>
         </div>
       )}
 
@@ -79,7 +79,7 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
           <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
             {(['active', 'leaderboard'] as const).map(t => (
               <button key={t} className={`mode-pill ${activeTab === t ? 'active' : ''}`} onClick={() => setActiveTab(t)}>
-                {t === 'active' ? 'âï¸ Active Raids' : 'ð Leaderboard'}
+                {t === 'active' ? '⚔️ Active Raids' : '🏆 Leaderboard'}
               </button>
             ))}
           </div>
@@ -113,10 +113,10 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
                     <div className="prog-fill" style={{ width: (raid.participants / raid.goal * 100) + '%' }} />
                   </div>
                   {joined.includes(raid.id) ? (
-                    <span className="badge b-green" style={{ fontSize: 10, padding: '5px 12px' }}>â JOINED RAID</span>
+                    <span className="badge b-green" style={{ fontSize: 10, padding: '5px 12px' }}>✓ JOINED RAID</span>
                   ) : (
                     <button className="btn btn-pink" style={{ fontSize: 11 }} onClick={() => setJoined(j => [...j, raid.id])}>
-                      âï¸ Join Raid
+                      ⚔️ Join Raid
                     </button>
                   )}
                 </div>
