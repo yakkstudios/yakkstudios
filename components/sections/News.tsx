@@ -19,6 +19,7 @@ interface Article {
   sources?: string;
   tags: string[];
   readTime: string;
+  image?: string;
   featured?: boolean;
 }
 
@@ -34,6 +35,7 @@ const ARTICLES: Article[] = [
     sources: '@degengamblah � @postmodernism',
     tags: ['KOL EXPOSE', 'ON-CHAIN', 'SOLANA', 'INVESTIGATION'],
     readTime: '8 min',
+    image: '/news/kol-expose-banner.svg',
     featured: true,
   },
 ];
@@ -84,7 +86,15 @@ export default function News({ }: SectionProps) {
             role="button"
             tabIndex={0}
           >
-            <div className="news-card-top">
+            {article.image && (
+          <img
+            src={article.image}
+            alt={article.title}
+            className="news-card-banner"
+            style={{width:'100%',display:'block',borderRadius:'6px 6px 0 0',marginBottom:'12px'}}
+          />
+        )}
+        <div className="news-card-top">
               <span className="news-cat-badge">{article.category}</span>
               {article.tags.slice(0, 2).map((tag) => (
                 <span key={tag} className="news-tag">{tag}</span>
