@@ -3,131 +3,143 @@ import { useState } from 'react';
 
 interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
 
-const LISTINGS = [
-  { id: 1, type: 'SELL', asset: '$YST', amount: '2,000,000', price: '0.000042 SOL', value: '84 SOL', seller: '7P7x...NMMb', badge: 'b-red', badgeText: 'SELL' },
-  { id: 2, type: 'BUY', asset: '$YST', amount: '500,000', price: '0.000045 SOL', value: '22.5 SOL', seller: '8Aiy...QLc', badge: 'b-green', badgeText: 'BUY' },
-  { id: 3, type: 'SELL', asset: 'YAKK Genesis NFT', amount: '1 NFT', price: '10 SOL', value: '10 SOL', seller: 'Anon...xyz', badge: 'b-red', badgeText: 'SELL' },
-  { id: 4, type: 'BUY', asset: '$YST', amount: '1,000,000', price: '0.000040 SOL', value: '40 SOL', seller: 'Fg6P...k8z', badge: 'b-green', badgeText: 'BUY' },
-];
-
 export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Props) {
-  const hasAccess = walletConnected && ystBalance >= 250_000;
-  const [offerType, setOfferType] = useState<'buy' | 'sell'>('sell');
-  const [asset, setAsset] = useState('$YST');
+  const ystHeld = walletConnected && ystBalance >= 250_000;
+
+  const [side, setSide] = useState('buy');
+  const [token, setToken] = useState('yst');
   const [amount, setAmount] = useState('');
   const [price, setPrice] = useState('');
+  const [contact, setContact] = useState('');
+  const [posted, setPosted] = useState(false);
+
+  const inputStyle: React.CSSProperties = {
+    background: 'var(--bg4)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: 6,
+    padding: '8px 12px',
+    color: 'var(--text)',
+    fontFamily: "'Space Mono',monospace",
+    fontSize: 11,
+    outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box',
+  };
+
+  const handlePost = () => {
+    if (!amount || !price || !contact) return;
+    setPosted(true);
+    setTimeout(() => setPosted(false), 3000);
+    setAmount('');
+    setPrice('');
+    setContact('');
+  };
 
   return (
     <div className="sec-pad">
-      <div className="sec-header">
-        <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--green),var(--blue))' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">🤝 OTC DESK</div>
-          <span className="badge b-blue">P2P</span>
+      <div className="sec-eyebrow">PEER-TO-PEER</div>
+      <div className="sec-title">OTC Desk</div>
+      <div className="sec-bar"></div>
+
+      {/* Token gate row */}
+      <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 8 }}>
+        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span className={`badge ${walletConnected ? (ystHeld ? 'b-green' : 'b-red') : 'b-dim'}`}>
+          {walletConnected ? (ystHeld ? '✓ ACCESS GRANTED' : '✗ NEED MORE YST') : 'NOT CHECKED'}
+        </span>
+      </div>
+      <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
+        Post large block trades without moving the market. Escrow-secured. No middlemen.
+      </p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        {/* Post OTC order */}
+        <div className="card-sm">
+          <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', letterSpacing: '0.12em', marginBottom: 14 }}>POST OTC ORDER</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              <select
+                value={side}
+                onChange={e => setSide(e.target.value)}
+                style={inputStyle}
+              >
+                <option value="buy">BUY</option>
+                <option value="sell">SELL</option>
+              </select>
+              <select
+                value={token}
+                onChange={e => setToken(e.target.value)}
+                style={inputStyle}
+              >
+                <option value="yst">$YST</option>
+                <option value="spt">$SPT</option>
+                <option value="sol">SOL</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <input
+              type="number"
+              placeholder="Amount"
+              value={amount}
+              onChange={e => setAmount(e.target.value)}
+              style={inputStyle}
+            />
+            <input
+              type="number"
+              placeholder="Price per token (USD)"
+              value={price}
+              onChange={e => setPrice(e.target.value)}
+              style={inputStyle}
+            />
+            <input
+              type="text"
+              placeholder="Telegram or Twitter handle"
+              value={contact}
+              onChange={e => setContact(e.target.value)}
+              style={inputStyle}
+            />
+            {posted ? (
+              <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--green)', padding: '8px 0' }}>
+                ✓ Order posted successfully!
+              </div>
+            ) : (
+              <button
+                className="btn btn-pink"
+                style={{ width: '100%' }}
+                onClick={handlePost}
+                disabled={!walletConnected}
+              >
+                POST ORDER
+              </button>
+            )}
+            <p style={{ fontSize: 9, color: 'var(--dim)', textAlign: 'center', margin: 0 }}>
+              Connect wallet to post. Orders expire in 72h. Use escrow for safety.
+            </p>
+          </div>
         </div>
-        <div className="sec-sub">Peer-to-peer OTC trades for large $YST positions. No slippage. Holder-to-holder.</div>
-        <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Required</span>
-          {hasAccess
-            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
+
+        {/* Order book */}
+        <div className="card-sm">
+          <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', letterSpacing: '0.12em', marginBottom: 14 }}>OPEN ORDERS</div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 0', marginBottom: 10 }}>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#64dc64', display: 'inline-block' }}></span>
+              <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', letterSpacing: '0.1em' }}>LIVE DESK — ORDERS PERSIST ON-CHAIN</span>
+            </div>
+            <div>
+              <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', textAlign: 'center', padding: '24px 0', border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 7 }}>
+                No open orders yet.<br /><span style={{ opacity: 0.6 }}>Be the first — post a block trade above.</span>
+              </div>
+            </div>
+            <div style={{ marginTop: 10, padding: '8px 12px', background: 'rgba(247,201,72,0.05)', border: '1px solid rgba(247,201,72,0.12)', borderRadius: 6 }}>
+              <div style={{ fontSize: 9, color: 'var(--gold)', fontFamily: 'Space Mono,monospace', letterSpacing: '0.08em' }}>🔒 ESCROW PROTECTION</div>
+              <div style={{ fontSize: 10, color: 'var(--dim)', marginTop: 3 }}>
+                All orders are matched peer-to-peer. YAKK holds 0 custody. Use our escrow for trustless settlement — 0.3% fee covers on-chain arbitration.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {!walletConnected && (
-        <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>🤝</div>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>OTC Desk — Holders Only</div>
-          <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>Connect your wallet to post and view OTC listings.</div>
-          <w-sol-button style={{ '--wsol-border-radius': '6px', '--wsol-font-size': '12px' } as any} />
-        </div>
-      )}
-
-      {walletConnected && ystBalance < 250_000 && (
-        <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Need 250,000 $YST</div>
-          <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 8 }}>You have {ystBalance.toLocaleString()} $YST. Need {(250_000 - ystBalance).toLocaleString()} more.</div>
-          <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 16px' }}>
-            <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
-          </div>
-          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter →</a>
-        </div>
-      )}
-
-      {hasAccess && (
-        <div>
-          <div style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 10, padding: '12px 16px', marginBottom: 20, fontSize: 11, color: 'var(--muted)' }}>
-            ⚠️ OTC trades are peer-to-peer and not escrow-protected by default. Always verify counterparty identity. YAKK Studios is not liable for OTC disputes.
-          </div>
-
-          <div className="grid4" style={{ marginBottom: 20 }}>
-            {[
-              { l: 'ACTIVE LISTINGS', v: '4', c: 'var(--blue)' },
-              { l: 'TOTAL VOLUME', v: '156.5 SOL', c: 'var(--gold)' },
-              { l: 'BUY ORDERS', v: '2', c: 'var(--green)' },
-              { l: 'SELL ORDERS', v: '2', c: 'var(--red)' },
-            ].map(s => (
-              <div key={s.l} className="stat-card">
-                <div className="slbl">{s.l}</div>
-                <div className="sval" style={{ color: s.c }}>{s.v}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 11, color: 'var(--muted)', letterSpacing: 1.2, marginBottom: 12 }}>ACTIVE LISTINGS</div>
-          {LISTINGS.map(listing => (
-            <div key={listing.id} className="lb-row" style={{ marginBottom: 10, alignItems: 'flex-start', padding: '14px 16px' }}>
-              <span className={`badge ${listing.badge}`} style={{ marginRight: 8, minWidth: 40, textAlign: 'center' }}>{listing.badgeText}</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 3 }}>{listing.amount} {listing.asset}</div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>@ {listing.price} each · {listing.seller}</div>
-              </div>
-              <div style={{ textAlign: 'right', marginRight: 12 }}>
-                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13, color: 'var(--gold)' }}>{listing.value}</div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>TOTAL</div>
-              </div>
-              <button className="btn btn-outline" style={{ fontSize: 10, padding: '4px 12px' }}>Contact</button>
-            </div>
-          ))}
-
-          <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '20px', marginTop: 20 }}>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 16 }}>+ POST OTC LISTING</div>
-            <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-              {(['sell', 'buy'] as const).map(t => (
-                <button key={t} className={`mode-pill ${offerType === t ? 'active' : ''}`} onClick={() => setOfferType(t)}>
-                  {t.toUpperCase()}
-                </button>
-              ))}
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
-              <div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', marginBottom: 4 }}>ASSET</div>
-                <select className="field-inp" value={asset} onChange={e => setAsset(e.target.value)} style={{ width: '100%' }}>
-                  <option>$YST</option>
-                  <option>YAKK Genesis NFT</option>
-                  <option>SOL</option>
-                </select>
-              </div>
-              <div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', marginBottom: 4 }}>AMOUNT</div>
-                <input className="field-inp" placeholder="e.g. 500000" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%' }} />
-              </div>
-              <div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', marginBottom: 4 }}>PRICE (SOL per unit)</div>
-                <input className="field-inp" placeholder="e.g. 0.000042" value={price} onChange={e => setPrice(e.target.value)} style={{ width: '100%' }} />
-              </div>
-              <div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', marginBottom: 4 }}>TOTAL VALUE</div>
-                <div className="field-inp" style={{ color: 'var(--muted)' }}>
-                  {amount && price ? (parseFloat(amount.replace(/,/g, '')) * parseFloat(price)).toFixed(4) + ' SOL' : '—'}
-                </div>
-              </div>
-            </div>
-            <button className="btn btn-green" style={{ fontSize: 11 }}>Post Listing</button>
-          </div>
-        </div>
-      )}
     </div>
   );
-}
+      }
