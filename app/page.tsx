@@ -38,6 +38,7 @@ import Ledger from '@/components/sections/Ledger';
 import Whitepaper from '@/components/sections/Whitepaper';
 import News from '@/components/sections/News';
 import Services from '@/components/sections/Services';
+import Bridge from '@/components/sections/Bridge';
 import Wren from '@/components/sections/Wren';
 
 type SectionId =
@@ -46,7 +47,7 @@ type SectionId =
   | 'otcdesk' | 'yieldfinder' | 'alerts' | 'privacy' | 'tokencreator'
   | 'tgbot' | 'features' | 'portfolio' | 'stakepoint' | 'artlab' | 'coach'
   | 'raids' | 'raffle' | 'wallet' | 'members' | 'whaleclub' | 'ledger' | 'whitepaper'
-  | 'news' | 'services' | 'wren';
+  | 'news' | 'services' | 'wren' | 'bridge';
 
 // Fetch live YST token balance for wallets NOT in snapshot
 async function fetchYstBalance(connection: any, walletPk: PublicKey): Promise<number> {
@@ -109,6 +110,7 @@ export default function App() {
       news: 'YAKK News',
       services: 'AI Services',
       wren: 'Saving The Wren',
+      bridge: 'Bridge',
     };
     document.title = (titles[section] ?? section.toUpperCase()) + ' | $YAKK Studios';
   }, [section]);
@@ -174,10 +176,11 @@ export default function App() {
           <div className={`page-section ${section === 'ledger' ? 'active' : ''}`}><Ledger {...sectionProps} /></div>
           <div className={`page-section ${section === 'whitepaper' ? 'active' : ''}`}><Whitepaper {...sectionProps} /></div>
           <div className={`page-section ${section === 'news' ? 'active' : ''}`}><News {...sectionProps} /></div>
+          <div className={`page-section ${section === 'bridge' ? 'active' : ''}`}><Bridge {...sectionProps} /></div>
           <div className={`page-section ${section === 'services' ? 'active' : ''}`}><Services /></div>
           <div className={`page-section ${section === 'wren' ? 'active' : ''}`}><Wren /></div>
         </div>
       </div>
     </div>
   );
-}
+                               }
