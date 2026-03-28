@@ -21,32 +21,32 @@ export default function Cabal({ walletConnected, ystBalance, onNavigate }: Props
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--pink),#a855f7)' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ðµï¸ CABAL INVESTIGATOR</div>
+          <div className="sec-title">🕵️ CABAL INVESTIGATOR</div>
           <span className="badge b-yakk">BETA</span>
         </div>
         <div className="sec-sub">On-chain wallet intelligence. Track influencer wallets, whale movements &amp; insider activity.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Held</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Held</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">CABAL INVESTIGATOR</div>
           <div className="locked-sub">Connect your wallet and hold <strong>250,000+ $YST</strong> to access on-chain intelligence.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
         </div>
       )}
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">Insufficient $YST</div>
           <div className="locked-sub">You need <strong>250,000+ $YST</strong>. You hold: {ystBalance.toLocaleString()} $YST.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST 🪙</a>
         </div>
       )}
 
@@ -62,14 +62,14 @@ export default function Cabal({ walletConnected, ystBalance, onNavigate }: Props
               style={{ flex: 1 }}
             />
             <button className="btn btn-pink" onClick={handleSearch} disabled={searching}>
-              {searching ? 'ð Scanning...' : 'ð Investigate'}
+              {searching ? '🔍 Scanning...' : '🔍 Investigate'}
             </button>
           </div>
 
           {result?.found && addr && (
             <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: 20 }}>
               <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 14, marginBottom: 14, color: 'var(--pink)' }}>
-                ð WALLET PROFILE
+                📊 WALLET PROFILE
               </div>
               <div className="grid2" style={{ marginBottom: 16 }}>
                 {[
@@ -95,7 +95,7 @@ export default function Cabal({ walletConnected, ystBalance, onNavigate }: Props
               ))}
               <div style={{ marginTop: 14 }}>
                 <a href={`https://solscan.io/account/${addr}`} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
-                  View on Solscan â
+                  View on Solscan ↗
                 </a>
               </div>
             </div>
