@@ -24,7 +24,7 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--gold),var(--pink))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð PRICE ALERTS</div>
+          <div className="sec-title">🔔 PRICE ALERTS</div>
           <span className="badge b-green">FREE</span>
         </div>
         <div className="sec-sub">Set price alerts for any Solana token. Get notified when targets are hit.</div>
@@ -44,8 +44,8 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
           <div>
             <label className="field-lbl" style={{ marginTop: 0 }}>DIRECTION</label>
             <select className="field-sel" value={dir} onChange={e => setDir(e.target.value)} style={{ width: 'auto' }}>
-              <option value="above">Above â</option>
-              <option value="below">Below â</option>
+              <option value="above">Above ↑</option>
+              <option value="below">Below ↓</option>
             </select>
           </div>
           <button className="btn btn-gold" onClick={add}>Set Alert</button>
@@ -60,22 +60,22 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
         <div key={i} className="lb-row" style={{ marginBottom: 6, opacity: a.active ? 1 : 0.5 }}>
           <span className="td-tok" style={{ minWidth: 60 }}>{a.token}</span>
           <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: a.dir === 'above' ? 'var(--green)' : 'var(--red)', marginRight: 8 }}>
-            {a.dir === 'above' ? 'â ABOVE' : 'â BELOW'}
+            {a.dir === 'above' ? '↑ ABOVE' : '↓ BELOW'}
           </span>
           <span style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, flex: 1 }}>{a.target}</span>
           <span className={`badge ${a.active ? 'b-green' : 'b-dim'}`}>{a.active ? 'ACTIVE' : 'PAUSED'}</span>
-          <button style={{ background: 'none', border: 'none', color: 'var(--dim)', cursor: 'pointer', marginLeft: 10, fontSize: 14 }} onClick={() => setAlerts(al => al.filter((_, j) => j !== i))}>â</button>
+          <button style={{ background: 'none', border: 'none', color: 'var(--dim)', cursor: 'pointer', marginLeft: 10, fontSize: 14 }} onClick={() => setAlerts(al => al.filter((_, j) => j !== i))}>✕</button>
         </div>
       ))}
 
       {!walletConnected && (
         <div style={{ marginTop: 20, background: 'rgba(247,201,72,0.04)', border: '1px solid rgba(247,201,72,0.15)', borderRadius: 8, padding: '12px 16px', fontSize: 12, color: 'var(--muted)' }}>
-          ð¡ Connect your wallet to sync alerts across devices and receive Telegram notifications.
+          💡 Connect your wallet to sync alerts across devices and receive Telegram notifications.
         </div>
       )}
 
       <div style={{ marginTop: 16, fontSize: 10, color: 'var(--dim)', fontFamily: 'Space Mono,monospace' }}>
-        â¡ Push notifications via Telegram bot coming soon â link your TG in Settings.
+        ⚡ Push notifications via Telegram bot coming soon — link your TG in Settings.
       </div>
     </div>
   );
