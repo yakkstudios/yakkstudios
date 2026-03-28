@@ -20,13 +20,7 @@ const SOCIALS = [
   { label: 'DISCORD', placeholder: 'discord.gg/yakk (optional)' },
 ];
 
-export default function WhaleClub({
-  walletConnected = false,
-  ystBalance = 0,
-}: {
-  walletConnected?: boolean;
-  ystBalance?: number;
-}) {
+export default function WhaleClub({ walletConnected, ystBalance, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
   const [copied, setCopied] = useState(false);
   const isElite = walletConnected && ystBalance >= 250000;
   const gated = !isElite;
