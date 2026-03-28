@@ -22,22 +22,22 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--green),var(--blue))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð¤ OTC DESK</div>
+          <div className="sec-title">🤝 OTC DESK</div>
           <span className="badge b-blue">P2P</span>
         </div>
         <div className="sec-sub">Peer-to-peer OTC trades for large $YST positions. No slippage. Holder-to-holder.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Required</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Required</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ð¤</div>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>OTC Desk â Holders Only</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🤝</div>
+          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>OTC Desk — Holders Only</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>Connect your wallet to post and view OTC listings.</div>
           <w-sol-button style={{ '--wsol-border-radius': '6px', '--wsol-font-size': '12px' } as any} />
         </div>
@@ -45,20 +45,20 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
 
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ð</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Need 250,000 $YST</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 8 }}>You have {ystBalance.toLocaleString()} $YST. Need {(250_000 - ystBalance).toLocaleString()} more.</div>
           <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 16px' }}>
             <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
           </div>
-          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter â</a>
+          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter →</a>
         </div>
       )}
 
       {hasAccess && (
         <div>
           <div style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 10, padding: '12px 16px', marginBottom: 20, fontSize: 11, color: 'var(--muted)' }}>
-            â ï¸ OTC trades are peer-to-peer and not escrow-protected by default. Always verify counterparty identity. YAKK Studios is not liable for OTC disputes.
+            ⚠️ OTC trades are peer-to-peer and not escrow-protected by default. Always verify counterparty identity. YAKK Studios is not liable for OTC disputes.
           </div>
 
           <div className="grid4" style={{ marginBottom: 20 }}>
@@ -81,7 +81,7 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
               <span className={`badge ${listing.badge}`} style={{ marginRight: 8, minWidth: 40, textAlign: 'center' }}>{listing.badgeText}</span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 3 }}>{listing.amount} {listing.asset}</div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>@ {listing.price} each Â· {listing.seller}</div>
+                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>@ {listing.price} each · {listing.seller}</div>
               </div>
               <div style={{ textAlign: 'right', marginRight: 12 }}>
                 <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13, color: 'var(--gold)' }}>{listing.value}</div>
@@ -120,7 +120,7 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
               <div>
                 <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', marginBottom: 4 }}>TOTAL VALUE</div>
                 <div className="field-inp" style={{ color: 'var(--muted)' }}>
-                  {amount && price ? (parseFloat(amount.replace(/,/g, '')) * parseFloat(price)).toFixed(4) + ' SOL' : 'â'}
+                  {amount && price ? (parseFloat(amount.replace(/,/g, '')) * parseFloat(price)).toFixed(4) + ' SOL' : '—'}
                 </div>
               </div>
             </div>
