@@ -5,7 +5,7 @@ interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id:
 const TOC = [
   { n: '01', title: 'Executive Summary' },
   { n: '02', title: 'The Problem' },
-  { n: '03', title: 'The Solution â YAKK Studios' },
+  { n: '03', title: 'The Solution — YAKK Studios' },
   { n: '04', title: '$YST Tokenomics' },
   { n: '05', title: 'Access Tier System' },
   { n: '06', title: 'Revenue Share Model' },
@@ -19,7 +19,7 @@ export default function Whitepaper({ walletConnected, ystBalance, onNavigate }: 
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--gold),var(--blue))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð WHITEPAPER</div>
+          <div className="sec-title">📄 WHITEPAPER</div>
           <span className="badge b-gold">v2.0</span>
         </div>
         <div className="sec-sub">The YAKK Studios vision, tokenomics, platform mechanics and long-term roadmap.</div>
@@ -45,14 +45,14 @@ export default function Whitepaper({ walletConnected, ystBalance, onNavigate }: 
           {[
             {
               n: '01', title: 'Executive Summary',
-              body: 'YAKK Studios is a Solana-native analytics and community platform built for serious degens. We provide institutional-grade tools â wallet intelligence, DeFi yield optimization, AI trading signals, NFT analytics and on-chain data â gated to $YST token holders. Revenue generated from the platform is shared directly with stakers via the StakePoint protocol.',
+              body: 'YAKK Studios is a Solana-native analytics and community platform built for serious degens. We provide institutional-grade tools — wallet intelligence, DeFi yield optimization, AI trading signals, NFT analytics and on-chain data — gated to $YST token holders. Revenue generated from the platform is shared directly with stakers via the StakePoint protocol.',
             },
             {
               n: '02', title: 'The Problem',
               body: 'The Solana ecosystem lacks cohesive tooling for retail participants. Data is fragmented across dozens of platforms. Alpha leaks through Telegram groups with no verification. Rug pulls go undetected until wallets are drained. There is no sustainable model that rewards community members for growing the ecosystem.',
             },
             {
-              n: '03', title: 'The Solution â YAKK Studios',
+              n: '03', title: 'The Solution — YAKK Studios',
               body: 'YAKK Studios aggregates the most powerful on-chain tools into a single, gated platform. Holders of $YST unlock 30+ tools spanning analytics, AI signals, DeFi yield finding, portfolio tracking, NFT trading and community coordination. The more $YST you hold, the deeper your access and the larger your share of platform revenue.',
             },
             {
@@ -61,7 +61,7 @@ export default function Whitepaper({ walletConnected, ystBalance, onNavigate }: 
             },
             {
               n: '05', title: 'Access Tier System',
-              body: 'YAKK Studios uses a three-tier access model based on $YST holdings. Any amount: basic public access (news, whitepaper, community links). 250,000+ $YST: full platform access â all 30+ tools, revenue share dashboard, OTC desk, launchpad, raids. 10,000,000+ $YST: Whale Club â private alpha feeds, whale-only signals, governance priority, dedicated support.',
+              body: 'YAKK Studios uses a three-tier access model based on $YST holdings. Any amount: basic public access (news, whitepaper, community links). 250,000+ $YST: full platform access — all 30+ tools, revenue share dashboard, OTC desk, launchpad, raids. 10,000,000+ $YST: Whale Club — private alpha feeds, whale-only signals, governance priority, dedicated support.',
             },
             {
               n: '06', title: 'Revenue Share Model',
@@ -73,7 +73,7 @@ export default function Whitepaper({ walletConnected, ystBalance, onNavigate }: 
             },
             {
               n: '08', title: 'Team & Community',
-              body: 'YAKK Studios is built by a pseudonymous team of Solana-native developers, traders and community builders. The team holds $YST with the same vesting schedule as disclosed in tokenomics â no preferential treatment. The project is community-driven: top-voted features ship first, governance decisions are put to the holder community, and platform revenue flows back to stakers.',
+              body: 'YAKK Studios is built by a pseudonymous team of Solana-native developers, traders and community builders. The team holds $YST with the same vesting schedule as disclosed in tokenomics — no preferential treatment. The project is community-driven: top-voted features ship first, governance decisions are put to the holder community, and platform revenue flows back to stakers.',
             },
           ].map(section => (
             <div key={section.n} style={{ marginBottom: 24 }}>
@@ -91,8 +91,8 @@ export default function Whitepaper({ walletConnected, ystBalance, onNavigate }: 
             <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 14, marginBottom: 8 }}>Ready to Join?</div>
             <div style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 12 }}>Get $YST on Jupiter or Meteora and unlock the full YAKK Studios platform.</div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Buy $YST on Jupiter â</a>
-              <a href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Buy on Meteora â</a>
+              <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Buy $YST on Jupiter →</a>
+              <a href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Buy on Meteora →</a>
             </div>
           </div>
         </div>
