@@ -8,7 +8,7 @@ export default function Privacy({ walletConnected, ystBalance, onNavigate }: Pro
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--blue),var(--green))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð PRIVACY POLICY</div>
+          <div className="sec-title">🔐 PRIVACY POLICY</div>
         </div>
         <div className="sec-sub">How YAKK Studios handles your data, wallet connections and analytics.</div>
       </div>
@@ -17,7 +17,7 @@ export default function Privacy({ walletConnected, ystBalance, onNavigate }: Pro
         <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 12, padding: '24px 28px', marginBottom: 16 }}>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 15, marginBottom: 6 }}>Data We Collect</div>
           <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.8 }}>
-            YAKK Studios collects minimal data. When you connect your wallet, we read your public Solana wallet address and on-chain $YST balance to verify access tier. We do not store private keys, seed phrases or any sensitive credentials â ever.
+            YAKK Studios collects minimal data. When you connect your wallet, we read your public Solana wallet address and on-chain $YST balance to verify access tier. We do not store private keys, seed phrases or any sensitive credentials — ever.
           </div>
         </div>
 
@@ -59,11 +59,11 @@ export default function Privacy({ walletConnected, ystBalance, onNavigate }: Pro
         <div style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 10, padding: '16px 20px' }}>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, color: 'var(--blue)', marginBottom: 6 }}>Questions or Concerns?</div>
           <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 10 }}>Reach out to the YAKK Studios team directly on Telegram for any privacy-related enquiries.</div>
-          <a href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ fontSize: 11 }}>Contact via Telegram â</a>
+          <a href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ fontSize: 11 }}>Contact via Telegram →</a>
         </div>
 
         <div style={{ marginTop: 16, fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>
-          Last updated: March 2025 Â· YAKK Studios
+          Last updated: March 2025 · YAKK Studios
         </div>
       </div>
     </div>
