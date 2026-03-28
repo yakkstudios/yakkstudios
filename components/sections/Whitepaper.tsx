@@ -25,7 +25,7 @@ const TOKEN_INFO = [
   { k: 'Tax', v: '5% (2% treasury · 2% stakers · 1% burn)' },
 ];
 
-export default function Whitepaper({ onNav }: { onNav?: (s: string) => void }) {
+export default function Whitepaper({ walletConnected, ystBalance, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
   return (
     <section id="section-whitepaper" style={{ padding: '20px' }}>
       <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 4px' }}>
@@ -138,7 +138,7 @@ export default function Whitepaper({ onNav }: { onNav?: (s: string) => void }) {
       </div>
 
       <button
-        onClick={() => onNav?.('terminal')}
+        onClick={() => onNavigate?.('terminal')}
         style={{ background: '#e8206a', border: 'none', color: '#fff', padding: '10px 24px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 13, letterSpacing: 1 }}>
         SWAP HERE →
       </button>
