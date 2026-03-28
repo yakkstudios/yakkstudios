@@ -90,7 +90,7 @@ function KolCard({ k }: { k: Kol }) {
       {(k.sol || k.usd) && (
         <div style={{ fontSize: 12, color: '#ddd', fontFamily: 'monospace' }}>
           {k.sol && <span>{k.sol} SOL</span>}
-          {k.sol && k.usd && <span style={{ color: '#555', margin: '0 6px' }}>·</span>}
+          {k.sol && k.usd && <span style={{ color: '#555', margin: '0 6px' }}>�</span>}
           {k.usd && <span style={{ color: '#aaa' }}>{k.usd}</span>}
         </div>
       )}
@@ -140,7 +140,7 @@ export default function Clowns({ walletConnected, ystBalance, onNavigate }: Prop
           Full KOL Expose Article
         </a>
         <span style={{ fontSize: 11, color: '#555' }}>
-          Research: <a href="https://x.com/degengamblah" target="_blank" rel="noopener noreferrer" style={{ color: '#777' }}>@degengamblah</a> · <a href="https://x.com/postmodernism" target="_blank" rel="noopener noreferrer" style={{ color: '#777' }}>@postmodernism</a> · <a href="https://t.me/yakkcult" target="_blank" rel="noopener noreferrer" style={{ color: '#777' }}>$YAKK Cabal</a>
+          Research: <a href="https://x.com/degengamblah" target="_blank" rel="noopener noreferrer" style={{ color: '#777' }}>@degengamblah</a> � <a href="https://x.com/postmodernism" target="_blank" rel="noopener noreferrer" style={{ color: '#777' }}>@postmodernism</a> � <a href="https://t.me/yakkcult" target="_blank" rel="noopener noreferrer" style={{ color: '#777' }}>$YAKK Cabal</a>
         </span>
       </div>
 
