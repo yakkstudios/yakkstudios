@@ -24,6 +24,7 @@ export const GATED_SECTIONS = new Set([
   'screener','terminal','cabal','yakktrader','predictions','coach',
   'tgbot','update','artlab','raids','launchpad','otcdesk','yieldfinder',
   'portfolio','privacy','tokencreator','ledger','members','whaleclub',
+  'bridge','alerts',
 ]);
 
 export const NAV: NavSection[] = [
@@ -42,7 +43,8 @@ export const NAV: NavSection[] = [
       { id: 'terminal',    label: 'YAKK TERMINAL',      icon: '⚡', gated: true },
       { id: 'predictions', label: 'PREDICTION MARKETS', icon: '🎯', gated: true },
       { id: 'otcdesk',     label: 'OTC DESK',           icon: '🤝', gated: true },
-      { id: 'alerts',      label: 'PRICE ALERTS',       icon: '🔔' },
+      { id: 'alerts',      label: 'PRICE ALERTS',       icon: '🔔', gated: true },
+      { id: 'bridge',      label: 'BRIDGE',             icon: '🌉', gated: true },
     ],
   },
   {
