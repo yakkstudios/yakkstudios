@@ -11,12 +11,9 @@ interface Props {
 const TOKENS = [
   { id:1, emoji:'🩷', ticker:'YST',  name:'YAKK Studios Token', price:0.0000018, chg:1.44,  vol:'$24.1K', liq:'$189K', mcap:'$1.8M', fdv:'$1.8M', txns:'1,204', buys:'682', sells:'522', holders:'4,281', cat:'yakk', isNew:false, updated:true, dex:'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM' },
   { id:2, emoji:'🟢', ticker:'SPT',  name:'StakePoint Token',    price:0.00000042, chg:0.88,  vol:'$3.2K',  liq:'$41K',  mcap:'$420K', fdv:'$420K', txns:'312',   buys:'188', sells:'124', holders:'1,120', cat:'yakk', isNew:false, updated:true, dex:'spt' },
-  { id:3, emoji:'◎',  ticker:'SOL',  name:'Solana',              price:142.30,     chg:2.14,  vol:'$1.8B',  liq:'$4.2B', mcap:'$68.4B',fdv:'$78B',  txns:'14.2M', buys:'7.8M',sells:'6.4M',holders:'—',     cat:'bluechip', isNew:false, updated:false, dex:'so11111111111111111111111111111111111111112' },
-  { id:4, emoji:'🟡', ticker:'BONK', name:'Bonk',                price:0.0000194,  chg:-3.22, vol:'$89.4M', liq:'$31M',  mcap:'$1.2B', fdv:'$1.3B', txns:'42K',   buys:'19K', sells:'23K', holders:'680K',  cat:'bluechip', isNew:false, updated:false, dex:'bonk' },
+  { id:3, emoji:'🔒', ticker:'LOCK', name:'Streamlock',          price:0.0426,     chg:2.63,  vol:'$97',    liq:'$12K',  mcap:'$26K',  fdv:'$25K',  txns:'3',     buys:'3',   sells:'0',   holders:'—',     cat:'yakk', isNew:false, updated:true, dex:'FNhcY1cwQvQqaM8CUjXSuoGKJniwC4maBRLqNRLipump' },
+  { id:4, emoji:'◎',  ticker:'SOL',  name:'Solana',              price:142.30,     chg:2.14,  vol:'$1.8B',  liq:'$4.2B', mcap:'$68.4B',fdv:'$78B',  txns:'14.2M', buys:'7.8M',sells:'6.4M',holders:'—',     cat:'bluechip', isNew:false, updated:false, dex:'so11111111111111111111111111111111111111112' },
   { id:5, emoji:'🐕', ticker:'WIF',  name:'dogwifhat',           price:0.614,      chg:5.81,  vol:'$142M',  liq:'$22M',  mcap:'$614M', fdv:'$614M', txns:'38K',   buys:'22K', sells:'16K', holders:'194K',  cat:'bluechip', isNew:false, updated:false, dex:'wif' },
-  { id:6, emoji:'🔮', ticker:'JTO',  name:'Jito',                price:2.87,       chg:1.02,  vol:'$41M',   liq:'$8.4M', mcap:'$340M', fdv:'$2.9B', txns:'8.2K',  buys:'4.8K',sells:'3.4K',holders:'62K',   cat:'bluechip', isNew:false, updated:false, dex:'jto' },
-  { id:7, emoji:'🆕', ticker:'MICHI',name:'Michi',               price:0.0412,     chg:18.9,  vol:'$2.1M',  liq:'$890K', mcap:'$4.1M', fdv:'$4.1M', txns:'3.4K',  buys:'2.1K',sells:'1.3K',holders:'2,100', cat:'all', isNew:true, updated:false, dex:'michi' },
-  { id:8, emoji:'🆕', ticker:'PEAKY',name:'Peaky Sol',           price:0.000089,   chg:42.1,  vol:'$480K',  liq:'$120K', mcap:'$890K', fdv:'$890K', txns:'1.8K',  buys:'1.4K',sells:'400', holders:'890',   cat:'all', isNew:true, updated:false, dex:'peaky' },
 ];
 
 const MOCK_TXNS = [
@@ -128,7 +125,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
                     onClick={() => setFilter(f)}
                     style={{ cursor: 'pointer' }}
                   >
-                    {f === 'yakk' ? 'YAKK ✓' : f.toUpperCase()}
+                    {f === 'yakk' ? 'YST TRUSTED' : f.toUpperCase()}
                   </div>
                 ))}
               </div>
@@ -157,7 +154,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
                       <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                         <span style={{ fontSize: '14px' }}>{t.emoji}</span>
                         <span style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '11px' }}>{t.ticker}</span>
-                        {t.cat === 'yakk' && <span style={{ fontSize: '7px', background: 'rgba(224,96,126,0.1)', color: 'var(--pink)', padding: '1px 4px', borderRadius: '3px', fontFamily: 'Space Mono,monospace' }}>YAKK</span>}
+                        {t.cat === 'yakk' && <span style={{ fontSize: '7px', background: 'rgba(224,96,126,0.1)', color: 'var(--pink)', padding: '1px 4px', borderRadius: '3px', fontFamily: 'Space Mono,monospace' }}>YST ✓</span>}
                       </div>
                       <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--dim)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.name}</div>
                     </div>
@@ -178,8 +175,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
             {/* ─── CENTER: Chart + stats + txns ─── */}
             <div id="scr-center" style={{ flex: 1, overflowY: 'auto', minWidth: 0, background: 'var(--bg)' }}>
 
-              {/* CHART VIEW */}
-              {view === 'chart' && (
+              {/* CHART VIEW */}n              {view === 'chart' && (
                 <div>
                   {/* Chart header */}
                   <div className="ch-hdr" style={{ padding: '11px 16px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', background: 'var(--bg2)' }}>
