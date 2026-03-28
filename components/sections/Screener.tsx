@@ -24,32 +24,32 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
       <div className="sec-header">
         <div className="sec-bar" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð YAKK SCREENER</div>
+          <div className="sec-title">🔍 YAKK SCREENER</div>
           <span className="badge b-yakk">LIVE</span>
         </div>
         <div className="sec-sub">Real-time Solana token screening. Filter by volume, liquidity &amp; momentum.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Held</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Held</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">YAKK SCREENER</div>
           <div className="locked-sub">Connect your wallet and hold <strong>250,000+ $YST</strong> to access real-time token screening.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
         </div>
       )}
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">Insufficient $YST</div>
           <div className="locked-sub">You need <strong>250,000+ $YST</strong>. You hold: {ystBalance.toLocaleString()} $YST.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST 🪙</a>
         </div>
       )}
 
@@ -80,7 +80,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
 
           {/* Token table */}
           <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 11, color: 'var(--muted)', letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>
-            TOP SOLANA TOKENS Â· {tf}
+            TOP SOLANA TOKENS · {tf}
           </div>
           <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
             <table className="tbl">
@@ -108,7 +108,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
             </table>
           </div>
           <div style={{ fontSize: 10, color: 'var(--dim)', marginTop: 10, fontFamily: 'Space Mono,monospace' }}>
-            â¡ Data sourced from DexScreener Â· Updates every 30s Â· Live Solana on-chain data
+            ⚡ Data sourced from DexScreener · Updates every 30s · Live Solana on-chain data
           </div>
         </div>
       )}
