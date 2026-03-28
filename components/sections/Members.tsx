@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 interface Profile {
   name: string;
@@ -24,6 +25,9 @@ function getTier(balance: number) {
 export default function Members({ walletConnected = false, ystBalance = 0, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
   const [profile, setProfile] = useState<Profile>({ name: '', xHandle: '', telegram: '', bio: '', website: '' });
   const [saved, setSaved] = useState(false);
+  const { publicKey } = useWallet();
+  const walletAddress = publicKey?.toBase58() || '';
+
   const gated = !walletConnected || ystBalance < 250000;
   const tier = getTier(ystBalance);
 
