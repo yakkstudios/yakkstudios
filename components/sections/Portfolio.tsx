@@ -10,32 +10,32 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
       <div className="sec-header">
         <div className="sec-bar green" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð PORTFOLIO TRACKER</div>
+          <div className="sec-title">📊 PORTFOLIO TRACKER</div>
           <span className="badge b-green">LIVE</span>
         </div>
         <div className="sec-sub">Track your Solana portfolio P&amp;L, token holdings &amp; performance in real time.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Held</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Held</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">PORTFOLIO TRACKER</div>
           <div className="locked-sub">Connect your wallet and hold <strong>250,000+ $YST</strong> to track your portfolio.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
         </div>
       )}
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">Insufficient $YST</div>
           <div className="locked-sub">You need <strong>250,000+ $YST</strong>. You hold: {ystBalance.toLocaleString()} $YST.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST 🪙</a>
         </div>
       )}
 
@@ -84,8 +84,8 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
           </div>
 
           <div style={{ display: 'flex', gap: 10 }}>
-            <a href="https://birdeye.so" target="_blank" rel="noopener noreferrer" className="btn btn-outline">View on Birdeye â</a>
-            <a href="https://solscan.io" target="_blank" rel="noopener noreferrer" className="btn btn-outline">View on Solscan â</a>
+            <a href="https://birdeye.so" target="_blank" rel="noopener noreferrer" className="btn btn-outline">View on Birdeye ↗</a>
+            <a href="https://solscan.io" target="_blank" rel="noopener noreferrer" className="btn btn-outline">View on Solscan ↗</a>
           </div>
         </div>
       )}
