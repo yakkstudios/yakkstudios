@@ -196,7 +196,7 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
                       <span style={{ color: 'var(--muted)' }}>{p.label}</span>
                       <span style={{ color: p.color, fontWeight: 700 }}>{p.pct}%</span>
                     </div>
-                    <div style={{ height: '4px', borderRadius: '2px', background: 'var(--bg4)', overflow: 'hidden' }}>>
+                    <div style={{ height: '4px', borderRadius: '2px', background: 'var(--bg4)', overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: `${p.pct}%`, background: p.color, borderRadius: '2px' }}></div>
                     </div>
                   </div>
