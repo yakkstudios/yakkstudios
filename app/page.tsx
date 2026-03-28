@@ -1,3 +1,4 @@
+'use client';
 import { useState, useCallback, useEffect } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
@@ -67,7 +68,6 @@ export default function App() {
   const walletConnected = connected && !!publicKey;
   const walletAddress = publicKey?.toBase58();
 
-  // Fetch YST balance whenever wallet connects
   useEffect(() => {
     if (!walletConnected || !publicKey) { setYstBalance(0); return; }
     const addr = publicKey.toBase58();
@@ -91,7 +91,6 @@ export default function App() {
     setYstBalance(0);
   }, [disconnect]);
 
-  // Update document title on section change
   useEffect(() => {
     const titles: Record<string, string> = {
       home: 'Home',
@@ -181,4 +180,4 @@ export default function App() {
       </div>
     </div>
   );
-  }
+}
