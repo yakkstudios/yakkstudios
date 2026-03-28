@@ -36,13 +36,15 @@ import Members from '@/components/sections/Members';
 import WhaleClub from '@/components/sections/WhaleClub';
 import Ledger from '@/components/sections/Ledger';
 import Whitepaper from '@/components/sections/Whitepaper';
+import News from '@/components/sections/News';
 
 type SectionId =
   | 'home' | 'screener' | 'terminal' | 'update' | 'trusted' | 'clowns'
   | 'yakktrader' | 'predictions' | 'cabal' | 'nftmarket' | 'launchpad'
   | 'otcdesk' | 'yieldfinder' | 'alerts' | 'privacy' | 'tokencreator'
   | 'tgbot' | 'features' | 'portfolio' | 'stakepoint' | 'artlab' | 'coach'
-  | 'raids' | 'raffle' | 'wallet' | 'members' | 'whaleclub' | 'ledger' | 'whitepaper';
+  | 'raids' | 'raffle' | 'wallet' | 'members' | 'whaleclub' | 'ledger' | 'whitepaper'
+  | 'news';
 
 // Fetch live YST token balance for wallets NOT in snapshot
 async function fetchYstBalance(connection: any, walletPk: PublicKey): Promise<number> {
@@ -104,6 +106,7 @@ export default function App() {
       wallet: 'Profile',
       members: 'Members',
       whaleclub: 'Whale Club',
+        news: 'YAKK News',
     };
     document.title = (titles[section] ?? section.toUpperCase()) + ' | $YAKK Studios';
   }, [section]);
@@ -168,6 +171,7 @@ export default function App() {
           <div className={`page-section ${section === 'whaleclub' ? 'active' : ''}`}><WhaleClub {...sectionProps} /></div>
           <div className={`page-section ${section === 'ledger' ? 'active' : ''}`}><Ledger {...sectionProps} /></div>
           <div className={`page-section ${section === 'whitepaper' ? 'active' : ''}`}><Whitepaper {...sectionProps} /></div>
+          <div className={`page-section ${section === 'news' ? 'active' : ''}`}><News {...sectionProps} /></div>
         </div>
       </div>
     </div>
