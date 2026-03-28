@@ -1,95 +1,106 @@
 'use client';
 import { useState } from 'react';
 
-interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
-
-const RUGS = [
-  { name: 'SQUIDGAME2', dev: '4r3b...beC', amount: '$2.1M', date: '2026-03-20', type: 'HARD RUG', victims: 847, badge: 'b-red' },
-  { name: 'MOONPUMP', dev: 'BhsY...ijN', amount: '$890K', date: '2026-03-18', type: 'SOFT RUG', victims: 312, badge: 'b-gold' },
-  { name: 'SOLBONK', dev: '7oKJ...MSk', amount: '$340K', date: '2026-03-15', type: 'MIGRATION SCAM', victims: 156, badge: 'b-red' },
-  { name: 'WAGMI2025', dev: '6VCN...bag', amount: '$1.4M', date: '2026-03-10', type: 'HARD RUG', victims: 524, badge: 'b-red' },
-  { name: 'PEPESOL', dev: '8EwC...BU7', amount: '$210K', date: '2026-03-05', type: 'SLOW RUG', victims: 89, badge: 'b-gold' },
+const ENTRIES = [
+  {
+    token: '$BER',
+    extraction: '~$128K',
+    pattern: 'Coordinated dump post-listing',
+    status: 'EXPOSED',
+    detail: 'Linked wallets executed coordinated sell pressure within 48h of listing. Classic exit liquidity play targeting retail.',
+  },
+  {
+    token: '$PUNCH',
+    extraction: '~$3.5–5M+',
+    pattern: 'Serial extraction — developer pattern',
+    status: 'EXPOSED',
+    detail: 'Same dev infrastructure across multiple rugged tokens. Wallets share common funding source and timing signatures.',
+  },
+  {
+    token: '$MOON',
+    extraction: 'Under investigation',
+    pattern: 'Suspicious wallet clustering',
+    status: 'PENDING',
+    detail: 'Early wallet activity shows pre-launch coordination. Investigation ongoing.',
+  },
 ];
 
-export default function Ledger({ walletConnected, ystBalance, onNavigate }: Props) {
-  const [search, setSearch] = useState('');
-  const hasAccess = walletConnected && ystBalance >= 250_000;
-  const filtered = RUGS.filter(r => r.name.toLowerCase().includes(search.toLowerCase()) || r.dev.toLowerCase().includes(search.toLowerCase()));
+const STATUS_COLOR: Record<string, string> = {
+  EXPOSED: '#e8206a',
+  PENDING: '#e8c440',
+  CLEARED: '#00c896',
+};
+
+export default function Ledger({ walletConnected = false, ystBalance = 0 }: { walletConnected?: boolean; ystBalance?: number }) {
+  const [selected, setSelected] = useState<string | null>(null);
+  const gated = !walletConnected || ystBalance < 250000;
 
   return (
-    <div className="sec-pad">
-      <div className="sec-header">
-        <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--red),var(--pink))' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">📒 RUG LEDGER</div>
-          <span className="badge b-red">COMMUNITY DB</span>
+    <section id="section-ledger" style={{ padding: '20px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+        <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: 0 }}>
+          🗂 RUG LEDGER
+        </h2>
+        <span style={{ fontSize: 10, color: '#e8206a', border: '1px solid #e8206a', padding: '2px 8px', borderRadius: 10 }}>
+          {ENTRIES.filter(e => e.status === 'EXPOSED').length} EXPOSED
+        </span>
+      </div>
+      <p style={{ fontSize: 12, color: '#555', marginBottom: 16 }}>
+        On-chain evidence archive. Every entry backed by wallet analysis.
+      </p>
+
+      {/* Gate banner */}
+      {gated && (
+        <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, padding: '10px 14px', marginBottom: 16, fontSize: 11, color: '#666' }}>
+          🔒 250,000+ $YST Staked on StakePoint required — <span style={{ color: '#444' }}>NOT CHECKED</span>
         </div>
-        <div className="sec-sub">Community-maintained database of confirmed rug pulls &amp; scam tokens on Solana.</div>
-        <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Held</span>
-          {hasAccess
-            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
-        </div>
+      )}
+
+      {/* Table */}
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
+              {['TOKEN', 'EXTRACTION EST.', 'KEY PATTERN', 'STATUS'].map((h) => (
+                <th key={h} style={{ padding: '8px 10px', textAlign: 'left', color: '#555', fontWeight: 700, fontSize: 10, letterSpacing: 1 }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {ENTRIES.map((e) => (
+              <>
+                <tr
+                  key={e.token}
+                  onClick={() => setSelected(selected === e.token ? null : e.token)}
+                  style={{ borderBottom: '1px solid #0f0f0f', cursor: 'pointer', background: selected === e.token ? '#111' : 'transparent' }}
+                >
+                  <td style={{ padding: '10px', color: '#fff', fontWeight: 700 }}>{e.token}</td>
+                  <td style={{ padding: '10px', color: '#ccc' }}>{e.extraction}</td>
+                  <td style={{ padding: '10px', color: '#aaa' }}>{e.pattern}</td>
+                  <td style={{ padding: '10px' }}>
+                    <span style={{
+                      color: STATUS_COLOR[e.status] || '#888',
+                      border: `1px solid ${STATUS_COLOR[e.status] || '#333'}`,
+                      padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 700
+                    }}>{e.status}</span>
+                  </td>
+                </tr>
+                {selected === e.token && (
+                  <tr key={e.token + '-detail'} style={{ background: '#0a0a0a' }}>
+                    <td colSpan={4} style={{ padding: '12px 14px', fontSize: 12, color: '#888', borderBottom: '1px solid #1a1a1a', lineHeight: 1.6 }}>
+                      {e.detail}
+                    </td>
+                  </tr>
+                )}
+              </>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      {!walletConnected && (
-        <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">RUG LEDGER</div>
-          <div className="locked-sub">Connect your wallet and hold <strong>250,000+ $YST</strong> to access the rug ledger.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
-        </div>
-      )}
-      {walletConnected && ystBalance < 250_000 && (
-        <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">Insufficient $YST</div>
-          <div className="locked-sub">You need <strong>250,000+ $YST</strong>. You hold: {ystBalance.toLocaleString()} $YST.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST 🪙</a>
-        </div>
-      )}
-
-      {hasAccess && (
-        <div>
-          <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
-            <input className="field-inp" placeholder="Search token or dev wallet..." value={search} onChange={e => setSearch(e.target.value)} style={{ flex: 1 }} />
-            <button className="btn btn-pink" style={{ fontSize: 11 }}>+ Submit Rug</button>
-          </div>
-
-          <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
-            {[['Total Rugs', RUGS.length.toString(), 'var(--red)'], ['Total Stolen', '$5.0M+', 'var(--red)'], ['Victims', '1,928+', 'var(--gold)']].map(([l, v, c]) => (
-              <div key={l as string} className="stat-card" style={{ flex: 1 }}>
-                <div className="slbl">{l}</div>
-                <div className="sval" style={{ color: c as string, fontSize: 18 }}>{v}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
-            <table className="tbl">
-              <thead>
-                <tr><th>TOKEN</th><th>DEV WALLET</th><th>TYPE</th><th>AMOUNT STOLEN</th><th>VICTIMS</th><th>DATE</th></tr>
-              </thead>
-              <tbody>
-                {filtered.map(r => (
-                  <tr key={r.name}>
-                    <td style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700 }}>{r.name}</td>
-                    <td style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--muted)' }}>{r.dev}</td>
-                    <td><span className={`badge ${r.badge}`}>{r.type}</span></td>
-                    <td style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, color: 'var(--red)' }}>{r.amount}</td>
-                    <td style={{ fontFamily: 'Space Mono,monospace', fontSize: 10 }}>{r.victims}</td>
-                    <td style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--muted)' }}>{r.date}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div style={{ fontSize: 10, color: 'var(--dim)', marginTop: 10, fontFamily: 'Space Mono,monospace' }}>
-            Community-submitted. DYOR before investing in any token. YAKK Studios is not liable for losses.
-          </div>
-        </div>
-      )}
-    </div>
+      <p style={{ fontSize: 11, color: '#444', marginTop: 16, fontStyle: 'italic' }}>
+        New investigations added as evidence is confirmed. Submit a tip via Cabal Scanner.
+      </p>
+    </section>
   );
 }
