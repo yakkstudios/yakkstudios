@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+
 
 interface SectionProps {
   walletConnected: boolean;
@@ -65,12 +65,6 @@ function ArticleViewer({ article, onBack }: { article: Article; onBack: () => vo
 }
 
 export default function News({ }: SectionProps) {
-  const [openArticle, setOpenArticle] = useState<Article | null>(null);
-
-  if (openArticle) {
-    return <ArticleViewer article={openArticle} onBack={() => setOpenArticle(null)} />;
-  }
-
   return (
     <div className="sec-pad">
       <div className="sec-header">
@@ -86,10 +80,9 @@ export default function News({ }: SectionProps) {
           <div
             key={article.id}
             className={`news-card ${article.featured ? 'news-card-featured' : ''}`}
-            onClick={() => setOpenArticle(article)}
+            onClick={() => window.open(article.slug, '_blank', 'noopener,noreferrer')}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && setOpenArticle(article)}
           >
             <div className="news-card-top">
               <span className="news-cat-badge">{article.category}</span>
