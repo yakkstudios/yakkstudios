@@ -36,7 +36,7 @@ export default function Features({ walletConnected, ystBalance, onNavigate }: Pr
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--blue),var(--green))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð¡ FEATURE REQUESTS</div>
+          <div className="sec-title">💡 FEATURE REQUESTS</div>
           <span className="badge b-green">PUBLIC</span>
         </div>
         <div className="sec-sub">Vote on features you want. Top-voted features get prioritized by the dev team.</div>
@@ -68,7 +68,7 @@ export default function Features({ walletConnected, ystBalance, onNavigate }: Pr
             onClick={() => vote(i)}
             disabled={!walletConnected || voted.includes(i)}
           >
-            {voted.includes(i) ? 'â Voted' : 'â² Vote'}
+            {voted.includes(i) ? '✓ Voted' : '▲ Vote'}
           </button>
         </div>
       ))}
