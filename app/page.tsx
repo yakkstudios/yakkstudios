@@ -1,4 +1,3 @@
-'use client';
 import { useState, useCallback, useEffect } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
@@ -37,6 +36,8 @@ import WhaleClub from '@/components/sections/WhaleClub';
 import Ledger from '@/components/sections/Ledger';
 import Whitepaper from '@/components/sections/Whitepaper';
 import News from '@/components/sections/News';
+import Services from '@/components/sections/Services';
+import Wren from '@/components/sections/Wren';
 
 type SectionId =
   | 'home' | 'screener' | 'terminal' | 'update' | 'trusted' | 'clowns'
@@ -44,7 +45,7 @@ type SectionId =
   | 'otcdesk' | 'yieldfinder' | 'alerts' | 'privacy' | 'tokencreator'
   | 'tgbot' | 'features' | 'portfolio' | 'stakepoint' | 'artlab' | 'coach'
   | 'raids' | 'raffle' | 'wallet' | 'members' | 'whaleclub' | 'ledger' | 'whitepaper'
-  | 'news';
+  | 'news' | 'services' | 'wren';
 
 // Fetch live YST token balance for wallets NOT in snapshot
 async function fetchYstBalance(connection: any, walletPk: PublicKey): Promise<number> {
@@ -106,7 +107,9 @@ export default function App() {
       wallet: 'Profile',
       members: 'Members',
       whaleclub: 'Whale Club',
-        news: 'YAKK News',
+      news: 'YAKK News',
+      services: 'AI Services',
+      wren: 'Saving The Wren',
     };
     document.title = (titles[section] ?? section.toUpperCase()) + ' | $YAKK Studios';
   }, [section]);
@@ -157,7 +160,7 @@ export default function App() {
           <div className={`page-section ${section === 'yieldfinder' ? 'active' : ''}`}><YieldFinder {...sectionProps} /></div>
           <div className={`page-section ${section === 'alerts' ? 'active' : ''}`}><Alerts {...sectionProps} /></div>
           <div className={`page-section ${section === 'privacy' ? 'active' : ''}`}><Privacy {...sectionProps} /></div>
-          <div className={`page-section ${section === 'tokencreator'? 'active' : ''}`}><TokenCreator{...sectionProps} /></div>
+          <div className={`page-section ${section === 'tokencreator' ? 'active' : ''}`}><TokenCreator {...sectionProps} /></div>
           <div className={`page-section ${section === 'tgbot' ? 'active' : ''}`}><TgBot {...sectionProps} /></div>
           <div className={`page-section ${section === 'features' ? 'active' : ''}`}><Features {...sectionProps} /></div>
           <div className={`page-section ${section === 'portfolio' ? 'active' : ''}`}><Portfolio {...sectionProps} /></div>
@@ -172,8 +175,10 @@ export default function App() {
           <div className={`page-section ${section === 'ledger' ? 'active' : ''}`}><Ledger {...sectionProps} /></div>
           <div className={`page-section ${section === 'whitepaper' ? 'active' : ''}`}><Whitepaper {...sectionProps} /></div>
           <div className={`page-section ${section === 'news' ? 'active' : ''}`}><News {...sectionProps} /></div>
+          <div className={`page-section ${section === 'services' ? 'active' : ''}`}><Services {...sectionProps} /></div>
+          <div className={`page-section ${section === 'wren' ? 'active' : ''}`}><Wren {...sectionProps} /></div>
         </div>
       </div>
     </div>
   );
-}
+  }
