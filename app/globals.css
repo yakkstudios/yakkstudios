@@ -526,4 +526,8 @@ tr:hover td { background: var(--bg4); }
   .news-meta-right { margin-left: 0; }
   .news-iframe { height: calc(100vh - var(--mob-header-h) - 48px); }
   .sb-logo-wrap { display: none; }
+    /* -- new section mobile polish -- */
+    #section-ledger table { min-width: 480px; }
+    #section-home .home-hero { padding: 20px 16px 16px; }
+    #section-nftmarket input[type="text"] { min-width: 0; flex: 1; }
 }
