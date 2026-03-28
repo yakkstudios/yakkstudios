@@ -15,22 +15,22 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--gold),var(--pink))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ðª TOKEN CREATOR</div>
+          <div className="sec-title">🪙 TOKEN CREATOR</div>
           <span className="badge b-gold">TOOL</span>
         </div>
         <div className="sec-sub">Launch your own SPL token on Solana in minutes. No code required. Metadata + socials included.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Required</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Required</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ðª</div>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Token Creator â Holders Only</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🪙</div>
+          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Token Creator — Holders Only</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>Connect wallet &amp; hold 250K+ $YST to launch tokens with zero code.</div>
           <w-sol-button style={{ '--wsol-border-radius': '6px', '--wsol-font-size': '12px' } as any} />
         </div>
@@ -38,13 +38,13 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
 
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ð</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Need 250,000 $YST</div>
           <div style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 8 }}>You have {ystBalance.toLocaleString()} $YST. Need {(250_000 - ystBalance).toLocaleString()} more.</div>
           <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 16px' }}>
             <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
           </div>
-          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter â</a>
+          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter →</a>
         </div>
       )}
 
@@ -60,7 +60,7 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
                   color: step >= i + 1 ? '#fff' : 'var(--dim)',
                   border: step === i + 1 ? '2px solid var(--pink)' : '2px solid transparent',
                 }}>
-                  {step > i + 1 ? 'â' : i + 1}
+                  {step > i + 1 ? '✓' : i + 1}
                 </div>
                 <span style={{ fontFamily: 'Syne,sans-serif', fontWeight: 600, fontSize: 10, color: step >= i + 1 ? 'var(--text)' : 'var(--dim)' }} dangerouslySetInnerHTML={{ __html: label }} />
                 {i < 2 && <div style={{ flex: 1, height: 1, background: step > i + 1 ? 'var(--green)' : 'var(--border)' }} />}
@@ -70,7 +70,7 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
 
           {step === 1 && (
             <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 12, padding: '24px' }}>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 16 }}>STEP 1 â TOKEN BASICS</div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 16 }}>STEP 1 — TOKEN BASICS</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
                 {[
                   { label: 'TOKEN NAME', key: 'name', ph: 'e.g. YAKK Meme Coin' },
@@ -96,13 +96,13 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
                   </label>
                 ))}
               </div>
-              <button className="btn btn-pink" onClick={() => setStep(2)} disabled={!form.name || !form.ticker || !form.supply}>Next â</button>
+              <button className="btn btn-pink" onClick={() => setStep(2)} disabled={!form.name || !form.ticker || !form.supply}>Next →</button>
             </div>
           )}
 
           {step === 2 && (
             <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 12, padding: '24px' }}>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 16 }}>STEP 2 â SOCIALS &amp; METADATA</div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 16 }}>STEP 2 — SOCIALS &amp; METADATA</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
                 {[
                   { label: 'TWITTER / X', key: 'twitter', ph: 'https://x.com/yourtoken' },
@@ -120,23 +120,23 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
                 </div>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button className="btn btn-outline" onClick={() => setStep(1)}>â Back</button>
-                <button className="btn btn-pink" onClick={() => setStep(3)}>Next â</button>
+                <button className="btn btn-outline" onClick={() => setStep(1)}>← Back</button>
+                <button className="btn btn-pink" onClick={() => setStep(3)}>Next →</button>
               </div>
             </div>
           )}
 
           {step === 3 && (
             <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 12, padding: '24px' }}>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 16 }}>STEP 3 â REVIEW &amp; LAUNCH</div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 16 }}>STEP 3 — REVIEW &amp; LAUNCH</div>
               <div style={{ background: 'var(--bg4)', borderRadius: 8, padding: '16px', marginBottom: 16 }}>
                 {[
-                  ['Name', form.name || 'â'],
-                  ['Ticker', form.ticker || 'â'],
-                  ['Supply', form.supply ? parseInt(form.supply.replace(/,/g, '')).toLocaleString() : 'â'],
+                  ['Name', form.name || '—'],
+                  ['Ticker', form.ticker || '—'],
+                  ['Supply', form.supply ? parseInt(form.supply.replace(/,/g, '')).toLocaleString() : '—'],
                   ['Decimals', form.decimals],
-                  ['Revoke Mint', form.revoke ? 'Yes â' : 'No'],
-                  ['Revoke Freeze', form.freeze ? 'Yes â' : 'No'],
+                  ['Revoke Mint', form.revoke ? 'Yes ✓' : 'No'],
+                  ['Revoke Freeze', form.freeze ? 'Yes ✓' : 'No'],
                 ].map(([k, v]) => (
                   <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                     <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)' }}>{k}</span>
@@ -145,17 +145,17 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
                 ))}
               </div>
               <div style={{ background: 'rgba(247,201,72,0.06)', border: '1px solid rgba(247,201,72,0.2)', borderRadius: 8, padding: '12px 16px', marginBottom: 16, fontSize: 11, color: 'var(--muted)' }}>
-                â¡ Launch fee: ~0.05 SOL (Solana network + metadata upload)
+                ⚡ Launch fee: ~0.05 SOL (Solana network + metadata upload)
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button className="btn btn-outline" onClick={() => setStep(2)}>â Back</button>
-                <button className="btn btn-gold" style={{ flex: 1, justifyContent: 'center' }}>ð Launch Token</button>
+                <button className="btn btn-outline" onClick={() => setStep(2)}>← Back</button>
+                <button className="btn btn-gold" style={{ flex: 1, justifyContent: 'center' }}>🚀 Launch Token</button>
               </div>
             </div>
           )}
 
           <div style={{ marginTop: 20, background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '14px 18px' }}>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 11, marginBottom: 6 }}>ð HOW IT WORKS</div>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 11, marginBottom: 6 }}>📖 HOW IT WORKS</div>
             <div style={{ fontSize: 11, color: 'var(--muted)', lineHeight: 1.7 }}>
               Fill in your token details, add socials and metadata, then review and launch. The tool creates your SPL token mint on Solana, uploads metadata to IPFS, and optionally revokes mint/freeze authority to make the token immutable. You retain 100% of the initial supply.
             </div>
