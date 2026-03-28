@@ -31,7 +31,7 @@ const STATUS_COLOR: Record<string, string> = {
   CLEARED: '#00c896',
 };
 
-export default function Ledger({ walletConnected = false, ystBalance = 0 }: { walletConnected?: boolean; ystBalance?: number }) {
+export default function Ledger({ walletConnected, ystBalance, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
   const [selected, setSelected] = useState<string | null>(null);
   const gated = !walletConnected || ystBalance < 250000;
 
