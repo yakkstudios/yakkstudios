@@ -27,7 +27,7 @@ const MOCK_NFTS: NFT[] = [
   { id: '3', name: 'YAKK #187', collection: 'YAKKS', price: '1.8 SOL', chain: 'solana' },
 ];
 
-export default function NftMarket({ walletConnected = false }: { walletConnected?: boolean }) {
+export default function NftMarket({ walletConnected = false, ystBalance = 0, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
   const [activeChain, setActiveChain] = useState('solana');
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('RECENT');
