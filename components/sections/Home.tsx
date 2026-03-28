@@ -26,6 +26,23 @@ const FEATURES = [
   { name: 'Bridge', dex: false, bird: true },
 ];
 
+function fmtPrice(p: string | number): string {
+  const n = typeof p === 'string' ? parseFloat(p) : p;
+  if (!n) return '$0.00';
+  if (n < 0.000001) return '$' + n.toExponential(2);
+  if (n < 0.0001) return '$' + n.toFixed(8);
+  if (n < 0.01) return '$' + n.toFixed(6);
+  if (n < 1) return '$' + n.toFixed(4);
+  return '$' + n.toFixed(2);
+}
+
+function fmtNum(n: number | string): string {
+  const v = typeof n === 'string' ? parseFloat(n) : n;
+  if (v >= 1_000_000) return '$' + (v / 1_000_000).toFixed(2) + 'M';
+  if (v >= 1_000) return '$' + (v / 1_000).toFixed(1) + 'K';
+  return '$' + v.toFixed(0);
+}
+
 export default function Home({
   walletConnected,
   ystBalance,
@@ -37,6 +54,15 @@ export default function Home({
 }) {
   const [pep, setPep] = useState(PEPS[0]);
   const [nftDays, setNftDays] = useState({ d: '00', h: '00', m: '00', s: '00' });
+  const [stats, setStats] = useState<any>(null);
+
+  // Fetch live $YST stats from DexScreener
+  useEffect(() => {
+    const load = () => fetch('/api/price').then(r => r.ok ? r.json() : null).then(d => d && setStats(d)).catch(() => {});
+    load();
+    const iv = setInterval(load, 60_000);
+    return () => clearInterval(iv);
+  }, []);
 
   useEffect(() => {
     const drop = new Date('2026-04-20T00:00:00Z').getTime();
@@ -127,10 +153,10 @@ export default function Home({
 
       {/* STAT CARDS */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(148px,1fr))', gap: 12, marginBottom: 22 }}>
-        <div className="stat-card"><div className="slbl">$YST PRICE</div><div className="sval" style={{ color: 'var(--pink)' }}>—</div><div className="ssub">Fetching...</div></div>
-        <div className="stat-card"><div className="slbl">EXTRACTED TRACKED</div><div className="sval" style={{ color: 'var(--gold)' }}>$3.9B+</div><div className="ssub">12 investigations</div></div>
+        <div className="stat-card"><div className="slbl">$YST PRICE</div><div className="sval" style={{ color: 'var(--pink)', fontSize: 16 }}>{stats?.price ? fmtPrice(stats.price) : '—'}</div><div className="ssub">{stats?.change24h != null ? <span style={{ color: Number(stats.change24h) >= 0 ? 'var(--green)' : 'var(--red)' }}>{Number(stats.change24h) >= 0 ? '+' : ''}{Number(stats.change24h).toFixed(2)}% 24h</span> : 'Fetching...'}</div></div>
+        <div className="stat-card"><div className="slbl">24H VOLUME</div><div className="sval" style={{ color: 'var(--gold)' }}>{stats?.volume24h ? fmtNum(stats.volume24h) : '—'}</div><div className="ssub">DexScreener</div></div>
+        <div className="stat-card"><div className="slbl">LIQUIDITY</div><div className="sval" style={{ color: 'var(--green)' }}>{stats?.liquidity ? fmtNum(stats.liquidity) : '—'}</div><div className="ssub">{stats?.pairAddress ? 'Meteora' : 'DexScreener'}</div></div>
         <div className="stat-card"><div className="slbl">CLOWNS EXPOSED</div><div className="sval" style={{ color: 'var(--red)' }}>74</div><div className="ssub">&amp; counting 🤡</div></div>
-        <div className="stat-card"><div className="slbl">YST HOLDERS</div><div className="sval" style={{ color: 'var(--gold)' }}>0</div><div className="ssub">and growing</div></div>
         <div className="stat-card"><div className="slbl">NFT COLLECTION</div><div className="sval">3,333</div><div className="ssub">Drop: Apr 20 2026</div></div>
       </div>
 
