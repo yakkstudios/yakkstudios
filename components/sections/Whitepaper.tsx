@@ -1,102 +1,147 @@
 'use client';
 
-interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
-
-const TOC = [
-  { n: '01', title: 'Executive Summary' },
-  { n: '02', title: 'The Problem' },
-  { n: '03', title: 'The Solution — YAKK Studios' },
-  { n: '04', title: '$YST Tokenomics' },
-  { n: '05', title: 'Access Tier System' },
-  { n: '06', title: 'Revenue Share Model' },
-  { n: '07', title: 'Platform Roadmap' },
-  { n: '08', title: 'Team &amp; Community' },
+const REVENUE_SOURCES = [
+  { source: 'Screener update', reward: '+500 $YST' },
+  { source: 'Investigation request', reward: '+2,500 $YST' },
+  { source: 'NFT marketplace sale', reward: '0.5% back' },
+  { source: 'Token launch submission', reward: '+5,000 $YST' },
+  { source: 'OTC desk fee', reward: '0.1% to treasury' },
+  { source: 'Bridge fee', reward: '0.05% to treasury' },
 ];
 
-export default function Whitepaper({ walletConnected, ystBalance, onNavigate }: Props) {
+const DISTRIBUTION = [
+  { cat: '$YST Stakers (monthly)', pct: '30%', color: '#e8206a' },
+  { cat: 'Treasury / Ops', pct: '40%', color: '#888' },
+  { cat: 'Investigation Fund', pct: '20%', color: '#e8c440' },
+  { cat: 'Marketing / Raids', pct: '10%', color: '#00c896' },
+];
+
+const TOKEN_INFO = [
+  { k: 'Network', v: 'Solana' },
+  { k: 'Token', v: '$YST' },
+  { k: 'Supply', v: '1,000,000,000' },
+  { k: 'Launch', v: 'Fair — revshare' },
+  { k: 'Dev Fee', v: '20% locked' },
+  { k: 'Tax', v: '5% (2% treasury · 2% stakers · 1% burn)' },
+];
+
+export default function Whitepaper({ onNav }: { onNav?: (s: string) => void }) {
   return (
-    <div className="sec-pad">
-      <div className="sec-header">
-        <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--gold),var(--blue))' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">📄 WHITEPAPER</div>
-          <span className="badge b-gold">v2.0</span>
-        </div>
-        <div className="sec-sub">The YAKK Studios vision, tokenomics, platform mechanics and long-term roadmap.</div>
+    <section id="section-whitepaper" style={{ padding: '20px' }}>
+      <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 4px' }}>
+        📄 WHITEPAPER
+      </h2>
+      <p style={{ fontSize: 12, color: '#555', marginBottom: 24 }}>
+        No gatekeeping. The model is transparent.
+      </p>
+
+      {/* Mission */}
+      <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, padding: '16px', marginBottom: 20 }}>
+        <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>MISSION</div>
+        <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.7, margin: 0 }}>
+          YAKK Studios builds anti-greed infrastructure for Solana. Every tool — screener, swap,
+          launchpad, OTC desk, investigations — is designed to give retail the same edge that
+          insiders have always had. No email. No KYC. Your wallet is your account.
+        </p>
       </div>
 
-      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 24 }}>
-        <div style={{ flex: '0 0 220px' }}>
-          <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '16px', position: 'sticky', top: 20 }}>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 11, color: 'var(--muted)', letterSpacing: 1.2, marginBottom: 12 }}>CONTENTS</div>
-            {TOC.map(item => (
-              <div key={item.n} style={{ display: 'flex', gap: 10, marginBottom: 8, cursor: 'pointer' }}>
-                <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--pink)' }}>{item.n}</span>
-                <span style={{ fontSize: 11, color: 'var(--muted)' }} dangerouslySetInnerHTML={{ __html: item.title }} />
-              </div>
-            ))}
-            <div style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
-              <a href="#" className="btn btn-gold" style={{ fontSize: 10, width: '100%', justifyContent: 'center' }}>Download PDF</a>
-            </div>
-          </div>
+      {/* Revenue Model */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>
+          REVENUE MODEL
         </div>
-
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
           {[
-            {
-              n: '01', title: 'Executive Summary',
-              body: 'YAKK Studios is a Solana-native analytics and community platform built for serious degens. We provide institutional-grade tools — wallet intelligence, DeFi yield optimization, AI trading signals, NFT analytics and on-chain data — gated to $YST token holders. Revenue generated from the platform is shared directly with stakers via the StakePoint protocol.',
-            },
-            {
-              n: '02', title: 'The Problem',
-              body: 'The Solana ecosystem lacks cohesive tooling for retail participants. Data is fragmented across dozens of platforms. Alpha leaks through Telegram groups with no verification. Rug pulls go undetected until wallets are drained. There is no sustainable model that rewards community members for growing the ecosystem.',
-            },
-            {
-              n: '03', title: 'The Solution — YAKK Studios',
-              body: 'YAKK Studios aggregates the most powerful on-chain tools into a single, gated platform. Holders of $YST unlock 30+ tools spanning analytics, AI signals, DeFi yield finding, portfolio tracking, NFT trading and community coordination. The more $YST you hold, the deeper your access and the larger your share of platform revenue.',
-            },
-            {
-              n: '04', title: '$YST Tokenomics',
-              body: 'Total Supply: 1,000,000,000 $YST. Distribution: 40% community (raiding, raffles, rewards), 30% liquidity (Meteora, Jupiter), 20% team (12-month vesting, 3-month cliff), 10% ecosystem/partnerships. Mint authority revoked. Freeze authority revoked. Fully on-chain and immutable. Contract: jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',
-            },
-            {
-              n: '05', title: 'Access Tier System',
-              body: 'YAKK Studios uses a three-tier access model based on $YST holdings. Any amount: basic public access (news, whitepaper, community links). 250,000+ $YST: full platform access — all 30+ tools, revenue share dashboard, OTC desk, launchpad, raids. 10,000,000+ $YST: Whale Club — private alpha feeds, whale-only signals, governance priority, dedicated support.',
-            },
-            {
-              n: '06', title: 'Revenue Share Model',
-              body: 'Platform revenue (tool usage fees, launchpad fees, OTC desk fees, partner referrals) is pooled and distributed weekly to $YST stakers on StakePoint. Distribution is proportional to staked balance. Estimated APY: 18.4% at current revenue levels. As platform usage grows, APY scales accordingly. This creates direct alignment between platform growth and holder rewards.',
-            },
-            {
-              n: '07', title: 'Platform Roadmap',
-              body: 'Q1 2025: Full platform launch (Next.js rebuild), snapshot gate system, all 27 tools live. Q2 2025: Mobile app (iOS + Android), Telegram bot v2, AI rug pull detector. Q3 2025: Cross-chain support (ETH, Base), on-chain copy trading, governance voting. Q4 2025: YAKK Studios SDK for third-party integrations, launchpad v2, DAO transition.',
-            },
-            {
-              n: '08', title: 'Team & Community',
-              body: 'YAKK Studios is built by a pseudonymous team of Solana-native developers, traders and community builders. The team holds $YST with the same vesting schedule as disclosed in tokenomics — no preferential treatment. The project is community-driven: top-voted features ship first, governance decisions are put to the holder community, and platform revenue flows back to stakers.',
-            },
-          ].map(section => (
-            <div key={section.n} style={{ marginBottom: 24 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--pink)', fontWeight: 700 }}>{section.n}</span>
-                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 15 }}>{section.title}</div>
-              </div>
-              <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '18px 20px' }}>
-                <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.8, margin: 0 }}>{section.body}</p>
-              </div>
+            { icon: '🏛️', label: 'Platform Treasury' },
+            { icon: '💰', label: '$YST Stakers (RevShare)' },
+            { icon: '🔥', label: 'Auto-Burn' },
+          ].map(({ icon, label }) => (
+            <div key={label} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 6, padding: '10px 16px', fontSize: 12, color: '#ccc', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 16 }}>{icon}</span> {label}
             </div>
           ))}
+        </div>
 
-          <div style={{ background: 'rgba(247,201,72,0.06)', border: '1px solid rgba(247,201,72,0.2)', borderRadius: 10, padding: '20px 24px' }}>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 14, marginBottom: 8 }}>Ready to Join?</div>
-            <div style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 12 }}>Get $YST on Jupiter or Meteora and unlock the full YAKK Studios platform.</div>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Buy $YST on Jupiter →</a>
-              <a href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Buy on Meteora →</a>
-            </div>
-          </div>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
+                {['SOURCE', 'REWARD'].map(h => (
+                  <th key={h} style={{ padding: '8px 10px', textAlign: 'left', color: '#555', fontWeight: 700, fontSize: 10, letterSpacing: 1 }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {REVENUE_SOURCES.map(({ source, reward }) => (
+                <tr key={source} style={{ borderBottom: '1px solid #0f0f0f' }}>
+                  <td style={{ padding: '10px', color: '#ccc' }}>{source}</td>
+                  <td style={{ padding: '10px', color: '#e8206a', fontWeight: 700 }}>{reward}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
-    </div>
+
+      {/* Distribution */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>
+          REVENUE DISTRIBUTION
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(130px,1fr))', gap: 8 }}>
+          {DISTRIBUTION.map(({ cat, pct, color }) => (
+            <div key={cat} style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, padding: '14px', textAlign: 'center' }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color }}>{pct}</div>
+              <div style={{ fontSize: 10, color: '#666', marginTop: 4, lineHeight: 1.4 }}>{cat}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Token Info */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>
+          TOKEN INFO
+        </div>
+        <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, overflow: 'hidden' }}>
+          {TOKEN_INFO.map(({ k, v }, i) => (
+            <div key={k} style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              padding: '10px 16px', borderBottom: i < TOKEN_INFO.length - 1 ? '1px solid #111' : 'none'
+            }}>
+              <span style={{ fontSize: 11, color: '#666', textTransform: 'uppercase', letterSpacing: 1 }}>{k}</span>
+              <span style={{ fontSize: 12, color: '#ccc', fontWeight: 600 }}>{v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tokenomics breakdown */}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ fontSize: 11, color: '#888', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>
+          TOKENOMICS
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(110px,1fr))', gap: 8 }}>
+          {[
+            { pct: '2%', label: 'treasury', icon: '🏛️' },
+            { pct: '2%', label: '$YST stakers', icon: '💰' },
+            { pct: '1%', label: 'auto-burn', icon: '🔥' },
+            { pct: '20%', label: 'dev locked', icon: '🔒' },
+          ].map(({ pct, label, icon }) => (
+            <div key={label} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 6, padding: '12px', textAlign: 'center' }}>
+              <div style={{ fontSize: 18 }}>{icon}</div>
+              <div style={{ fontSize: 18, fontWeight: 800, color: '#e8206a', margin: '4px 0 2px' }}>{pct}</div>
+              <div style={{ fontSize: 10, color: '#666' }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button
+        onClick={() => onNav?.('terminal')}
+        style={{ background: '#e8206a', border: 'none', color: '#fff', padding: '10px 24px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 13, letterSpacing: 1 }}>
+        SWAP HERE →
+      </button>
+    </section>
   );
 }
