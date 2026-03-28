@@ -3,81 +3,169 @@ import { useState } from 'react';
 
 interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
 
-const ITEMS = [
-  { title: 'Mobile app (iOS + Android)', votes: 284, status: 'IN PROGRESS', badge: 'b-blue' },
-  { title: 'Telegram notification integration', votes: 197, status: 'PLANNED', badge: 'b-gold' },
-  { title: 'Multi-wallet portfolio tracking', votes: 156, status: 'PLANNED', badge: 'b-gold' },
-  { title: 'AI-powered rug pull detector', votes: 142, status: 'REVIEWING', badge: 'b-yakk' },
-  { title: 'Cross-chain support (ETH, Base)', votes: 138, status: 'RESEARCHING', badge: 'b-dim' },
-  { title: 'Revenue share dashboard', votes: 124, status: 'IN PROGRESS', badge: 'b-blue' },
-  { title: 'Dark/Light mode toggle', votes: 89, status: 'PLANNED', badge: 'b-gold' },
-  { title: 'On-chain copy trading', votes: 76, status: 'REVIEWING', badge: 'b-yakk' },
+interface FeatureItem {
+  title: string;
+  category: string;
+  author: string;
+  votes: number;
+}
+
+const INITIAL_FEATURES: FeatureItem[] = [
+  { title: 'Limit orders on DEX terminal', category: 'Trading', author: '@degenking', votes: 247 },
+  { title: 'Mobile app (iOS + Android)', category: 'Mobile', author: '@moonshot_jay', votes: 189 },
+  { title: 'Portfolio tracker with PnL history', category: 'Trading', author: '@yakker_sol', votes: 134 },
+  { title: 'Cross-chain portfolio view', category: 'DeFi', author: '@bridgemax', votes: 98 },
 ];
 
+const inputStyle: React.CSSProperties = {
+  background: 'var(--bg4)',
+  border: '1px solid rgba(255,255,255,0.08)',
+  borderRadius: 6,
+  padding: '8px 12px',
+  color: 'var(--text)',
+  fontFamily: 'Space Mono,monospace',
+  fontSize: 11,
+  outline: 'none',
+};
+
 export default function Features({ walletConnected, ystBalance, onNavigate }: Props) {
+  const [features, setFeatures] = useState<FeatureItem[]>(INITIAL_FEATURES);
   const [voted, setVoted] = useState<number[]>([]);
-  const [items, setItems] = useState(ITEMS);
-  const [title, setTitle] = useState('');
+
+  // Submit form state
+  const [frTitle, setFrTitle] = useState('');
+  const [frCategory, setFrCategory] = useState('');
+  const [frDesc, setFrDesc] = useState('');
+  const [frTwitter, setFrTwitter] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   const vote = (i: number) => {
-    if (voted.includes(i) || !walletConnected) return;
+    if (voted.includes(i)) return;
     setVoted(v => [...v, i]);
-    setItems(it => it.map((x, j) => j === i ? { ...x, votes: x.votes + 1 } : x));
+    setFeatures(f => f.map((item, j) => j === i ? { ...item, votes: item.votes + 1 } : item));
   };
 
   const submit = () => {
-    if (!title.trim() || !walletConnected) return;
-    setItems(it => [...it, { title, votes: 1, status: 'NEW', badge: 'b-green' }]);
-    setTitle('');
+    if (!frTitle.trim()) return;
+    const newItem: FeatureItem = {
+      title: frTitle,
+      category: frCategory || 'Other',
+      author: frTwitter || 'anonymous',
+      votes: 1,
+    };
+    setFeatures(f => [...f, newItem]);
+    setFrTitle('');
+    setFrCategory('');
+    setFrDesc('');
+    setFrTwitter('');
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 3000);
   };
 
   return (
     <div className="sec-pad">
-      <div className="sec-header">
-        <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--blue),var(--green))' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">💡 FEATURE REQUESTS</div>
-          <span className="badge b-green">PUBLIC</span>
+      <div className="sec-eyebrow">COMMUNITY DRIVEN</div>
+      <div className="sec-title">Feature Requests</div>
+      <div className="sec-bar" />
+      <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
+        Got an idea? Drop it here. We review submissions weekly and ship the most upvoted ones. You build the roadmap.
+      </p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+
+        {/* Submit */}
+        <div className="card-sm">
+          <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', letterSpacing: '0.12em', marginBottom: 14 }}>SUBMIT IDEA</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <input
+              type="text"
+              placeholder="Feature title (e.g. Limit orders on DEX)"
+              value={frTitle}
+              onChange={e => setFrTitle(e.target.value)}
+              style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+            />
+            <select
+              value={frCategory}
+              onChange={e => setFrCategory(e.target.value)}
+              style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+            >
+              <option value="">Select category</option>
+              <option value="Trading">Trading</option>
+              <option value="NFTs">NFTs</option>
+              <option value="DeFi">DeFi / Yield</option>
+              <option value="Privacy">Privacy</option>
+              <option value="Social">Social</option>
+              <option value="Mobile">Mobile</option>
+              <option value="Other">Other</option>
+            </select>
+            <textarea
+              placeholder="Describe your idea in a few sentences…"
+              rows={4}
+              value={frDesc}
+              onChange={e => setFrDesc(e.target.value)}
+              style={{ ...inputStyle, width: '100%', boxSizing: 'border-box', resize: 'vertical' }}
+            />
+            <input
+              type="text"
+              placeholder="Your Twitter (optional, for credit)"
+              value={frTwitter}
+              onChange={e => setFrTwitter(e.target.value)}
+              style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+            />
+            <button className="btn btn-pink" onClick={submit} style={{ width: '100%' }} disabled={!frTitle.trim()}>
+              SUBMIT REQUEST
+            </button>
+            {submitted && (
+              <div style={{ fontSize: 10, color: 'var(--green)', textAlign: 'center' }}>✓ Submitted! Thanks for the idea.</div>
+            )}
+            <p style={{ fontSize: 9, color: 'var(--dim)', textAlign: 'center', margin: 0 }}>
+              Reviewed every Friday. Top voted ideas shipped within 2 weeks.
+            </p>
+          </div>
         </div>
-        <div className="sec-sub">Vote on features you want. Top-voted features get prioritized by the dev team.</div>
+
+        {/* Top requests */}
+        <div className="card-sm">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', letterSpacing: '0.12em' }}>TOP REQUESTS</div>
+            <span style={{ fontSize: 9, color: 'var(--dim)' }}>Updated weekly</span>
+          </div>
+          <div>
+            {[...features]
+              .sort((a, b) => b.votes - a.votes)
+              .map((item, i) => {
+                const origIdx = features.indexOf(item);
+                return (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10, background: 'var(--bg4)', borderRadius: 7, marginBottom: 8 }}>
+                    <div>
+                      <div style={{ fontSize: 12, fontWeight: 600 }}>{item.title}</div>
+                      <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 2 }}>{item.category} · {item.author}</div>
+                    </div>
+                    <div style={{ textAlign: 'center' }}>
+                      <button
+                        onClick={() => vote(origIdx)}
+                        disabled={voted.includes(origIdx)}
+                        style={{
+                          background: voted.includes(origIdx) ? 'rgba(224,96,126,0.15)' : 'none',
+                          border: '1px solid rgba(255,255,255,0.15)',
+                          borderRadius: 6,
+                          padding: '4px 10px',
+                          cursor: voted.includes(origIdx) ? 'default' : 'pointer',
+                          fontSize: 12,
+                          color: voted.includes(origIdx) ? 'var(--pink)' : 'var(--text)',
+                        }}
+                      >
+                        ▲
+                      </button>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--pink)', marginTop: 2 }}>{item.votes}</div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+
       </div>
-
-      {walletConnected && (
-        <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 10, padding: '14px 18px', marginBottom: 20 }}>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 10 }}>+ SUGGEST A FEATURE</div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <input className="field-inp" placeholder="Describe the feature you want..." value={title} onChange={e => setTitle(e.target.value)} onKeyDown={e => e.key === 'Enter' && submit()} style={{ flex: 1 }} />
-            <button className="btn btn-pink" onClick={submit}>Submit</button>
-          </div>
-        </div>
-      )}
-
-      {items.sort((a, b) => b.votes - a.votes).map((item, i) => (
-        <div key={i} className="lb-row" style={{ marginBottom: 8, alignItems: 'flex-start' }}>
-          <div style={{ background: 'var(--bg4)', border: '1px solid var(--border)', borderRadius: 6, padding: '4px 10px', textAlign: 'center', minWidth: 48, marginRight: 4 }}>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 16, color: 'var(--pink)' }}>{item.votes}</div>
-            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 7, color: 'var(--dim)' }}>VOTES</div>
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 5 }}>{item.title}</div>
-            <span className={`badge ${item.badge}`}>{item.status}</span>
-          </div>
-          <button
-            className={`btn ${voted.includes(i) ? 'btn-green' : 'btn-outline'}`}
-            style={{ fontSize: 10, padding: '4px 12px' }}
-            onClick={() => vote(i)}
-            disabled={!walletConnected || voted.includes(i)}
-          >
-            {voted.includes(i) ? '✓ Voted' : '▲ Vote'}
-          </button>
-        </div>
-      ))}
-
-      {!walletConnected && (
-        <div style={{ textAlign: 'center', marginTop: 16, color: 'var(--muted)', fontSize: 12, fontFamily: 'Space Mono,monospace' }}>
-          Connect wallet to vote &amp; submit features
-        </div>
-      )}
     </div>
   );
 }
