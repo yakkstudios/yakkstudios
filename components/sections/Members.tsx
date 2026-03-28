@@ -1,105 +1,155 @@
 'use client';
+import { useState, useEffect } from 'react';
 
-interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
+interface Profile {
+  name: string;
+  xHandle: string;
+  telegram: string;
+  bio: string;
+  website: string;
+}
 
-const LEADERBOARD = [
-  { rank: 1, addr: 'FhVo...HLuM', bal: '747,915,265', tier: 'WHALE KING', badge: 'b-gold' },
-  { rank: 2, addr: '6zNu...Ae9q', bal: '150,053,867', tier: 'WHALE', badge: 'b-gold' },
-  { rank: 3, addr: '5JLX...DsSX', bal: '24,890,118', tier: 'WHALE', badge: 'b-gold' },
-  { rank: 4, addr: '6xsy...cnY', bal: '19,719,408', tier: 'WHALE', badge: 'b-gold' },
-  { rank: 5, addr: '8EwC...BU7', bal: '19,600,000', tier: 'WHALE', badge: 'b-gold' },
-  { rank: 6, addr: '6VCN...bag', bal: '10,194,224', tier: 'WHALE', badge: 'b-gold' },
-  { rank: 7, addr: 'H5br...PqB', bal: '10,000,000', tier: 'WHALE', badge: 'b-gold' },
-  { rank: 8, addr: '8Aiy...Lc', bal: '5,031,907', tier: 'HOLDER', badge: 'b-yakk' },
-  { rank: 9, addr: '7P7x...MMB', bal: '5,000,000', tier: 'HOLDER', badge: 'b-yakk' },
-  { rank: 10, addr: 'BhsY...ijN', bal: '2,113,925', tier: 'HOLDER', badge: 'b-yakk' },
+const TIERS = [
+  { name: 'YAKKED', min: 0, color: '#555', icon: '🐣' },
+  { name: 'HOLDER', min: 10000, color: '#888', icon: '💎' },
+  { name: 'STAKED', min: 50000, color: '#e8c440', icon: '⚡' },
+  { name: 'CABAL', min: 250000, color: '#e8206a', icon: '🔴' },
+  { name: 'WHALE', min: 1000000, color: '#00c896', icon: '🐋' },
 ];
 
-export default function Members({ walletConnected, ystBalance, onNavigate }: Props) {
-  const hasAccess = walletConnected && ystBalance >= 250_000;
-  const tier = ystBalance >= 10_000_000 ? '🐋 WHALE' : ystBalance >= 1_000_000 ? '💎 DIAMOND' : ystBalance >= 250_000 ? '🪙 HOLDER' : '—';
+function getTier(balance: number) {
+  return [...TIERS].reverse().find(t => balance >= t.min) || TIERS[0];
+}
+
+export default function Members({
+  walletConnected = false,
+  walletAddress = '',
+  ystBalance = 0,
+}: {
+  walletConnected?: boolean;
+  walletAddress?: string;
+  ystBalance?: number;
+}) {
+  const [profile, setProfile] = useState<Profile>({ name: '', xHandle: '', telegram: '', bio: '', website: '' });
+  const [saved, setSaved] = useState(false);
+  const gated = !walletConnected || ystBalance < 250000;
+  const tier = getTier(ystBalance);
+
+  useEffect(() => {
+    if (!walletAddress) return;
+    try {
+      const stored = localStorage.getItem('yakk_profile_' + walletAddress);
+      if (stored) setProfile(JSON.parse(stored));
+    } catch {}
+  }, [walletAddress]);
+
+  const saveProfile = () => {
+    if (!walletAddress) return;
+    try {
+      localStorage.setItem('yakk_profile_' + walletAddress, JSON.stringify(profile));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch {}
+  };
+
+  const inputStyle = {
+    width: '100%', background: '#111', border: '1px solid #1a1a1a', borderRadius: 4,
+    color: '#ccc', padding: '9px 12px', fontSize: 12, outline: 'none', boxSizing: 'border-box' as const,
+  };
 
   return (
-    <div className="sec-pad">
-      <div className="sec-header">
-        <div className="sec-bar" style={{ background: 'linear-gradient(90deg,#a855f7,var(--pink))' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">👾 MEMBERS</div>
-          <span className="badge b-yakk">EXCLUSIVE</span>
+    <section id="section-members" style={{ padding: '20px' }}>
+      <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 4px' }}>
+        👤 MEMBERS
+      </h2>
+      <p style={{ fontSize: 12, color: '#555', marginBottom: 20 }}>
+        Register your cult identity. Stored locally — only you can see it.
+      </p>
+
+      {/* Gate */}
+      {gated && (
+        <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, padding: '10px 14px', marginBottom: 20, fontSize: 11, color: '#666' }}>
+          🔒 250,000+ $YST Staked on StakePoint required — <span style={{ color: '#444' }}>NOT CHECKED</span>
         </div>
-        <div className="sec-sub">YAKK community leaderboard. Top $YST holders, tiers &amp; exclusive member perks.</div>
-        <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Held</span>
-          {hasAccess
-            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
+      )}
+
+      {/* Tier badge */}
+      {walletConnected && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, background: '#0d0d0d', border: `1px solid ${tier.color}33`, borderRadius: 6, padding: '12px 16px' }}>
+          <span style={{ fontSize: 22 }}>{tier.icon}</span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 800, color: tier.color }}>{tier.name}</div>
+            <div style={{ fontSize: 10, color: '#555' }}>{ystBalance.toLocaleString()} $YST</div>
+          </div>
+        </div>
+      )}
+
+      {/* Tier table */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 10, color: '#555', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 8 }}>TIERS</div>
+        <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, overflow: 'hidden' }}>
+          {TIERS.map(({ name, min, color, icon }, i) => (
+            <div key={name} style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              padding: '9px 14px', borderBottom: i < TIERS.length - 1 ? '1px solid #111' : 'none',
+              background: tier.name === name ? '#111' : 'transparent',
+            }}>
+              <span style={{ fontSize: 12, color }}>{icon} {name}</span>
+              <span style={{ fontSize: 11, color: '#555' }}>{min === 0 ? 'Any holder' : min.toLocaleString() + '+ $YST'}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {!walletConnected && (
-        <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">MEM@ERSAREA </div>
-          <div className="locked-sub">Connect your wallet and hold <strong>250,000+ $YST</strong> to access the members area.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
-        </div>
-      )}
-      {walletConnected && ystBalance < 250_000 && (
-        <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">Insufficient $YST</div>
-          <div className="locked-sub">You need <strong>250,000+ $YST</strong>. You hold: {ystBalance.toLocaleString()} $YST.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST 🪙</a>
-        </div>
-      )}
-
-      {hasAccess && (
-        <div>
-          {/* Your status */}
-          <div style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.2)', borderRadius: 10, padding: '14px 18px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ fontSize: 28 }}>👾</div>
-            <div>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 14, marginBottom: 3 }}>YOUR MEMBER STATUS</div>
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--muted)' }}>TIER: <strong style={{ color: 'var(--gold)' }}>{tier}</strong></span>
-                <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: 'var(--muted)' }}>BALANCE: <strong style={{ color: 'var(--green)' }}>{ystBalance.toLocaleString()} $YST</strong></span>
-              </div>
-            </div>
-          </div>
-
-          {/* Tier perks */}
-          <div className="grid3" style={{ marginBottom: 20 }}>
-            {[
-              { tier: '🪙 HOLDER', req: '250K+ YST', perks: 'All platform tools, AI features, Predictions', active: ystBalance >= 250_000 },
-              { tier: '💎 DIAMOND', req: '1M+ YST', perks: '+ Priority signals, Revenue share, OTC priority', active: ystBalance >= 1_000_000 },
-              { tier: '🐋 WHALE', req: '10M+ YST', perks: '+ Whale Club, Private alpha, Launch allocations', active: ystBalance >= 10_000_000 },
-            ].map(t => (
-              <div key={t.tier} style={{ background: t.active ? 'rgba(34,197,94,0.06)' : 'var(--bg3)', border: `1px solid ${t.active ? 'rgba(34,197,94,0.2)' : 'var(--border)'}`, borderRadius: 8, padding: '13px 16px' }}>
-                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 13, marginBottom: 4 }}>{t.tier}</div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)', marginBottom: 6 }}>{t.req}</div>
-                <div style={{ fontSize: 11, color: 'var(--muted)', lineHeight: 1.5 }}>{t.perks}</div>
-                {t.active && <div style={{ marginTop: 8 }}><span className="badge b-green">✓ UNLOCKED</span></div>}
-              </div>
-            ))}
-          </div>
-
-          {/* Leaderboard */}
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 11, color: 'var(--muted)', letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>
-            TOP HOLDERS LEADERBOARD
-          </div>
-          {LEADERBOARD.map(m => (
-            <div key={m.rank} className="lb-row" style={{ marginBottom: 6 }}>
-              <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 12, color: m.rank <= 3 ? 'var(--gold)' : 'var(--dim)', minWidth: 28 }}>#{m.rank}</span>
-              <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 11, color: 'var(--muted)', flex: 1 }}>{m.addr}</span>
-              <span style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginRight: 10 }}>{m.bal}</span>
-              <span className={`badge ${m.badge}`}>{m.tier}</span>
+      {/* Profile form */}
+      <div style={{ opacity: gated ? 0.4 : 1, pointerEvents: gated ? 'none' : 'auto' }}>
+        <div style={{ fontSize: 10, color: '#555', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 12 }}>YOUR PROFILE</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {([
+            ['name', 'DISPLAY NAME', 'text'],
+            ['xHandle', 'X HANDLE', 'text'],
+            ['telegram', 'TELEGRAM', 'text'],
+            ['website', 'WEBSITE', 'url'],
+          ] as [keyof Profile, string, string][]).map(([field, label, type]) => (
+            <div key={field}>
+              <label style={{ fontSize: 10, color: '#555', letterSpacing: 1, textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{label}</label>
+              <input
+                type={type}
+                value={profile[field]}
+                onChange={e => setProfile(p => ({ ...p, [field]: e.target.value }))}
+                style={inputStyle}
+                placeholder={label.toLowerCase()}
+              />
             </div>
           ))}
-          <div style={{ fontSize: 10, color: 'var(--dim)', marginTop: 10, fontFamily: 'Space Mono,monospace' }}>
-            Snapshot updated daily · Next update 09:00 UTC
+          <div>
+            <label style={{ fontSize: 10, color: '#555', letterSpacing: 1, textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>BIO (MAX 120 CHARS)</label>
+            <textarea
+              value={profile.bio}
+              maxLength={120}
+              onChange={e => setProfile(p => ({ ...p, bio: e.target.value }))}
+              rows={3}
+              style={{ ...inputStyle, resize: 'vertical' as const }}
+              placeholder="your cult bio..."
+            />
+            <div style={{ fontSize: 10, color: '#444', textAlign: 'right', marginTop: 2 }}>{profile.bio.length}/120</div>
           </div>
         </div>
-      )}
-    </div>
+        <button
+          onClick={saveProfile}
+          disabled={!walletConnected}
+          style={{
+            marginTop: 16, background: saved ? '#00c896' : '#e8206a', border: 'none', color: '#fff',
+            padding: '10px 24px', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 12,
+            transition: 'background 0.2s',
+          }}>
+          {saved ? '✓ SAVED' : '💾 SAVE PROFILE'}
+        </button>
+      </div>
+
+      <p style={{ fontSize: 11, color: '#333', marginTop: 20, fontStyle: 'italic' }}>
+        $YST and $SPT holders — connect wallet to verify your tier.
+      </p>
+    </section>
   );
 }
