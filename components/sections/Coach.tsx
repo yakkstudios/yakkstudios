@@ -27,32 +27,32 @@ export default function Coach({ walletConnected, ystBalance, onNavigate }: Props
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--blue),var(--green))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð§  YAKKAI COACH</div>
+          <div className="sec-title">🧠 YAKKAI COACH</div>
           <span className="badge b-blue">AI POWERED</span>
         </div>
         <div className="sec-sub">Your personal AI trading coach. Learn, improve &amp; sharpen your on-chain trading edge.</div>
         <div className="gate-badge">
-          <span className="gate-badge-text"><span>250,000+ $YST</span> ðª Held</span>
+          <span className="gate-badge-text"><span>250,000+ $YST</span> 🪙 Held</span>
           {hasAccess
-            ? <span className="badge b-green">â ACCESS GRANTED</span>
-            : <span className="badge b-dim">{walletConnected ? 'ð NEED MORE YST' : 'ð CONNECT WALLET'}</span>}
+            ? <span className="badge b-green">✓ ACCESS GRANTED</span>
+            : <span className="badge b-dim">{walletConnected ? '🔒 NEED MORE YST' : '🔒 CONNECT WALLET'}</span>}
         </div>
       </div>
 
       {!walletConnected && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">YAKKAI COACH</div>
           <div className="locked-sub">Connect your wallet and hold <strong>250,000+ $YST</strong> to access your personal AI trading coach.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get $YST 🪙</a>
         </div>
       )}
       {walletConnected && ystBalance < 250_000 && (
         <div className="locked-overlay">
-          <div className="locked-icon">ð</div>
+          <div className="locked-icon">🔒</div>
           <div className="locked-title">Insufficient $YST</div>
           <div className="locked-sub">You need <strong>250,000+ $YST</strong>. You hold: {ystBalance.toLocaleString()} $YST.</div>
-          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST ðª</a>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Get More $YST 🪙</a>
         </div>
       )}
 
