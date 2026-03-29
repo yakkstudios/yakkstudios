@@ -4,7 +4,7 @@ import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import Sidebar from '@/components/Sidebar';
 import TickerBar from '@/components/TickerBar';
-import { YST_MINT, YST_GATE, WHALE_GATE } from '@/lib/constants';
+import { YST_MINT, YST_GATE, WHALE_GATE, DEV_WALLETS } from '@/lib/constants';
 import { HOLDER_SNAPSHOT } from '@/lib/holders';
 // Sections
 import Home from '@/components/sections/Home';
@@ -40,7 +40,7 @@ import News from '@/components/sections/News';
 import Services from '@/components/sections/Services';
 import Bridge from '@/components/sections/Bridge';
 import Wren from '@/components/sections/Wren';
-// New legal pages
+// Legal pages
 import Terms from '@/components/sections/Terms';
 import PrivacyPolicy from '@/components/sections/PrivacyPolicy';
 
@@ -52,7 +52,6 @@ type SectionId =
   | 'raids' | 'raffle' | 'wallet' | 'members' | 'whaleclub' | 'ledger' | 'whitepaper'
   | 'news' | 'services' | 'wren' | 'bridge' | 'terms' | 'privacypolicy';
 
-// Fetch live YST token balance for wallets NOT in snapshot
 async function fetchYstBalance(connection: any, walletPk: PublicKey): Promise<number> {
   try {
     const mint = new PublicKey(YST_MINT);
@@ -123,11 +122,13 @@ export default function App() {
   const walletLabel = walletAddress
     ? walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4)
     : '';
-  // NOTE ON TOKEN GATING: Gate checks are client-side by design. Sections contain
-  // UI tools (screener, terminal, etc.) — not sensitive data. Real security for
-  // transactions (OTC, staking, etc.) is handled on-chain via wallet signatures.
-  // Server-side wallet verification is now logged on /api/ai for audit trail.
-  const sectionProps = { walletConnected, ystBalance, onNavigate: navigate };
+
+  // ── Dev wallet bypass ──────────────────────────────────────────────────────
+  // This wallet always has full access regardless of YST balance (test/founder wallet).
+  const isDevWallet = DEV_WALLETS.has(walletAddress ?? '');
+  const effectiveYstBalance = isDevWallet ? 999_999_999 : ystBalance;
+
+  const sectionProps = { walletConnected, ystBalance: effectiveYstBalance, onNavigate: navigate };
 
   return (
     <div id="app">
@@ -140,7 +141,7 @@ export default function App() {
         </div>
         {walletConnected ? (
           <button className="btn btn-ghost btn-sm" onClick={handleDisconnect}>
-            {walletLabel}{balanceLoading ? ' …' : ` · ${ystBalance.toLocaleString()} YST`}
+            {walletLabel}{balanceLoading ? ' …' : isDevWallet ? ' · DEV' : ` · ${ystBalance.toLocaleString()} YST`}
           </button>
         ) : (
           <w-sol-button style={{ '--wsol-border-radius': '4px', '--wsol-font-size': '11px' } as any} />
@@ -150,7 +151,7 @@ export default function App() {
         activeSection={section} onNavigate={navigate}
         isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)}
         walletConnected={walletConnected} walletAddress={walletAddress}
-        ystBalance={ystBalance}
+        ystBalance={effectiveYstBalance}
       />
       <div id="main-wrap">
         <TickerBar onConnectWallet={() => {}} walletConnected={walletConnected} walletLabel={walletLabel} />
