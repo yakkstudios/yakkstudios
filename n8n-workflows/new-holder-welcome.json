@@ -16,7 +16,10 @@
       "name": "Schedule Trigger (30min)",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.1,
-      "position": [240, 380]
+      "position": [
+        240,
+        380
+      ]
     },
     {
       "parameters": {
@@ -26,7 +29,10 @@
       "name": "Load Known Holders",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [490, 380]
+      "position": [
+        490,
+        380
+      ]
     },
     {
       "parameters": {
@@ -45,15 +51,19 @@
         "specifyBody": "json",
         "jsonBody": "={\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getTokenLargestAccounts\",\"params\":[\"jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV\"]}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         }
       },
       "id": "c3d4e5f6-0003-0003-0003-000000000002",
       "name": "RPC getTokenLargestAccounts",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [740, 380],
-      "notes": "Uses Solana public RPC — no API key required. Returns top 20 token account holders for $YST mint."
+      "position": [
+        740,
+        380
+      ],
+      "notes": "Uses Solana public RPC \u2014 no API key required. Returns top 20 token account holders for $YST mint.",
+      "continueOnFail": true
     },
     {
       "parameters": {
@@ -63,7 +73,10 @@
       "name": "Detect New Holders",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [990, 380]
+      "position": [
+        990,
+        380
+      ]
     },
     {
       "parameters": {
@@ -92,17 +105,23 @@
       "name": "New Holders Found?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [1240, 380]
+      "position": [
+        1240,
+        380
+      ]
     },
     {
       "parameters": {
-        "jsCode": "// Format welcome message for each new holder\nconst d = $input.first().json;\nconst balanceFormatted = new Intl.NumberFormat('en-US').format(Math.round(d.balance));\nconst solscanUrl = `https://solscan.io/account/${d.wallet}`;\n\nreturn [{\n  json: {\n    ...d,\n    telegramMessage: `👋 NEW YAKK HOLDER!\\n\\n🏠 Account: \\`${d.shortAddr}\\`\\n💰 Balance: ${balanceFormatted} $YST\\n🎉 Welcome to the YAKK den!\\n\\n👥 Top Holders Tracked: ${d.totalHolders}\\n🔍 [View on Solscan](${solscanUrl})\\n\\n$YST #YakkStudios #Solana`\n  }\n}];"
+        "jsCode": "// Format welcome message for each new holder\nconst d = $input.first().json;\nconst balanceFormatted = new Intl.NumberFormat('en-US').format(Math.round(d.balance));\nconst solscanUrl = `https://solscan.io/account/${d.wallet}`;\n\nreturn [{\n  json: {\n    ...d,\n    telegramMessage: `\ud83d\udc4b NEW YAKK HOLDER!\\n\\n\ud83c\udfe0 Account: \\`${d.shortAddr}\\`\\n\ud83d\udcb0 Balance: ${balanceFormatted} $YST\\n\ud83c\udf89 Welcome to the YAKK den!\\n\\n\ud83d\udc65 Top Holders Tracked: ${d.totalHolders}\\n\ud83d\udd0d [View on Solscan](${solscanUrl})\\n\\n$YST #YakkStudios #Solana`\n  }\n}];"
       },
       "id": "c3d4e5f6-0003-0003-0003-000000000005",
       "name": "Format Welcome Message",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1490, 280]
+      "position": [
+        1490,
+        280
+      ]
     },
     {
       "parameters": {
@@ -121,7 +140,7 @@
         "specifyBody": "json",
         "jsonBody": "={\"chat_id\":\"@yakkstudios\",\"text\":\"{{ $json.telegramMessage }}\",\"parse_mode\":\"Markdown\",\"disable_web_page_preview\":false}",
         "options": {
-          "timeout": 10000,
+          "timeout": 30000,
           "continueOnFail": true
         }
       },
@@ -129,14 +148,18 @@
       "name": "Telegram Welcome Message",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1740, 280],
+      "position": [
+        1740,
+        280
+      ],
       "notes": "Create a Header Auth credential named 'Telegram Bot Token' with Name: Authorization, Value: <your_bot_token> (just the token, no Bearer prefix).",
       "credentials": {
         "httpHeaderAuth": {
           "id": "telegram-header-auth",
           "name": "Telegram Bot Token"
         }
-      }
+      },
+      "continueOnFail": true
     }
   ],
   "connections": {
