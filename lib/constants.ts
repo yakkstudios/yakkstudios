@@ -3,6 +3,11 @@ export const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
 export const YST_GATE = 250_000;
 export const WHALE_GATE = 10_000_000;
 
+// ── Dev wallet bypass (always full access, regardless of YST balance) ────────
+export const DEV_WALLETS = new Set([
+  '7CsMUvuHub7dVTeVij8S5baWNHnNDwS2yqyv4ZYQKV9n',
+]);
+
 // ── DexScreener endpoints ────────────────────────────────────────────────────
 export const DEX_API = 'https://api.dexscreener.com';
 
@@ -29,7 +34,7 @@ export const GATED_SECTIONS = new Set([
   'bridge','alerts',
 ]);
 
-// ── Focused nav: 8 core items + legal + collapsed Labs ──────────────────────
+// ── Focused nav: 8 core items + legal + collapsed Labs (whale-only) ──────────
 export const NAV: NavSection[] = [
   {
     title: 'CORE',
@@ -54,10 +59,10 @@ export const NAV: NavSection[] = [
   {
     title: 'COMMUNITY',
     items: [
-      { id: 'wallet',    label: 'PROFILE',     icon: '👤' },
-      { id: 'members',   label: 'MEMBERS',     icon: '👾', gated: true },
-      { id: 'whaleclub', label: 'WHALE CLUB',  icon: '🐋', whaleOnly: true },
-      { id: 'features',  label: 'REQUESTS',    icon: '💡' },
+      { id: 'wallet',    label: 'PROFILE',       icon: '👤' },
+      { id: 'members',   label: 'MEMBERS',       icon: '👾', gated: true },
+      { id: 'whaleclub', label: 'WHALE CLUB',    icon: '🐋', whaleOnly: true },
+      { id: 'features',  label: 'REQUESTS',      icon: '💡' },
       { id: 'wren',      label: 'SAVE THE WREN', icon: '🌱' },
     ],
   },
@@ -65,24 +70,24 @@ export const NAV: NavSection[] = [
     title: 'LABS',
     collapsed: true,
     items: [
-      { id: 'terminal',     label: 'YAKK TERMINAL',      icon: '⚡', gated: true, comingSoon: true },
-      { id: 'yakktrader',   label: 'AI TRADER',           icon: '🤖', gated: true, comingSoon: true },
-      { id: 'predictions',  label: 'PREDICTIONS',         icon: '🎯', gated: true, comingSoon: true },
-      { id: 'otcdesk',      label: 'OTC DESK',            icon: '🤝', gated: true, comingSoon: true },
-      { id: 'alerts',       label: 'PRICE ALERTS',        icon: '🔔', gated: true, comingSoon: true },
-      { id: 'bridge',       label: 'BRIDGE',              icon: '🌉', gated: true, comingSoon: true },
-      { id: 'yieldfinder',  label: 'YIELD FINDER',        icon: '💰', gated: true, comingSoon: true },
-      { id: 'launchpad',    label: 'YAKK VENTURES',       icon: '🦅', gated: true, comingSoon: true },
-      { id: 'portfolio',    label: 'PORTFOLIO',            icon: '📊', gated: true, comingSoon: true },
-      { id: 'nftmarket',    label: 'NFT MARKET',          icon: '🖼️', comingSoon: true },
-      { id: 'raffle',       label: 'NFT RAFFLE',          icon: '🎟️', comingSoon: true },
-      { id: 'tokencreator', label: 'TOKEN CREATOR',       icon: '🪙', gated: true, comingSoon: true },
-      { id: 'artlab',       label: 'ART LAB',             icon: '🎨', gated: true, comingSoon: true },
-      { id: 'tgbot',        label: 'TG TRADE BOT',        icon: '📱', gated: true, comingSoon: true },
-      { id: 'privacy',      label: 'PRIVACY ROUTER',      icon: '🕵️', gated: true, comingSoon: true },
-      { id: 'update',       label: 'UPDATE TOKEN',        icon: '🚀', gated: true, comingSoon: true },
-      { id: 'raids',        label: 'RAID HUB',            icon: '⚔️', gated: true, comingSoon: true },
-      { id: 'trusted',      label: 'TRUSTED LIST',        icon: '🛡️', comingSoon: true },
+      { id: 'terminal',     label: 'YAKK TERMINAL',   icon: '⚡',  whaleOnly: true },
+      { id: 'yakktrader',   label: 'AI TRADER',        icon: '🤖',  whaleOnly: true },
+      { id: 'predictions',  label: 'PREDICTIONS',      icon: '🎯',  whaleOnly: true },
+      { id: 'otcdesk',      label: 'OTC DESK',         icon: '🤝',  whaleOnly: true },
+      { id: 'alerts',       label: 'PRICE ALERTS',     icon: '🔔',  whaleOnly: true },
+      { id: 'bridge',       label: 'BRIDGE',           icon: '🌉',  whaleOnly: true },
+      { id: 'yieldfinder',  label: 'YIELD FINDER',     icon: '💰',  whaleOnly: true },
+      { id: 'launchpad',    label: 'YAKK VENTURES',    icon: '🦅',  whaleOnly: true },
+      { id: 'portfolio',    label: 'PORTFOLIO',         icon: '📊',  whaleOnly: true },
+      { id: 'nftmarket',    label: 'NFT MARKET',       icon: '🖼️',  whaleOnly: true },
+      { id: 'raffle',       label: 'NFT RAFFLE',       icon: '🎟️',  whaleOnly: true },
+      { id: 'tokencreator', label: 'TOKEN CREATOR',    icon: '🪙',  whaleOnly: true },
+      { id: 'artlab',       label: 'ART LAB',          icon: '🎨',  whaleOnly: true },
+      { id: 'tgbot',        label: 'TG TRADE BOT',     icon: '📱',  whaleOnly: true },
+      { id: 'privacy',      label: 'PRIVACY ROUTER',   icon: '🕵️',  whaleOnly: true },
+      { id: 'update',       label: 'UPDATE TOKEN',     icon: '🚀',  whaleOnly: true },
+      { id: 'raids',        label: 'RAID HUB',         icon: '⚔️',  whaleOnly: true },
+      { id: 'trusted',      label: 'TRUSTED LIST',     icon: '🛡️',  whaleOnly: true },
     ],
   },
   {
