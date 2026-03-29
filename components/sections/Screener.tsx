@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Props {
   walletConnected: boolean;
@@ -8,7 +8,7 @@ interface Props {
 }
 
 /* ── Static mock data ─────────────────────── */
-const TOKENS = [
+const INITIAL_TOKENS = [
   { id:1, emoji:'🩷', ticker:'YST',  name:'YAKK Studios Token', price:0.0000018, chg:1.44,  vol:'$24.1K', liq:'$189K', mcap:'$1.8M', fdv:'$1.8M', txns:'1,204', buys:'682', sells:'522', holders:'4,281', cat:'yakk', isNew:false, updated:true, dex:'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM' },
   { id:2, emoji:'🟢', ticker:'SPT',  name:'StakePoint Token',    price:0.00000042, chg:0.88,  vol:'$3.2K',  liq:'$41K',  mcap:'$420K', fdv:'$420K', txns:'312',   buys:'188', sells:'124', holders:'1,120', cat:'yakk', isNew:false, updated:true, dex:'spt' },
   { id:3, emoji:'🔒', ticker:'LOCK', name:'Streamlock',          price:0.0426,     chg:2.63,  vol:'$97',    liq:'$12K',  mcap:'$26K',  fdv:'$25K',  txns:'3',     buys:'3',   sells:'0',   holders:'—',     cat:'yakk', isNew:false, updated:true, dex:'FNhcY1cwQvQqaM8CUjXSuoGKJniwC4maBRLqNRLipump' },
@@ -34,15 +34,64 @@ function fmtPrice(p: number) {
 export default function Screener({ walletConnected, ystBalance, onNavigate }: Props) {
   const hasAccess = walletConnected && ystBalance >= 250_000;
 
+  const [tokens, setTokens] = useState(INITIAL_TOKENS);
   const [view, setView] = useState<'chart' | 'new' | 'gainers'>('chart');
   const [filter, setFilter] = useState('all');
-  const [selectedToken, setSelectedToken] = useState<typeof TOKENS[0] | null>(null);
+  const [selectedToken, setSelectedToken] = useState<typeof INITIAL_TOKENS[0] | null>(null);
   const [timeframe, setTimeframe] = useState('15');
   const [txnTab, setTxnTab] = useState('all');
   const [search, setSearch] = useState('');
   const [listSearch, setListSearch] = useState('');
 
-  const filteredTokens = TOKENS.filter(t => {
+  /* ── Live YST price from /api/price ─────────────────────── */
+  useEffect(() => {
+    async function fetchYSTPrice() {
+      try {
+        const res = await fetch('/api/price');
+        if (!res.ok) return;
+        const data = await res.json();
+        const price = parseFloat(data.price);
+        const change24h: number = data.change24h ?? 0;
+        const volume24h: number = data.volume24h ?? 0;
+
+        if (!isNaN(price) && price > 0) {
+          setTokens(prev =>
+            prev.map(t => {
+              if (t.ticker !== 'YST') return t;
+              // Format volume with K/M suffix
+              const fmtVol = volume24h >= 1_000_000
+                ? `$${(volume24h / 1_000_000).toFixed(1)}M`
+                : volume24h >= 1_000
+                ? `$${(volume24h / 1_000).toFixed(1)}K`
+                : `$${volume24h.toFixed(2)}`;
+              return {
+                ...t,
+                price,
+                chg: change24h,
+                vol: fmtVol,
+              };
+            })
+          );
+          // Keep selectedToken in sync if YST is selected
+          setSelectedToken(prev => {
+            if (!prev || prev.ticker !== 'YST') return prev;
+            const fmtVol = volume24h >= 1_000_000
+              ? `$${(volume24h / 1_000_000).toFixed(1)}M`
+              : volume24h >= 1_000
+              ? `$${(volume24h / 1_000).toFixed(1)}K`
+              : `$${volume24h.toFixed(2)}`;
+            return { ...prev, price, chg: change24h, vol: fmtVol };
+          });
+        }
+      } catch {
+        // Silently fall back to static data on error
+      }
+    }
+
+    fetchYSTPrice();
+  }, []);
+
+  const filteredTokens = tokens.filter(t => {
     if (listSearch && !t.ticker.toLowerCase().includes(listSearch.toLowerCase()) && !t.name.toLowerCase().includes(listSearch.toLowerCase())) return false;
     if (search && !t.ticker.toLowerCase().includes(search.toLowerCase()) && !t.name.toLowerCase().includes(search.toLowerCase())) return false;
     if (filter === 'yakk') return t.cat === 'yakk';
@@ -58,8 +107,8 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
     return true;
   });
 
-  const gainers = [...TOKENS].sort((a, b) => b.chg - a.chg);
-  const newPairs = TOKENS.filter(t => t.isNew);
+  const gainers = [...tokens].sort((a, b) => b.chg - a.chg);
+  const newPairs = tokens.filter(t => t.isNew);
 
   return (
     <div style={{ height: 'calc(100vh - 74px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
@@ -175,7 +224,8 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
             {/* ─── CENTER: Chart + stats + txns ─── */}
             <div id="scr-center" style={{ flex: 1, overflowY: 'auto', minWidth: 0, background: 'var(--bg)' }}>
 
-              {/* CHART VIEW */}n              {view === 'chart' && (
+              {/* CHART VIEW */}
+              {view === 'chart' && (
                 <div>
                   {/* Chart header */}
                   <div className="ch-hdr" style={{ padding: '11px 16px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', background: 'var(--bg2)' }}>
