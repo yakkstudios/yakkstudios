@@ -134,18 +134,19 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
               YAKK <span style={{ color: 'var(--gold)' }}>SCREENER</span>
             </div>
             <input
-              className="scr-search"
+              className="scr-search inp"
               type="text"
               placeholder="Search token, ticker, CA..."
               value={search}
               onChange={e => setSearch(e.target.value)}
+              style={{ minWidth: 0, flex: '1 1 180px' }}
             />
-            <div className="scr-nav">
-              <button className={`scr-nb${view === 'chart' ? ' active' : ''}`} onClick={() => setView('chart')}>CHART</button>
-              <button className={`scr-nb${view === 'new' ? ' active' : ''}`} onClick={() => setView('new')}>NEW PAIRS</button>
-              <button className={`scr-nb${view === 'gainers' ? ' active' : ''}`} onClick={() => setView('gainers')}>GAINERS</button>
+            <div className="scr-nav" style={{ display: 'flex', gap: '4px' }}>
+              <button className={`scr-nb mode-pill${view === 'chart' ? ' active' : ''}`} onClick={() => setView('chart')}>CHART</button>
+              <button className={`scr-nb mode-pill${view === 'new' ? ' active' : ''}`} onClick={() => setView('new')}>NEW PAIRS</button>
+              <button className={`scr-nb mode-pill${view === 'gainers' ? ' active' : ''}`} onClick={() => setView('gainers')}>GAINERS</button>
             </div>
-            <div style={{ marginLeft: 'auto', display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <div className="scr-toolbar-right" style={{ marginLeft: 'auto', display: 'flex', gap: '6px', alignItems: 'center' }}>
               <span style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)', padding: '3px 9px', borderRadius: '3px', fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--green)' }}>$10 vs $300+ DEX</span>
               <button className="btn btn-pink" style={{ fontSize: '10px', padding: '5px 12px' }}>+ UPDATE TOKEN</button>
               <button className="btn btn-outline" style={{ fontSize: '10px', padding: '5px 12px' }}>🔗 Wallet</button>
@@ -233,7 +234,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
                       {selectedToken ? selectedToken.emoji : '📊'}
                     </div>
                     <div>
-                      <div className="ch-pair" style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: '16px', color: selectedToken ? 'var(--text)' : 'var(--muted)' }}>
+                      <div className="ch-pair" style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: '16px', color: selectedToken ? 'var(--text)' : 'var(--muted)', wordBreak: 'break-word' }}>
                         {selectedToken ? `${selectedToken.ticker} / SOL` : 'Select a token'}
                       </div>
                       <div style={{ display: 'flex', gap: '5px', alignItems: 'center', marginTop: '2px' }}>
@@ -242,7 +243,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
                         <span style={{ fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--dim)' }}>{selectedToken ? 'DexScreener' : '—'}</span>
                       </div>
                     </div>
-                    <div className="ch-price" style={{ fontFamily: 'Space Mono,monospace', fontSize: selectedToken ? '17px' : '13px', fontWeight: 700, marginLeft: '10px', color: selectedToken ? 'var(--text)' : 'var(--dim)' }}>
+                    <div className="ch-price" style={{ fontFamily: 'Space Mono,monospace', fontSize: selectedToken ? '17px' : '13px', fontWeight: 700, marginLeft: '10px', color: selectedToken ? 'var(--text)' : 'var(--dim)', wordBreak: 'break-all' }}>
                       {selectedToken ? fmtPrice(selectedToken.price) : '—'}
                     </div>
                     {selectedToken && (
@@ -250,7 +251,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
                         {selectedToken.chg >= 0 ? '+' : ''}{selectedToken.chg.toFixed(2)}%
                       </span>
                     )}
-                    <div className="tf-row" style={{ display: 'flex', gap: '2px', marginLeft: 'auto' }}>
+                    <div className="tf-row" style={{ display: 'flex', gap: '2px', marginLeft: 'auto', flexWrap: 'wrap' }}>
                       {[['1', '1M'], ['5', '5M'], ['15', '15M'], ['60', '1H'], ['240', '4H'], ['D', '1D']].map(([val, lbl]) => (
                         <button
                           key={val}

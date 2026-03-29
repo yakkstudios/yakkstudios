@@ -9,25 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "14.2.29",
-    "react": "^18",
-    "react-dom": "^18",
-    "@solana/web3.js": "^1.91.6",
+    "@livekit/components-react": "^2.6.5",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/wallet-adapter-wallets": "^0.19.32",
+    "@solana/web3.js": "^1.91.6",
     "livekit-client": "^2.5.5",
-    "@livekit/components-react": "^2.6.5",
-    "livekit-server-sdk": "^2.7.2"
+    "livekit-server-sdk": "^2.7.2",
+    "next": "14.2.29",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.29"
+    "eslint-config-next": "14.2.29",
+    "typescript": "^5.9.3"
   },
   "overrides": {
     "@solana/wallet-adapter-react": {

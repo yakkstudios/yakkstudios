@@ -37,16 +37,15 @@ export default function Wren() {
   return (
     <div className="sec-pad" id="section-wren">
       <div className="sec-header">
-        <div className="sec-bar">
-          <div className="sec-title">
-            🌱 SAVING THE WREN
-            <span className="badge b-yakk" style={{ marginLeft: '0.5rem' }}>LIVE</span>
-          </div>
-          <div className="sec-sub">
-            5% of every $YST mint tax goes directly to verified reforestation. Automated. Transparent. Permanent.
-          </div>
+        <div className="sec-title">
+          🌱 SAVING THE WREN
+          <span className="badge b-green" style={{ marginLeft: '0.5rem' }}>LIVE</span>
         </div>
+        <div className="sec-bar green" />
       </div>
+      <p style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '1.5rem', maxWidth: 580, lineHeight: 1.7 }}>
+        5% of every $YST mint tax goes directly to verified reforestation. Automated. Transparent. Permanent.
+      </p>
 
       <div className="grid4" style={{ margin: '1.5rem 0' }}>
         {WREN_STATS.map(p => (

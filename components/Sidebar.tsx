@@ -140,7 +140,7 @@ export default function Sidebar({
               <a className="sb-link" href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer">Telegram</a>
               <a className="sb-link" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Buy $YST</a>
             </div>
-            <div className="sb-version">v2.1.0 · Next.js</div>
+            <div className="sb-version">v2.2.0 · Next.js</div>
           </div>
 
         </div>

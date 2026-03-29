@@ -575,8 +575,53 @@ tr:hover td { background: var(--bg4); }
   .card, .card-sm { padding: 14px; }
   .stat-card { padding: 12px; }
   .sval { font-size: clamp(16px, 5vw, 24px) !important; }
-    /* -- new section mobile polish -- */
-    #section-ledger table { min-width: 480px; }
-    #section-home .home-hero { padding: 20px 16px 16px; }
-    #section-nftmarket input[type="text"] { min-width: 0; flex: 1; }
-               }
+  /* -- new section mobile polish -- */
+  #section-ledger table { min-width: 480px; }
+  #section-home .home-hero { padding: 20px 16px 16px; }
+  #section-nftmarket input[type="text"] { min-width: 0; flex: 1; }
+
+  /* ── Screener mobile ───────────────────────────── */
+  #screener-wrap { height: calc(100vh - var(--mob-header-h) - var(--ticker-h) - 4px) !important; }
+  #scr-toolbar { flex-wrap: wrap !important; gap: 6px !important; padding: 8px 10px !important; }
+  .scr-nav { display: flex !important; gap: 4px !important; }
+  .scr-nav .scr-nb { padding: 4px 8px !important; font-size: 9px !important; white-space: nowrap !important; }
+  .scr-search { width: 100% !important; order: 10 !important; }
+  #scr-body { flex-direction: column !important; }
+  #scr-left { width: 100% !important; max-height: 220px !important; border-right: none !important; border-bottom: 1px solid var(--border) !important; }
+  #scr-right { display: none !important; }
+  #scr-center { min-width: 0 !important; }
+  .scr-stats { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+  .ch-hdr { flex-wrap: wrap !important; gap: 6px !important; padding: 8px 10px !important; }
+  .ch-pair { font-size: 13px !important; }
+  .ch-price { font-size: 13px !important; margin-left: 0 !important; }
+  .tf-row { margin-left: 0 !important; width: 100% !important; justify-content: flex-start !important; }
+
+  .scr-toolbar-right { display: none !important; }
+
+  /* ── Wren mobile — prevent text bleed ──────────── */
+  #section-wren .sec-header .sec-sub {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+  #section-wren .grid4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* ── Ledger mobile — scrollable table ──────────── */
+  #section-ledger .ledger-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── Extra-small mobile (phones) ────────────────────────────── */
+@media (max-width: 480px) {
+  .scr-stats { grid-template-columns: 1fr 1fr !important; }
+  .home-cards { grid-template-columns: 1fr !important; }
+  .grid4 { grid-template-columns: 1fr 1fr !important; }
+  .grid3 { grid-template-columns: 1fr !important; }
+  .grid2 { grid-template-columns: 1fr !important; }
+  .sec-title { font-size: clamp(20px, 5vw, 30px) !important; }
+  .stat-card { padding: 10px !important; }
+  .sval { font-size: clamp(14px, 4vw, 20px) !important; }
+}
