@@ -30,7 +30,7 @@ const WREN_PILLARS = [
   },
 ];
 
-const WREN_WALLET = 'wren.yakkstudios.sol';
+const WREN_WALLET = '7CsMUvuHub7dVTeVij8S5baWNHnNDwS2yqyv4ZYQKV9n';
 const WREN_URL = 'https://www.wren.co';
 
 export default function Wren() {

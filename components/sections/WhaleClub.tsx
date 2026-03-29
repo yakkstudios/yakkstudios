@@ -1,127 +1,114 @@
 'use client';
 import { useState } from 'react';
 
-// YST treasury / investigation wallet — publicly visible on Solscan
-const OPS_WALLET = 'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM';
-
 const PERKS = [
-  { icon: '🔍', label: 'Full Cabal Scanner access', tier: 'ELITE' },
-  { icon: '📄', label: 'AI investigation reports', tier: 'ELITE' },
-  { icon: '💬', label: 'Private Whale Telegram group', tier: 'ELITE' },
-  { icon: '⚡', label: 'Early access to new tools', tier: 'ELITE' },
-  { icon: '💰', label: 'Enhanced $YST RevShare', tier: 'ELITE' },
-  { icon: '🐋', label: 'Whale Club NFT whitelist slot', tier: 'ELITE' },
-];
-
-const SOCIALS = [
-  { label: 'WEBSITE', placeholder: 'yakkstudios.xyz' },
-  { label: 'X / TWITTER', placeholder: '@YakkStudios' },
-  { label: 'TELEGRAM', placeholder: 't.me/yakkstudios' },
-  { label: 'DISCORD', placeholder: 'discord.gg/yakk (optional)' },
+  { icon: '🔍', label: 'Full Cabal Scanner access' },
+  { icon: '📄', label: 'AI investigation reports' },
+  { icon: '💬', label: 'Private Whale Telegram group' },
+  { icon: '⚡', label: 'Early access to new tools' },
+  { icon: '💰', label: 'Enhanced $YST RevShare' },
+  { icon: '🐋', label: 'Whale Club NFT whitelist slot' },
 ];
 
 export default function WhaleClub({ walletConnected = false, ystBalance = 0, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
-  const [copied, setCopied] = useState(false);
-  const isElite = walletConnected && ystBalance >= 250000;
-  const gated = !isElite;
-
-  const copyWallet = () => {
-    navigator.clipboard.writeText(OPS_WALLET).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }).catch(() => {});
-  };
+  const hasWhaleAccess = walletConnected && ystBalance >= 10_000_000;
 
   return (
-    <section id="section-whaleclub" style={{ padding: '20px' }}>
-
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-        <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: 0 }}>
-          🏆 WHALE CLUB
-        </h2>
-        {isElite && (
-          <span style={{ fontSize: 10, color: '#00c896', border: '1px solid #00c896', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>
-            🐋 ELITE HOLDER
-          </span>
-        )}
-      </div>
-      <p style={{ fontSize: 12, color: '#555', marginBottom: 20 }}>
-        The inner circle. 250,000+ $YST staked on StakePoint.
-      </p>
-
-      {/* Gate */}
-      {gated && (
-        <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, padding: '10px 14px', marginBottom: 20, fontSize: 11, color: '#666' }}>
-          🔒 250,000+ $YST Staked on StakePoint required —{' '}
-          <span style={{ color: '#444' }}>NOT CHECKED</span>
+    <div style={{ minHeight: 'calc(100vh - 74px)' }}>
+      {!hasWhaleAccess && (
+        <div className="locked-overlay" style={{ background: 'rgba(5,5,9,0.95)' }}>
+          <div className="locked-icon" style={{ fontSize: 40 }}>🐋</div>
+          <div className="locked-title" style={{ color: 'var(--gold)' }}>WHALE CLUB</div>
+          <div className="locked-sub">
+            Elite Access Required: Hold <strong style={{ color: 'var(--gold)' }}>10,000,000+ $YST</strong> to enter the deep end.
+          </div>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
+            Accumulate $YST
+          </a>
         </div>
       )}
 
-      {/* Ops Wallet */}
-      <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, padding: '14px 16px', marginBottom: 20 }}>
-        <div style={{ fontSize: 10, color: '#555', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 8 }}>
-          OPS WALLET — Investigation Fund
+      <div className="sec-pad">
+        <div className="sec-header">
+          <div className="sec-eyebrow" style={{ color: 'var(--gold)' }}>YAKK — ELITE TIER</div>
+          <div className="sec-title">
+            WHALE <span style={{ color: 'var(--gold)' }}>CLUB 🐋</span>
+            {hasWhaleAccess && (
+              <span className="badge b-gold" style={{ marginLeft: '0.5rem' }}>ELITE HOLDER</span>
+            )}
+          </div>
+          <div className="sec-bar" style={{ background: 'var(--gold)', opacity: 0.6 }} />
         </div>
-        <p style={{ fontSize: 11, color: '#888', lineHeight: 1.6, margin: '0 0 12px' }}>
-          This wallet tracks rugged funds and on-chain activity related to YAKK's investigations.
-          Whales may coordinate with ops to fund recovery efforts.
+
+        <p style={{ color: 'var(--muted)', maxWidth: 580, marginBottom: 28, fontSize: 13, lineHeight: 1.8 }}>
+          The top tier of the YAKK cult. Only those holding <strong style={{ color: 'var(--gold)' }}>10M+ $YST</strong> qualify.
+          You're not just a holder — you're the floor. Welcome to the deep end.
         </p>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-          <code style={{ fontSize: 11, color: '#ccc', background: '#111', padding: '4px 8px', borderRadius: 4, wordBreak: 'break-all', flex: 1 }}>
-            {OPS_WALLET}
-          </code>
-          <button
-            onClick={copyWallet}
-            style={{ background: 'none', border: '1px solid #333', color: copied ? '#00c896' : '#888', padding: '5px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 11, whiteSpace: 'nowrap' }}>
-            {copied ? '✓ Copied!' : '📋 COPY'}
-          </button>
-          <a
-            href={`https://solscan.io/account/${OPS_WALLET}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ background: 'none', border: '1px solid #333', color: '#888', padding: '5px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 11, textDecoration: 'none' }}>
-            🔍 SOLSCAN →
+
+        {/* Whale Stats */}
+        {hasWhaleAccess && (
+          <div className="grid3" style={{ marginBottom: 24 }}>
+            <div className="stat-card" style={{ borderColor: 'rgba(247,201,72,0.2)' }}>
+              <div className="slbl" style={{ color: 'var(--gold)' }}>YOUR $YST</div>
+              <div className="sval" style={{ color: 'var(--gold)' }}>{ystBalance.toLocaleString()}</div>
+            </div>
+            <div className="stat-card" style={{ borderColor: 'rgba(247,201,72,0.2)' }}>
+              <div className="slbl" style={{ color: 'var(--gold)' }}>STATUS</div>
+              <div className="sval" style={{ color: 'var(--gold)' }}>🐋 WHALE</div>
+            </div>
+            <div className="stat-card" style={{ borderColor: 'rgba(247,201,72,0.2)' }}>
+              <div className="slbl" style={{ color: 'var(--gold)' }}>TIER</div>
+              <div className="sval" style={{ color: 'var(--gold)' }}>ELITE</div>
+            </div>
+          </div>
+        )}
+
+        {/* Perks Grid */}
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)', letterSpacing: '0.15em', marginBottom: 12, textTransform: 'uppercase' }}>
+            ELITE PERKS
+          </div>
+          <div className="grid3">
+            {PERKS.map(({ icon, label }) => (
+              <div key={label} className="card" style={{
+                borderColor: hasWhaleAccess ? 'rgba(247,201,72,0.2)' : 'var(--border)',
+                opacity: hasWhaleAccess ? 1 : 0.5,
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 10,
+              }}>
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
+                <span style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.4 }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Feature cards */}
+        <div className="grid2" style={{ marginBottom: 24 }}>
+          <div className="card" style={{ borderColor: 'rgba(247,201,72,0.2)' }}>
+            <div className="slbl" style={{ color: 'var(--gold)' }}>SMART MONEY SIGNALS</div>
+            <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 10, lineHeight: 1.6 }}>
+              Real-time tracking of top 100 Solana wallets and Cabal movements.
+            </p>
+          </div>
+          <div className="card" style={{ borderColor: 'rgba(247,201,72,0.2)' }}>
+            <div className="slbl" style={{ color: 'var(--gold)' }}>VENTURES PRIORITY</div>
+            <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 10, lineHeight: 1.6 }}>
+              72-hour early access to all YAKK Ventures allocations.
+            </p>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <a href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer" className="btn btn-gold">
+            Buy $YST on Meteora
+          </a>
+          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ borderColor: 'var(--gold)', color: 'var(--gold)' }}>
+            Buy on Jupiter
           </a>
         </div>
       </div>
-
-      {/* Perks */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 10, color: '#555', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 12 }}>ELITE PERKS</div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 8 }}>
-          {PERKS.map(({ icon, label }) => (
-            <div key={label} style={{
-              background: '#0d0d0d', border: isElite ? '1px solid #e8206a33' : '1px solid #1a1a1a',
-              borderRadius: 6, padding: '12px', display: 'flex', alignItems: 'flex-start', gap: 8,
-              opacity: gated ? 0.5 : 1,
-            }}>
-              <span style={{ fontSize: 16 }}>{icon}</span>
-              <span style={{ fontSize: 11, color: '#ccc', lineHeight: 1.4 }}>{label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Socials / Contact */}
-      <div style={{ opacity: gated ? 0.4 : 1, pointerEvents: gated ? 'none' : 'auto' }}>
-        <div style={{ fontSize: 10, color: '#555', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 10 }}>
-          ✉️ TEXT: SOCIALS
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {SOCIALS.map(({ label, placeholder }) => (
-            <div key={label} style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-              <span style={{ fontSize: 10, color: '#555', width: 90, flexShrink: 0 }}>{label}</span>
-              <input
-                type="text"
-                placeholder={placeholder}
-                style={{ flex: 1, background: '#111', border: '1px solid #1a1a1a', borderRadius: 4, color: '#ccc', padding: '7px 10px', fontSize: 12, outline: 'none' }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-    </section>
+    </div>
   );
 }

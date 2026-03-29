@@ -42,17 +42,15 @@ export const metadata: Metadata = {
     type: 'website',
     url: SITE_URL,
     siteName: '$YAKK Studios',
-    title: '$YAKK Studios — On-Chain. No Middlemen.',
+    title: '$YAKK Studios | The Solana Intelligence Terminal',
     description:
-      'Professional on-chain trading tools for Solana. Screen tokens, investigate wallets, ' +
-      'trade with AI, earn yield. No KYC. No custody. Community-built. Powered by $YST.',
+      'On-Chain. No Middlemen. No Apologies. Professional trading and accountability platform for the DeFi world.',
     images: [
       {
-        url: '/og-image.svg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: '$YAKK Studios — On-Chain Trading Platform for Solana',
-        type: 'image/svg+xml',
+        alt: '$YAKK Studios — The Solana Intelligence Terminal',
       },
     ],
     locale: 'en_US',
@@ -61,10 +59,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@YakkStudios',
     creator: '@YakkStudios',
-    title: '$YAKK Studios — On-Chain. No Middlemen.',
+    title: '$YAKK Studios | The Solana Intelligence Terminal',
     description:
-      'Professional on-chain trading tools for Solana. Screen tokens, investigate wallets, trade with AI, earn yield. No KYC. No custody.',
-    images: ['/og-image.svg'],
+      'On-Chain. No Middlemen. No Apologies. Professional DeFi accountability powered by $YST.',
+    images: ['/og-image.png'],
   },
   icons: {
     icon: [
