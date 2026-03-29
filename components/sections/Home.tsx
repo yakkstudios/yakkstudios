@@ -54,11 +54,24 @@ export default function Home({
 }) {
   const [pep, setPep] = useState(PEPS[0]);
   const [nftDays, setNftDays] = useState({ d: '00', h: '00', m: '00', s: '00' });
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<any>(() => {
+    if (typeof window !== 'undefined') {
+      try { return JSON.parse(localStorage.getItem('yst-stats') || 'null'); } catch { return null; }
+    }
+    return null;
+  });
 
   // Fetch live $YST stats from DexScreener
   useEffect(() => {
-    const load = () => fetch('/api/price').then(r => r.ok ? r.json() : null).then(d => d && setStats(d)).catch(() => {});
+    const load = () => fetch('/api/price')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (d) {
+          setStats(d);
+          try { localStorage.setItem('yst-stats', JSON.stringify(d)); } catch {}
+        }
+      })
+      .catch(() => {});
     load();
     const iv = setInterval(load, 60_000);
     return () => clearInterval(iv);
