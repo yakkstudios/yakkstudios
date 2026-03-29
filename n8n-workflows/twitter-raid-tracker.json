@@ -20,13 +20,14 @@
     },
     {
       "parameters": {
+        "method": "GET",
         "url": "https://api.twitter.com/2/tweets/search/recent",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
             {
               "name": "query",
-              "value": "@YakkStudios OR $YST -is:retweet"
+              "value": "$YST OR #YakkStudios OR @YAKKStudios -is:retweet"
             },
             {
               "name": "max_results",
@@ -51,20 +52,27 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer ={{$credentials.twitterApi}}"
+              "value": "={{ $credentials.httpHeaderAuth.value }}"
             }
           ]
         },
         "options": {
-          "timeout": 15000
+          "timeout": 15000,
+          "continueOnFail": false
         }
       },
       "id": "d4e5f6a7-0004-0004-0004-000000000002",
       "name": "Twitter API Search",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [480, 380],
-      "notes": "Requires Twitter API v2 Bearer token set as twitterApi credential."
+      "position": [490, 380],
+      "notes": "Create a Header Auth credential named 'Twitter Bearer Token'.\nSet Name: Authorization\nSet Value: Bearer YOUR_TWITTER_BEARER_TOKEN\n(Include the word 'Bearer ' with a space before your token.)",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "twitter-header-auth",
+          "name": "Twitter Bearer Token"
+        }
+      }
     },
     {
       "parameters": {
@@ -74,7 +82,7 @@
       "name": "Extract Tweet Metrics",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [720, 380]
+      "position": [740, 380]
     },
     {
       "parameters": {
@@ -84,7 +92,7 @@
       "name": "Calculate Raid Scores",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [960, 380]
+      "position": [990, 380]
     },
     {
       "parameters": {
@@ -113,7 +121,7 @@
       "name": "Score > 50?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [1200, 380]
+      "position": [1240, 380]
     },
     {
       "parameters": {
@@ -123,26 +131,39 @@
       "name": "Format Raid Report",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1440, 280]
+      "position": [1490, 280]
     },
     {
       "parameters": {
-        "chatId": "@yakkstudios",
-        "text": "={{ $json.telegramMessage }}",
-        "additionalFields": {
-          "parse_mode": "Markdown",
-          "disable_web_page_preview": false
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $credentials.httpHeaderAuth.value }}/sendMessage",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"chat_id\":\"@yakkstudios\",\"text\":\"{{ $json.telegramMessage }}\",\"parse_mode\":\"Markdown\",\"disable_web_page_preview\":false}",
+        "options": {
+          "timeout": 10000,
+          "continueOnFail": true
         }
       },
       "id": "d4e5f6a7-0004-0004-0004-000000000007",
       "name": "Telegram Raid Report",
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [1680, 280],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1740, 280],
+      "notes": "Create a Header Auth credential named 'Telegram Bot Token'.\nSet Name: Authorization\nSet Value: <your_bot_token> (just the token, no Bearer prefix).",
       "credentials": {
-        "telegramApi": {
-          "id": "telegram-cred-placeholder",
-          "name": "Telegram YakkStudios Bot"
+        "httpHeaderAuth": {
+          "id": "telegram-header-auth",
+          "name": "Telegram Bot Token"
         }
       }
     }
@@ -226,13 +247,14 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2026-03-28T19:15:00.000Z",
-      "updatedAt": "2026-03-28T19:15:00.000Z",
+      "createdAt": "2026-03-29T02:00:00.000Z",
+      "updatedAt": "2026-03-29T02:00:00.000Z",
       "id": "yst-tag-1",
       "name": "YakkStudios"
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-03-28T19:15:00.000Z",
-  "versionId": "twitter-raid-tracker-v1"
+  "updatedAt": "2026-03-29T02:00:00.000Z",
+  "versionId": "twitter-raid-tracker-v2",
+  "active": false
 }

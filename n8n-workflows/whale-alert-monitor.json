@@ -3,28 +3,139 @@
   "nodes": [
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "helius-yst-webhook",
-        "responseMode": "onReceived",
-        "options": {}
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
       },
       "id": "b2c3d4e5-0002-0002-0002-000000000001",
-      "name": "Helius Webhook (POST)",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [240, 380],
-      "webhookId": "helius-yst-webhook",
-      "notes": "Point your Helius webhook URL to this endpoint. Configure Helius to monitor token transfers for mint: jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV"
+      "name": "Schedule Trigger (5min)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        380
+      ]
     },
     {
       "parameters": {
-        "jsCode": "// Parse Helius transaction webhook payload\n// Helius sends array of enhanced transactions\nconst body = $input.first().json.body || $input.first().json;\nconst transactions = Array.isArray(body) ? body : [body];\n\nconst results = [];\n\nfor (const tx of transactions) {\n  // Helius enhanced transaction structure\n  const txHash = tx.signature || tx.txHash || '';\n  const tokenTransfers = tx.tokenTransfers || [];\n  const nativeTransfers = tx.nativeTransfers || [];\n  \n  // Find YST token transfers\n  const ystTransfers = tokenTransfers.filter(t => \n    t.mint === 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV'\n  );\n  \n  for (const transfer of ystTransfers) {\n    const rawAmount = parseFloat(transfer.tokenAmount || transfer.amount || 0);\n    // YST decimals — adjust if different\n    const decimals = transfer.decimals || 6;\n    const amount = rawAmount / Math.pow(10, decimals);\n    \n    const sender = transfer.fromUserAccount || transfer.from || 'Unknown';\n    const receiver = transfer.toUserAccount || transfer.to || 'Unknown';\n    \n    // Only pass through whale-level transfers (>= 1,000,000 YST)\n    if (amount >= 1000000) {\n      results.push({\n        json: {\n          txHash,\n          sender,\n          receiver,\n          amount,\n          rawAmount,\n          decimals,\n          senderShort: sender.length > 8 ? sender.slice(0, 4) + '...' + sender.slice(-4) : sender,\n          receiverShort: receiver.length > 8 ? receiver.slice(0, 4) + '...' + receiver.slice(-4) : receiver,\n          isMegaWhale: amount >= 10000000,\n          timestamp: tx.timestamp ? new Date(tx.timestamp * 1000).toISOString() : new Date().toISOString(),\n          solscanUrl: `https://solscan.io/tx/${txHash}`\n        }\n      });\n    }\n  }\n}\n\n// If no qualifying transfers, return empty item to stop flow\nif (results.length === 0) {\n  return [{ json: { skip: true, reason: 'No whale-level YST transfers found' } }];\n}\n\nreturn results;"
+        "method": "POST",
+        "url": "https://api.mainnet-beta.solana.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getSignaturesForAddress\",\"params\":[\"jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV\",{\"limit\":25}]}",
+        "options": {
+          "timeout": 15000
+        }
       },
-      "id": "b2c3d4e5-0002-0002-0002-000000000002",
-      "name": "Parse Helius Payload",
+      "id": "b2c3d4e5-0002-0002-0002-000000000011",
+      "name": "RPC getSignaturesForAddress",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        490,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse signatures list and skip already-seen ones using static data\nconst rpcData = $input.first().json;\nconst signatures = rpcData?.result || [];\n\nif (!signatures.length) {\n  return [{ json: { sigs: [], hasNew: false } }];\n}\n\n// Load seen signatures from static data\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.seenSigs) staticData.seenSigs = [];\n\n// Keep only the last 200 to avoid unbounded growth\nconst seenSet = new Set(staticData.seenSigs);\nconst newSigs = signatures\n  .map(s => s.signature)\n  .filter(sig => sig && !seenSet.has(sig));\n\nif (newSigs.length === 0) {\n  return [{ json: { sigs: [], hasNew: false } }];\n}\n\n// Store new sigs\nconst merged = [...staticData.seenSigs, ...newSigs];\nstaticData.seenSigs = merged.slice(-200);\n\n// Return each new sig as a separate item for getTransaction calls\nreturn newSigs.map(sig => ({ json: { signature: sig, hasNew: true } }));"
+      },
+      "id": "b2c3d4e5-0002-0002-0002-000000000012",
+      "name": "Filter New Signatures",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [480, 380]
+      "position": [
+        740,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-new-sigs",
+              "leftValue": "={{ $json.hasNew }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b2c3d4e5-0002-0002-0002-000000000013",
+      "name": "Has New Signatures?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        990,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mainnet-beta.solana.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getTransaction\",\"params\":[\"{{ $json.signature }}\",{\"encoding\":\"jsonParsed\",\"maxSupportedTransactionVersion\":0}]}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "b2c3d4e5-0002-0002-0002-000000000014",
+      "name": "RPC getTransaction",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1240,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse transaction data and detect whale-level YST transfers\nconst txData = $input.first().json;\nconst tx = txData?.result;\n\nif (!tx) return [{ json: { skip: true, reason: 'Transaction not found or still processing' } }];\n\nconst txHash = tx.transaction?.signatures?.[0] || '';\nconst blockTime = tx.blockTime ? new Date(tx.blockTime * 1000).toISOString() : new Date().toISOString();\n\n// Parse token balances to find YST transfers\nconst preBalances = tx.meta?.preTokenBalances || [];\nconst postBalances = tx.meta?.postTokenBalances || [];\n\nconst YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';\nconst WHALE_THRESHOLD = 1000000;   // 1M YST\nconst MEGA_WHALE_THRESHOLD = 10000000; // 10M YST\n\n// Build maps by accountIndex+mint\nconst preMap = {};\nfor (const b of preBalances) {\n  if (b.mint === YST_MINT) {\n    preMap[b.accountIndex] = parseFloat(b.uiTokenAmount?.uiAmount || 0);\n  }\n}\n\nconst results = [];\nfor (const post of postBalances) {\n  if (post.mint !== YST_MINT) continue;\n  const preAmt = preMap[post.accountIndex] || 0;\n  const postAmt = parseFloat(post.uiTokenAmount?.uiAmount || 0);\n  const diff = Math.abs(postAmt - preAmt);\n\n  if (diff >= WHALE_THRESHOLD) {\n    const accountKeys = tx.transaction?.message?.accountKeys || [];\n    const ownerKey = post.owner || accountKeys[post.accountIndex]?.pubkey || 'Unknown';\n    const shortAddr = ownerKey.length > 8\n      ? ownerKey.slice(0, 4) + '...' + ownerKey.slice(-4)\n      : ownerKey;\n\n    results.push({\n      json: {\n        txHash,\n        wallet: ownerKey,\n        shortAddr,\n        amount: diff,\n        isMegaWhale: diff >= MEGA_WHALE_THRESHOLD,\n        timestamp: blockTime,\n        solscanUrl: `https://solscan.io/tx/${txHash}`,\n        skip: false\n      }\n    });\n  }\n}\n\nif (results.length === 0) {\n  return [{ json: { skip: true, reason: 'No whale-level YST transfer in this tx' } }];\n}\n\nreturn results;"
+      },
+      "id": "b2c3d4e5-0002-0002-0002-000000000002",
+      "name": "Detect Whale Transfers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1490,
+        280
+      ]
     },
     {
       "parameters": {
@@ -53,7 +164,10 @@
       "name": "Skip if no whale",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [720, 380]
+      "position": [
+        1740,
+        280
+      ]
     },
     {
       "parameters": {
@@ -82,67 +196,108 @@
       "name": "Mega Whale or Whale?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [960, 280]
+      "position": [
+        1990,
+        280
+      ]
     },
     {
       "parameters": {
-        "jsCode": "// Format mega whale alert message (>= 10M YST)\nconst d = $input.first().json;\nconst amountFormatted = new Intl.NumberFormat('en-US').format(Math.round(d.amount));\n\nreturn [{\n  json: {\n    ...d,\n    telegramMessage: `🚨🐋 MEGA WHALE ALERT 🐋🚨\\n\\n💰 ${amountFormatted} $YST transferred\\n📤 From: \\`${d.senderShort}\\`\\n📥 To: \\`${d.receiverShort}\\`\\n⏱ Time: ${d.timestamp}\\n🔗 [View on Solscan](${d.solscanUrl})\\n\\n#YST #YakkStudios #Solana`\n  }\n}];"
+        "jsCode": "// Format mega whale alert message (>= 10M YST)\nconst d = $input.first().json;\nconst amountFormatted = new Intl.NumberFormat('en-US').format(Math.round(d.amount));\n\nreturn [{\n  json: {\n    ...d,\n    telegramMessage: `\ud83d\udea8\ud83d\udc0b MEGA WHALE ALERT \ud83d\udc0b\ud83d\udea8\\n\\n\ud83d\udcb0 ${amountFormatted} $YST moved\\n\ud83c\udfe0 Wallet: \\`${d.shortAddr}\\`\\n\u23f1 Time: ${d.timestamp}\\n\ud83d\udd17 [View on Solscan](${d.solscanUrl})\\n\\n#YST #YakkStudios #Solana`\n  }\n}];"
       },
       "id": "b2c3d4e5-0002-0002-0002-000000000005",
       "name": "Format Mega Whale Message",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1200, 180]
+      "position": [
+        2240,
+        180
+      ]
     },
     {
       "parameters": {
-        "jsCode": "// Format standard whale alert message (>= 1M YST)\nconst d = $input.first().json;\nconst amountFormatted = new Intl.NumberFormat('en-US').format(Math.round(d.amount));\n\nreturn [{\n  json: {\n    ...d,\n    telegramMessage: `🐋 WHALE ALERT\\n\\n💰 ${amountFormatted} $YST transferred\\n📤 From: \\`${d.senderShort}\\`\\n📥 To: \\`${d.receiverShort}\\`\\n⏱ Time: ${d.timestamp}\\n🔗 [View on Solscan](${d.solscanUrl})\\n\\n#YST #YakkStudios #Solana`\n  }\n}];"
+        "jsCode": "// Format standard whale alert message (>= 1M YST)\nconst d = $input.first().json;\nconst amountFormatted = new Intl.NumberFormat('en-US').format(Math.round(d.amount));\n\nreturn [{\n  json: {\n    ...d,\n    telegramMessage: `\ud83d\udc0b WHALE ALERT\\n\\n\ud83d\udcb0 ${amountFormatted} $YST moved\\n\ud83c\udfe0 Wallet: \\`${d.shortAddr}\\`\\n\u23f1 Time: ${d.timestamp}\\n\ud83d\udd17 [View on Solscan](${d.solscanUrl})\\n\\n#YST #YakkStudios #Solana`\n  }\n}];"
       },
       "id": "b2c3d4e5-0002-0002-0002-000000000006",
       "name": "Format Whale Message",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1200, 380]
+      "position": [
+        2240,
+        380
+      ]
     },
     {
       "parameters": {
-        "chatId": "@yakkstudios",
-        "text": "={{ $json.telegramMessage }}",
-        "additionalFields": {
-          "parse_mode": "Markdown",
-          "disable_web_page_preview": false
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $credentials.httpHeaderAuth.value }}/sendMessage",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"chat_id\":\"@yakkstudios\",\"text\":\"{{ $json.telegramMessage }}\",\"parse_mode\":\"Markdown\",\"disable_web_page_preview\":false}",
+        "options": {
+          "timeout": 10000,
+          "continueOnFail": true
         }
       },
       "id": "b2c3d4e5-0002-0002-0002-000000000007",
       "name": "Telegram Mega Whale Alert",
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [1440, 180],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2490,
+        180
+      ],
+      "notes": "Create a Header Auth credential named 'Telegram Bot Token' with Name: Authorization, Value: <your_bot_token> (no Bearer prefix). Paste bot token directly.",
       "credentials": {
-        "telegramApi": {
-          "id": "telegram-cred-placeholder",
-          "name": "Telegram YakkStudios Bot"
+        "httpHeaderAuth": {
+          "id": "telegram-header-auth",
+          "name": "Telegram Bot Token"
         }
       }
     },
     {
       "parameters": {
-        "chatId": "@yakkstudios",
-        "text": "={{ $json.telegramMessage }}",
-        "additionalFields": {
-          "parse_mode": "Markdown",
-          "disable_web_page_preview": false
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $credentials.httpHeaderAuth.value }}/sendMessage",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"chat_id\":\"@yakkstudios\",\"text\":\"{{ $json.telegramMessage }}\",\"parse_mode\":\"Markdown\",\"disable_web_page_preview\":false}",
+        "options": {
+          "timeout": 10000,
+          "continueOnFail": true
         }
       },
       "id": "b2c3d4e5-0002-0002-0002-000000000008",
       "name": "Telegram Whale Alert",
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [1440, 380],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2490,
+        380
+      ],
+      "notes": "Create a Header Auth credential named 'Telegram Bot Token' with Name: Authorization, Value: <your_bot_token>.",
       "credentials": {
-        "telegramApi": {
-          "id": "telegram-cred-placeholder",
-          "name": "Telegram YakkStudios Bot"
+        "httpHeaderAuth": {
+          "id": "telegram-header-auth",
+          "name": "Telegram Bot Token"
         }
       }
     },
@@ -160,34 +315,8 @@
           ]
         },
         "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "txHash",
-              "value": "={{ $json.txHash }}"
-            },
-            {
-              "name": "amount",
-              "value": "={{ $json.amount }}"
-            },
-            {
-              "name": "sender",
-              "value": "={{ $json.sender }}"
-            },
-            {
-              "name": "receiver",
-              "value": "={{ $json.receiver }}"
-            },
-            {
-              "name": "isMegaWhale",
-              "value": "={{ $json.isMegaWhale }}"
-            },
-            {
-              "name": "timestamp",
-              "value": "={{ $json.timestamp }}"
-            }
-          ]
-        },
+        "specifyBody": "json",
+        "jsonBody": "={\"txHash\":\"{{ $json.txHash }}\",\"wallet\":\"{{ $json.wallet }}\",\"amount\":{{ $json.amount }},\"isMegaWhale\":{{ $json.isMegaWhale }},\"timestamp\":\"{{ $json.timestamp }}\",\"solscanUrl\":\"{{ $json.solscanUrl }}\"}",
         "options": {
           "timeout": 5000,
           "continueOnFail": true
@@ -197,23 +326,70 @@
       "name": "POST to DApp Live Feed",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1680, 280],
-      "notes": "Optional: Update yakkstudios.xyz live feed. Change URL to your actual DApp endpoint."
+      "position": [
+        2740,
+        280
+      ]
     }
   ],
   "connections": {
-    "Helius Webhook (POST)": {
+    "Schedule Trigger (5min)": {
       "main": [
         [
           {
-            "node": "Parse Helius Payload",
+            "node": "RPC getSignaturesForAddress",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Parse Helius Payload": {
+    "RPC getSignaturesForAddress": {
+      "main": [
+        [
+          {
+            "node": "Filter New Signatures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter New Signatures": {
+      "main": [
+        [
+          {
+            "node": "Has New Signatures?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has New Signatures?": {
+      "main": [
+        [
+          {
+            "node": "RPC getTransaction",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "RPC getTransaction": {
+      "main": [
+        [
+          {
+            "node": "Detect Whale Transfers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Whale Transfers": {
       "main": [
         [
           {
@@ -309,13 +485,14 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2026-03-28T19:15:00.000Z",
-      "updatedAt": "2026-03-28T19:15:00.000Z",
+      "createdAt": "2026-03-29T02:00:00.000Z",
+      "updatedAt": "2026-03-29T02:00:00.000Z",
       "id": "yst-tag-1",
       "name": "YakkStudios"
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-03-28T19:15:00.000Z",
-  "versionId": "whale-alert-monitor-v1"
+  "updatedAt": "2026-03-29T02:00:00.000Z",
+  "versionId": "whale-alert-monitor-v2",
+  "active": false
 }

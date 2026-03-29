@@ -20,44 +20,50 @@
     },
     {
       "parameters": {
-        "url": "https://api.helius.xyz/v0/token-accounts",
-        "sendQuery": true,
-        "queryParameters": {
+        "jsCode": "// Load known holders from static data before making the RPC call\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.knownHolders) {\n  staticData.knownHolders = {};\n}\n// Pass the known holders count downstream for logging\nreturn [{ json: { knownHolderCount: Object.keys(staticData.knownHolders).length, ready: true } }];"
+      },
+      "id": "c3d4e5f6-0003-0003-0003-000000000007",
+      "name": "Load Known Holders",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [490, 380]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mainnet-beta.solana.com",
+        "sendHeaders": true,
+        "headerParameters": {
           "parameters": [
             {
-              "name": "api-key",
-              "value": "={{$credentials.heliusApi}}"
-            },
-            {
-              "name": "tokenMint",
-              "value": "jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV"
-            },
-            {
-              "name": "limit",
-              "value": "20"
+              "name": "Content-Type",
+              "value": "application/json"
             }
           ]
         },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getTokenLargestAccounts\",\"params\":[\"jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV\"]}",
         "options": {
           "timeout": 15000
         }
       },
       "id": "c3d4e5f6-0003-0003-0003-000000000002",
-      "name": "Helius Token Accounts",
+      "name": "RPC getTokenLargestAccounts",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [480, 380],
-      "notes": "Fetches latest YST token holders from Helius. Requires heliusApi credential."
+      "position": [740, 380],
+      "notes": "Uses Solana public RPC — no API key required. Returns top 20 token account holders for $YST mint."
     },
     {
       "parameters": {
-        "jsCode": "// Compare current holder list with stored list to find NEW holders\n// Static data persists between executions in n8n\n\nconst responseData = $input.first().json;\n\n// Helius returns token accounts array\nlet tokenAccounts = [];\nif (Array.isArray(responseData)) {\n  tokenAccounts = responseData;\n} else if (responseData.result) {\n  tokenAccounts = responseData.result;\n} else if (responseData.tokenAccounts) {\n  tokenAccounts = responseData.tokenAccounts;\n}\n\n// Build current holder map: { walletAddress -> balance }\nconst currentHolders = {};\nfor (const acct of tokenAccounts) {\n  const owner = acct.owner || acct.ownerAddress || acct.wallet || '';\n  const rawAmount = parseFloat(acct.amount || acct.tokenAmount?.amount || 0);\n  const decimals = acct.decimals || acct.tokenAmount?.decimals || 6;\n  const balance = rawAmount / Math.pow(10, decimals);\n  if (owner && balance > 0) {\n    currentHolders[owner] = balance;\n  }\n}\n\n// Retrieve previously stored holder list from Static Data\nlet staticData = $getWorkflowStaticData('global');\nif (!staticData.knownHolders) {\n  staticData.knownHolders = {};\n}\n\nconst knownHolders = staticData.knownHolders;\nconst newHolders = [];\n\n// Find wallets in currentHolders not in knownHolders\nfor (const [wallet, balance] of Object.entries(currentHolders)) {\n  if (!knownHolders[wallet]) {\n    newHolders.push({\n      wallet,\n      balance,\n      shortAddr: wallet.slice(0, 4) + '...' + wallet.slice(-4)\n    });\n  }\n}\n\n// Update stored holder list\nObject.assign(staticData.knownHolders, currentHolders);\n\nconst totalHolders = Object.keys(currentHolders).length;\nconst checkTimestamp = new Date().toISOString();\n\nif (newHolders.length === 0) {\n  return [{ json: { newHolders: [], totalHolders, checkTimestamp, hasNewHolders: false } }];\n}\n\n// Return one item per new holder\nreturn newHolders.map(h => ({\n  json: {\n    ...h,\n    totalHolders,\n    checkTimestamp,\n    hasNewHolders: true,\n    allNewHolders: newHolders\n  }\n}));"
+        "jsCode": "// Compare current top holder list with stored list to find NEW holders\n// Uses Solana RPC getTokenLargestAccounts which returns top 20 accounts\n\nconst responseData = $input.first().json;\n\n// RPC response format: { result: { value: [ { address, amount, decimals, uiAmount, uiAmountString } ] } }\nconst accounts = responseData?.result?.value || [];\n\nif (accounts.length === 0) {\n  return [{ json: { newHolders: [], totalHolders: 0, checkTimestamp: new Date().toISOString(), hasNewHolders: false, error: 'No accounts returned from RPC' } }];\n}\n\n// Build current holder map: { tokenAccountAddress -> uiAmount }\n// Note: getTokenLargestAccounts returns token account addresses (not wallet addresses)\n// We use them as unique identifiers for tracking purposes\nconst currentHolders = {};\nfor (const acct of accounts) {\n  const address = acct.address || '';\n  const balance = acct.uiAmount || parseFloat(acct.uiAmountString || '0');\n  if (address && balance > 0) {\n    currentHolders[address] = balance;\n  }\n}\n\n// Retrieve previously stored holder list from Static Data\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.knownHolders) {\n  staticData.knownHolders = {};\n}\n\nconst knownHolders = staticData.knownHolders;\nconst newHolders = [];\n\n// Find accounts in currentHolders not in knownHolders\nfor (const [address, balance] of Object.entries(currentHolders)) {\n  if (!knownHolders[address]) {\n    const shortAddr = address.length > 8\n      ? address.slice(0, 4) + '...' + address.slice(-4)\n      : address;\n    newHolders.push({\n      wallet: address,\n      balance,\n      shortAddr\n    });\n  }\n}\n\n// Update stored holder list with all current holders\nObject.assign(staticData.knownHolders, currentHolders);\n\nconst totalHolders = Object.keys(currentHolders).length;\nconst checkTimestamp = new Date().toISOString();\n\nif (newHolders.length === 0) {\n  return [{ json: { newHolders: [], totalHolders, checkTimestamp, hasNewHolders: false } }];\n}\n\n// Return one item per new holder for individual Telegram messages\nreturn newHolders.map(h => ({\n  json: {\n    ...h,\n    totalHolders,\n    checkTimestamp,\n    hasNewHolders: true,\n    allNewHolders: newHolders\n  }\n}));"
       },
       "id": "c3d4e5f6-0003-0003-0003-000000000003",
       "name": "Detect New Holders",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [720, 380]
+      "position": [990, 380]
     },
     {
       "parameters": {
@@ -86,36 +92,49 @@
       "name": "New Holders Found?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [960, 380]
+      "position": [1240, 380]
     },
     {
       "parameters": {
-        "jsCode": "// Format welcome message for each new holder\nconst d = $input.first().json;\nconst balanceFormatted = new Intl.NumberFormat('en-US').format(Math.round(d.balance));\nconst solscanUrl = `https://solscan.io/account/${d.wallet}`;\n\nreturn [{\n  json: {\n    ...d,\n    telegramMessage: `👋 NEW YAKK HOLDER!\\n\\n🏠 Wallet: \\`${d.shortAddr}\\`\\n💰 Balance: ${balanceFormatted} $YST\\n🎉 Welcome to the den!\\n\\n👥 Total Holders: ${d.totalHolders}\\n🔍 [View Wallet](${solscanUrl})\\n\\n$YST #YakkStudios #Solana`\n  }\n}];"
+        "jsCode": "// Format welcome message for each new holder\nconst d = $input.first().json;\nconst balanceFormatted = new Intl.NumberFormat('en-US').format(Math.round(d.balance));\nconst solscanUrl = `https://solscan.io/account/${d.wallet}`;\n\nreturn [{\n  json: {\n    ...d,\n    telegramMessage: `👋 NEW YAKK HOLDER!\\n\\n🏠 Account: \\`${d.shortAddr}\\`\\n💰 Balance: ${balanceFormatted} $YST\\n🎉 Welcome to the YAKK den!\\n\\n👥 Top Holders Tracked: ${d.totalHolders}\\n🔍 [View on Solscan](${solscanUrl})\\n\\n$YST #YakkStudios #Solana`\n  }\n}];"
       },
       "id": "c3d4e5f6-0003-0003-0003-000000000005",
       "name": "Format Welcome Message",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1200, 280]
+      "position": [1490, 280]
     },
     {
       "parameters": {
-        "chatId": "@yakkstudios",
-        "text": "={{ $json.telegramMessage }}",
-        "additionalFields": {
-          "parse_mode": "Markdown",
-          "disable_web_page_preview": false
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $credentials.httpHeaderAuth.value }}/sendMessage",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"chat_id\":\"@yakkstudios\",\"text\":\"{{ $json.telegramMessage }}\",\"parse_mode\":\"Markdown\",\"disable_web_page_preview\":false}",
+        "options": {
+          "timeout": 10000,
+          "continueOnFail": true
         }
       },
       "id": "c3d4e5f6-0003-0003-0003-000000000006",
       "name": "Telegram Welcome Message",
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [1440, 280],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1740, 280],
+      "notes": "Create a Header Auth credential named 'Telegram Bot Token' with Name: Authorization, Value: <your_bot_token> (just the token, no Bearer prefix).",
       "credentials": {
-        "telegramApi": {
-          "id": "telegram-cred-placeholder",
-          "name": "Telegram YakkStudios Bot"
+        "httpHeaderAuth": {
+          "id": "telegram-header-auth",
+          "name": "Telegram Bot Token"
         }
       }
     }
@@ -125,14 +144,25 @@
       "main": [
         [
           {
-            "node": "Helius Token Accounts",
+            "node": "Load Known Holders",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Helius Token Accounts": {
+    "Load Known Holders": {
+      "main": [
+        [
+          {
+            "node": "RPC getTokenLargestAccounts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RPC getTokenLargestAccounts": {
       "main": [
         [
           {
@@ -188,13 +218,14 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2026-03-28T19:15:00.000Z",
-      "updatedAt": "2026-03-28T19:15:00.000Z",
+      "createdAt": "2026-03-29T02:00:00.000Z",
+      "updatedAt": "2026-03-29T02:00:00.000Z",
       "id": "yst-tag-1",
       "name": "YakkStudios"
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-03-28T19:15:00.000Z",
-  "versionId": "new-holder-welcome-v1"
+  "updatedAt": "2026-03-29T02:00:00.000Z",
+  "versionId": "new-holder-welcome-v2",
+  "active": false
 }

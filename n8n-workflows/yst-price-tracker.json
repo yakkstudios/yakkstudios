@@ -29,11 +29,12 @@
       "name": "Webhook GET /yst-stats",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [240, 480],
+      "position": [240, 500],
       "webhookId": "yst-stats-webhook"
     },
     {
       "parameters": {
+        "method": "GET",
         "url": "https://api.dexscreener.com/latest/dex/tokens/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV",
         "options": {
           "timeout": 10000
@@ -43,52 +44,53 @@
       "name": "DexScreener API",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [480, 380]
+      "position": [500, 300]
     },
     {
       "parameters": {
-        "jsCode": "// Extract YST pair data from DexScreener response\nconst data = $input.first().json;\n\n// DexScreener returns array of pairs; find SOL pair\nconst pairs = data.pairs || [];\nconst ystPair = pairs.find(p => \n  p.quoteToken && p.quoteToken.symbol === 'SOL'\n) || pairs[0] || {};\n\nconst priceUsd = parseFloat(ystPair.priceUsd || 0);\nconst priceNative = parseFloat(ystPair.priceNative || 0);\nconst volume24h = ystPair.volume?.h24 || 0;\nconst priceChange24h = ystPair.priceChange?.h24 || 0;\nconst liquidity = ystPair.liquidity?.usd || 0;\nconst fdv = ystPair.fdv || 0;\nconst marketCap = ystPair.marketCap || 0;\nconst buys24h = ystPair.txns?.h24?.buys || 0;\nconst sells24h = ystPair.txns?.h24?.sells || 0;\nconst pairAddress = ystPair.pairAddress || 'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM';\n\nreturn [{\n  json: {\n    dexscreener: {\n      priceUsd,\n      priceNative,\n      volume24h,\n      priceChange24h,\n      liquidity,\n      fdv,\n      marketCap,\n      buys24h,\n      sells24h,\n      pairAddress,\n      pairUrl: ystPair.url || `https://dexscreener.com/solana/${pairAddress}`\n    }\n  }\n}];"
+        "method": "POST",
+        "url": "https://api.mainnet-beta.solana.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getTokenSupply\",\"params\":[\"jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV\"]}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000009",
+      "name": "Solana RPC getTokenSupply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract YST pair data from DexScreener response\nconst data = $input.first().json;\n\n// DexScreener returns array of pairs; find SOL pair first, else use first pair\nconst pairs = data.pairs || [];\nconst ystPair = pairs.find(p =>\n  p.quoteToken && p.quoteToken.symbol === 'SOL'\n) || pairs[0] || {};\n\nconst priceUsd = parseFloat(ystPair.priceUsd || 0);\nconst priceNative = parseFloat(ystPair.priceNative || 0);\nconst volume24h = ystPair.volume?.h24 || 0;\nconst priceChange24h = ystPair.priceChange?.h24 || 0;\nconst liquidity = ystPair.liquidity?.usd || 0;\nconst fdv = ystPair.fdv || 0;\nconst marketCap = ystPair.marketCap || 0;\nconst buys24h = ystPair.txns?.h24?.buys || 0;\nconst sells24h = ystPair.txns?.h24?.sells || 0;\nconst pairAddress = ystPair.pairAddress || '';\nconst pairUrl = ystPair.url || (pairAddress ? `https://dexscreener.com/solana/${pairAddress}` : 'https://dexscreener.com/solana/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV');\n\nreturn [{\n  json: {\n    dexscreener: {\n      priceUsd,\n      priceNative,\n      volume24h,\n      priceChange24h,\n      liquidity,\n      fdv,\n      marketCap,\n      buys24h,\n      sells24h,\n      pairAddress,\n      pairUrl\n    }\n  }\n}];"
       },
       "id": "a1b2c3d4-0001-0001-0001-000000000004",
       "name": "Extract DexScreener Data",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [720, 380]
+      "position": [750, 300]
     },
     {
       "parameters": {
-        "url": "https://public-api.birdeye.so/defi/token_overview",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "address",
-              "value": "jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "X-API-KEY",
-              "value": "={{$credentials.birdeyeApi}}"
-            },
-            {
-              "name": "x-chain",
-              "value": "solana"
-            }
-          ]
-        },
-        "options": {
-          "timeout": 10000
-        }
+        "jsCode": "// Extract total supply from Solana RPC getTokenSupply response\nconst rpcData = $input.first().json;\nconst supplyInfo = rpcData?.result?.value || {};\n\nconst rawAmount = supplyInfo.amount || '0';\nconst decimals = supplyInfo.decimals || 6;\nconst uiAmount = supplyInfo.uiAmount || parseFloat(rawAmount) / Math.pow(10, decimals);\nconst uiAmountString = supplyInfo.uiAmountString || String(uiAmount);\n\nreturn [{\n  json: {\n    supply: {\n      raw: rawAmount,\n      decimals,\n      total: uiAmount,\n      totalFormatted: uiAmountString\n    }\n  }\n}];"
       },
-      "id": "a1b2c3d4-0001-0001-0001-000000000005",
-      "name": "Birdeye API",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [720, 540]
+      "id": "a1b2c3d4-0001-0001-0001-000000000010",
+      "name": "Extract Supply Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [750, 500]
     },
     {
       "parameters": {
@@ -100,17 +102,27 @@
       "name": "Merge Data",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [960, 460]
+      "position": [1000, 400]
     },
     {
       "parameters": {
-        "jsCode": "// Combine DexScreener + Birdeye data into final payload\nconst items = $input.all();\n\n// Find dexscreener and birdeye data from merged inputs\nconst dexItem = items.find(i => i.json.dexscreener) || items[0];\nconst birdeyeItem = items.find(i => i.json.data) || items[1];\n\nconst dex = dexItem?.json?.dexscreener || {};\nconst bird = birdeyeItem?.json?.data || {};\n\nconst timestamp = new Date().toISOString();\n\nconst output = {\n  token: 'YST',\n  name: 'Yakk Studios Token',\n  mint: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',\n  chain: 'solana',\n  timestamp,\n  price: {\n    usd: dex.priceUsd || bird.price || 0,\n    sol: dex.priceNative || 0\n  },\n  change24h: dex.priceChange24h || bird.priceChange24hPercent || 0,\n  volume: {\n    h24: dex.volume24h || bird.v24hUSD || 0\n  },\n  liquidity: {\n    usd: dex.liquidity || 0\n  },\n  marketCap: dex.marketCap || bird.mc || 0,\n  fdv: dex.fdv || bird.fdv || 0,\n  transactions: {\n    buys24h: dex.buys24h || 0,\n    sells24h: dex.sells24h || 0,\n    total24h: (dex.buys24h || 0) + (dex.sells24h || 0)\n  },\n  holders: bird.holder || 0,\n  supply: {\n    total: bird.supply || 0,\n    circulating: bird.circulatingSupply || 0\n  },\n  links: {\n    dexscreener: dex.pairUrl || 'https://dexscreener.com/solana/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM',\n    birdeye: `https://birdeye.so/token/jYwmSavfx69a35JEkpUrxu9JUjvswEvfnhLCDV9vREV?chain=solana`,\n    solscan: 'https://solscan.io/token/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV'\n  }\n};\n\nreturn [{ json: output }];"
+        "jsCode": "// Combine DexScreener + Solana RPC supply data into final payload\nconst items = $input.all();\n\nconst dexItem = items.find(i => i.json.dexscreener) || items[0];\nconst supplyItem = items.find(i => i.json.supply) || items[1];\n\nconst dex = dexItem?.json?.dexscreener || {};\nconst supply = supplyItem?.json?.supply || {};\n\nconst timestamp = new Date().toISOString();\n\nconst output = {\n  token: 'YST',\n  name: 'Yakk Studios Token',\n  mint: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',\n  chain: 'solana',\n  timestamp,\n  price: {\n    usd: dex.priceUsd || 0,\n    sol: dex.priceNative || 0\n  },\n  change24h: dex.priceChange24h || 0,\n  volume: {\n    h24: dex.volume24h || 0\n  },\n  liquidity: {\n    usd: dex.liquidity || 0\n  },\n  marketCap: dex.marketCap || 0,\n  fdv: dex.fdv || 0,\n  transactions: {\n    buys24h: dex.buys24h || 0,\n    sells24h: dex.sells24h || 0,\n    total24h: (dex.buys24h || 0) + (dex.sells24h || 0)\n  },\n  supply: {\n    total: supply.total || 0,\n    totalFormatted: supply.totalFormatted || '0',\n    decimals: supply.decimals || 6\n  },\n  links: {\n    dexscreener: dex.pairUrl || 'https://dexscreener.com/solana/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',\n    solscan: 'https://solscan.io/token/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV'\n  }\n};\n\n// Cache result in static data so the webhook can serve it instantly\nconst staticData = $getWorkflowStaticData('global');\nstaticData.lastPriceData = output;\nstaticData.lastUpdated = timestamp;\n\nreturn [{ json: output }];"
       },
       "id": "a1b2c3d4-0001-0001-0001-000000000007",
       "name": "Format Final Payload",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1200, 460]
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Webhook path: serve cached price data from static data\nconst staticData = $getWorkflowStaticData('global');\n\nif (staticData.lastPriceData) {\n  return [{ json: staticData.lastPriceData }];\n}\n\n// If no cache yet, return a placeholder\nreturn [{ json: {\n  token: 'YST',\n  name: 'Yakk Studios Token',\n  mint: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',\n  chain: 'solana',\n  timestamp: new Date().toISOString(),\n  message: 'Data not yet available. Schedule trigger runs every 15min.',\n  price: { usd: 0, sol: 0 }\n} }];"
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000011",
+      "name": "Load Cached Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 700]
     },
     {
       "parameters": {
@@ -136,7 +148,7 @@
       "name": "Respond to Webhook",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [1440, 460]
+      "position": [750, 700]
     }
   ],
   "connections": {
@@ -147,6 +159,11 @@
             "node": "DexScreener API",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Solana RPC getTokenSupply",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -155,7 +172,7 @@
       "main": [
         [
           {
-            "node": "DexScreener API",
+            "node": "Load Cached Data",
             "type": "main",
             "index": 0
           }
@@ -169,9 +186,15 @@
             "node": "Extract DexScreener Data",
             "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "Solana RPC getTokenSupply": {
+      "main": [
+        [
           {
-            "node": "Birdeye API",
+            "node": "Extract Supply Data",
             "type": "main",
             "index": 0
           }
@@ -189,7 +212,7 @@
         ]
       ]
     },
-    "Birdeye API": {
+    "Extract Supply Data": {
       "main": [
         [
           {
@@ -211,7 +234,7 @@
         ]
       ]
     },
-    "Format Final Payload": {
+    "Load Cached Data": {
       "main": [
         [
           {
@@ -233,13 +256,14 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2026-03-28T19:15:00.000Z",
-      "updatedAt": "2026-03-28T19:15:00.000Z",
+      "createdAt": "2026-03-29T02:00:00.000Z",
+      "updatedAt": "2026-03-29T02:00:00.000Z",
       "id": "yst-tag-1",
       "name": "YakkStudios"
     }
   ],
   "triggerCount": 2,
-  "updatedAt": "2026-03-28T19:15:00.000Z",
-  "versionId": "yst-price-tracker-v1"
+  "updatedAt": "2026-03-29T02:00:00.000Z",
+  "versionId": "yst-price-tracker-v2",
+  "active": false
 }
