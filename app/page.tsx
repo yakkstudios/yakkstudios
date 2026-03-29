@@ -40,6 +40,9 @@ import News from '@/components/sections/News';
 import Services from '@/components/sections/Services';
 import Bridge from '@/components/sections/Bridge';
 import Wren from '@/components/sections/Wren';
+// New legal pages
+import Terms from '@/components/sections/Terms';
+import PrivacyPolicy from '@/components/sections/PrivacyPolicy';
 
 type SectionId =
   | 'home' | 'screener' | 'terminal' | 'update' | 'trusted' | 'clowns'
@@ -47,7 +50,7 @@ type SectionId =
   | 'otcdesk' | 'yieldfinder' | 'alerts' | 'privacy' | 'tokencreator'
   | 'tgbot' | 'features' | 'portfolio' | 'stakepoint' | 'artlab' | 'coach'
   | 'raids' | 'raffle' | 'wallet' | 'members' | 'whaleclub' | 'ledger' | 'whitepaper'
-  | 'news' | 'services' | 'wren' | 'bridge';
+  | 'news' | 'services' | 'wren' | 'bridge' | 'terms' | 'privacypolicy';
 
 // Fetch live YST token balance for wallets NOT in snapshot
 async function fetchYstBalance(connection: any, walletPk: PublicKey): Promise<number> {
@@ -111,6 +114,8 @@ export default function App() {
       services: 'AI Services',
       wren: 'Saving The Wren',
       bridge: 'Bridge',
+      terms: 'Terms of Service',
+      privacypolicy: 'Privacy Policy',
     };
     document.title = (titles[section] ?? section.toUpperCase()) + ' | $YAKK Studios';
   }, [section]);
@@ -121,8 +126,7 @@ export default function App() {
   // NOTE ON TOKEN GATING: Gate checks are client-side by design. Sections contain
   // UI tools (screener, terminal, etc.) — not sensitive data. Real security for
   // transactions (OTC, staking, etc.) is handled on-chain via wallet signatures.
-  // Server-side middleware gating was considered but adds latency for no security
-  // benefit since all on-chain operations require wallet approval regardless.
+  // Server-side wallet verification is now logged on /api/ai for audit trail.
   const sectionProps = { walletConnected, ystBalance, onNavigate: navigate };
 
   return (
@@ -184,8 +188,11 @@ export default function App() {
           <div className={`page-section ${section === 'bridge' ? 'active' : ''}`}><Bridge {...sectionProps} /></div>
           <div className={`page-section ${section === 'services' ? 'active' : ''}`}><Services /></div>
           <div className={`page-section ${section === 'wren' ? 'active' : ''}`}><Wren /></div>
+          {/* Legal pages */}
+          <div className={`page-section ${section === 'terms' ? 'active' : ''}`}><Terms /></div>
+          <div className={`page-section ${section === 'privacypolicy' ? 'active' : ''}`}><PrivacyPolicy /></div>
         </div>
       </div>
     </div>
   );
-                               }
+}
