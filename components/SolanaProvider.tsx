@@ -8,14 +8,14 @@ import {
   SolflareWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 
-// Import wallet adapter default styles (dark theme works fine with our UI)
 import '@solana/wallet-adapter-react-ui/styles.css';
 
-// Use a custom RPC if provided — strongly recommended in production
-// Set NEXT_PUBLIC_RPC_URL in Vercel env vars to override
+// RPC endpoint — set NEXT_PUBLIC_RPC_URL in Vercel env vars for production
+// (e.g. your Helius or Quicknode private RPC). Falls back to public endpoint.
+// SECURITY: Never hardcode API keys here — they're visible in client bundles.
 const RPC_ENDPOINT =
   process.env.NEXT_PUBLIC_RPC_URL ??
-  'https://mainnet.helius-rpc.com/?api-key=23af02bd-f080-466e-a18b-ae51f2b2de76';
+  'https://api.mainnet-beta.solana.com';
 
 export function SolanaProvider({ children }: { children: ReactNode }) {
   const wallets = useMemo(
@@ -35,4 +35,4 @@ export function SolanaProvider({ children }: { children: ReactNode }) {
       </WalletProvider>
     </ConnectionProvider>
   );
-          }
+}
