@@ -118,6 +118,11 @@ export default function App() {
   const walletLabel = walletAddress
     ? walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4)
     : '';
+  // NOTE ON TOKEN GATING: Gate checks are client-side by design. Sections contain
+  // UI tools (screener, terminal, etc.) — not sensitive data. Real security for
+  // transactions (OTC, staking, etc.) is handled on-chain via wallet signatures.
+  // Server-side middleware gating was considered but adds latency for no security
+  // benefit since all on-chain operations require wallet approval regardless.
   const sectionProps = { walletConnected, ystBalance, onNavigate: navigate };
 
   return (
