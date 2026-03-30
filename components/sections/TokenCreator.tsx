@@ -23,25 +23,25 @@ const labelStyle: React.CSSProperties = {
 };
 
 const WHY_CARDS = [
-  { icon: '🪙', color: 'var(--pink)', title: '1 SOL Application Fee', desc: 'Eliminates bots and meme-rugs instantly. Only serious builders apply. Fee goes to YAKK treasury.' },
-  { icon: '🤖', color: 'var(--gold)', title: 'YAKKAI Due Diligence', desc: 'Every application reviewed by YAKKAI + community. On-chain history checked. Scammer wallets blocked.' },
-  { icon: '🔒', color: '#64dc64', title: 'Mandatory Liquidity Lock', desc: 'Minimum 30-day liquidity lock enforced on-chain. Permanent burn option gives extra trust signal.' },
-  { icon: '📊', color: '#7fdbff', title: 'Instant YAKK Listing', desc: 'Approved tokens get listed in our screener, NFT market, and OTC desk automatically. Real distribution from day 1.' },
+  { icon: 'ðª', color: 'var(--pink)', title: '1 SOL Application Fee', desc: 'Eliminates bots and meme-rugs instantly. Only serious builders apply. Fee goes to YAKK treasury.' },
+  { icon: 'ð¤', color: 'var(--gold)', title: 'YAKKAI Due Diligence', desc: 'Every application reviewed by YAKKAI + community. On-chain history checked. Scammer wallets blocked.' },
+  { icon: 'ð', color: '#64dc64', title: 'Mandatory Liquidity Lock', desc: 'Minimum 30-day liquidity lock enforced on-chain. Permanent burn option gives extra trust signal.' },
+  { icon: 'ð', color: '#7fdbff', title: 'Instant YAKK Listing', desc: 'Approved tokens get listed in our screener, NFT market, and OTC desk automatically. Real distribution from day 1.' },
 ];
 
 const REQUIREMENTS = [
-  { icon: '✓', color: '#64dc64', text: '1 SOL application fee paid on-chain to YAKK treasury' },
-  { icon: '✓', color: '#64dc64', text: 'Liquidity locked for minimum 30 days on StakePoint or verified locker' },
-  { icon: '✓', color: '#64dc64', text: 'Team wallet ≤ 20% of total supply with mandatory vesting' },
-  { icon: '✓', color: '#64dc64', text: 'Working website + active Twitter/X presence' },
-  { icon: '✓', color: '#64dc64', text: 'Minimum 100-word project description — no vapourware' },
-  { icon: '✓', color: '#64dc64', text: 'Applicant wallet must not be flagged in our Clowns database' },
-  { icon: '★', color: 'var(--gold)', text: 'Optional: KYC (increases trust score, shown on listing)' },
-  { icon: '★', color: 'var(--gold)', text: 'Optional: Smart contract audit (YAKKAI automated + partner firms)' },
+  { icon: 'â', color: '#64dc64', text: '1 SOL application fee paid on-chain to YAKK treasury' },
+  { icon: 'â', color: '#64dc64', text: 'Liquidity locked for minimum 30 days on StakePoint or verified locker' },
+  { icon: 'â', color: '#64dc64', text: 'Team wallet â¤ 20% of total supply with mandatory vesting' },
+  { icon: 'â', color: '#64dc64', text: 'Working website + active Twitter/X presence' },
+  { icon: 'â', color: '#64dc64', text: 'Minimum 100-word project description â no vapourware' },
+  { icon: 'â', color: '#64dc64', text: 'Applicant wallet must not be flagged in our Clowns database' },
+  { icon: 'â', color: 'var(--gold)', text: 'Optional: KYC (increases trust score, shown on listing)' },
+  { icon: 'â', color: 'var(--gold)', text: 'Optional: Smart contract audit (YAKKAI automated + partner firms)' },
 ];
 
 export default function TokenCreator({ walletConnected, ystBalance, onNavigate }: Props) {
-  const hasAccess = walletConnected && ystBalance >= 250_000;
+  const hasAccess = walletConnected && ystBalance >= 10_000_000;
 
   const [form, setForm] = useState({
     name: '', ticker: '', type: '', supply: '', initprice: '',
@@ -61,8 +61,8 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
 
   const submit = () => {
     if (!walletConnected) { setStatus('Connect wallet first.'); return; }
-    if (!hasAccess) { setStatus('Need 250,000+ $YST to apply.'); return; }
-    setStatus('✓ Application submitted! We will review within 48h.');
+    if (!hasAccess) { setStatus('Need 10,000,000+ $YST to apply.'); return; }
+    setStatus('â Application submitted! We will review within 48h.');
   };
 
   return (
@@ -72,27 +72,27 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
       <div className="sec-bar" />
 
       <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5 }}>
-        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
         <span className={`badge ${hasAccess ? 'b-green' : 'b-dim'}`}>
-          {hasAccess ? '✓ VERIFIED' : walletConnected ? 'NOT CHECKED' : 'NOT CHECKED'}
+          {hasAccess ? 'â VERIFIED' : walletConnected ? 'NOT CHECKED' : 'NOT CHECKED'}
         </span>
       </div>
 
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 8 }}>
-        Launch a token the right way. Not a casino slot machine — a real project with locked liquidity, verified team, and YAKKAI due diligence. We're building what pump.fun should have been.
+        Launch a token the right way. Not a casino slot machine â a real project with locked liquidity, verified team, and YAKKAI due diligence. We're building what pump.fun should have been.
       </p>
 
       {/* Tokenised IPO banner */}
       <div style={{ background: 'linear-gradient(135deg,rgba(224,96,126,0.15),rgba(255,200,0,0.08))', border: '1px solid rgba(224,96,126,0.3)', borderRadius: 12, padding: '16px 20px', marginBottom: 22, display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-        <div style={{ fontSize: 28 }}>📈</div>
+        <div style={{ fontSize: 28 }}>ð</div>
         <div style={{ flex: 1, minWidth: 200 }}>
-          <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>Tokenised Equity &amp; IPOs — We're Ready Now</div>
+          <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>Tokenised Equity &amp; IPOs â We're Ready Now</div>
           <div style={{ fontSize: 11, color: 'var(--dim)', lineHeight: 1.6 }}>
-            Companies are racing to tokenise their equity. Circle, Kraken, eToro — all announcing tokenised IPO plans. YAKK has the infrastructure to list them <em>today</em>. If you're a company exploring tokenised shares,{' '}
+            Companies are racing to tokenise their equity. Circle, Kraken, eToro â all announcing tokenised IPO plans. YAKK has the infrastructure to list them <em>today</em>. If you're a company exploring tokenised shares,{' '}
             <a href="https://t.me/yakkcult" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--pink)' }}>reach out on Telegram</a>.
           </div>
         </div>
-        <a href="https://t.me/yakkcult" target="_blank" rel="noopener noreferrer" className="btn btn-pink" style={{ textDecoration: 'none', fontSize: 10, padding: '9px 18px', whiteSpace: 'nowrap' }}>INQUIRE →</a>
+        <a href="https://t.me/yakkcult" target="_blank" rel="noopener noreferrer" className="btn btn-pink" style={{ textDecoration: 'none', fontSize: 10, padding: '9px 18px', whiteSpace: 'nowrap' }}>INQUIRE â</a>
       </div>
 
       {/* Why cards */}
@@ -157,9 +157,9 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
                 <option value="30">30 days (minimum)</option>
                 <option value="90">90 days</option>
                 <option value="180">6 months</option>
-                <option value="365">1 year ⭐ recommended</option>
+                <option value="365">1 year â­ recommended</option>
                 <option value="730">2 years</option>
-                <option value="perm">Permanent burn 🔥 max trust</option>
+                <option value="perm">Permanent burn ð¥ max trust</option>
               </select>
             </div>
 
@@ -209,12 +209,12 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
 
             <div>
               <div style={labelStyle}>USE OF FUNDS</div>
-              <textarea rows={2} placeholder="How will raised funds be used? (dev, marketing, liquidity…)" value={form.funds} onChange={e => update('funds', e.target.value)} style={{ ...fieldStyle, resize: 'vertical' }} />
+              <textarea rows={2} placeholder="How will raised funds be used? (dev, marketing, liquidityâ¦)" value={form.funds} onChange={e => update('funds', e.target.value)} style={{ ...fieldStyle, resize: 'vertical' }} />
             </div>
 
             <div>
               <div style={labelStyle}>PREVIOUS PROJECTS / TRACK RECORD</div>
-              <textarea rows={2} placeholder="Any previous projects you've shipped? Links, GitHub, contract addresses…" value={form.track} onChange={e => update('track', e.target.value)} style={{ ...fieldStyle, resize: 'vertical' }} />
+              <textarea rows={2} placeholder="Any previous projects you've shipped? Links, GitHub, contract addressesâ¦" value={form.track} onChange={e => update('track', e.target.value)} style={{ ...fieldStyle, resize: 'vertical' }} />
             </div>
 
             {/* Payment + submit */}
@@ -222,9 +222,9 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
               <div style={{ fontSize: 10, fontWeight: 700, marginBottom: 6 }}>APPLICATION FEE: 1 SOL</div>
               <div style={{ fontSize: 9, color: 'var(--dim)', marginBottom: 10 }}>Paid on-chain directly to YAKK treasury. Non-refundable. Prevents bot spam and signals serious intent. Reviewed within 48h.</div>
               <button className="btn btn-pink" onClick={submit} style={{ width: '100%', fontSize: 11 }}>
-                🚀 PAY 1 SOL &amp; SUBMIT APPLICATION
+                ð PAY 1 SOL &amp; SUBMIT APPLICATION
               </button>
-              {status && <div style={{ marginTop: 8, fontSize: 10, textAlign: 'center', color: status.startsWith('✓') ? 'var(--green)' : 'var(--pink)' }}>{status}</div>}
+              {status && <div style={{ marginTop: 8, fontSize: 10, textAlign: 'center', color: status.startsWith('â') ? 'var(--green)' : 'var(--pink)' }}>{status}</div>}
             </div>
 
           </div>
@@ -250,8 +250,8 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
           <div className="card-sm" style={{ background: 'linear-gradient(135deg,rgba(239,68,68,0.06),rgba(224,96,126,0.04))', borderColor: 'rgba(239,68,68,0.2)' }}>
             <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: '#fca5a5', letterSpacing: '0.12em', marginBottom: 12 }}>YAKK TOKEN CREATOR vs PUMP.FUN</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 10 }}>
-              <div style={{ fontWeight: 700, color: 'var(--gold)', paddingBottom: 6, borderBottom: '1px solid var(--border)' }}>YAKK 🐾</div>
-              <div style={{ fontWeight: 700, color: 'var(--dim)', paddingBottom: 6, borderBottom: '1px solid var(--border)' }}>Pump.fun 🎰</div>
+              <div style={{ fontWeight: 700, color: 'var(--gold)', paddingBottom: 6, borderBottom: '1px solid var(--border)' }}>YAKK ð¾</div>
+              <div style={{ fontWeight: 700, color: 'var(--dim)', paddingBottom: 6, borderBottom: '1px solid var(--border)' }}>Pump.fun ð°</div>
               {[
                 ['1 SOL barrier to entry', '~0.02 SOL, anyone'],
                 ['YAKKAI review', 'No review'],
@@ -275,7 +275,7 @@ export default function TokenCreator({ walletConnected, ystBalance, onNavigate }
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 9, background: 'var(--bg4)', borderRadius: 7, marginBottom: 7 }}>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 600 }}>YAKK Studios</div>
-                <div style={{ fontSize: 9, color: 'var(--dim)' }}>$YST · Utility · Solana</div>
+                <div style={{ fontSize: 9, color: 'var(--dim)' }}>$YST Â· Utility Á· Solana</div>
               </div>
               <span className="badge" style={{ background: 'rgba(100,220,100,0.15)', color: '#64dc64', fontSize: 8 }}>APPROVED</span>
             </div>
