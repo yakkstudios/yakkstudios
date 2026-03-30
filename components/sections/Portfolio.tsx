@@ -24,7 +24,7 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
     setTimeout(() => setRefreshing(false), 1200);
   };
 
-  const ystHeld = ystBalance >= 250_000;
+  const ystHeld = ystBalance >= 10_000_000;
 
   const ystVal = (ystBalance * 0.0000018).toFixed(2);
 
@@ -36,19 +36,19 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
 
       {/* Token gate row */}
       <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 8 }}>
-        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
         <span className={`badge ${walletConnected ? (ystHeld ? 'b-green' : 'b-red') : 'b-dim'}`}>
-          {walletConnected ? (ystHeld ? '✓ ACCESS GRANTED' : '✗ NEED MORE YST') : 'NOT CHECKED'}
+          {walletConnected ? (ystHeld ? 'â ACCESS GRANTED' : 'â NEED MORE YST') : 'NOT CHECKED'}
         </span>
       </div>
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
         Connect your Phantom wallet to see your full holdings, P&amp;L, and on-chain history. No data leaves your browser.
       </p>
 
-      {/* Connect notice — shown when not connected */}
+      {/* Connect notice â shown when not connected */}
       {!walletConnected && (
         <div style={{ background: 'rgba(224,96,126,0.08)', border: '1px solid rgba(224,96,126,0.2)', borderRadius: 10, padding: 24, textAlign: 'center', marginBottom: 20 }}>
-          <div style={{ fontSize: 28, marginBottom: 10 }}>👛</div>
+          <div style={{ fontSize: 28, marginBottom: 10 }}>ð</div>
           <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>Connect Wallet to View Portfolio</div>
           <div style={{ fontSize: 11, color: 'var(--dim)', marginBottom: 14 }}>Your holdings are pulled live from the blockchain. Nothing is stored on our servers.</div>
           <button className="btn btn-pink">CONNECT PHANTOM</button>
@@ -58,19 +58,19 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
       {/* Insufficient YST notice */}
       {walletConnected && !ystHeld && (
         <div style={{ background: 'rgba(224,96,126,0.08)', border: '1px solid rgba(224,96,126,0.2)', borderRadius: 10, padding: 24, textAlign: 'center', marginBottom: 20 }}>
-          <div style={{ fontSize: 28, marginBottom: 10 }}>🔒</div>
+          <div style={{ fontSize: 28, marginBottom: 10 }}>ð</div>
           <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>Insufficient $YST Balance</div>
           <div style={{ fontSize: 11, color: 'var(--dim)', marginBottom: 12 }}>
-            You need 250,000+ $YST to access the portfolio tracker. You hold {ystBalance.toLocaleString()} $YST.
+            You need 10,000,000+ $YST to access the portfolio tracker. You hold {ystBalance.toLocaleString()} $YST.
           </div>
           <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 14px' }}>
-            <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 250_000) * 100) + '%' }} />
+            <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 10_000_000) * 100) + '%' }} />
           </div>
-          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter →</a>
+          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter â</a>
         </div>
       )}
 
-      {/* Full portfolio — shown when wallet connected and ystHeld */}
+      {/* Full portfolio â shown when wallet connected and ystHeld */}
       {walletConnected && ystHeld && (
         <div>
           {/* Summary stats */}
@@ -78,7 +78,7 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
             <div className="card-sm" style={{ textAlign: 'center', padding: '14px 8px' }}>
               <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--pink)' }}>$8,214</div>
               <div style={{ fontSize: 8, color: 'var(--dim)', marginTop: 3, letterSpacing: '0.1em' }}>TOTAL VALUE</div>
-            </div>
+     0      </div>
             <div className="card-sm" style={{ textAlign: 'center', padding: '14px 8px' }}>
               <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--gold)' }}>12.4 SOL</div>
               <div style={{ fontSize: 8, color: 'var(--dim)', marginTop: 3, letterSpacing: '0.1em' }}>SOL BALANCE</div>
@@ -101,7 +101,7 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
                 onClick={handleRefresh}
                 style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 5, color: 'var(--dim)', padding: '4px 10px', cursor: 'pointer', fontSize: 9, fontFamily: 'Space Mono,monospace' }}
               >
-                {refreshing ? '…' : '↻ REFRESH'}
+                {refreshing ? 'â¦' : 'â» REFRESH'}
               </button>
             </div>
             <div>
@@ -143,8 +143,8 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
           </div>
 
           <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-            <a href="https://birdeye.so" target="_blank" rel="noopener noreferrer" className="btn btn-outline">View on Birdeye ↗</a>
-            <a href="https://solscan.io" target="_blank" rel="noopener noreferrer" className="btn btn-outline">View on Solscan ↗</a>
+            <a href="https://birdeye.so" target="_blank" rel="noopener noreferrer" className="btn btn-outline">View on Birdeye â</a>
+            <a href="https://solscan.io" target="_blank" rel="noopener noreferrer" className="btn btn-outline">View on Solscan â</a>
           </div>
         </div>
       )}
