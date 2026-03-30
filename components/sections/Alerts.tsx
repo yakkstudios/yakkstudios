@@ -45,6 +45,22 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
   const removeAlert = (index: number) => {
     setAlerts(a => a.filter((_, i) => i !== index));
   };
+  const hasAccess = walletConnected && ystBalance >= 10_000_000;
+  if (!hasAccess) return (
+    <div className="sec-pad">
+      <div className="locked-overlay">
+        <div className="locked-icon">ð</div>
+        <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+        <div className="locked-sub">
+          Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
+        </div>
+        <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
+          Get $YST
+        </a>
+      </div>
+    </div>
+  );
+
 
   return (
     <div className="sec-pad">
@@ -65,7 +81,7 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
             {/* Notification permission notice */}
             {notifPermission && (
               <div style={{ background: 'rgba(224,96,126,0.1)', border: '1px solid rgba(224,96,126,0.3)', borderRadius: 7, padding: 10, fontSize: 11 }}>
-                🔔 Enable browser notifications to receive alerts even when the tab isn&apos;t focused.
+                ð Enable browser notifications to receive alerts even when the tab isn&apos;t focused.
                 <button
                   onClick={alertRequestPermission}
                   style={{ display: 'block', marginTop: 8, width: '100%', background: 'var(--pink)', border: 'none', borderRadius: 5, color: '#fff', padding: 6, cursor: 'pointer', fontFamily: 'Space Mono,monospace', fontSize: 10 }}
@@ -119,7 +135,7 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', borderBottom: '1px solid var(--border)', opacity: a.active ? 1 : 0.5 }}>
                   <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 11, fontWeight: 700, color: 'var(--text)', minWidth: 60 }}>{a.token}</span>
                   <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 10, color: a.dir === 'above' ? 'var(--green)' : 'var(--red)', marginRight: 4 }}>
-                    {a.dir === 'above' ? '↑ above' : '↓ below'}
+                    {a.dir === 'above' ? 'â above' : 'â below'}
                   </span>
                   <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 11, color: 'var(--text)', flex: 1 }}>{a.target}</span>
                   <span className={`badge ${a.active ? 'b-green' : 'b-dim'}`}>{a.active ? 'ACTIVE' : 'OFF'}</span>
@@ -128,7 +144,7 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
                     style={{ background: 'none', border: 'none', color: 'var(--dim)', cursor: 'pointer', fontSize: 14, padding: '0 4px', lineHeight: 1 }}
                     title="Delete alert"
                   >
-                    ✕
+                    â
                   </button>
                 </div>
               ))
