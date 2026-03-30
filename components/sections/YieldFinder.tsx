@@ -104,7 +104,7 @@ const selectStyle: React.CSSProperties = {
 };
 
 export default function YieldFinder({ walletConnected, ystBalance, onNavigate }: Props) {
-  const ystHeld = walletConnected && ystBalance >= 250_000;
+  const ystHeld = walletConnected && ystBalance >= 10_000_000;
   const [chain, setChain] = useState('all');
   const [type, setType] = useState('all');
 
@@ -122,9 +122,9 @@ export default function YieldFinder({ walletConnected, ystBalance, onNavigate }:
 
       {/* Token gate row */}
       <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 8 }}>
-        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
         <span className={`badge ${walletConnected ? (ystHeld ? 'b-green' : 'b-red') : 'b-dim'}`}>
-          {walletConnected ? (ystHeld ? '✓ ACCESS GRANTED' : '✗ NEED MORE YST') : 'NOT CHECKED'}
+          {walletConnected ? (ystHeld ? 'â ACCESS GRANTED' : 'â NEED MORE YST') : 'NOT CHECKED'}
         </span>
       </div>
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
@@ -150,7 +150,7 @@ export default function YieldFinder({ walletConnected, ystBalance, onNavigate }:
           style={{ padding: '8px 16px', fontSize: 10 }}
           onClick={() => { setChain('all'); setType('all'); }}
         >
-          ↻ REFRESH
+          â» REFRESH
         </button>
       </div>
 
@@ -162,7 +162,7 @@ export default function YieldFinder({ walletConnected, ystBalance, onNavigate }:
               <div>
                 <div style={{ fontWeight: 700, fontSize: 14 }}>{y.name}</div>
                 <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 2 }}>
-                  {y.subtitle} • {y.chain === 'solana' ? 'Solana' : y.chain === 'ethereum' ? 'Ethereum' : 'BNB Chain'}
+                  {y.subtitle} â¢ {y.chain === 'solana' ? 'Solana' : y.chain === 'ethereum' ? 'Ethereum' : 'BNB Chain'}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
@@ -181,7 +181,7 @@ export default function YieldFinder({ walletConnected, ystBalance, onNavigate }:
               className="btn btn-pink"
               style={{ display: 'block', width: '100%', textAlign: 'center', marginTop: 10, textDecoration: 'none', fontSize: 10, padding: 7, boxSizing: 'border-box' }}
             >
-              DEPOSIT →
+              DEPOSIT â
             </a>
           </div>
         ))}
