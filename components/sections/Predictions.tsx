@@ -28,12 +28,12 @@ const YST_PREDICTIONS = [
 const STATS = [
   { label: 'Active Markets', value: '42' },
   { label: 'Total Volume', value: '$38.2M' },
-  { label: 'YAKKAI Win Rate', value: '85–98%' },
+  { label: 'YAKKAI Win Rate', value: '85â98%' },
   { label: 'Traders', value: '94K+' },
 ];
 
 export default function Predictions({ walletConnected, ystBalance, onNavigate }: Props) {
-  const hasAccess = walletConnected && ystBalance >= 250_000;
+  const hasAccess = walletConnected && ystBalance >= 10_000_000;
   const [filter, setFilter] = useState('all');
   const [chatInput, setChatInput] = useState('');
   const [chatMsgs, setChatMsgs] = useState<{role:string;text:string}[]>([
@@ -46,23 +46,23 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
   const handleChat = () => {
     if (!chatInput.trim()) return;
     setChatMsgs(prev => [...prev, { role: 'user', text: chatInput }]);
-    const reply = `Based on YAKKAI analysis of "${chatInput.trim()}" — current sentiment is moderately bullish. On-chain signals show accumulation patterns. Community conviction: HIGH. Always DYOR — the ledger makes no promises.`;
+    const reply = `Based on YAKKAI analysis of "${chatInput.trim()}" â current sentiment is moderately bullish. On-chain signals show accumulation patterns. Community conviction: HIGH. Always DYOR â the ledger makes no promises.`;
     setChatMsgs(prev => [...prev, { role: 'ai', text: reply }]);
     setChatInput('');
   };
 
   const handleGetPick = () => {
-    setAiPick('YAKKAI TOP PICK: "Will Bitcoin hit $150K before July 2025?" — Current YES at 62%. YAKKAI signal: STRONG BUY on YES. Reasoning: On-chain whale accumulation at ATH, ETF inflow momentum sustained, halving supply shock thesis intact. Historical pattern: BTC has exceeded consensus targets in every post-halving year. Risk: Macro black swan. Confidence: 87%.');
+    setAiPick('YAKKAI TOP PICK: "Will Bitcoin hit $150K before July 2025?" â Current YES at 62%. YAKKAI signal: STRONG BUY on YES. Reasoning: On-chain whale accumulation at ATH, ETF inflow momentum sustained, halving supply shock thesis intact. Historical pattern: BTC has exceeded consensus targets in every post-halving year. Risk: Macro black swan. Confidence: 87%.');
   };
 
   return (
     <div style={{ minHeight: 'calc(100vh - 74px)' }}>
       {!hasAccess && (
         <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
+          <div className="locked-icon">ð</div>
           <div className="locked-title">PREDICTION MARKETS</div>
           <div className="locked-sub">
-            Connect your wallet and hold <strong>250,000+ $YST</strong> to access prediction market intelligence.
+            Connect your wallet and hold <strong>10,000,000+ $YST</strong> to access prediction market intelligence.
           </div>
           <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
             Get $YST
@@ -72,7 +72,7 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
 
       {hasAccess && (
         <div className="sec-pad">
-          <div className="sec-eyebrow">10 — YAKKAI PREDICTION ENGINE</div>
+          <div className="sec-eyebrow">10 â YAKKAI PREDICTION ENGINE</div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 'clamp(26px,3vw,44px)', lineHeight: 1.1 }}>
             PREDICTION <span style={{ color: 'var(--gold)' }}>MARKETS</span>
           </div>
@@ -80,19 +80,19 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
           <p style={{ color: 'var(--muted)', maxWidth: '580px', marginBottom: '28px', fontSize: '13px', lineHeight: 1.8 }}>
             Real prediction markets for crypto events. YAKKAI scans live markets and gives you the signal. Click any market to trade on Polymarket.{' '}
             <span style={{ color: 'var(--gold)', fontWeight: 600 }}>42 active markets. Community conviction tracked on-chain.</span>{' '}
-            Not financial advice — the ledger makes no promises, only patterns.
+            Not financial advice â the ledger makes no promises, only patterns.
           </p>
 
           {/* YAKKAI Top Pick */}
           <div className="card" style={{ marginBottom: '24px', borderColor: 'rgba(247,201,72,0.25)', background: 'linear-gradient(135deg,rgba(247,201,72,0.04),var(--bg3))' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px' }}>
-              <span style={{ fontSize: '22px' }}>🔮</span>
+              <span style={{ fontSize: '22px' }}>ð®</span>
               <div>
                 <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: '14px', color: 'var(--gold)' }}>YAKKAI TOP PICK</div>
-                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--dim)' }}>AI-generated prediction signal · Educational only</div>
+                <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--dim)' }}>AI-generated prediction signal Â· Educational only</div>
               </div>
               <button className="btn btn-gold" style={{ marginLeft: 'auto', fontSize: '9px', padding: '6px 13px' }} onClick={handleGetPick}>
-                🤖 GET AI PICK
+                ð¤ GET AI PICK
               </button>
             </div>
             <div style={{ minHeight: '80px', background: 'var(--bg4)', border: '1px solid var(--border)', borderRadius: '7px', padding: '13px', fontSize: '12px', color: 'var(--muted)', lineHeight: 1.7 }}>
@@ -135,7 +135,7 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
                   </button>
                 ))}
                 <div style={{ marginLeft: 'auto' }}>
-                  <button className="btn btn-ghost" style={{ fontSize: '9px', padding: '5px 11px' }}>↻ REFRESH</button>
+                  <button className="btn btn-ghost" style={{ fontSize: '9px', padding: '5px 11px' }}>â» REFRESH</button>
                 </div>
               </div>
 
@@ -180,7 +180,7 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
 
               <div style={{ marginTop: '12px', textAlign: 'center' }}>
                 <a href="https://polymarket.com/markets?tag=crypto" target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ fontSize: '10px' }}>
-                  VIEW ALL MARKETS ON POLYMARKET →
+                  VIEW ALL MARKETS ON POLYMARKET â
                 </a>
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
             <div>
               {/* YST Price Predictions */}
               <div className="card" style={{ marginBottom: '16px' }}>
-                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '12px', marginBottom: '12px' }}>🩷 $YST PRICE PREDICTIONS</div>
+                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '12px', marginBottom: '12px' }}>ð©· $YST PRICE PREDICTIONS</div>
                 {YST_PREDICTIONS.map((p, i) => (
                   <div key={i} style={{ marginBottom: '10px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'Space Mono,monospace', fontSize: '9px', marginBottom: '4px' }}>
@@ -202,19 +202,19 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
                   </div>
                 ))}
                 <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'center', fontSize: '10px', marginTop: '10px' }}>
-                  ↻ REFRESH PREDICTIONS
+                  â» REFRESH PREDICTIONS
                 </button>
               </div>
 
               {/* Ask YAKKAI */}
               <div className="card" style={{ marginBottom: '16px' }}>
-                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '12px', marginBottom: '12px' }}>💬 ASK YAKKAI ABOUT A MARKET</div>
+                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '12px', marginBottom: '12px' }}>ð¬ ASK YAKKAI ABOUT A MARKET</div>
                 <div className="chat-msgs" style={{ height: '160px', overflowY: 'auto', background: 'var(--bg4)', border: '1px solid var(--border)', borderRadius: '8px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '10px' }}>
                   {chatMsgs.map((msg, i) => (
                     msg.role === 'ai' ? (
                       <div key={i} className="msg-ai" style={{ alignSelf: 'flex-start', background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: '8px 8px 8px 2px', padding: '8px 13px', maxWidth: '80%', fontSize: '12px', lineHeight: 1.6 }}>
-                        {i === 0 && <div className="ai-lbl" style={{ fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--gold)', letterSpacing: '0.1em', marginBottom: '5px' }}>YAKKAI — PREDICTION MODE</div>}
-                        {msg.text} 🔮
+                        {i === 0 && <div className="ai-lbl" style={{ fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--gold)', letterSpacing: '0.1em', marginBottom: '5px' }}>YAKKAI â PREDICTION MODE</div>}
+                        {msg.text} ð®
                       </div>
                     ) : (
                       <div key={i} style={{ alignSelf: 'flex-end', background: 'rgba(224,96,126,0.1)', border: '1px solid rgba(224,96,126,0.2)', borderRadius: '8px 8px 2px 8px', padding: '8px 13px', maxWidth: '80%', fontSize: '12px', lineHeight: 1.6 }}>
@@ -240,7 +240,7 @@ export default function Predictions({ walletConnected, ystBalance, onNavigate }:
 
               {/* Prediction Stats */}
               <div className="card">
-                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '12px', marginBottom: '10px' }}>📊 PREDICTION STATS</div>
+                <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '12px', marginBottom: '10px' }}>ð PREDICTION STATS</div>
                 <div className="grid2" style={{ gap: '8px' }}>
                   {STATS.map(s => (
                     <div key={s.label} className="stat-card" style={{ padding: '10px', textAlign: 'center' }}>
