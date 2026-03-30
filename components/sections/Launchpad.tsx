@@ -6,7 +6,7 @@ interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id:
 const ACTIVE_LAUNCHES = [
   {
     name: 'YAKK Studios',
-    ticker: '$YST — Solana',
+    ticker: '$YST â Solana',
     status: 'LIVE',
     statusBg: 'rgba(100,220,100,0.15)',
     statusColor: '#64dc64',
@@ -17,19 +17,19 @@ const ACTIVE_LAUNCHES = [
   },
   {
     name: 'YakkBlinders',
-    ticker: '$YBLIND — Solana · Test Launch',
+    ticker: '$YBLIND â Solana Â· Test Launch',
     status: 'PENDING',
     statusBg: 'rgba(247,201,72,0.15)',
     statusColor: 'var(--gold)',
     pct: 12,
     pctColor: 'var(--gold)',
-    leftLabel: '12% raised — First test token',
+    leftLabel: '12% raised â First test token',
     rightLabel: 'Liq lock: 30d',
   },
 ];
 
 export default function Launchpad({ walletConnected, ystBalance, onNavigate }: Props) {
-  const ystHeld = walletConnected && ystBalance >= 250_000;
+  const ystHeld = walletConnected && ystBalance >= 10_000_000;
 
   const [name, setName] = useState('');
   const [ticker, setTicker] = useState('');
@@ -67,9 +67,9 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
 
       {/* Token gate row */}
       <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 8 }}>
-        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
         <span className={`badge ${walletConnected ? (ystHeld ? 'b-green' : 'b-red') : 'b-dim'}`}>
-          {walletConnected ? (ystHeld ? '✓ ACCESS GRANTED' : '✗ NEED MORE YST') : 'NOT CHECKED'}
+          {walletConnected ? (ystHeld ? 'â ACCESS GRANTED' : 'â NEED MORE YST') : 'NOT CHECKED'}
         </span>
       </div>
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
@@ -131,7 +131,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
             />
             {submitted ? (
               <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--green)', padding: '8px 0' }}>
-                ✓ Submitted for review!
+                â Submitted for review!
               </div>
             ) : (
               <button
