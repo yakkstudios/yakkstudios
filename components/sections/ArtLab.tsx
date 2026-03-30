@@ -3,10 +3,10 @@ import { useState } from 'react';
 
 interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
 
-const CORE_PREFIX = 'Vibrant pink yakk, dense hot-pink fur, silver curved horns, black feet/paws, intense yellow eyes under black mask, gold-dripping tail, fluffy chibi round body, cinematic chiaroscuro lighting —';
+const CORE_PREFIX = 'Vibrant pink yakk, dense hot-pink fur, silver curved horns, black feet/paws, intense yellow eyes under black mask, gold-dripping tail, fluffy chibi round body, cinematic chiaroscuro lighting â';
 
 const SCENES = [
-  { value: 'Himalayan peak at golden hour, epic fantasy matte painting', label: 'Mountain Peak — Golden Hour' },
+  { value: 'Himalayan peak at golden hour, epic fantasy matte painting', label: 'Mountain Peak â Golden Hour' },
   { value: 'underground mafia den, velvet curtains, gold candlesticks', label: 'Underground Mafia Den' },
   { value: 'cyberpunk neon alley, holographic crypto charts, rain-soaked', label: 'Cyberpunk Alley' },
   { value: "Peaky Blinders 1920s Birmingham, sharp suits, flat caps, street fog", label: 'Peaky Blinders Era' },
@@ -17,35 +17,35 @@ const STYLES = [
   { value: 'cinematic fantasy illustration, volumetric light, 4K', label: 'Cinematic Fantasy' },
   { value: 'anime digital art, cel-shaded, dynamic pose', label: 'Anime / Cel-Shaded' },
   { value: 'dark oil painting, baroque style', label: 'Baroque Oil Painting' },
-  { value: '3D render, octane, studio lighting', label: '3D Render — Octane' },
+  { value: '3D render, octane, studio lighting', label: '3D Render â Octane' },
   { value: 'propaganda poster, flat graphic, bold silhouette', label: 'Propaganda Poster' },
 ];
 
 const MJ_REFERENCES = [
   {
-    label: 'PROMPT 01 — MOUNTAIN EMPIRE',
+    label: 'PROMPT 01 â MOUNTAIN EMPIRE',
     txt: 'Vibrant pink yakk, gold-dripping tail, standing on Himalayan peak at golden hour, cult army of pink yakks behind holding pink banners, god rays, cinematic fantasy matte painting, 4K --ar 16:9 --style raw',
   },
   {
-    label: 'PROMPT 02 — MAFIA CONSIGLIERE',
+    label: 'PROMPT 02 â MAFIA CONSIGLIERE',
     txt: 'Pink yakk in Peaky Blinders suit, flat cap, mahogany table, candlelight, ledger books and crypto charts, baroque drama, chiaroscuro oil painting --ar 16:9 --style raw',
   },
   {
-    label: 'PROMPT 03 — CYBERPUNK OVERLORD',
+    label: 'PROMPT 03 â CYBERPUNK OVERLORD',
     txt: 'Pink yakk as cyberpunk crypto overlord, laser eyes, gold chain, neon alley, holographic charts floating, anime cel-shaded dynamic pose --ar 9:16 --style raw',
   },
   {
-    label: 'PROMPT 04 — THRONE GUARDIAN',
+    label: 'PROMPT 04 â THRONE GUARDIAN',
     txt: 'Pink yakk on obsidian ice throne, dark fantasy, glowing cult runes, three NFT silhouettes bowing, golden chains, dramatic underlighting --ar 16:9',
   },
   {
-    label: 'PROMPT 05 — PROPAGANDA POSTER',
+    label: 'PROMPT 05 â PROPAGANDA POSTER',
     txt: 'Soviet propaganda poster, pink yakk leading crypto army, bold flat design, hot pink black and gold only, constructivist style, no text in image --ar 2:3',
   },
 ];
 
 export default function ArtLab({ walletConnected, ystBalance, onNavigate }: Props) {
-  const hasAccess = walletConnected && ystBalance >= 250_000;
+  const hasAccess = walletConnected && ystBalance >= 10_000_000;
   const [scene, setScene] = useState(SCENES[0].value);
   const [style, setStyle] = useState(STYLES[0].value);
   const [extraProps, setExtraProps] = useState('');
@@ -70,12 +70,12 @@ export default function ArtLab({ walletConnected, ystBalance, onNavigate }: Prop
 
   return (
     <div className="sec-pad">
-      <div className="sec-eyebrow">05 — YAKK ART LAB</div>
+      <div className="sec-eyebrow">05 â YAKK ART LAB</div>
       <div className="sec-title">Art Lab</div>
       <div className="sec-bar" />
 
       <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5 }}>
-        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙Held</span>
+        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðªHeld</span>
         <span className={`badge ${hasAccess ? 'b-green' : 'b-dim'}`}>
           {hasAccess ? 'ACCESS GRANTED' : !walletConnected ? 'NOT CHECKED' : 'INSUFFICIENT'}
         </span>
@@ -89,7 +89,7 @@ export default function ArtLab({ walletConnected, ystBalance, onNavigate }: Prop
 
             {/* Core Prefix */}
             <div style={{ marginBottom: 11 }}>
-              <label className="field-lbl" style={{ marginTop: 0 }}>🔒 CORE YAKK PREFIX (LOCKED)</label>
+              <label className="field-lbl" style={{ marginTop: 0 }}>ð CORE YAKK PREFIX (LOCKED)</label>
               <textarea
                 className="field-inp"
                 rows={2}
@@ -144,20 +144,20 @@ export default function ArtLab({ walletConnected, ystBalance, onNavigate }: Prop
               style={{ width: '100%', justifyContent: 'center' }}
               onClick={buildPrompt}
             >
-              BUILD PROMPT →
+              BUILD PROMPT â
             </button>
           </div>
 
           {/* Prompt Output */}
           {showPrompt && (
             <div className="card">
-              <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--gold)', letterSpacing: '0.15em', marginBottom: 8 }}>MIDJOURNEY PROMPT — COPY &amp; PASTE</div>
+              <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--gold)', letterSpacing: '0.15em', marginBottom: 8 }}>MIDJOURNEY PROMPT â COPY &amp; PASTE</div>
               <div style={{ fontSize: 11, color: 'var(--muted)', lineHeight: 1.7, fontStyle: 'italic', padding: 11, background: 'var(--bg4)', borderRadius: 5 }}>
                 {builtPrompt}
               </div>
               <div style={{ display: 'flex', gap: 7, marginTop: 10 }}>
                 <button className="btn btn-gold" style={{ fontSize: 10, padding: '5px 12px' }} onClick={copyPrompt}>
-                  {copied ? '✓ COPIED' : 'COPY'}
+                  {copied ? 'â COPIED' : 'COPY'}
                 </button>
                 <a href="https://t.me/yakkcult" target="_blank" rel="noopener noreferrer">
                   <button className="btn btn-outline" style={{ fontSize: 10, padding: '5px 12px' }}>SHARE TG</button>
