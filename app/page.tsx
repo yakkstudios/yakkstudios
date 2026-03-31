@@ -1,6 +1,7 @@
 'use client';
 import { useState, useCallback, useEffect } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { WalletMultiButton, useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { PublicKey } from '@solana/web3.js';
 import Sidebar from '@/components/Sidebar';
 import TickerBar from '@/components/TickerBar';
@@ -68,6 +69,7 @@ export default function App() {
   const [balanceLoading, setBalanceLoading] = useState(false);
   const { connected, publicKey, disconnect } = useWallet();
   const { connection } = useConnection();
+  const { setVisible: openWalletModal } = useWalletModal();
   const walletConnected = connected && !!publicKey;
   const walletAddress = publicKey?.toBase58();
 
@@ -144,7 +146,7 @@ export default function App() {
             {walletLabel}{balanceLoading ? ' …' : isDevWallet ? ' · DEV' : ` · ${ystBalance.toLocaleString()} YST`}
           </button>
         ) : (
-          <w-sol-button style={{ '--wsol-border-radius': '4px', '--wsol-font-size': '11px' } as any} />
+          <WalletMultiButton style={{ height: 28, fontSize: 11, borderRadius: 4, padding: '0 10px' }} />
         )}
       </div>
       <Sidebar
@@ -154,7 +156,7 @@ export default function App() {
         ystBalance={effectiveYstBalance}
       />
       <div id="main-wrap">
-        <TickerBar onConnectWallet={() => {}} walletConnected={walletConnected} walletLabel={walletLabel} />
+        <TickerBar onConnectWallet={() => openWalletModal(true)} walletConnected={walletConnected} walletLabel={walletLabel} />
         <div id="main">
           <div className={`page-section ${section === 'home' ? 'active' : ''}`}><Home {...sectionProps} /></div>
           <div className={`page-section ${section === 'screener' ? 'active' : ''}`}><Screener {...sectionProps} /></div>
