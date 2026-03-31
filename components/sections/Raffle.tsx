@@ -89,7 +89,7 @@ export default function Raffle({ walletConnected, ystBalance, onNavigate }: Prop
         </div>
       )}
 
-      {hasAccess && (
+      {hasAccess && (<>
       {/* Active Raffles */}
       <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 13, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10 }}>
         ACTIVE RAFFLES
@@ -219,6 +219,7 @@ export default function Raffle({ walletConnected, ystBalance, onNavigate }: Prop
           </div>
         )}
       </div>
+      </>)}
     </div>
   );
 }
