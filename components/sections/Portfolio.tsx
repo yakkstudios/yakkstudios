@@ -25,8 +25,6 @@ export default function Portfolio({ walletConnected, ystBalance, onNavigate }: P
     setTimeout(() => setRefreshing(false), 1200);
   };
 
-  const hasAccess = ystBalance >= 10_000_000;
-
   const ystVal = (ystBalance * 0.0000018).toFixed(2);
 
   return (
