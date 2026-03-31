@@ -43,52 +43,53 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
   const [search, setSearch] = useState('');
   const [listSearch, setListSearch] = useState('');
 
-  /* ── Live YST price from /api/price ─────────────────────── */
+  /* ── Live prices from /api/screener (all tokens) ─────────────────────── */
   useEffect(() => {
-    async function fetchYSTPrice() {
+    async function fetchAllPrices() {
       try {
-        const res = await fetch('/api/price');
+        const res = await fetch('/api/screener');
         if (!res.ok) return;
         const data = await res.json();
-        const price = parseFloat(data.price);
-        const change24h: number = data.change24h ?? 0;
-        const volume24h: number = data.volume24h ?? 0;
+        const liveToks: any[] = data.tokens ?? [];
+        if (!liveToks.length) return;
 
-        if (!isNaN(price) && price > 0) {
-          setTokens(prev =>
-            prev.map(t => {
-              if (t.ticker !== 'YST') return t;
-              // Format volume with K/M suffix
-              const fmtVol = volume24h >= 1_000_000
-                ? `$${(volume24h / 1_000_000).toFixed(1)}M`
-                : volume24h >= 1_000
-                ? `$${(volume24h / 1_000).toFixed(1)}K`
-                : `$${volume24h.toFixed(2)}`;
-              return {
-                ...t,
-                price,
-                chg: change24h,
-                vol: fmtVol,
-              };
-            })
-          );
-          // Keep selectedToken in sync if YST is selected
-          setSelectedToken(prev => {
-            if (!prev || prev.ticker !== 'YST') return prev;
-            const fmtVol = volume24h >= 1_000_000
-              ? `$${(volume24h / 1_000_000).toFixed(1)}M`
-              : volume24h >= 1_000
-              ? `$${(volume24h / 1_000).toFixed(1)}K`
-              : `$${volume24h.toFixed(2)}`;
-            return { ...prev, price, chg: change24h, vol: fmtVol };
-          });
-        }
+        setTokens(prev => prev.map(t => {
+          const live = liveToks.find((l: any) => l.ticker === t.ticker);
+          if (!live || !live.live) return t;
+          return {
+            ...t,
+            price: live.price ?? t.price,
+            chg:   live.chg   ?? t.chg,
+            vol:   live.vol   ?? t.vol,
+            liq:   live.liq   ?? t.liq,
+            mcap:  live.mcap  ?? t.mcap,
+            fdv:   live.fdv   ?? t.fdv,
+            txns:  live.txns  ?? t.txns,
+            buys:  live.buys  ?? t.buys,
+            sells: live.sells ?? t.sells,
+          };
+        }));
+
+        // Keep selectedToken in sync
+        setSelectedToken(prev => {
+          if (!prev) return prev;
+          const live = liveToks.find((l: any) => l.ticker === prev.ticker);
+          if (!live || !live.live) return prev;
+          return {
+            ...prev,
+            price: live.price ?? prev.price,
+            chg:   live.chg   ?? prev.chg,
+            vol:   live.vol   ?? prev.vol,
+          };
+        });
       } catch {
         // Silently fall back to static data on error
       }
     }
 
-    fetchYSTPrice();
+    fetchAllPrices();
+    const iv = setInterval(fetchAllPrices, 60_000);
+    return () => clearInterval(iv);
   }, []);
 
   const filteredTokens = tokens.filter(t => {

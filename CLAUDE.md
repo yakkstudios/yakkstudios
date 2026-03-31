@@ -196,3 +196,30 @@ This DApp is one of 5 verticals in the YAKK Studios empire:
 5. **Personal Wealth Strategy** — Separated from company
 
 Full context: See Notion Command Center at https://www.notion.so/332a2edd87348141833cdd2026c6bc35
+
+## Self-Improving Loop (Mandatory Protocol)
+
+Every agent working on this repo MUST follow this compound-learning protocol. Static rules don't scale — this CLAUDE.md should get smarter with every session.
+
+### BEFORE each task
+1. **Audit recent learnings** — scan the Fatal Error Prevention section and the last commit messages. Ask: "what broke last time and why?"
+2. **Form a hypothesis** — before writing code, state your approach in one sentence. Example: "I'll add X by Y pattern to avoid the Z failure mode we hit before."
+3. **Check section status table** — confirm which sections are locked vs. active before touching any component.
+
+### AFTER each task
+1. **Stress-test your output** — mentally run the JSX Fragment check, the API fallback check, and the determinism check against what you just wrote.
+2. **Extract the insight** — if you caught something, fixed something, or learned something non-obvious, add it to Fatal Error Prevention below.
+3. **Lock in the rule** — one concrete, testable rule. Not "be careful with fragments" — write "If `{condition && (` contains more than one child, wrap in `<>...</>`."
+
+### Fatal Error Prevention (self-updating)
+
+Add new rules here as they're discovered. Never delete old ones.
+
+| # | Rule | Trigger |
+|---|------|---------|
+| 1 | `{condition && (<>...</>)}` required whenever multiple JSX siblings exist inside a conditional render | Vercel build failures |
+| 2 | `Gini > 0.85` = High Risk, `< 5 holders` = High Risk — hardcoded thresholds, no ML | Forensics reliability |
+| 3 | All Helius RPC calls must have `try/catch` with `DATA_UNAVAILABLE` fallback — never throw to the UI | Runtime crashes |
+| 4 | `revalidate = 30` on all `/api/*` routes that call external APIs — prevents cold-start hammering | Rate limits / cost |
+| 5 | Token mint addresses are case-sensitive in comparisons — always `.toLowerCase()` both sides | Silent data mismatches |
+| 6 | Never read, expose, or reference `.env` / `.env.local` — rotate keys immediately if leaked | Security |
