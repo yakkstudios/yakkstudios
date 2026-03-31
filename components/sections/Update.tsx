@@ -8,13 +8,13 @@ const UPDATES = [
     date: 'March 2025',
     type: 'MAJOR',
     badge: 'b-pink',
-    title: 'Full Platform Rebuild â Next.js Migration',
+    title: 'Full Platform Rebuild — Next.js Migration',
     changes: [
       'Migrated entire platform to Next.js 14 App Router for performance and scalability',
       'Snapshot-based $YST balance verification system deployed',
       'All 27 sections rebuilt with live content and gated access system',
-      'Wallet adapter updated â Phantom, Backpack, Solflare fully supported',
-      'Mobile responsive design overhaul â iPad and mobile optimized',
+      'Wallet adapter updated — Phantom, Backpack, Solflare fully supported',
+      'Mobile responsive design overhaul — iPad and mobile optimized',
     ],
   },
   {
@@ -37,7 +37,7 @@ const UPDATES = [
     badge: 'b-green',
     title: 'New Tools: Token Creator, OTC Desk, Raids',
     changes: [
-      'Token Creator: launch SPL tokens with metadata, socials and authority revoke â no code needed',
+      'Token Creator: launch SPL tokens with metadata, socials and authority revoke — no code needed',
       'OTC Desk: peer-to-peer large block trades between YAKK holders',
       'Raids: coordinated Twitter/X raids with $YST rewards for participants',
       'Launchpad: early-access IDO allocations for $YST holders',
@@ -64,7 +64,7 @@ const UPDATES = [
     badge: 'b-blue',
     title: 'StakePoint Integration & Revenue Share Launch',
     changes: [
-      'StakePoint official partnership â $YST staking with 18.4% APY',
+      'StakePoint official partnership — $YST staking with 18.4% APY',
       'Revenue share dashboard: track your share of platform fees',
       'Whale Club: 10M+ $YST exclusive section with alpha and private signals',
       'NFT Raffle system: win YAKK Genesis NFTs with $YST tickets',
@@ -74,27 +74,26 @@ const UPDATES = [
 
 export default function Update({ walletConnected, ystBalance, onNavigate }: Props) {
   const hasAccess = walletConnected && ystBalance >= 10_000_000;
-  if (!hasAccess) return (
-    <div className="sec-pad">
-      <div className="locked-overlay">
-        <div className="locked-icon">ð</div>
-        <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
-        <div className="locked-sub">
-          Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
-        </div>
-        <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
-          Get $YST
-        </a>
-      </div>
-    </div>
-  );
-
   return (
     <div className="sec-pad">
       <div className="sec-header">
         <div className="sec-bar" style={{ background: 'linear-gradient(90deg,var(--green),var(--blue))' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div className="sec-title">ð UPDATES</div>
+          {!hasAccess && (
+        <div className="locked-overlay">
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">
+            Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
+          </div>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
+            Get $YST
+          </a>
+        </div>
+      )}
+
+      {hasAccess && (
+      <div className="sec-title">📋 UPDATES</div>
           <span className="badge b-green">CHANGELOG</span>
         </div>
         <div className="sec-sub">Platform changelog, new features and fixes. Stay up to date with everything YAKK Studios.</div>
@@ -125,7 +124,7 @@ export default function Update({ walletConnected, ystBalance, onNavigate }: Prop
             <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13, marginBottom: 12 }}>{update.title}</div>
             {update.changes.map((change, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 6 }}>
-                <span style={{ color: 'var(--green)', flexShrink: 0, marginTop: 1 }}>â</span>
+                <span style={{ color: 'var(--green)', flexShrink: 0, marginTop: 1 }}>→</span>
                 <span style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>{change}</span>
               </div>
             ))}
@@ -136,9 +135,9 @@ export default function Update({ walletConnected, ystBalance, onNavigate }: Prop
       <div style={{ background: 'rgba(236,72,153,0.04)', border: '1px solid rgba(236,72,153,0.15)', borderRadius: 10, padding: '16px 20px' }}>
         <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, color: 'var(--pink)', marginBottom: 6 }}>What's Coming Next</div>
         <div style={{ fontSize: 11, color: 'var(--muted)', lineHeight: 1.7 }}>
-          Mobile app (iOS + Android), AI-powered rug pull detector, Telegram notification integration, cross-chain support for ETH and Base, and on-chain copy trading â all driven by community votes on the Feature Requests board.
+          Mobile app (iOS + Android), AI-powered rug pull detector, Telegram notification integration, cross-chain support for ETH and Base, and on-chain copy trading — all driven by community votes on the Feature Requests board.
         </div>
-        <button className="btn btn-pink" style={{ fontSize: 11, marginTop: 12 }} onClick={() => onNavigate('features')}>Vote on Features â</button>
+        <button className="btn btn-pink" style={{ fontSize: 11, marginTop: 12 }} onClick={() => onNavigate('features')}>Vote on Features →</button>
       </div>
     </div>
   );

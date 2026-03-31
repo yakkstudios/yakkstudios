@@ -19,11 +19,11 @@ const inputStyle: React.CSSProperties = {
 };
 
 const SAFETY_RAILS = [
-  'Hard cap on max trade size â bot cannot exceed it',
-  'Confirm threshold â you approve big moves',
-  'Daily loss limit â bot pauses automatically',
-  'Emergency /stop command â kills all activity instantly',
-  'Your keys never leave your wallet â bot signs via approval',
+  'Hard cap on max trade size — bot cannot exceed it',
+  'Confirm threshold — you approve big moves',
+  'Daily loss limit — bot pauses automatically',
+  'Emergency /stop command — kills all activity instantly',
+  'Your keys never leave your wallet — bot signs via approval',
 ];
 
 export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props) {
@@ -55,7 +55,7 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
     const confirmStr = confirmAbove ? `$${confirmAbove}` : 'not set';
     const lossStr = lossLimit ? `$${lossLimit}` : 'not set';
 
-    const text = `ð¤ ${name}\nStrategy: ${strat}\nTokens: ${toksStr}\nMax trade: ${maxStr}\nConfirm above: ${confirmStr}\nDaily loss limit: ${lossStr}${instructions ? `\n\nCustom rules:\n${instructions}` : ''}`;
+    const text = `🤖 ${name}\nStrategy: ${strat}\nTokens: ${toksStr}\nMax trade: ${maxStr}\nConfirm above: ${confirmStr}\nDaily loss limit: ${lossStr}${instructions ? `\n\nCustom rules:\n${instructions}` : ''}`;
     setPreview(text);
   };
 
@@ -65,20 +65,24 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
       <div className="sec-title">Telegram Trade Bot</div>
       <div className="sec-bar" />
 
-      <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5 }}>
-        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
-        <span className={`badge ${access ? 'b-green' : 'b-dim'}`}>
-          {access ? 'â VERIFIED' : 'NOT CHECKED'}
-        </span>
-      </div>
+      {!access && (
+        <div className="locked-overlay">
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">
+            Connect your wallet and hold 10,000,000 $YST to unlock this tool.
+          </div>
+        </div>
+      )}
 
+      {access && (<>
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
-        Build your personal trading bot with YAKK AI as the brain. Set your own rules â the bot executes, you stay in control.
+        Build your personal trading bot with YAKK AI as the brain. Set your own rules — the bot executes, you stay in control.
       </p>
 
       {!walletConnected && (
         <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 8, padding: '12px 16px', marginBottom: 16, fontSize: 11, color: '#fca5a5' }}>
-          â ï¸ Connect wallet to build and deploy your bot.
+          ⚠️ Connect wallet to build and deploy your bot.
         </div>
       )}
 
@@ -97,10 +101,10 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
             <div>
               <div style={{ fontSize: 9, color: 'var(--dim)', marginBottom: 5, letterSpacing: '0.08em' }}>TRADING STRATEGY</div>
               <select value={strategy} onChange={e => setStrategy(e.target.value)} style={{ ...inputStyle, padding: '9px 12px' }}>
-                <option value="dip">Dip Buyer â buy X% dips, sell at target</option>
-                <option value="trend">Trend Follower â ride momentum</option>
-                <option value="sniper">New Token Sniper â early launches only</option>
-                <option value="arb">DEX Arb â capture price differences</option>
+                <option value="dip">Dip Buyer — buy X% dips, sell at target</option>
+                <option value="trend">Trend Follower — ride momentum</option>
+                <option value="sniper">New Token Sniper — early launches only</option>
+                <option value="arb">DEX Arb — capture price differences</option>
                 <option value="custom">Custom (AI builds from description)</option>
               </select>
             </div>
@@ -116,7 +120,7 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
               </div>
             </div>
             <p style={{ fontSize: 9, color: 'var(--dim)', margin: 0 }}>
-              The bot auto-executes trades below your confirm threshold. Above it â it pings you on Telegram and waits for your â or â before placing.
+              The bot auto-executes trades below your confirm threshold. Above it — it pings you on Telegram and waits for your ✅ or ❌ before placing.
             </p>
 
             <div>
@@ -132,7 +136,7 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
             <div>
               <div style={{ fontSize: 9, color: 'var(--dim)', marginBottom: 5 }}>CUSTOM INSTRUCTIONS (optional)</div>
               <textarea
-                placeholder="e.g. Never buy if wallet drops below 2 SOL. Only buy tokens with >500 holders. DCA in 3 chunksâ¦"
+                placeholder="e.g. Never buy if wallet drops below 2 SOL. Only buy tokens with >500 holders. DCA in 3 chunks…"
                 rows={3}
                 value={instructions}
                 onChange={e => setInstructions(e.target.value)}
@@ -141,7 +145,7 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
             </div>
 
             <button className="btn btn-pink" onClick={buildBot} style={{ width: '100%' }} disabled={!walletConnected}>
-              ð¤ BUILD MY BOT WITH YAKKAI
+              🤖 BUILD MY BOT WITH YAKKAI
             </button>
           </div>
         </div>
@@ -151,11 +155,11 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
 
           {/* Safety rails */}
           <div className="card-sm" style={{ borderLeft: '3px solid var(--gold)' }}>
-            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)', letterSpacing: '0.12em', marginBottom: 12 }}>â¡ SAFETY RAILS</div>
+            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)', letterSpacing: '0.12em', marginBottom: 12 }}>⚡ SAFETY RAILS</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 11 }}>
               {SAFETY_RAILS.map((r, i) => (
                 <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                  <span style={{ color: '#64dc64', fontSize: 14 }}>â</span> {r}
+                  <span style={{ color: '#64dc64', fontSize: 14 }}>✓</span> {r}
                 </div>
               ))}
             </div>
@@ -173,23 +177,24 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
           <div className="card-sm" style={{ background: 'linear-gradient(135deg,rgba(0,136,204,0.08),rgba(0,136,204,0.02))', border: '1px solid rgba(0,136,204,0.2)' }}>
             <div style={{ fontSize: 9, color: '#4fc3f7', letterSpacing: '0.1em', marginBottom: 10, fontFamily: 'Space Mono,monospace' }}>TELEGRAM NOTIFICATION EXAMPLE</div>
             <div style={{ background: 'var(--bg4)', borderRadius: 10, padding: 12, fontSize: 11, lineHeight: 1.7, borderLeft: '3px solid #0088cc' }}>
-              <div style={{ fontWeight: 700, color: '#4fc3f7', marginBottom: 4 }}>ð¤ YAKKBot Alpha</div>
-              <div>ð¯ Signal detected: <strong>$YST</strong></div>
-              <div>ð Dip: -8.3% in last 15m</div>
-              <div>ð° Trade value: <strong>$320</strong> â above your confirm threshold</div>
+              <div style={{ fontWeight: 700, color: '#4fc3f7', marginBottom: 4 }}>🤖 YAKKBot Alpha</div>
+              <div>🎯 Signal detected: <strong>$YST</strong></div>
+              <div>📊 Dip: -8.3% in last 15m</div>
+              <div>💰 Trade value: <strong>$320</strong> — above your confirm threshold</div>
               <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
-                <span style={{ background: 'rgba(100,220,100,0.15)', color: '#64dc64', padding: '3px 10px', borderRadius: 5, cursor: 'pointer' }}>â BUY</span>
-                <span style={{ background: 'rgba(239,68,68,0.15)', color: '#fca5a5', padding: '3px 10px', borderRadius: 5, cursor: 'pointer' }}>â SKIP</span>
+                <span style={{ background: 'rgba(100,220,100,0.15)', color: '#64dc64', padding: '3px 10px', borderRadius: 5, cursor: 'pointer' }}>✅ BUY</span>
+                <span style={{ background: 'rgba(239,68,68,0.15)', color: '#fca5a5', padding: '3px 10px', borderRadius: 5, cursor: 'pointer' }}>❌ SKIP</span>
               </div>
             </div>
           </div>
 
           <div style={{ padding: 10, background: 'rgba(255,200,0,0.06)', border: '1px solid rgba(255,200,0,0.15)', borderRadius: 7, fontSize: 10, color: 'var(--gold)' }}>
-            â ï¸ Bots are provided as tools. Trading is risky â always set a daily loss limit and never deploy with more than you can afford to lose.
+            ⚠️ Bots are provided as tools. Trading is risky — always set a daily loss limit and never deploy with more than you can afford to lose.
           </div>
 
         </div>
       </div>
+      </>)}
     </div>
   );
 }

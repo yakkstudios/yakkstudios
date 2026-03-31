@@ -4,7 +4,7 @@ import { useState } from 'react';
 interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id: string) => void; }
 
 export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Props) {
-  const ystHeld = walletConnected && ystBalance >= 10_000_000;
+  const hasAccess = walletConnected && ystBalance >= 10_000_000;
 
   const [side, setSide] = useState('buy');
   const [token, setToken] = useState('yst');
@@ -43,9 +43,9 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
 
       {/* Token gate row */}
       <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 8 }}>
-        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
-        <span className={`badge ${walletConnected ? (ystHeld ? 'b-green' : 'b-red') : 'b-dim'}`}>
-          {walletConnected ? (ystHeld ? 'â ACCESS GRANTED' : 'â NEED MORE YST') : 'NOT CHECKED'}
+        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span className={`badge ${walletConnected ? (hasAccess ? 'b-green' : 'b-red') : 'b-dim'}`}>
+          {walletConnected ? (hasAccess ? '✓ ACCESS GRANTED' : '✗ NEED MORE YST') : 'NOT CHECKED'}
         </span>
       </div>
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
@@ -98,9 +98,23 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
               onChange={e => setContact(e.target.value)}
               style={inputStyle}
             />
-            {posted ? (
+            {!hasAccess && (
+        <div className="locked-overlay">
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">
+            Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
+          </div>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
+            Get $YST
+          </a>
+        </div>
+      )}
+
+      {hasAccess && (
+      {posted ? (
               <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--green)', padding: '8px 0' }}>
-                â Order posted successfully!
+                ✓ Order posted successfully!
               </div>
             ) : (
               <button
@@ -124,17 +138,17 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 0', marginBottom: 10 }}>
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#64dc64', display: 'inline-block' }}></span>
-              <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', letterSpacing: '0.1em' }}>LIVE DESK â ORDERS PERSIST ON-CHAIN</span>
+              <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', letterSpacing: '0.1em' }}>LIVE DESK — ORDERS PERSIST ON-CHAIN</span>
             </div>
             <div>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', textAlign: 'center', padding: '24px 0', border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 7 }}>
-                No open orders yet.<br /><span style={{ opacity: 0.6 }}>Be the first â post a block trade above.</span>
+                No open orders yet.<br /><span style={{ opacity: 0.6 }}>Be the first — post a block trade above.</span>
               </div>
             </div>
             <div style={{ marginTop: 10, padding: '8px 12px', background: 'rgba(247,201,72,0.05)', border: '1px solid rgba(247,201,72,0.12)', borderRadius: 6 }}>
-              <div style={{ fontSize: 9, color: 'var(--gold)', fontFamily: 'Space Mono,monospace', letterSpacing: '0.08em' }}>ð ESCROW PROTECTION</div>
+              <div style={{ fontSize: 9, color: 'var(--gold)', fontFamily: 'Space Mono,monospace', letterSpacing: '0.08em' }}>🔒 ESCROW PROTECTION</div>
               <div style={{ fontSize: 10, color: 'var(--dim)', marginTop: 3 }}>
-                All orders are matched peer-to-peer. YAKK holds 0 custody. Use our escrow for orustless settlement â 0.3% fee covers on-chain arbitration.
+                All orders are matched peer-to-peer. YAKK holds 0 custody. Use our escrow for trustless settlement — 0.3% fee covers on-chain arbitration.
               </div>
             </div>
           </div>

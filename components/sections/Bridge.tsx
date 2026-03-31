@@ -12,18 +12,18 @@ const CHAIN_TOKENS: Record<string, string[]> = {
 };
 
 const CHAIN_OPTIONS = [
-  { value: 'solana', label: 'â Solana' },
-  { value: 'ethereum', label: 'Î Ethereum' },
-  { value: 'bnb', label: 'â¬¡ BNB Chain' },
-  { value: 'bitcoin', label: 'â¿ Bitcoin' },
-  { value: 'tron', label: 'â¦ Tron' },
+  { value: 'solana', label: '◎ Solana' },
+  { value: 'ethereum', label: 'Ξ Ethereum' },
+  { value: 'bnb', label: '⬡ BNB Chain' },
+  { value: 'bitcoin', label: '₿ Bitcoin' },
+  { value: 'tron', label: '♦ Tron' },
 ];
 
 const AGGREGATORS = [
-  { icon: 'ð', name: 'deBridge' },
-  { icon: 'â¡', name: 'Wormhole' },
-  { icon: 'ð', name: 'Allbridge' },
-  { icon: 'ðª', name: 'Mayan' },
+  { icon: '🌉', name: 'deBridge' },
+  { icon: '⚡', name: 'Wormhole' },
+  { icon: '🔀', name: 'Allbridge' },
+  { icon: '🪐', name: 'Mayan' },
 ];
 
 const selectStyle: React.CSSProperties = {
@@ -84,7 +84,7 @@ export default function Bridge({ walletConnected, ystBalance, onNavigate }: Prop
     setAmount(val);
     if (!val || parseFloat(val) <= 0) { setQuote(null); return; }
     const routes = ['deBridge', 'Wormhole', 'Allbridge', 'Mayan'];
-    const times = ['2â4 min', '5â8 min', '3â6 min', '1â3 min'];
+    const times = ['2–4 min', '5–8 min', '3–6 min', '1–3 min'];
     const idx = Math.floor(Math.random() * 4);
     const est = (parseFloat(val) * 0.9965).toFixed(4);
     setQuote({ route: routes[idx], fee: `~$${(parseFloat(val) * 0.0035).toFixed(2)}`, time: times[idx], toAmount: est });
@@ -102,9 +102,9 @@ export default function Bridge({ walletConnected, ystBalance, onNavigate }: Prop
         <div className="sec-title">Bridge Swap</div>
         <div className="sec-bar" />
         <div style={{ marginTop: 40, textAlign: 'center', padding: '40px 20px' }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ð</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🌉</div>
           <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Connect Wallet to Bridge</div>
-          <div style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>Connect your wallet and hold 250K+ $YST to access the bridge.</div>
+          <div style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>Connect your wallet and hold 10,000,000+ $YST to access the bridge.</div>
         </div>
       </div>
     );
@@ -117,17 +117,15 @@ export default function Bridge({ walletConnected, ystBalance, onNavigate }: Prop
         <div className="sec-title">Bridge Swap</div>
         <div className="sec-bar" />
         <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 16 }}>
-          <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
+          <span style={{ fontSize: 12 }}>10,000,000+ $YST 🪙 Held</span>
           <span className="badge b-dim">NOT CHECKED</span>
         </div>
-        <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>ð</div>
-          <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 18, marginBottom: 8 }}>Need 10,000,000+ $YST</div>
-          <div style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>You have {ystBalance.toLocaleString()} $YST. Need {(10_000_000 - ystBalance).toLocaleString()} more.</div>
-          <div className="prog-bar" style={{ maxWidth: 280, margin: '0 auto 16px' }}>
-            <div className="prog-fill" style={{ width: Math.min(100, (ystBalance / 10_000_000) * 100) + '%' }} />
+        <div className="locked-overlay">
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">
+            Connect your wallet and hold 10,000,000 $YST to unlock this tool.
           </div>
-          <a href="https://jup.ag/swap/SOL-YST" target="_blank" rel="noopener noreferrer" className="btn btn-gold">Get $YST on Jupiter â</a>
         </div>
       </div>
     );
@@ -139,7 +137,7 @@ export default function Bridge({ walletConnected, ystBalance, onNavigate }: Prop
       <div className="sec-title">Bridge Swap</div>
       <div className="sec-bar" />
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
-        Swap tokens across chains in one click. Powered by the best bridge aggregators â best rate is always selected automatically.
+        Swap tokens across chains in one click. Powered by the best bridge aggregators — best rate is always selected automatically.
       </p>
 
       {/* From / To grid */}
@@ -161,7 +159,7 @@ export default function Bridge({ walletConnected, ystBalance, onNavigate }: Prop
             style={inputStyle}
           />
           <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 5 }}>
-            Balance: <span>â</span>
+            Balance: <span>—</span>
           </div>
         </div>
 
@@ -175,10 +173,10 @@ export default function Bridge({ walletConnected, ystBalance, onNavigate }: Prop
             {toTokens.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
           <div style={{ background: 'var(--bg4)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 6, padding: '9px 12px', fontSize: 13, minHeight: 38, color: 'var(--pink)' }}>
-            <span>{quote ? quote.toAmount : 'â'}</span>
+            <span>{quote ? quote.toAmount : '—'}</span>
           </div>
           <div style={{ fontSize: 9, color: 'var(--dim)', marginTop: 5 }}>
-            Est. received: <span>{quote ? `${quote.toAmount} ${toToken}` : 'â'}</span>
+            Est. received: <span>{quote ? `${quote.toAmount} ${toToken}` : '—'}</span>
           </div>
         </div>
       </div>
@@ -204,12 +202,12 @@ export default function Bridge({ walletConnected, ystBalance, onNavigate }: Prop
               onClick={execute}
               style={{ padding: '9px 20px' }}
             >
-              {bridged ? 'BRIDGINGâ¦' : 'BRIDGE â'}
+              {bridged ? 'BRIDGING…' : 'BRIDGE →'}
             </button>
           </div>
           {bridged && (
             <div style={{ marginTop: 10, fontSize: 11, color: 'var(--green)', textAlign: 'center' }}>
-              â Transaction submitted â check your wallet for confirmation.
+              ✓ Transaction submitted — check your wallet for confirmation.
             </div>
           )}
         </div>

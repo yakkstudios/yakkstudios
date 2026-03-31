@@ -20,27 +20,27 @@ const inputStyle: React.CSSProperties = {
 
 const FEATURE_CARDS = [
   {
-    icon: 'ðµï¸',
+    icon: '🕵️',
     title: 'Anti Copy-Trade',
     desc: 'Route through intermediate wallets so MEV bots and copy-traders can\'t front-run your moves',
   },
   {
-    icon: 'ð',
+    icon: '🔗',
     title: 'Wallet Unlinking',
     desc: 'Send funds between your own wallets without creating an obvious on-chain link',
   },
   {
-    icon: 'ð¡ï¸',
+    icon: '🛡️',
     title: 'MEV Protection',
     desc: 'Randomise timing and split orders to defeat sandwich attacks and MEV extraction',
   },
 ];
 
 const HOW_IT_WORKS = [
-  { num: '1', color: 'var(--pink)', text: 'You sign a single transaction â YAKK handles the rest on-chain, splitting across hop wallets' },
-  { num: '2', color: 'var(--pink)', text: 'Funds flow through 2â5 intermediate wallets with randomised amounts and timing' },
-  { num: '3', color: 'var(--pink)', text: 'Destination receives the full amount â no CEX, no KYC, no trace back to source wallet' },
-  { num: 'â', color: 'var(--gold)', text: 'Works across Solana wallets today. Cross-chain routing coming with bridge integration.' },
+  { num: '1', color: 'var(--pink)', text: 'You sign a single transaction — YAKK handles the rest on-chain, splitting across hop wallets' },
+  { num: '2', color: 'var(--pink)', text: 'Funds flow through 2–5 intermediate wallets with randomised amounts and timing' },
+  { num: '3', color: 'var(--pink)', text: 'Destination receives the full amount — no CEX, no KYC, no trace back to source wallet' },
+  { num: '✓', color: 'var(--gold)', text: 'Works across Solana wallets today. Cross-chain routing coming with bridge integration.' },
 ];
 
 export default function Privacy({ walletConnected, ystBalance, onNavigate }: Props) {
@@ -65,13 +65,17 @@ export default function Privacy({ walletConnected, ystBalance, onNavigate }: Pro
       <div className="sec-title">Privacy Router</div>
       <div className="sec-bar" />
 
-      <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5 }}>
-        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
-        <span className={`badge ${access ? 'b-green' : 'b-dim'}`}>
-          {access ? 'â VERIFIED' : 'NOT CHECKED'}
-        </span>
-      </div>
+      {!access && (
+        <div className="locked-overlay">
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">
+            Connect your wallet and hold 10,000,000 $YST to unlock this tool.
+          </div>
+        </div>
+      )}
 
+      {access && (<>
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
         Break the on-chain link between your wallets. Stop copy-traders, front-runners and blockchain stalkers cold.
       </p>
@@ -124,7 +128,7 @@ export default function Privacy({ walletConnected, ystBalance, onNavigate }: Pro
 
             <select value={timing} onChange={e => setTiming(e.target.value)} style={{ ...inputStyle, padding: '8px 12px', fontSize: 11 }}>
               <option value="instant">Instant</option>
-              <option value="random">Random delay (1â12h)</option>
+              <option value="random">Random delay (1–12h)</option>
               <option value="scheduled">Scheduled time</option>
             </select>
 
@@ -134,12 +138,12 @@ export default function Privacy({ walletConnected, ystBalance, onNavigate }: Pro
               style={{ width: '100%' }}
               disabled={!walletConnected || !access}
             >
-              {routed ? 'â ROUTINGâ¦' : 'ROUTE TRANSFER'}
+              {routed ? '✓ ROUTING…' : 'ROUTE TRANSFER'}
             </button>
 
             {routed && (
               <div style={{ fontSize: 10, color: 'var(--green)', textAlign: 'center' }}>
-                â Route initiated. Funds will arrive at destination via {hops} hops.
+                ✓ Route initiated. Funds will arrive at destination via {hops} hops.
               </div>
             )}
 
@@ -168,11 +172,12 @@ export default function Privacy({ walletConnected, ystBalance, onNavigate }: Pro
             ))}
           </div>
           <div style={{ marginTop: 16, padding: 10, background: 'rgba(255,200,0,0.08)', border: '1px solid rgba(255,200,0,0.2)', borderRadius: 7, fontSize: 10, color: 'var(--gold)' }}>
-            â ï¸ Privacy Router is a legitimate financial privacy tool. Use responsibly and in accordance with local laws.
+            ⚠️ Privacy Router is a legitimate financial privacy tool. Use responsibly and in accordance with local laws.
           </div>
         </div>
 
       </div>
+      </>)}
     </div>
   );
 }

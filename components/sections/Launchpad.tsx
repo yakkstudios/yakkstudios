@@ -6,7 +6,7 @@ interface Props { walletConnected: boolean; ystBalance: number; onNavigate: (id:
 const ACTIVE_LAUNCHES = [
   {
     name: 'YAKK Studios',
-    ticker: '$YST â Solana',
+    ticker: '$YST — Solana',
     status: 'LIVE',
     statusBg: 'rgba(100,220,100,0.15)',
     statusColor: '#64dc64',
@@ -17,19 +17,19 @@ const ACTIVE_LAUNCHES = [
   },
   {
     name: 'YakkBlinders',
-    ticker: '$YBLIND â Solana Â· Test Launch',
+    ticker: '$YBLIND — Solana · Test Launch',
     status: 'PENDING',
     statusBg: 'rgba(247,201,72,0.15)',
     statusColor: 'var(--gold)',
     pct: 12,
     pctColor: 'var(--gold)',
-    leftLabel: '12% raised â First test token',
+    leftLabel: '12% raised — First test token',
     rightLabel: 'Liq lock: 30d',
   },
 ];
 
 export default function Launchpad({ walletConnected, ystBalance, onNavigate }: Props) {
-  const ystHeld = walletConnected && ystBalance >= 10_000_000;
+  const hasAccess = walletConnected && ystBalance >= 10_000_000;
 
   const [name, setName] = useState('');
   const [ticker, setTicker] = useState('');
@@ -67,9 +67,9 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
 
       {/* Token gate row */}
       <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5, marginBottom: 8 }}>
-        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðª Held</span>
-        <span className={`badge ${walletConnected ? (ystHeld ? 'b-green' : 'b-red') : 'b-dim'}`}>
-          {walletConnected ? (ystHeld ? 'â ACCESS GRANTED' : 'â NEED MORE YST') : 'NOT CHECKED'}
+        <span style={{ fontSize: 12 }}>250,000+ $YST 🪙 Held</span>
+        <span className={`badge ${walletConnected ? (hasAccess ? 'b-green' : 'b-red') : 'b-dim'}`}>
+          {walletConnected ? (hasAccess ? '✓ ACCESS GRANTED' : '✗ NEED MORE YST') : 'NOT CHECKED'}
         </span>
       </div>
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 20 }}>
@@ -129,9 +129,23 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
               onChange={e => setDesc(e.target.value)}
               style={{ ...inputStyle, resize: 'vertical' }}
             />
-            {submitted ? (
+            {!hasAccess && (
+        <div className="locked-overlay">
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">
+            Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
+          </div>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
+            Get $YST
+          </a>
+        </div>
+      )}
+
+      {hasAccess && (
+      {submitted ? (
               <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--green)', padding: '8px 0' }}>
-                â Submitted for review!
+                ✓ Submitted for review!
               </div>
             ) : (
               <button

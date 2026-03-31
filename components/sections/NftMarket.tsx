@@ -2,12 +2,12 @@
 import { useState } from 'react';
 
 const CHAINS = [
-  { id: 'solana', label: 'Solana', icon: 'â', color: '#9945FF', live: true },
-  { id: 'ethereum', label: 'Ethereum', icon: 'Î', color: '#627EEA', live: false },
-  { id: 'polygon', label: 'Polygon', icon: 'â¬¡', color: '#8247E5', live: false },
-  { id: 'base', label: 'Base', icon: 'ðµ', color: '#0052FF', live: false },
-  { id: 'arbitrum', label: 'Arbitrum', icon: 'ð·', color: '#12AAFF', live: false },
-  { id: 'bnb', label: 'BNB Chain', icon: 'â', color: '#F0B90B', live: false },
+  { id: 'solana', label: 'Solana', icon: '◎', color: '#9945FF', live: true },
+  { id: 'ethereum', label: 'Ethereum', icon: 'Ξ', color: '#627EEA', live: false },
+  { id: 'polygon', label: 'Polygon', icon: '⬡', color: '#8247E5', live: false },
+  { id: 'base', label: 'Base', icon: '🔵', color: '#0052FF', live: false },
+  { id: 'arbitrum', label: 'Arbitrum', icon: '🔷', color: '#12AAFF', live: false },
+  { id: 'bnb', label: 'BNB Chain', icon: '●', color: '#F0B90B', live: false },
 ];
 
 const SORT_OPTIONS = ['RECENT', 'PRICE: LOW', 'PRICE: HIGH', 'TRENDING'];
@@ -20,7 +20,7 @@ interface NFT {
   chain: string;
 }
 
-// Placeholder NFTs â will be replaced by live data once multi-chain APIs connected
+// Placeholder NFTs — will be replaced by live data once multi-chain APIs connected
 const MOCK_NFTS: NFT[] = [
   { id: '1', name: 'YAKK #001', collection: 'YAKKS', price: '2.5 SOL', chain: 'solana' },
   { id: '2', name: 'YAKK #042', collection: 'YAKKS', price: '3.1 SOL', chain: 'solana' },
@@ -28,6 +28,7 @@ const MOCK_NFTS: NFT[] = [
 ];
 
 export default function NftMarket({ walletConnected = false, ystBalance = 0, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
+  const hasAccess = walletConnected && ystBalance >= 10_000_000;
   const [activeChain, setActiveChain] = useState('solana');
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('RECENT');
@@ -37,32 +38,36 @@ export default function NftMarket({ walletConnected = false, ystBalance = 0, onN
     n.chain === activeChain &&
     (search === '' || n.name.toLowerCase().includes(search.toLowerCase()) || n.collection.toLowerCase().includes(search.toLowerCase()))
   );
-  const hasAccess = walletConnected && ystBalance >= 10_000_000;
-  if (!hasAccess) return (
-    <div className="sec-pad">
-      <div className="locked-overlay">
-        <div className="locked-icon">ð</div>
-        <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
-        <div className="locked-sub">
-          Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
-        </div>
-        <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
-          Get $YST
-        </a>
-      </div>
-    </div>
-  );
 
+  if (!hasAccess) {
+    return (
+      <section id="section-nftmarket" style={{ padding: '20px' }}>
+        <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 4px' }}>
+          🖼 NFT MARKET
+        </h2>
+        <div className="locked-overlay">
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">
+            Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
+          </div>
+          <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
+            Get $YST
+          </a>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="section-nftmarket" style={{ padding: '20px' }}>
 
       {/* Header */}
       <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 4px' }}>
-        ð¼ NFT MARKET
+        🖼 NFT MARKET
       </h2>
       <p style={{ fontSize: 12, color: '#555', marginBottom: 16 }}>
-        Buy, sell and explore NFTs across 6 chains â no KYC, your keys your money.
+        Buy, sell and explore NFTs across 6 chains — no KYC, your keys your money.
       </p>
 
       {/* Chain selector */}
@@ -81,7 +86,7 @@ export default function NftMarket({ walletConnected = false, ystBalance = 0, onN
             }}>
             <span>{icon}</span>
             <span>{label}</span>
-            {live && <span style={{ fontSize: 9, color: '#00c896', marginLeft: 2 }}>â</span>}
+            {live && <span style={{ fontSize: 9, color: '#00c896', marginLeft: 2 }}>✓</span>}
             {!live && <span style={{ fontSize: 9, color: '#444', marginLeft: 2 }}>soon</span>}
           </button>
         ))}
@@ -93,7 +98,7 @@ export default function NftMarket({ walletConnected = false, ystBalance = 0, onN
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Search collections or NFTsâ¦"
+          placeholder="Search collections or NFTs…"
           style={{
             flex: 1, minWidth: 180, background: '#111', border: '1px solid #1a1a1a',
             borderRadius: 4, color: '#ccc', padding: '8px 12px', fontSize: 12, outline: 'none',
@@ -115,7 +120,7 @@ export default function NftMarket({ walletConnected = false, ystBalance = 0, onN
       {/* Connect prompt */}
       {!walletConnected && (
         <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, padding: '12px 16px', marginBottom: 16, fontSize: 12, color: '#555', display: 'flex', alignItems: 'center', gap: 8 }}>
-          â¡ Connect wallet to buy or list NFTs
+          ⚡ Connect wallet to buy or list NFTs
         </div>
       )}
 
@@ -126,11 +131,11 @@ export default function NftMarket({ walletConnected = false, ystBalance = 0, onN
           <button
             onClick={() => setSelected(null)}
             style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 12, marginBottom: 12, padding: 0 }}>
-            â Back
+            ← Back
           </button>
           <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
             <div style={{ width: 160, height: 160, background: '#111', borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>
-              ð¼
+              🖼
             </div>
             <div style={{ flex: 1, minWidth: 180 }}>
               <div style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{selected.name}</div>
@@ -153,7 +158,7 @@ export default function NftMarket({ walletConnected = false, ystBalance = 0, onN
               style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', transition: 'border-color 0.15s' }}
               onMouseEnter={e => (e.currentTarget.style.borderColor = '#e8206a')}
               onMouseLeave={e => (e.currentTarget.style.borderColor = '#1a1a1a')}>
-              <div style={{ height: 120, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>ð¼</div>
+              <div style={{ height: 120, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>🖼</div>
               <div style={{ padding: '10px' }}>
                 <div style={{ fontSize: 12, fontWeight: 600, color: '#ccc', marginBottom: 2 }}>{nft.name}</div>
                 <div style={{ fontSize: 10, color: '#555', marginBottom: 6 }}>{nft.collection}</div>

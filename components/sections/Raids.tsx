@@ -23,23 +23,27 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
     setMyXp(x => x + 10);
     setMyRaids(r => r + 1);
     setRaidLink('');
-    setLogStatus('â Raid logged! +10 XP');
+    setLogStatus('✓ Raid logged! +10 XP');
     setTimeout(() => setLogStatus(''), 3000);
   };
 
   return (
     <div className="sec-pad">
-      <div className="sec-eyebrow">07 â RAID HUB</div>
+      <div className="sec-eyebrow">07 — RAID HUB</div>
       <div className="sec-title">Raid Hub</div>
       <div className="sec-bar" />
 
-      <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: 'var(--bg4)', borderRadius: 5 }}>
-        <span style={{ fontSize: 12 }}>10,000,000+ $YST ðªHeld</span>
-        <span className={`badge ${hasAccess ? 'b-green' : 'b-dim'}`}>
-          {hasAccess ? 'ACCESS GRANTED' : !walletConnected ? 'NOT CHECKED' : 'INSUFFICIENT'}
-        </span>
-      </div>
+      {!hasAccess && (
+        <div className="locked-overlay">
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">
+            Connect your wallet and hold 10,000,000 $YST to unlock this tool.
+          </div>
+        </div>
+      )}
 
+      {hasAccess && (<>
       <div className="grid2" style={{ gap: 28 }}>
         {/* Left: Daily Targets */}
         <div>
@@ -50,13 +54,13 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
           {/* Raid Item 1 */}
           <div className="raid-item">
             <div style={{ flex: 1 }}>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>@YAKKStudios â Pinned Tweet</div>
-              <div style={{ fontSize: 11, color: 'var(--muted)' }}>Like â Retweet âº Comment "GET YAKKED ð"</div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>@YAKKStudios — Pinned Tweet</div>
+              <div style={{ fontSize: 11, color: 'var(--muted)' }}>Like ★ Retweet ↺ Comment "GET YAKKED 😈"</div>
             </div>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)' }}>+10 XP</div>
               <a href="https://x.com/YAKKStudios" target="_blank" rel="noopener noreferrer">
-                <button className="btn btn-ghost" style={{ fontSize: 9, padding: '4px 8px', marginTop: 4 }}>RAID â</button>
+                <button className="btn btn-ghost" style={{ fontSize: 9, padding: '4px 8px', marginTop: 4 }}>RAID →</button>
               </a>
             </div>
           </div>
@@ -64,13 +68,13 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
           {/* Raid Item 2 */}
           <div className="raid-item">
             <div style={{ flex: 1 }}>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>@yakkops2 â Latest Drop</div>
-              <div style={{ fontSize: 11, color: 'var(--muted)' }}>Engage + tag 2 degens + drop ð</div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>@yakkops2 — Latest Drop</div>
+              <div style={{ fontSize: 11, color: 'var(--muted)' }}>Engage + tag 2 degens + drop 😈</div>
             </div>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--gold)' }}>+10 XP</div>
               <a href="https://x.com/yakkops2" target="_blank" rel="noopener noreferrer">
-                <button className="btn btn-ghost" style={{ fontSize: 9, padding: '4px 8px', marginTop: 4 }}>RAID â</button>
+                <button className="btn btn-ghost" style={{ fontSize: 9, padding: '4px 8px', marginTop: 4 }}>RAID →</button>
               </a>
             </div>
           </div>
@@ -78,7 +82,7 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
           {/* Bonus Raid Item */}
           <div className="raid-item" style={{ borderColor: 'rgba(247,201,72,0.2)' }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 3, color: 'var(--gold)' }}>BONUS â RUG EXPOSÃ THREAD</div>
+              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 12, marginBottom: 3, color: 'var(--gold)' }}>BONUS — RUG EXPOSÉ THREAD</div>
               <div style={{ fontSize: 11, color: 'var(--muted)' }}>Share the latest investigation. Protect the herd.</div>
             </div>
             <div style={{ textAlign: 'right' }}>
@@ -138,6 +142,7 @@ export default function Raids({ walletConnected, ystBalance, onNavigate }: Props
           </div>
         </div>
       </div>
+      </>)}
     </div>
   );
 }

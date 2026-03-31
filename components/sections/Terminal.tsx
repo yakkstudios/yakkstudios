@@ -29,7 +29,7 @@ function fmtPrice(p: number) {
 }
 
 export default function Terminal({ walletConnected, ystBalance, onNavigate }: Props) {
-  const hasAccess = walletConnected && ystBalance >= 250_000;
+  const hasAccess = walletConnected && ystBalance >= 10_000_000;
 
   const [selectedToken, setSelectedToken] = useState<typeof TOKENS[0] | null>(null);
   const [timeframe, setTimeframe] = useState('15');
@@ -59,11 +59,9 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
     <div style={{ height: 'calc(100vh - 74px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       {!hasAccess && (
         <div className="locked-overlay">
-          <div className="locked-icon">🔒</div>
-          <div className="locked-title">YAKK TERMINAL</div>
-          <div className="locked-sub">
-            Connect your wallet and hold <strong>250,000+ $YST</strong> to access the trading terminal.
-          </div>
+          <div className="locked-icon">🐋</div>
+          <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+          <div className="locked-sub">Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.</div>
           <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
             Get $YST
           </a>
