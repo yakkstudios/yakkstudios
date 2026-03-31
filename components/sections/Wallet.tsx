@@ -118,7 +118,7 @@ export default function Wallet({ walletConnected, ystBalance, onNavigate }: Prop
             </div>
           </div>
           <p style={{ fontSize: 11, color: 'var(--dim)', marginTop: 9 }}>
-            No Genesis NFT required — fresh start for YAKKS. 3,333 total pieces. 33.3% paperhands bitch tax mechanic incoming.
+            No Genesis NFT required — fresh start for YAKKS. 3,333 total pieces. 33% Paper Hands Tax funds Save the Wren 🌱
           </p>
         </div>
 

@@ -61,12 +61,12 @@ export default function Home({
     return null;
   });
 
-  // Fetch live $YST stats from DexScreener
+  // Fetch live $YST stats (buys/sells/volume/mcap/liquidity)
   useEffect(() => {
-    const load = () => fetch('/api/price')
+    const load = () => fetch('/api/stats')
       .then(r => r.ok ? r.json() : null)
       .then(d => {
-        if (d) {
+        if (d && d.price) {
           setStats(d);
           try { localStorage.setItem('yst-stats', JSON.stringify(d)); } catch {}
         }
@@ -144,14 +144,16 @@ export default function Home({
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, padding: '0 20px', flexWrap: 'nowrap' }}>
-          {[
-            ['PRICE USD', '—'],
-            ['24H VOLUME', '—'],
-            ['MARKET CAP', '—'],
-            ['LIQUIDITY', '—'],
-            ['BUYS / SELLS', '— / —'],
+          {([
+            ['PRICE USD',   stats?.price     ? fmtPrice(stats.price) : '—'],
+            ['24H VOLUME',  stats?.volume24h  ? fmtNum(stats.volume24h)  : '—'],
+            ['MARKET CAP',  stats?.mcap       ? fmtNum(stats.mcap)       : '—'],
+            ['LIQUIDITY',   stats?.liquidity  ? fmtNum(stats.liquidity)  : '—'],
+            ['BUYS / SELLS',stats?.buys24h != null
+              ? `${Number(stats.buys24h).toLocaleString()} / ${Number(stats.sells24h ?? 0).toLocaleString()}`
+              : '— / —'],
             ['HOLDERS', '—'],
-          ].map(([label, val], i) => (
+          ] as [string, string][]).map(([label, val], i) => (
             <div key={label} style={{ flexShrink: 0, borderLeft: i > 0 ? '1px solid var(--border)' : 'none', paddingLeft: i > 0 ? 20 : 0 }}>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', marginBottom: 2 }}>{label}</div>
               <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>{val}</div>
@@ -190,7 +192,7 @@ export default function Home({
           </div>
           <div className="prog-bar"><div className="prog-fill" style={{ width: '38%' }} /></div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)' }}><span>PROGRESS</span><span>38%</span></div>
-          <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 9 }}>Drops 1+2 rebooted + 2,333 additional. 33.3% paperhands tax mechanic incoming.</p>
+          <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 9 }}>Drops 1+2 rebooted + 2,333 additional. 33% Paper Hands Tax funds Save the Wren 🌱</p>
         </div>
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 11 }}>

@@ -8,9 +8,11 @@ const CSP = [
   // unsafe-eval needed by Next.js dev mode; webpack chunks in prod
   "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
   // Images: self + CDNs used by token metadata
-  "img-src 'self' data: blob: https://unavatar.io https://pbs.twimg.com https://cdn.pump.fun https://arweave.net https://nftstorage.link",
+  "img-src 'self' data: blob: https://unavatar.io https://pbs.twimg.com https://cdn.pump.fun https://arweave.net https://nftstorage.link https://cdn.geckoterminal.com",
+  // Iframes: GeckoTerminal charts (no DexScreener dependency)
+  "frame-src https://www.geckoterminal.com",
   // API calls + LiveKit WebSocket (wildcard covers cloud.livekit.io and custom servers)
-  "connect-src 'self' https://api.dexscreener.com https://api.coingecko.com wss://*.livekit.cloud wss://*.livekit.io wss://signal.livekit.io",
+  "connect-src 'self' https://api.dexscreener.com https://api.coingecko.com https://api.geckoterminal.com wss://*.livekit.cloud wss://*.livekit.io wss://signal.livekit.io",
   // Microphone for voice lounge only; block camera, geolocation, etc.
   "media-src 'self' blob:",
   "font-src 'self'",
