@@ -1,0 +1,214 @@
+# YAKK Studios — Cursor Rules & Project Intelligence
+## For: Cursor AI IDE
+## Updated: 2026-03-31
+
+---
+
+## PROJECT IDENTITY
+
+- **App:** yakkstudios.xyz — Solana DeFi intelligence terminal
+- **Repo:** https://github.com/yakkstudios/yakkstudios
+- **Framework:** Next.js 14 App Router, TypeScript, React 18
+- **Styling:** Custom CSS vars in `app/globals.css` — **NO Tailwind**
+- **Deploy:** Vercel, auto-deploy on push to `main`
+- **Founder:** Jay Green (shyfts) — solo builder
+
+---
+
+## DESIGN SYSTEM (IMMUTABLE — NEVER OVERRIDE)
+
+```css
+--pink:    #e0607e   /* primary CTA, alerts, highlights */
+--gold:    #f7c948   /* secondary CTA, whale tier */
+--green:   #64dc64   /* success, gains */
+--red:     #ff4d4d   /* danger, loss */
+--bg:      #050509   /* main background */
+--text:    #f5f5f7   /* primary text */
+--dim:     #888       /* muted text */
+```
+
+**CSS class system** (use these, don't invent new ones):
+- Layout: `sec-pad`, `sec-eyebrow`, `sec-title`, `sec-bar`, `sec-header`, `sec-sub`
+- Grids: `grid2`, `grid3`, `grid4`, `stat-card`, `slbl`, `sval`
+- Cards: `card`, `card-sm`
+- Buttons: `btn btn-primary`, `btn btn-pink`, `btn btn-gold`, `btn btn-green`, `btn btn-ghost`, `btn btn-outline`, `btn btn-sm`
+- Badges: `badge b-pink`, `b-green`, `b-gold`, `b-blue`, `b-red`, `b-dim`
+- Forms: `inp`, `field-inp`, `field-lbl`, `field-sel`
+- Utility: `prog-bar`, `prog-fill`, `warn-bar`, `mode-pill`, `chat-msgs`
+- Token gate overlay: `locked-overlay`, `locked-icon`, `locked-title`, `locked-sub`
+
+---
+
+## ARCHITECTURE
+
+```
+app/
+  layout.tsx          — Root layout, SEO metadata, SolanaProvider wrapper
+  page.tsx            — Main SPA shell, wallet connect, all 35 section renders
+  globals.css         — Entire design system (no Tailwind)
+  api/
+    price/route.ts    — Live $YST price from DexScreener
+    holders/route.ts  — Live holder count (Birdeye → RPC fallback)
+    ai.js             — Anthropic API proxy (rate-limited, wallet-gated)
+
+components/
+  Sidebar.tsx         — Nav sidebar (reads NAV from lib/constants.ts)
+  TickerBar.tsx       — Top bar, live price, wallet button
+  SolanaProvider.tsx  — Wallet adapter (Phantom + Solflare)
+  sections/           — 35 individual section components
+
+lib/
+  constants.ts        — NAV structure, GATED_SECTIONS, token config, DEV_WALLETS
+  holders.ts          — Static holder snapshot for instant gate bypass
+
+public/
+  og-image.png        — OG image for social sharing (1200×630)
+  og-image.svg        — Source SVG
+  manifest.json       — PWA manifest
+  robots.txt          — SEO robots
+  sitemap.xml         — SEO sitemap
+```
+
+---
+
+## TOKEN GATING PATTERN
+
+Every section component has this exact signature:
+```tsx
+interface Props {
+  walletConnected: boolean;
+  ystBalance: number;
+  onNavigate: (id: string) => void;
+}
+```
+
+**Gate thresholds:**
+- Standard gate: `walletConnected && ystBalance >= 250_000`
+- Whale gate:    `walletConnected && ystBalance >= 10_000_000`
+
+**Locked overlay pattern (EXACT — do not vary):**
+```tsx
+{!hasAccess && (
+  <div className="locked-overlay">
+    <div className="locked-icon">🐋</div>
+    <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
+    <div className="locked-sub">
+      Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
+    </div>
+    <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
+      Get $YST
+    </a>
+  </div>
+)}
+```
+
+**JSX Fragment rule (CRITICAL — Cursor must enforce this):**
+When using `{hasAccess && (` with multiple JSX children, ALWAYS wrap in Fragment:
+```tsx
+{hasAccess && (<>
+  <div>...</div>
+  <div>...</div>
+</>)}
+```
+Failing to do this causes TypeScript build failures on Vercel.
+
+---
+
+## KEY CONSTANTS
+
+```typescript
+YST_MINT     = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV'
+YST_GATE     = 250_000
+WHALE_GATE   = 10_000_000
+METEORA_POOL = 'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM'
+```
+
+Dev wallet bypass: wallets in `DEV_WALLETS` set in `lib/constants.ts` always get `effectiveYstBalance = 999_999_999`.
+
+---
+
+## FATAL ERROR RULES (Cursor MUST enforce)
+
+1. **JSX Fragment bug** — `{condition && (<>...</>)}` — ALWAYS Fragment with multiple siblings
+2. **No duplicate `const` declarations** — watch for duplicate `hasAccess` across refactors
+3. **No Tailwind** — use CSS vars and global classes only
+4. **No `.env` reads in component code** — env vars only in server-side API routes
+5. **RPC calls wrapped in try/catch** — always fallback to `DATA_UNAVAILABLE` or `0`
+6. **Deterministic forensics** — Gini > 0.85 = HIGH_RISK, < 5 holders = HIGH_RISK, no probabilities
+
+---
+
+## SECURITY SANDBOX
+
+- NEVER read, modify, or log `.env` or `.env.local`
+- Agent thought logs go to `agent_workspace/memory/` only
+- No secrets in client bundles — env vars prefixed `NEXT_PUBLIC_` are visible to users
+
+---
+
+## WALLET CONNECT PATTERN
+
+The app uses `@solana/wallet-adapter-react-ui`:
+```tsx
+// In page.tsx App component:
+import { WalletMultiButton, useWalletModal } from '@solana/wallet-adapter-react-ui';
+const { setVisible: openWalletModal } = useWalletModal();
+
+// Mobile header — connected state shows address + disconnect, not connected shows modal:
+{walletConnected ? (
+  <button className="btn btn-ghost btn-sm" onClick={handleDisconnect}>
+    {walletLabel}
+  </button>
+) : (
+  <WalletMultiButton style={{ height: 28, fontSize: 11, borderRadius: 4, padding: '0 10px' }} />
+)}
+```
+
+---
+
+## CURRENT SECTION STATUS (all 35 ported as of 2026-03-31)
+
+All sections use `'use client'` directive and the standard Props interface above.
+
+**Whale-gated (10M $YST):** Alerts, ArtLab, Bridge, Launchpad, NftMarket, OtcDesk, Portfolio, Predictions, Privacy, Raffle, Raids, Terminal, TgBot, TokenCreator, Trusted, Update, YakkTrader, YieldFinder
+
+**Standard-gated (250K $YST):** Screener, Cabal, Coach, Features, Ledger, Members, Stakepoint, Wallet, WhaleClub
+
+**Public:** Home, News, Services, Clowns, Wren, Terms, PrivacyPolicy
+
+---
+
+## WHEN ADDING A NEW SECTION
+
+1. Create `components/sections/NewSection.tsx` with `'use client'` + Props interface
+2. Add import to `app/page.tsx`
+3. Add `'newsection'` to `SectionId` union type in `page.tsx`
+4. Add render slot in the page section list
+5. Add to `GATED_SECTIONS` in `lib/constants.ts` if gated
+6. Add nav item in `lib/constants.ts` NAV structure
+7. Run TypeScript check before pushing: `npx tsc --noEmit`
+
+---
+
+## BEFORE PUSHING — ALWAYS RUN
+
+```bash
+npx tsc --noEmit        # TypeScript errors = Vercel build failure
+npx next build          # Full build test (optional but thorough)
+```
+
+---
+
+## MULTI-AI WORKFLOW
+
+Jay runs a multi-model workflow:
+- **Claude (Cowork/Code):** Deep builds, architecture, production fixes
+- **Cursor + local model:** Day-to-day edits, refactors, component additions
+- **Ollama (Hermes3 local):** Offline reasoning, spec validation, forensic logic
+- **Gemini:** QA audits, code review, coordination
+- **Grok:** Real-time intel, content, competitive research
+- **Perplexity:** Section porting, component creation
+
+When in doubt: follow `CLAUDE.md` > this file > your own judgment.
+
+Full context: See `YST ARCHIVE CLAUDE/CURSOR_RULES.md` and `YST ARCHIVE CLAUDE/MULTI_AI_HANDOFF_PROTOCOL.md`
