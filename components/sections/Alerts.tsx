@@ -71,7 +71,7 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
         </div>
       )}
 
-      {hasAccess && (
+      {hasAccess && (<>
       {/* Create Alert */}
         <div className="card-sm">
           <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', letterSpacing: '0.12em', marginBottom: 14 }}>CREATE ALERT</div>
@@ -150,6 +150,7 @@ export default function Alerts({ walletConnected, ystBalance, onNavigate }: Prop
             )}
           </div>
         </div>
+      </>)}
       </div>
     </div>
   );

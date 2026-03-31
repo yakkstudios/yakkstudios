@@ -33,9 +33,10 @@ export default function Trusted({ walletConnected, ystBalance, onNavigate }: Pro
         </div>
       )}
 
-      {hasAccess && (
+      {hasAccess && (<>
       <div className="sec-title">⛈️ TRUSTED LIST</div>
           <span className="badge b-green">PUBLIC</span>
+      </>)}
         </div>
         <div className="sec-sub">YAKK-vetted CT analysts &amp; wallets with verified track records. Do your own research.</div>
       </div>

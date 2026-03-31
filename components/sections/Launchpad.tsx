@@ -142,7 +142,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
         </div>
       )}
 
-      {hasAccess && (
+      {hasAccess && (<>
       {submitted ? (
               <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--green)', padding: '8px 0' }}>
                 ✓ Submitted for review!
@@ -160,6 +160,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
             <p style={{ fontSize: 9, color: 'var(--dim)', textAlign: 'center', margin: 0 }}>
               Reviewed by YAKKAI within 48h. Requires $500 USDC listing fee + locked liq proof.
             </p>
+          </>)}
           </div>
         </div>
 

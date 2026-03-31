@@ -111,7 +111,7 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
         </div>
       )}
 
-      {hasAccess && (
+      {hasAccess && (<>
       {posted ? (
               <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--green)', padding: '8px 0' }}>
                 ✓ Order posted successfully!
@@ -129,6 +129,7 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
             <p style={{ fontSize: 9, color: 'var(--dim)', textAlign: 'center', margin: 0 }}>
               Connect wallet to post. Orders expire in 72h. Use escrow for safety.
             </p>
+          </>)}
           </div>
         </div>
 
@@ -156,4 +157,4 @@ export default function OtcDesk({ walletConnected, ystBalance, onNavigate }: Pro
       </div>
     </div>
   );
-      }
+}

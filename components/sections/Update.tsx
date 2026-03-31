@@ -92,9 +92,10 @@ export default function Update({ walletConnected, ystBalance, onNavigate }: Prop
         </div>
       )}
 
-      {hasAccess && (
+      {hasAccess && (<>
       <div className="sec-title">📋 UPDATES</div>
           <span className="badge b-green">CHANGELOG</span>
+      </>)}
         </div>
         <div className="sec-sub">Platform changelog, new features and fixes. Stay up to date with everything YAKK Studios.</div>
       </div>
