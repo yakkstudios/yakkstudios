@@ -63,7 +63,7 @@ export const NAV: NavSection[] = [
       { id: 'members',   label: 'MEMBERS',       icon: '👾', gated: true },
       { id: 'whaleclub', label: 'WHALE CLUB',    icon: '🐋', whaleOnly: true },
       { id: 'features',  label: 'REQUESTS',      icon: '💡' },
-      { id: 'wren',      label: 'SAVE THE WREN', icon: '🌱' },
+      { id: 'wren',      label: 'SAVE THE WREN', icon: '🛡️' },
     ],
   },
   {
