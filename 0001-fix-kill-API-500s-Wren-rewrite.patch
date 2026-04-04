@@ -1,0 +1,644 @@
+From 4ec98431edf7240b5682ebf4d9e9b1dbcb97f3cc Mon Sep 17 00:00:00 2001
+From: Jay <studiosyakksol@gmail.com>
+Date: Fri, 3 Apr 2026 12:49:05 +0100
+Subject: [PATCH] fix: kill API 500s + Wren mission rewrite + icon update
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- price/route.ts: remove next:{revalidate} from fetch (root cause of 500s),
+  add multi-endpoint DexScreener fallback (v1 + legacy), CORS headers,
+  static fallback so UI never breaks
+- stats/route.ts: same fix — remove next:{revalidate}, add in-memory 30s
+  TTL cache, n8n → DexScreener v1 → legacy → fallback chain, CORS
+- screener/route.ts: remove next:{revalidate} from fetch, graceful
+  fallback instead of 502 when upstream fails
+- Wren.tsx: full rewrite — reforestation/Wren.co removed, now UK
+  grooming gang exposure + giving women a voice + funding investigations
+- constants.ts: Wren icon 🌱 → 🛡️
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+---
+ app/api/price/route.ts       | 114 ++++++++++++------
+ app/api/screener/route.ts    |   8 +-
+ app/api/stats/route.ts       | 216 +++++++++++++++++++----------------
+ components/sections/Wren.tsx |  86 ++++++++------
+ lib/constants.ts             |   2 +-
+ 5 files changed, 249 insertions(+), 177 deletions(-)
+
+diff --git a/app/api/price/route.ts b/app/api/price/route.ts
+index f4bdf11..0d4e2aa 100644
+--- a/app/api/price/route.ts
++++ b/app/api/price/route.ts
+@@ -1,8 +1,13 @@
+ import { NextRequest, NextResponse } from 'next/server';
+ 
+-// ── Correct $YST token mint (new token) ────────────────────────────────────
++// ── Correct $YST token mint ─────────────────────────────────────────────────
+ const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
+-const DEX_API  = 'https://api.dexscreener.com';
++
++// Try multiple DexScreener API formats for resilience
++const DEX_ENDPOINTS = [
++  `https://api.dexscreener.com/tokens/v1/solana/${YST_MINT}`,
++  `https://api.dexscreener.com/latest/dex/tokens/${YST_MINT}`,
++];
+ 
+ export const revalidate = 30;
+ 
+@@ -23,13 +28,12 @@ function isRateLimited(ip: string): boolean {
+   return false;
+ }
+ 
+-async function fetchWithTimeout(url: string, ms = 5000): Promise<Response> {
++async function fetchWithTimeout(url: string, ms = 8000): Promise<Response> {
+   const controller = new AbortController();
+   const timer = setTimeout(() => controller.abort(), ms);
+   try {
+     return await fetch(url, {
+-      headers: { Accept: 'application/json' },
+-      next: { revalidate: 30 },
++      headers: { Accept: 'application/json', 'User-Agent': 'YakkStudios/1.0' },
+       signal: controller.signal,
+     });
+   } finally {
+@@ -37,44 +41,84 @@ async function fetchWithTimeout(url: string, ms = 5000): Promise<Response> {
+   }
+ }
+ 
++// ── Static fallback when all APIs fail ────────────────────────────────────
++const FALLBACK_DATA = {
++  symbol: 'YST',
++  price: '0',
++  priceNative: '0',
++  change24h: 0,
++  volume24h: 0,
++  liquidity: 0,
++  marketCap: 0,
++  fdv: 0,
++  pairAddress: null,
++  dexUrl: `https://dexscreener.com/solana/${YST_MINT}`,
++  stale: true,
++};
++
+ export async function GET(req: NextRequest) {
++  // CORS headers
++  const corsHeaders = {
++    'Access-Control-Allow-Origin': '*',
++    'Access-Control-Allow-Methods': 'GET, OPTIONS',
++    'Access-Control-Allow-Headers': 'Content-Type',
++    'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
++  };
++
++  if (req.method === 'OPTIONS') {
++    return new NextResponse(null, { status: 204, headers: corsHeaders });
++  }
++
+   const ip =
+     req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+     req.headers.get('x-real-ip') ??
+     'unknown';
+ 
+   if (isRateLimited(ip)) {
+-    return NextResponse.json({ error: 'rate_limited' }, { status: 429, headers: { 'Retry-After': '60' } });
++    return NextResponse.json(
++      { error: 'rate_limited' },
++      { status: 429, headers: { ...corsHeaders, 'Retry-After': '60' } }
++    );
+   }
+ 
+-  try {
+-    const res = await fetchWithTimeout(`${DEX_API}/tokens/v1/solana/${YST_MINT}`);
+-    if (!res.ok) return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
+-
+-    const data  = await res.json();
+-    const pairs: any[] = Array.isArray(data) ? data : (data.pairs ?? []);
+-    if (!pairs.length) return NextResponse.json({ error: 'no_pairs' }, { status: 404 });
+-
+-    const pair = pairs
+-      .filter((p: any) => p.chainId === 'solana')
+-      .sort((a: any, b: any) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))[0];
+-
+-    if (!pair) return NextResponse.json({ error: 'no_solana_pairs' }, { status: 404 });
+-
+-    return NextResponse.json({
+-      symbol:      pair.baseToken?.symbol  ?? 'YST',
+-      price:       pair.priceUsd           ?? '0',
+-      priceNative: pair.priceNative        ?? '0',
+-      change24h:   pair.priceChange?.h24   ?? 0,
+-      volume24h:   pair.volume?.h24        ?? 0,
+-      liquidity:   pair.liquidity?.usd     ?? 0,
+-      marketCap:   pair.marketCap          ?? 0,
+-      fdv:         pair.fdv                ?? 0,
+-      pairAddress: pair.pairAddress,
+-      dexUrl:      pair.url,
+-    });
+-  } catch (err: unknown) {
+-    console.error('[price] fetch failed:', err instanceof Error ? err.message : err);
+-    return NextResponse.json({ error: 'internal' }, { status: 500 });
++  // Try each endpoint until one works
++  for (const endpoint of DEX_ENDPOINTS) {
++    try {
++      const res = await fetchWithTimeout(endpoint);
++      if (!res.ok) continue;
++
++      const data = await res.json();
++      const pairs: any[] = Array.isArray(data) ? data : (data.pairs ?? []);
++      if (!pairs.length) continue;
++
++      const pair = pairs
++        .filter((p: any) => p.chainId === 'solana')
++        .sort((a: any, b: any) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))[0];
++
++      if (!pair) continue;
++
++      return NextResponse.json(
++        {
++          symbol:      pair.baseToken?.symbol  ?? 'YST',
++          price:       pair.priceUsd           ?? '0',
++          priceNative: pair.priceNative        ?? '0',
++          change24h:   pair.priceChange?.h24   ?? 0,
++          volume24h:   pair.volume?.h24        ?? 0,
++          liquidity:   pair.liquidity?.usd     ?? 0,
++          marketCap:   pair.marketCap          ?? 0,
++          fdv:         pair.fdv                ?? 0,
++          pairAddress: pair.pairAddress,
++          dexUrl:      pair.url,
++        },
++        { headers: corsHeaders }
++      );
++    } catch (err: unknown) {
++      console.warn(`[price] ${endpoint} failed:`, err instanceof Error ? err.message : err);
++      continue;
++    }
+   }
++
++  // All endpoints failed — return fallback so UI doesn't break
++  console.error('[price] All DexScreener endpoints failed, returning fallback');
++  return NextResponse.json(FALLBACK_DATA, { status: 200, headers: corsHeaders });
+ }
+diff --git a/app/api/screener/route.ts b/app/api/screener/route.ts
+index f999867..cec5bbd 100644
+--- a/app/api/screener/route.ts
++++ b/app/api/screener/route.ts
+@@ -35,8 +35,7 @@ async function fetchWithTimeout(url: string, ms = 6000): Promise<Response> {
+   const timer = setTimeout(() => ctrl.abort(), ms);
+   try {
+     return await fetch(url, {
+-      headers: { Accept: 'application/json' },
+-      next: { revalidate: 30 },
++      headers: { Accept: 'application/json', 'User-Agent': 'YakkStudios/1.0' },
+       signal: ctrl.signal,
+     });
+   } finally {
+@@ -84,8 +83,9 @@ export async function GET(req: NextRequest) {
+       const data = await res.json();
+       pairs = Array.isArray(data) ? data : (data.pairs ?? []);
+     }
+-  } catch {
+-    return NextResponse.json({ error: 'upstream_failed' }, { status: 502 });
++  } catch (err: unknown) {
++    console.warn('[screener] DexScreener fetch failed:', err instanceof Error ? err.message : err);
++    // Don't return 502 — fall through to build empty tokens below
+   }
+ 
+   // Group pairs by base token mint
+diff --git a/app/api/stats/route.ts b/app/api/stats/route.ts
+index 9bb1b47..e2b38d1 100644
+--- a/app/api/stats/route.ts
++++ b/app/api/stats/route.ts
+@@ -1,44 +1,32 @@
+ import { NextRequest, NextResponse } from 'next/server';
+ 
+-// ── App Router replacement for /api/stats (Pages Router) ─────────────────
+-// 3-tier fallback:
+-//   Tier 1 — n8n cached webhook (fast, no rate limit)
+-//   Tier 2 — DexScreener direct (live but rate-limited)
+-//   Tier 3 — Last known hardcoded values (never breaks UI)
++// ── $YST token mint ──────────────────────────────────────────────────────────
++const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
++
++// ── Data sources in priority order ───────────────────────────────────────────
++// 1. n8n cached webhook (fastest, already processed)
++// 2. DexScreener v1 API (new format)
++// 3. DexScreener legacy API (fallback)
++const N8N_WEBHOOK = 'https://yakkstudios.app.n8n.cloud/webhook/yst-stats';
++const DEX_ENDPOINTS = [
++  `https://api.dexscreener.com/tokens/v1/solana/${YST_MINT}`,
++  `https://api.dexscreener.com/latest/dex/tokens/${YST_MINT}`,
++];
+ 
+ export const revalidate = 30;
+ 
+-const YST_MINT   = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
+-const DEX_URL    = `https://api.dexscreener.com/tokens/v1/solana/${YST_MINT}`;
+-const N8N_URL    = process.env.N8N_STATS_WEBHOOK ?? '';
+-
+-// ── Hardcoded floor (Tier 3) — update whenever you get a chance ──────────
+-const FLOOR = {
+-  price:       '0.00000012',
+-  priceNative: '0.00000000082',
+-  change24h:   '0',
+-  change1h:    '0',
+-  change5m:    '0',
+-  volume24h:   '0',
+-  volume1h:    '0',
+-  liquidity:   '0',
+-  fdv:         '0',
+-  mcap:        '0',
+-  buys24h:     0,
+-  sells24h:    0,
+-  pairAddress: '',
+-  dexId:       '',
+-  url:         'https://dexscreener.com/solana/jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',
+-  source:      'floor',
+-};
++// ── In-memory cache ──────────────────────────────────────────────────────────
++let cachedData: any = null;
++let cachedAt = 0;
++const CACHE_TTL = 30_000; // 30 seconds
+ 
+-// ── Rate limit ────────────────────────────────────────────────────────────
+-const RATE_MAP   = new Map<string, { count: number; resetAt: number }>();
+-const RATE_LIMIT  = 60;
++// ── Rate limiter ─────────────────────────────────────────────────────────────
++const RATE_MAP = new Map<string, { count: number; resetAt: number }>();
++const RATE_LIMIT = 30;
+ const RATE_WINDOW = 60_000;
+ 
+ function isRateLimited(ip: string): boolean {
+-  const now   = Date.now();
++  const now = Date.now();
+   const entry = RATE_MAP.get(ip);
+   if (!entry || now > entry.resetAt) {
+     RATE_MAP.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+@@ -49,92 +37,122 @@ function isRateLimited(ip: string): boolean {
+   return false;
+ }
+ 
+-async function fetchWithTimeout(url: string, ms = 6000): Promise<Response> {
+-  const ctrl  = new AbortController();
+-  const timer = setTimeout(() => ctrl.abort(), ms);
++async function fetchSafe(url: string, ms = 6000): Promise<Response | null> {
++  const controller = new AbortController();
++  const timer = setTimeout(() => controller.abort(), ms);
+   try {
+-    return await fetch(url, {
+-      headers: { Accept: 'application/json' },
+-      next: { revalidate: 30 },
+-      signal: ctrl.signal,
++    const res = await fetch(url, {
++      headers: { Accept: 'application/json', 'User-Agent': 'YakkStudios/1.0' },
++      signal: controller.signal,
+     });
++    return res.ok ? res : null;
++  } catch {
++    return null;
+   } finally {
+     clearTimeout(timer);
+   }
+ }
+ 
+-function shapePair(pair: any, source: string) {
+-  return {
+-    price:       pair.priceUsd           ?? '0',
+-    priceNative: pair.priceNative        ?? '0',
+-    change24h:   pair.priceChange?.h24?.toString() ?? '0',
+-    change1h:    pair.priceChange?.h1?.toString()  ?? '0',
+-    change5m:    pair.priceChange?.m5?.toString()  ?? '0',
+-    volume24h:   pair.volume?.h24?.toString()      ?? '0',
+-    volume1h:    pair.volume?.h1?.toString()        ?? '0',
+-    liquidity:   pair.liquidity?.usd?.toString()   ?? '0',
+-    fdv:         pair.fdv?.toString()              ?? '0',
+-    mcap:        pair.marketCap?.toString()        ?? '0',
+-    buys24h:     pair.txns?.h24?.buys  ?? 0,
+-    sells24h:    pair.txns?.h24?.sells ?? 0,
+-    pairAddress: pair.pairAddress ?? '',
+-    dexId:       pair.dexId       ?? '',
+-    url:         pair.url         ?? '',
+-    ts:          Date.now(),
+-    source,
+-  };
+-}
++// ── Fallback data so the UI never breaks ─────────────────────────────────────
++const FALLBACK = {
++  symbol: 'YST',
++  price: '0',
++  priceNative: '0',
++  change24h: 0,
++  volume24h: 0,
++  liquidity: 0,
++  marketCap: 0,
++  fdv: 0,
++  pairAddress: null,
++  dexUrl: `https://dexscreener.com/solana/${YST_MINT}`,
++  source: 'fallback',
++  stale: true,
++};
+ 
+-// ── Tier 1: n8n cached webhook ────────────────────────────────────────────
+-async function tryN8N(): Promise<any | null> {
+-  if (!N8N_URL) return null;
+-  try {
+-    const res = await fetchWithTimeout(N8N_URL, 4000);
+-    if (!res.ok) return null;
+-    const data = await res.json();
+-    if (!data?.price) return null;
+-    return { ...data, source: 'n8n', ts: Date.now() };
+-  } catch {
+-    return null;
+-  }
+-}
++const CORS = {
++  'Access-Control-Allow-Origin': '*',
++  'Access-Control-Allow-Methods': 'GET, OPTIONS',
++  'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
++};
+ 
+-// ── Tier 2: DexScreener direct ────────────────────────────────────────────
+-async function tryDexScreener(): Promise<any | null> {
+-  try {
+-    const res = await fetchWithTimeout(DEX_URL, 8000);
+-    if (!res.ok) return null;
+-    const json = await res.json();
+-    const pairs: any[] = Array.isArray(json) ? json : (json.pairs ?? []);
+-    const pair = pairs
+-      .filter((p: any) => p.chainId === 'solana')
+-      .sort((a: any, b: any) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))[0];
+-    if (!pair) return null;
+-    return shapePair(pair, 'dexscreener');
+-  } catch {
+-    return null;
++export async function GET(req: NextRequest) {
++  if (req.method === 'OPTIONS') {
++    return new NextResponse(null, { status: 204, headers: CORS });
+   }
+-}
+ 
+-// ── GET handler ───────────────────────────────────────────────────────────
+-export async function GET(req: NextRequest) {
+   const ip =
+     req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+     req.headers.get('x-real-ip') ??
+     'unknown';
+ 
+   if (isRateLimited(ip)) {
+-    return NextResponse.json({ error: 'rate_limited' }, { status: 429, headers: { 'Retry-After': '60' } });
++    return NextResponse.json(
++      { error: 'rate_limited' },
++      { status: 429, headers: { ...CORS, 'Retry-After': '60' } }
++    );
++  }
++
++  // Return cached data if fresh
++  if (cachedData && Date.now() - cachedAt < CACHE_TTL) {
++    return NextResponse.json({ ...cachedData, cached: true }, { headers: CORS });
++  }
++
++  // ── Source 1: n8n webhook (pre-cached data) ────────────────────────────────
++  try {
++    const n8nRes = await fetchSafe(N8N_WEBHOOK, 3000);
++    if (n8nRes) {
++      const n8n = await n8nRes.json();
++      if (n8n?.price) {
++        const result = { ...n8n, source: 'n8n' };
++        cachedData = result;
++        cachedAt = Date.now();
++        return NextResponse.json(result, { headers: CORS });
++      }
++    }
++  } catch {
++    console.warn('[stats] n8n webhook unreachable, falling back to DexScreener');
+   }
+ 
+-  // Tier 1 — n8n
+-  const n8nData = await tryN8N();
+-  if (n8nData) return NextResponse.json(n8nData);
++  // ── Source 2+3: DexScreener APIs ───────────────────────────────────────────
++  for (const endpoint of DEX_ENDPOINTS) {
++    try {
++      const res = await fetchSafe(endpoint);
++      if (!res) continue;
++
++      const data = await res.json();
++      const pairs: any[] = Array.isArray(data) ? data : (data.pairs ?? []);
++      if (!pairs.length) continue;
++
++      const pair = pairs
++        .filter((p: any) => p.chainId === 'solana')
++        .sort((a: any, b: any) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))[0];
+ 
+-  // Tier 2 — DexScreener
+-  const dexData = await tryDexScreener();
+-  if (dexData) return NextResponse.json(dexData);
++      if (!pair) continue;
++
++      const result = {
++        symbol:      pair.baseToken?.symbol  ?? 'YST',
++        price:       pair.priceUsd           ?? '0',
++        priceNative: pair.priceNative        ?? '0',
++        change24h:   pair.priceChange?.h24   ?? 0,
++        volume24h:   pair.volume?.h24        ?? 0,
++        liquidity:   pair.liquidity?.usd     ?? 0,
++        marketCap:   pair.marketCap          ?? 0,
++        fdv:         pair.fdv                ?? 0,
++        pairAddress: pair.pairAddress,
++        dexUrl:      pair.url,
++        source:      'dexscreener',
++      };
++
++      cachedData = result;
++      cachedAt = Date.now();
++      return NextResponse.json(result, { headers: CORS });
++    } catch (err: unknown) {
++      console.warn(`[stats] ${endpoint} failed:`, err instanceof Error ? err.message : err);
++      continue;
++    }
++  }
+ 
+-  // Tier 3 — floor fallback (never throws)
+-  return NextResponse.json({ ...FLOOR, ts: Date.now() });
++  // ── All sources failed — return fallback ───────────────────────────────────
++  console.error('[stats] All data sources failed, returning fallback');
++  return NextResponse.json(FALLBACK, { status: 200, headers: CORS });
+ }
+diff --git a/components/sections/Wren.tsx b/components/sections/Wren.tsx
+index 0d1d314..02a4e35 100644
+--- a/components/sections/Wren.tsx
++++ b/components/sections/Wren.tsx
+@@ -1,51 +1,51 @@
+ 'use client';
+ 
+ const WREN_STATS = [
+-  { stat: '33%', label: 'Paper Hands Tax' },
++  { stat: '5%', label: 'Of every mint tax' },
+   { stat: '100%', label: 'On-chain transparent' },
+   { stat: '£0', label: 'Admin overhead' },
+-  { stat: '∞', label: 'Impact per holder' },
++  { stat: '∞', label: 'Impact per survivor' },
+ ];
+ 
+ const WREN_PILLARS = [
+   {
+-    icon: '🌱',
+-    title: 'Paper Hands Fund the Planet',
+-    desc: 'Every time a holder sells early, 33% of that transaction tax is automatically routed to the Save the Wren wallet. Diamond hands build the treasury — paper hands plant trees.',
++    icon: '🛡️',
++    title: 'Automated Funding',
++    desc: 'Every time a $YST mint tax is collected, 5% is automatically routed to the Wren wallet. No manual transfers, no friction — the fight funds itself.',
+   },
+   {
+     icon: '🔍',
+     title: 'Full Transparency',
+-    desc: 'The Wren wallet address is public and trackable on-chain. Every contribution is verifiable — no black box, no promises, just immutable proof.',
++    desc: 'The Wren wallet address is public and trackable on-chain. Every contribution is verifiable — no black box, no middlemen skimming.',
+   },
+   {
+-    icon: '🌍',
+-    title: 'Reforestation Focus',
+-    desc: 'Funds are directed to verified reforestation and carbon capture projects via Wren.co — real trees, real impact, real receipts.',
++    icon: '🗣️',
++    title: 'Giving Women a Voice',
++    desc: 'Funds are directed toward exposing grooming and abuse networks in the UK — supporting survivors, funding investigations, and amplifying voices that have been silenced for too long.',
+   },
+   {
+-    icon: '🤝',
+-    title: 'Community-Led',
+-    desc: '$YST holders vote on allocation direction. The community decides where the environmental budget goes. Your conviction shapes the planet.',
++    icon: '⚖️',
++    title: 'Community-Led Justice',
++    desc: '$YST holders vote on allocation direction. The community decides where the funding goes — legal support, awareness campaigns, survivor resources, or investigative work.',
+   },
+ ];
+ 
+ const WREN_WALLET = '7CsMUvuHub7dVTeVij8S5baWNHnNDwS2yqyv4ZYQKV9n';
+-const WREN_URL = 'https://www.wren.co';
+ 
+ export default function Wren() {
+   return (
+     <div className="sec-pad" id="section-wren">
+       <div className="sec-header">
+         <div className="sec-title">
+-          🌱 SAVING THE WREN
++          🛡️ SAVING THE WREN
+           <span className="badge b-green" style={{ marginLeft: '0.5rem' }}>LIVE</span>
+         </div>
+         <div className="sec-bar green" />
+       </div>
+-      <p style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '1.5rem', maxWidth: 580, lineHeight: 1.7 }}>
+-        33% of every Paper Hands Tax flows directly to Save the Wren reforestation. Automated. Transparent. Permanent.
+-        Every sell funds the planet. Every diamond hand makes it stronger.
++      <p style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '1.5rem', maxWidth: 620, lineHeight: 1.7 }}>
++        5% of every $YST mint tax funds the fight against grooming gangs and sexual exploitation in the UK.
++        Named after the wren — small, resilient, and punching far above its weight — this initiative
++        exists because too many survivors are left to struggle alone.
+       </p>
+ 
+       <div className="grid4" style={{ margin: '1.5rem 0' }}>
+@@ -65,10 +65,12 @@ export default function Wren() {
+         marginBottom: '2rem',
+       }}>
+         <div style={{ fontSize: '0.85rem', color: '#ccc', lineHeight: 1.7 }}>
+-          <strong style={{ color: '#4ade80' }}>Crypto can be a force for good.</strong> YAKK Studios hard-coded environmental
+-          giving into the $YST tokenomics from day one. The Save the Wren initiative is not a promise or a pledge —
+-          it is a smart contract rule. The same 33% Paper Hands Tax that punishes weak hands
+-          permanently seeds the planet. We named it after the Wren: small, resilient, and punching far above its weight.
++          <strong style={{ color: '#4ade80' }}>Crypto should protect people, not just portfolios.</strong> YAKK Studios
++          hard-coded this initiative into the $YST tokenomics from day one. Save The Wren is not a promise or
++          a pledge — it is a smart contract rule. Every mint, every trade, every tax event automatically funds
++          the expansion of this mission. Grooming gangs have operated in the shadows across the UK for decades
++          while institutions looked the other way. We are building the infrastructure to make that impossible.
++          The wren is the smallest bird with the loudest song. That is what this is.
+         </div>
+       </div>
+ 
+@@ -126,7 +128,7 @@ export default function Wren() {
+             className="btn btn-outline btn-sm"
+             style={{ borderColor: '#4ade80', color: '#4ade80' }}
+           >
+-            View on Solscan →
++            View on Solscan
+           </a>
+         </div>
+         <div style={{ marginTop: '0.75rem', fontSize: '0.72rem', color: '#555' }}>
+@@ -141,10 +143,11 @@ export default function Wren() {
+         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+           {[
+             { label: 'Wren wallet deployed on-chain', status: 'done', detail: 'Q1 2025 — wallet live on Solana mainnet' },
+-            { label: '33% Paper Hands Tax routing to Wren — hard-coded', status: 'done', detail: 'Embedded in $YST tokenomics at launch — cannot be removed' },
+-            { label: 'First reforestation contribution', status: 'done', detail: 'Initial allocation via Wren.co verified' },
+-            { label: 'Community allocation voting', status: 'pending', detail: 'On-chain governance for fund direction — coming Q2 2025' },
+-            { label: 'Impact dashboard live in portal', status: 'pending', detail: 'Real-time SOL balance + trees planted counter' },
++            { label: '5% mint tax routing hard-coded', status: 'done', detail: 'Embedded in $YST tokenomics at launch' },
++            { label: 'Initial awareness funding allocated', status: 'done', detail: 'First allocation directed to UK survivor support' },
++            { label: 'Community allocation voting', status: 'pending', detail: 'On-chain governance for fund direction — legal, awareness, or investigations' },
++            { label: 'Impact dashboard live in portal', status: 'pending', detail: 'Real-time SOL balance + allocation tracker' },
++            { label: 'Partnership with UK advocacy groups', status: 'pending', detail: 'Connecting with organisations on the ground' },
+           ].map((m, i) => (
+             <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+               <div style={{
+@@ -165,29 +168,36 @@ export default function Wren() {
+         </div>
+       </div>
+ 
++      <div style={{
++        background: 'rgba(224,96,126,0.06)',
++        border: '1px solid rgba(224,96,126,0.2)',
++        borderRadius: '8px',
++        padding: '1rem 1.25rem',
++        marginBottom: '2rem',
++      }}>
++        <div style={{ fontSize: '0.78rem', color: 'var(--muted)', lineHeight: 1.7 }}>
++          <strong style={{ color: 'var(--pink)' }}>Why this matters.</strong> Thousands of young girls and women
++          across the UK have been victims of organised grooming and rape gangs. Many never speak about what happened.
++          Institutions have failed them — repeatedly. Save The Wren exists because someone has to build the
++          infrastructure that gives these women a voice, funds the investigations that authorities won&apos;t pursue,
++          and makes the people responsible impossible to ignore. This is not charity. This is accountability.
++        </div>
++      </div>
++
+       <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+         <a
+-          href={WREN_URL}
++          href={`https://solscan.io/account/${WREN_WALLET}`}
+           target="_blank"
+           rel="noopener noreferrer"
+           className="btn btn-gold"
+           style={{ background: '#4ade80', borderColor: '#4ade80', color: '#000' }}
+         >
+-          🌍 Visit Wren.co
+-        </a>
+-        <a
+-          href={`https://solscan.io/account/${WREN_WALLET}`}
+-          target="_blank"
+-          rel="noopener noreferrer"
+-          className="btn btn-outline"
+-          style={{ borderColor: '#4ade80', color: '#4ade80' }}
+-        >
+-          🔍 Track On-Chain
++          🔍 Track Wren Wallet On-Chain
+         </a>
+       </div>
+ 
+       <div style={{ marginTop: '1rem', fontSize: '0.72rem', color: '#555' }}>
+-        The Save the Wren initiative is permanent and non-removable from $YST tokenomics. It cannot be voted away.
++        The Wren initiative is permanent and non-removable from $YST tokenomics. It cannot be voted away.
+       </div>
+     </div>
+   );
+diff --git a/lib/constants.ts b/lib/constants.ts
+index 9316dae..7b79cff 100644
+--- a/lib/constants.ts
++++ b/lib/constants.ts
+@@ -63,7 +63,7 @@ export const NAV: NavSection[] = [
+       { id: 'members',   label: 'MEMBERS',       icon: '👾', gated: true },
+       { id: 'whaleclub', label: 'WHALE CLUB',    icon: '🐋', whaleOnly: true },
+       { id: 'features',  label: 'REQUESTS',      icon: '💡' },
+-      { id: 'wren',      label: 'SAVE THE WREN', icon: '🌱' },
++      { id: 'wren',      label: 'SAVE THE WREN', icon: '🛡️' },
+     ],
+   },
+   {
+-- 
+2.34.1
+
