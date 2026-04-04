@@ -39,11 +39,11 @@ const SECTIONS = [
   },
   {
     title: '10. Governing Law',
-    body: `These Terms of Service are governed by and construed in accordance with the laws of England and Wales. Any disputes arising from or in connection with these terms shall be subject to the exclusive jurisdiction of the courts of England and Wales. YAKK Studios is operated from the United Kingdom.`,
+    body: `These Terms of Service are governed by and construed in accordance with the laws of Scotland, United Kingdom. Any disputes arising from or in connection with these terms shall be subject to the exclusive jurisdiction of the courts of Scotland. YAKK Studios is primarily operated from Scotland, UK, with secondary operations based in Portugal.`,
   },
   {
     title: '11. Contact',
-    body: `If you have any questions about these Terms of Service, you can contact us at hello@yakkstudios.xyz.`,
+    body: `If you have any questions about these Terms of Service, you can contact us at shyfts@yakkstudios.xyz.`,
     isContact: true,
   },
 ];
@@ -86,10 +86,10 @@ export default function Terms() {
                 <>
                   If you have any questions about these Terms of Service, you can contact us at{' '}
                   <a
-                    href="mailto:hello@yakkstudios.xyz"
+                    href="mailto:shyfts@yakkstudios.xyz"
                     style={{ color: 'var(--pink)', textDecoration: 'underline' }}
                   >
-                    hello@yakkstudios.xyz
+                    shyfts@yakkstudios.xyz
                   </a>
                   .
                 </>
@@ -101,7 +101,6 @@ export default function Terms() {
         ))}
       </div>
 
-      {/* Disclaimer banner */}
       <div style={{
         marginTop: 24,
         padding: '14px 18px',
@@ -122,7 +121,7 @@ export default function Terms() {
         fontFamily: 'var(--font-mono)',
         letterSpacing: '0.08em',
       }}>
-        LAST UPDATED: MARCH 2026 · YAKK STUDIOS LTD · ENGLAND &amp; WALES
+        LAST UPDATED: APRIL 2026 · YAKK STUDIOS · SCOTLAND, UK &amp; PORTUGAL
       </p>
     </div>
   );

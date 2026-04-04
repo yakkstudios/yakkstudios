@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// ââ Correct $YST token mint âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Correct $YST token mint ─────────────────────────────────────────────────
 const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
 
 // Try multiple DexScreener API formats for resilience
@@ -11,7 +11,7 @@ const DEX_ENDPOINTS = [
 
 export const revalidate = 30;
 
-// ââ IP-based rate limiter ââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── IP-based rate limiter ──────────────────────────────────────────────────
 const RATE_MAP   = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT  = 30;
 const RATE_WINDOW = 60_000;
@@ -41,7 +41,7 @@ async function fetchWithTimeout(url: string, ms = 8000): Promise<Response> {
   }
 }
 
-// ââ Static fallback when all APIs fail ââââââââââââââââââââââââââââââââââââ
+// ── Static fallback when all APIs fail ────────────────────────────────────
 const FALLBACK_DATA = {
   symbol: 'YST',
   price: '0',
@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // All endpoints failed â return fallback so UI doesn't break
+  // All endpoints failed — return fallback so UI doesn't break
   console.error('[price] All DexScreener endpoints failed, returning fallback');
   return NextResponse.json(FALLBACK_DATA, { status: 200, headers: corsHeaders });
 }
