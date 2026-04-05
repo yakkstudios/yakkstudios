@@ -1,177 +1,147 @@
 'use client';
-import { useState } from 'react';
 
 const CHAINS = [
-  { id: 'solana', label: 'Solana', icon: '◎', color: '#9945FF', live: true },
+  { id: 'solana',   label: 'Solana',   icon: '◎', color: '#9945FF', live: true  },
   { id: 'ethereum', label: 'Ethereum', icon: 'Ξ', color: '#627EEA', live: false },
-  { id: 'polygon', label: 'Polygon', icon: '⬡', color: '#8247E5', live: false },
-  { id: 'base', label: 'Base', icon: '🔵', color: '#0052FF', live: false },
+  { id: 'polygon',  label: 'Polygon',  icon: '⬡', color: '#8247E5', live: false },
+  { id: 'base',     label: 'Base',     icon: '🔵', color: '#0052FF', live: false },
   { id: 'arbitrum', label: 'Arbitrum', icon: '🔷', color: '#12AAFF', live: false },
-  { id: 'bnb', label: 'BNB Chain', icon: '●', color: '#F0B90B', live: false },
+  { id: 'bnb',      label: 'BNB Chain',icon: '●', color: '#F0B90B', live: false },
 ];
 
-const SORT_OPTIONS = ['RECENT', 'PRICE: LOW', 'PRICE: HIGH', 'TRENDING'];
-
-interface NFT {
-  id: string;
-  name: string;
-  collection: string;
-  price: string;
-  chain: string;
-}
-
-// Placeholder NFTs — will be replaced by live data once multi-chain APIs connected
-const MOCK_NFTS: NFT[] = [
-  { id: '1', name: 'YAKK #001', collection: 'YAKKS', price: '2.5 SOL', chain: 'solana' },
-  { id: '2', name: 'YAKK #042', collection: 'YAKKS', price: '3.1 SOL', chain: 'solana' },
-  { id: '3', name: 'YAKK #187', collection: 'YAKKS', price: '1.8 SOL', chain: 'solana' },
-];
-
-export default function NftMarket({ walletConnected = false, ystBalance = 0, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
+export default function NftMarket({
+  walletConnected = false,
+  ystBalance = 0,
+  onNavigate,
+}: {
+  walletConnected?: boolean;
+  ystBalance?: number;
+  onNavigate?: (s: string) => void;
+}) {
   const hasAccess = walletConnected && ystBalance >= 10_000_000;
-  const [activeChain, setActiveChain] = useState('solana');
-  const [search, setSearch] = useState('');
-  const [sort, setSort] = useState('RECENT');
-  const [selected, setSelected] = useState<NFT | null>(null);
 
-  const filtered = MOCK_NFTS.filter(n =>
-    n.chain === activeChain &&
-    (search === '' || n.name.toLowerCase().includes(search.toLowerCase()) || n.collection.toLowerCase().includes(search.toLowerCase()))
-  );
-
+  // ── Gate ──────────────────────────────────────────────────────────────────
   if (!hasAccess) {
     return (
-      <section id="section-nftmarket" style={{ padding: '20px' }}>
-        <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 4px' }}>
-          🖼 NFT MARKET
-        </h2>
+      <div className="sec-pad">
+        <div className="sec-eyebrow">MULTICHAIN MARKETPLACE</div>
+        <div className="sec-title">NFT Market</div>
+        <div className="sec-bar" />
         <div className="locked-overlay">
           <div className="locked-icon">🐋</div>
           <div className="locked-title">WHALE CLUB EXCLUSIVE</div>
           <div className="locked-sub">
-            Connect your wallet and hold <strong>10,000,000 $YST</strong> to unlock this tool.
+            Hold <strong>10,000,000 $YST</strong> to access the cross-chain NFT marketplace.
           </div>
+          {walletConnected && (
+            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 9, color: 'var(--dim)', marginBottom: 14 }}>
+              You hold: {ystBalance.toLocaleString()} $YST
+            </div>
+          )}
           <a className="btn btn-gold" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">
             Get $YST
           </a>
         </div>
-      </section>
+      </div>
     );
   }
 
+  // ── In-development placeholder ────────────────────────────────────────────
   return (
-    <section id="section-nftmarket" style={{ padding: '20px' }}>
+    <div className="sec-pad">
+      <div className="sec-eyebrow">MULTICHAIN MARKETPLACE</div>
+      <div className="sec-title">NFT Market</div>
+      <div className="sec-bar" />
 
-      {/* Header */}
-      <h2 style={{ fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 4px' }}>
-        🖼 NFT MARKET
-      </h2>
-      <p style={{ fontSize: 12, color: '#555', marginBottom: 16 }}>
-        Buy, sell and explore NFTs across 6 chains — no KYC, your keys your money.
-      </p>
-
-      {/* Chain selector */}
-      <div style={{ display: 'flex', gap: 6, marginBottom: 16, flexWrap: 'wrap' }}>
+      {/* Chain preview */}
+      <div style={{ display: 'flex', gap: 6, marginBottom: 28, flexWrap: 'wrap' }}>
         {CHAINS.map(({ id, label, icon, color, live }) => (
-          <button
+          <div
             key={id}
-            onClick={() => live && setActiveChain(id)}
             style={{
-              background: activeChain === id ? color + '22' : '#0d0d0d',
-              border: `1px solid ${activeChain === id ? color : '#1a1a1a'}`,
-              color: activeChain === id ? color : '#555',
-              padding: '5px 12px', borderRadius: 20, cursor: live ? 'pointer' : 'default',
-              fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5,
-              opacity: live ? 1 : 0.4,
-            }}>
+              background: live ? color + '18' : 'var(--bg3)',
+              border: `1px solid ${live ? color + '55' : 'var(--border)'}`,
+              color: live ? color : 'var(--dim)',
+              padding: '5px 14px', borderRadius: 20,
+              fontSize: 11, fontWeight: 600,
+              display: 'flex', alignItems: 'center', gap: 5,
+              opacity: live ? 1 : 0.45,
+            }}
+          >
             <span>{icon}</span>
             <span>{label}</span>
-            {live && <span style={{ fontSize: 9, color: '#00c896', marginLeft: 2 }}>✓</span>}
-            {!live && <span style={{ fontSize: 9, color: '#444', marginLeft: 2 }}>soon</span>}
-          </button>
+            {live  && <span style={{ fontSize: 9, color: '#00c896', marginLeft: 2 }}>LIVE</span>}
+            {!live && <span style={{ fontSize: 9, color: 'var(--dim)', marginLeft: 2 }}>soon</span>}
+          </div>
         ))}
       </div>
 
-      {/* Toolbar */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-        <input
-          type="text"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search collections or NFTs…"
-          style={{
-            flex: 1, minWidth: 180, background: '#111', border: '1px solid #1a1a1a',
-            borderRadius: 4, color: '#ccc', padding: '8px 12px', fontSize: 12, outline: 'none',
-          }}
-        />
-        <select
-          value={sort}
-          onChange={e => setSort(e.target.value)}
-          style={{ background: '#111', border: '1px solid #1a1a1a', color: '#888', padding: '8px 10px', borderRadius: 4, fontSize: 11, outline: 'none', cursor: 'pointer' }}>
-          {SORT_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
-        </select>
-        {walletConnected && (
-          <button style={{ background: '#e8206a', border: 'none', color: '#fff', padding: '8px 16px', borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>
-            + LIST NFT
-          </button>
-        )}
-      </div>
-
-      {/* Connect prompt */}
-      {!walletConnected && (
-        <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 6, padding: '12px 16px', marginBottom: 16, fontSize: 12, color: '#555', display: 'flex', alignItems: 'center', gap: 8 }}>
-          ⚡ Connect wallet to buy or list NFTs
+      {/* In-dev card */}
+      <div style={{
+        padding: '3rem 2rem',
+        background: 'linear-gradient(135deg, rgba(153,69,255,0.07), rgba(224,96,126,0.05))',
+        border: '1px solid rgba(153,69,255,0.2)',
+        borderRadius: 14,
+        textAlign: 'center',
+        maxWidth: 600,
+        margin: '0 auto',
+      }}>
+        <div style={{ fontSize: '3rem', marginBottom: '1.2rem' }}>🖼️</div>
+        <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+          Cross-Chain NFT Marketplace
         </div>
-      )}
-
-      {/* NFT grid */}
-      {selected ? (
-        // Detail view
-        <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 8, padding: '20px' }}>
-          <button
-            onClick={() => setSelected(null)}
-            style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 12, marginBottom: 12, padding: 0 }}>
-            ← Back
-          </button>
-          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-            <div style={{ width: 160, height: 160, background: '#111', borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>
-              🖼
-            </div>
-            <div style={{ flex: 1, minWidth: 180 }}>
-              <div style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{selected.name}</div>
-              <div style={{ fontSize: 12, color: '#555', marginBottom: 16 }}>{selected.collection}</div>
-              <div style={{ fontSize: 20, fontWeight: 800, color: '#e8206a', marginBottom: 16 }}>{selected.price}</div>
-              <button
-                disabled={!walletConnected}
-                style={{ background: walletConnected ? '#e8206a' : '#1a1a1a', border: 'none', color: walletConnected ? '#fff' : '#444', padding: '10px 24px', borderRadius: 6, fontWeight: 700, cursor: walletConnected ? 'pointer' : 'default', fontSize: 13 }}>
-                {walletConnected ? 'BUY NOW' : 'Connect Wallet'}
-              </button>
-            </div>
-          </div>
+        <div style={{ fontSize: '0.8rem', color: 'var(--dim)', lineHeight: 1.7, marginBottom: '1.5rem', maxWidth: 420, margin: '0 auto 1.5rem' }}>
+          Buy, sell and discover NFTs across 6 chains — no KYC, your keys your money.
+          Solana is live infrastructure. ETH, Polygon, Base, Arbitrum and BNB are in active build.
         </div>
-      ) : filtered.length > 0 ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(140px,1fr))', gap: 10 }}>
-          {filtered.map(nft => (
-            <div
-              key={nft.id}
-              onClick={() => setSelected(nft)}
-              style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', transition: 'border-color 0.15s' }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = '#e8206a')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = '#1a1a1a')}>
-              <div style={{ height: 120, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>🖼</div>
-              <div style={{ padding: '10px' }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: '#ccc', marginBottom: 2 }}>{nft.name}</div>
-                <div style={{ fontSize: 10, color: '#555', marginBottom: 6 }}>{nft.collection}</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: '#e8206a' }}>{nft.price}</div>
-              </div>
+
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+          {[
+            { label: 'Solana', color: '#9945FF', status: 'Infrastructure live' },
+            { label: 'ETH + L2s', color: '#627EEA', status: 'Q3 2026' },
+            { label: 'BNB Chain', color: '#F0B90B', status: 'Q3 2026' },
+          ].map(item => (
+            <div key={item.label} style={{
+              background: 'var(--bg3)',
+              border: '1px solid var(--border)',
+              borderRadius: 8,
+              padding: '10px 16px',
+              minWidth: 130,
+            }}>
+              <div style={{ fontWeight: 700, fontSize: 12, color: item.color, marginBottom: 3 }}>{item.label}</div>
+              <div style={{ fontSize: 9, color: 'var(--dim)', fontFamily: 'Space Mono,monospace' }}>{item.status}</div>
             </div>
           ))}
         </div>
-      ) : (
-        <div style={{ textAlign: 'center', padding: '40px 20px', color: '#333', fontSize: 12 }}>
-          {search ? 'No results for "' + search + '"' : 'No NFTs listed on ' + activeChain + ' yet.'}
+
+        <div style={{ fontSize: 10, color: 'var(--dim)', fontFamily: 'Space Mono,monospace', marginTop: '0.5rem' }}>
+          🐋 Whale Club exclusive · No fake listings · Real chains only
         </div>
-      )}
-    </section>
+      </div>
+
+      {/* YAKK GEN I promo */}
+      <div style={{
+        marginTop: 24,
+        padding: '16px 20px',
+        background: 'rgba(224,96,126,0.05)',
+        border: '1px solid rgba(224,96,126,0.15)',
+        borderRadius: 10,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 14,
+        flexWrap: 'wrap',
+      }}>
+        <div style={{ fontSize: 24 }}>🎟️</div>
+        <div style={{ flex: 1, minWidth: 200 }}>
+          <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 3 }}>YAKK GEN I — Launching April 20, 2026</div>
+          <div style={{ fontSize: 11, color: 'var(--dim)' }}>
+            3,333 pieces. 33.3% secondary royalty routed to Wren. The first collection listed on the YAKK marketplace at launch.
+          </div>
+        </div>
+        <button className="btn btn-pink" onClick={() => onNavigate?.('nftdrop')} style={{ whiteSpace: 'nowrap', fontSize: 10 }}>
+          VIEW DROP →
+        </button>
+      </div>
+    </div>
   );
 }

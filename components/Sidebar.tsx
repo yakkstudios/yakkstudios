@@ -46,7 +46,7 @@ export default function Sidebar({
             <div className="sb-logo-wrap">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/yakk-logo.jpg"
+                src="/yakk-y.jpg"
                 alt="YAKK Studios logo"
                 width="48"
                 height="48"

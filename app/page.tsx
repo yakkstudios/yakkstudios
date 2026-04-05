@@ -119,6 +119,8 @@ export default function App() {
       wren: 'Saving The Wren',
       bridge: 'Bridge',
       nftdrop: 'YAKK GEN I — NFT Drop',
+      update: 'Changelog',
+      tokencreator: 'YAKK Ventures',
       terms: 'Terms of Service',
       privacypolicy: 'Privacy Policy',
     };

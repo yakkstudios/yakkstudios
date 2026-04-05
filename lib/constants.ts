@@ -34,7 +34,7 @@ export const GATED_SECTIONS = new Set([
   'bridge','alerts',
 ]);
 
-// ── Focused nav: core items + NFT drop + legal + collapsed Labs (whale-only) ──
+// ── Nav ───────────────────────────────────────────────────────────────────────
 export const NAV: NavSection[] = [
   {
     title: 'CORE',
@@ -59,36 +59,35 @@ export const NAV: NavSection[] = [
   {
     title: 'COMMUNITY',
     items: [
-      { id: 'nftdrop',   label: 'NFT DROP — APR 20', icon: '🎴' },
-      { id: 'wallet',    label: 'PROFILE',            icon: '👤' },
-      { id: 'members',   label: 'MEMBERS',            icon: '👾', gated: true },
-      { id: 'whaleclub', label: 'WHALE CLUB',         icon: '🐋', whaleOnly: true },
-      { id: 'features',  label: 'REQUESTS',           icon: '💡' },
-      { id: 'wren',      label: 'SAVE THE WREN',      icon: '🛡️' },
+      { id: 'wallet',   label: 'PROFILE',           icon: '👤' },
+      { id: 'members',  label: 'MEMBERS',           icon: '👾', gated: true },
+      { id: 'whaleclub',label: 'WHALE CLUB',        icon: '🐋', whaleOnly: true },
+      { id: 'features', label: 'REQUESTS',          icon: '💡' },
+      { id: 'nftdrop',  label: 'NFT DROP — APR 20', icon: '🎟️' },
+      { id: 'wren',     label: 'SAVE THE WREN',     icon: '🛡️' },
     ],
   },
   {
     title: 'LABS',
     collapsed: true,
     items: [
-      { id: 'terminal',     label: 'YAKK TERMINAL',   icon: '⚡',  whaleOnly: true },
-      { id: 'yakktrader',   label: 'AI TRADER',        icon: '🤖',  whaleOnly: true },
-      { id: 'predictions',  label: 'PREDICTIONS',      icon: '🎯',  whaleOnly: true },
-      { id: 'otcdesk',      label: 'OTC DESK',         icon: '🤝',  whaleOnly: true },
-      { id: 'alerts',       label: 'PRICE ALERTS',     icon: '🔔',  whaleOnly: true },
-      { id: 'bridge',       label: 'BRIDGE',           icon: '🌉',  whaleOnly: true },
-      { id: 'yieldfinder',  label: 'YIELD FINDER',     icon: '💰',  whaleOnly: true },
-      { id: 'launchpad',    label: 'YAKK VENTURES',    icon: '🦅',  whaleOnly: true },
-      { id: 'portfolio',    label: 'PORTFOLIO',         icon: '📊',  whaleOnly: true },
-      { id: 'nftmarket',    label: 'NFT MARKET',       icon: '🖼️',  whaleOnly: true },
-      { id: 'raffle',       label: 'NFT RAFFLE',       icon: '🎟️',  whaleOnly: true },
-      { id: 'tokencreator', label: 'TOKEN CREATOR',    icon: '🪙',  whaleOnly: true },
-      { id: 'artlab',       label: 'ART LAB',          icon: '🎨',  whaleOnly: true },
-      { id: 'tgbot',        label: 'TG TRADE BOT',     icon: '📱',  whaleOnly: true },
-      { id: 'privacy',      label: 'PRIVACY ROUTER',   icon: '🕵️',  whaleOnly: true },
-      { id: 'update',       label: 'UPDATE TOKEN',     icon: '🚀',  whaleOnly: true },
-      { id: 'raids',        label: 'RAID HUB',         icon: '⚔️',  whaleOnly: true },
-      { id: 'trusted',      label: 'TRUSTED LIST',     icon: '🛡️',  whaleOnly: true },
+      { id: 'terminal',    label: 'YAKK TERMINAL',  icon: '⚡',  whaleOnly: true },
+      { id: 'yakktrader',  label: 'AI TRADER',       icon: '🤖',  whaleOnly: true },
+      { id: 'predictions', label: 'PREDICTIONS',     icon: '🎯',  whaleOnly: true },
+      { id: 'otcdesk',     label: 'OTC DESK',        icon: '🤝',  whaleOnly: true },
+      { id: 'alerts',      label: 'PRICE ALERTS',    icon: '🔔',  whaleOnly: true },
+      { id: 'bridge',      label: 'BRIDGE',          icon: '🌉',  whaleOnly: true },
+      { id: 'yieldfinder', label: 'YIELD FINDER',    icon: '💰',  whaleOnly: true },
+      { id: 'launchpad',   label: 'YAKK VENTURES',   icon: '🦅',  whaleOnly: true },
+      { id: 'portfolio',   label: 'PORTFOLIO',        icon: '📊',  whaleOnly: true },
+      { id: 'nftmarket',   label: 'NFT MARKET',      icon: '🖼️',  whaleOnly: true },
+      { id: 'raffle',      label: 'NFT RAFFLE',      icon: '🎟️',  whaleOnly: true },
+      { id: 'artlab',      label: 'ART LAB',         icon: '🎨',  whaleOnly: true },
+      { id: 'tgbot',       label: 'TG TRADE BOT',    icon: '📱',  whaleOnly: true },
+      { id: 'privacy',     label: 'PRIVACY ROUTER',  icon: '🕵️',  whaleOnly: true },
+      { id: 'update',      label: 'CHANGELOG',       icon: '📋',  whaleOnly: true },
+      { id: 'raids',       label: 'RAID HUB',        icon: '⚔️',  whaleOnly: true },
+      { id: 'trusted',     label: 'TRUSTED LIST',    icon: '🛡️',  whaleOnly: true },
     ],
   },
   {
@@ -100,7 +99,7 @@ export const NAV: NavSection[] = [
   },
 ];
 
-// ── Home cards (only show core features) ────────────────────────────────────
+// ── Home cards ────────────────────────────────────────────────────────────────
 export interface HomeCard {
   id: string;
   emoji: string;
