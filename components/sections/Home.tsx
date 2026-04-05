@@ -137,9 +137,9 @@ export default function Home({
         </div>
         <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <img
-            src="/yakk-logo-icon.svg"
+            src="/kaize-logo.jpg"
             alt="YAKK Studios / KAIZE logo"
-            style={{ width: 'clamp(120px,14vw,200px)', height: 'auto', filter: 'drop-shadow(0 0 32px rgba(255,46,154,0.5))', animation: 'yakk-float 4s ease-in-out infinite' }}
+            style={{ width: 'clamp(140px,16vw,220px)', height: 'auto', borderRadius: 12, filter: 'drop-shadow(0 0 40px rgba(224,96,126,0.4))', animation: 'yakk-float 4s ease-in-out infinite' }}
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
         </div>
