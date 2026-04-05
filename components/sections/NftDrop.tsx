@@ -1,170 +1,285 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const DROP_DATE = new Date('2026-04-20T00:00:00Z').getTime();
+const DROP_DATE = new Date('2026-04-20T00:00:00Z');
 
-const TRAIT_CATEGORIES = [
-  { icon: '🃏', name: 'WILDCARDS',   count: '141', note: 'Unique 1-of-1 pieces' },
-  { icon: '🌌', name: 'BACKGROUNDS', count: 'TBD', note: 'Base layer variants' },
-  { icon: '⚡', name: 'ACCESSORIES', count: 'TBD', note: 'Wearables & items' },
-  { icon: '👑', name: 'SPECIALS',    count: 'TBD', note: 'Ultra-rare traits' },
-];
+interface Countdown { days: number; hours: number; mins: number; secs: number; }
 
-const MINT_STATS = [
-  { label: 'TOTAL SUPPLY', value: '3,333',   accent: 'var(--pink)' },
-  { label: 'MINT PRICE',   value: 'TBD',      accent: 'var(--gold)' },
-  { label: 'WHALE GATE',   value: '10M $YST', accent: 'var(--gold)' },
-  { label: 'CHAIN',        value: 'Solana',   accent: '#9945ff' },
-];
+function getCountdown(): Countdown {
+  const diff = DROP_DATE.getTime() - Date.now();
+  if (diff <= 0) return { days: 0, hours: 0, mins: 0, secs: 0 };
+  const secs  = Math.floor(diff / 1000);
+  return {
+    days:  Math.floor(secs / 86400),
+    hours: Math.floor((secs % 86400) / 3600),
+    mins:  Math.floor((secs % 3600) / 60),
+    secs:  secs % 60,
+  };
+}
+
+function pad(n: number) { return String(n).padStart(2, '0'); }
 
 export default function NftDrop() {
-  const [countdown, setCountdown] = useState({ d: '00', h: '00', m: '00', s: '00' });
-  const [dropLive, setDropLive] = useState(false);
+  const [countdown, setCountdown] = useState<Countdown>(getCountdown());
+  const [dropLive,  setDropLive]  = useState(Date.now() >= DROP_DATE.getTime());
 
   useEffect(() => {
-    const tick = () => {
-      const diff = DROP_DATE - Date.now();
-      if (diff <= 0) {
-        setDropLive(true);
-        setCountdown({ d: '00', h: '00', m: '00', s: '00' });
-        return;
-      }
-      setCountdown({
-        d: String(Math.floor(diff / 86_400_000)).padStart(2, '0'),
-        h: String(Math.floor((diff % 86_400_000) / 3_600_000)).padStart(2, '0'),
-        m: String(Math.floor((diff % 3_600_000) / 60_000)).padStart(2, '0'),
-        s: String(Math.floor((diff % 60_000) / 1_000)).padStart(2, '0'),
-      });
-    };
-    tick();
-    const id = setInterval(tick, 1000);
+    const id = setInterval(() => {
+      const c = getCountdown();
+      setCountdown(c);
+      setDropLive(c.days === 0 && c.hours === 0 && c.mins === 0 && c.secs === 0);
+    }, 1000);
     return () => clearInterval(id);
   }, []);
 
   return (
     <div className="sec-pad" id="section-nftdrop">
 
-      {/* Header */}
+      {/* ── Header ─────────────────────────────────────────────────────── */}
       <div className="sec-header">
         <div className="sec-title">
-          🎴 YAKK GEN I — NFT DROP
-          {dropLive ? (
-            <span className="badge b-green" style={{ marginLeft: '0.5rem' }}>LIVE</span>
-          ) : (
-            <span className="badge b-gold" style={{ marginLeft: '0.5rem' }}>COMING APRIL 20</span>
-          )}
+          🎴 YAKK GEN I
+          {dropLive
+            ? <span className="badge b-green" style={{ marginLeft: '0.5rem' }}>LIVE</span>
+            : <span className="badge b-dim"   style={{ marginLeft: '0.5rem' }}>COMING APR 20</span>
+          }
         </div>
-        <div className="sec-bar" style={{ background: 'var(--gold)' }} />
+        <div className="sec-bar" />
       </div>
 
-      <p style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '1.5rem', maxWidth: 600, lineHeight: 1.7 }}>
-        3,333 unique NFTs on Solana. NFT holders unlock the whale tier — 10M $YST access
-        to the full YAKK LABS suite. First-come, first-served. No whitelist games. Just hold and access.
+      <p style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '1.5rem', maxWidth: 620, lineHeight: 1.7 }}>
+        The first YAKK Studios NFT collection. 3,333 pieces. Anti-greed. On-chain accountability.
+        Every holder gets whale-gate access to the full LABS suite — no $YST required.
       </p>
 
-      {/* Countdown */}
+      {/* ── Countdown ──────────────────────────────────────────────────── */}
       <div style={{
-        background: 'rgba(247,201,72,0.04)',
-        border: '1px solid rgba(247,201,72,0.2)',
+        background: 'rgba(255,255,255,0.02)',
+        border: `1px solid ${dropLive ? 'rgba(74,222,128,0.3)' : 'rgba(247,201,72,0.25)'}`,
         borderRadius: 10,
-        padding: '1.5rem',
-        marginBottom: '1.75rem',
+        padding: '1.75rem',
+        marginBottom: '2rem',
         textAlign: 'center',
       }}>
-        <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '0.65rem', color: 'var(--gold)', letterSpacing: '0.14em', marginBottom: '1rem', textTransform: 'uppercase' }}>
-          {dropLive ? 'DROP IS LIVE — MINT NOW' : 'Time Until Drop'}
+        <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '1rem' }}>
+          {dropLive ? '🚀 MINT IS LIVE' : 'TIME UNTIL DROP'}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-          {[['DAYS', countdown.d], ['HRS', countdown.h], ['MIN', countdown.m], ['SEC', countdown.s]].map(([l, v]) => (
-            <div key={l} className="cd-block" style={{ minWidth: 64 }}>
-              <div className="cd-num" style={{ color: dropLive ? 'var(--green)' : 'var(--gold)', fontSize: '2rem' }}>{v}</div>
-              <div className="cd-lbl">{l}</div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+          {([['DAYS', countdown.days], ['HRS', countdown.hours], ['MIN', countdown.mins], ['SEC', countdown.secs]] as const).map(([label, val]) => (
+            <div key={String(label)} style={{ textAlign: 'center', minWidth: 60 }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, fontFamily: 'monospace', color: dropLive ? '#4ade80' : '#f7c948', lineHeight: 1 }}>
+                {pad(Number(val))}
+              </div>
+              <div style={{ fontSize: '0.6rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.35rem' }}>
+                {label}
+              </div>
             </div>
           ))}
         </div>
-        <div style={{ marginTop: '0.75rem', fontFamily: 'Space Mono,monospace', fontSize: '0.65rem', color: 'var(--dim)' }}>
+        <div style={{ fontSize: '0.72rem', color: '#555', fontFamily: 'monospace' }}>
           April 20, 2026 · 00:00 UTC · Solana Mainnet
         </div>
       </div>
 
-      {/* Stat cards */}
-      <div className="grid4" style={{ marginBottom: '2rem' }}>
-        {MINT_STATS.map(s => (
-          <div key={s.label} className="stat-card" style={{ textAlign: 'center', padding: '1rem' }}>
-            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: s.accent, fontFamily: 'Syne,sans-serif' }}>{s.value}</div>
-            <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '0.25rem' }}>{s.label}</div>
+      {/* ── Key stat cards ─────────────────────────────────────────────── */}
+      <div className="grid2" style={{ marginBottom: '2rem' }}>
+        <div style={{
+          background: 'rgba(255,46,154,0.07)',
+          border: '1px solid rgba(255,46,154,0.2)',
+          borderRadius: 10,
+          padding: '1.5rem',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '2.8rem', fontWeight: 800, color: '#FF2E9A', fontFamily: 'monospace', lineHeight: 1 }}>
+            3,333
           </div>
-        ))}
+          <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: '0.5rem' }}>
+            TOTAL SUPPLY
+          </div>
+          <div style={{ fontSize: '0.72rem', color: '#666', marginTop: '0.5rem' }}>
+            Fixed forever. No re-mints.
+          </div>
+        </div>
+
+        <div style={{
+          background: 'rgba(247,201,72,0.05)',
+          border: '1px solid rgba(247,201,72,0.15)',
+          borderRadius: 10,
+          padding: '1.5rem',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#f7c948', fontFamily: 'monospace', lineHeight: 1 }}>
+            TBA
+          </div>
+          <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: '0.5rem' }}>
+            MINT PRICE
+          </div>
+          <div style={{ fontSize: '0.72rem', color: '#666', marginTop: '0.5rem' }}>
+            Announced pre-drop via @YakkStudios
+          </div>
+        </div>
       </div>
 
-      {/* Trait categories */}
-      <div style={{ marginBottom: '2rem' }}>
-        <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '0.65rem', color: 'var(--dim)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>
-          TRAIT CATEGORIES
-        </div>
-        <div className="grid4">
-          {TRAIT_CATEGORIES.map(t => (
-            <div key={t.name} style={{
-              background: 'rgba(255,255,255,0.02)',
-              border: '1px solid rgba(247,201,72,0.12)',
-              borderRadius: 8,
-              padding: '1rem',
-              textAlign: 'center',
-            }}>
-              <div style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>{t.icon}</div>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '0.75rem', color: '#fff', textTransform: 'uppercase', marginBottom: '0.25rem' }}>{t.name}</div>
-              <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '1rem', color: 'var(--gold)', fontWeight: 700 }}>{t.count}</div>
-              <div style={{ fontSize: '0.65rem', color: '#555', marginTop: '0.2rem' }}>{t.note}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* How it works */}
+      {/* ── NFT utility / gate ─────────────────────────────────────────── */}
       <div style={{
-        background: 'rgba(255,46,154,0.04)',
-        border: '1px solid rgba(255,46,154,0.15)',
+        background: 'rgba(192,38,255,0.06)',
+        border: '1px solid rgba(192,38,255,0.2)',
+        borderLeft: '4px solid #C026FF',
         borderRadius: 8,
         padding: '1.25rem 1.5rem',
         marginBottom: '2rem',
       }}>
-        <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '0.65rem', color: 'var(--pink)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
-          HOW THE NFT GATE WORKS
+        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#C026FF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.6rem' }}>
+          🐋 NFT GATE — FULL LABS ACCESS
         </div>
-        <div style={{ fontSize: '0.78rem', color: 'var(--muted)', lineHeight: 1.7 }}>
-          Hold a YAKK GEN I NFT in your connected wallet and it counts as equivalent to the 10M $YST whale threshold —
-          unlocking the full LABS suite without needing to hold 10M tokens. NFTs are transferable on secondary markets.
-          The gate is checked on-chain at connection time. No staking, no lock-up.
+        <div style={{ fontSize: '0.8rem', color: '#ccc', lineHeight: 1.7 }}>
+          Hold a <strong style={{ color: '#f5f5f7' }}>YAKK GEN I NFT</strong> in your connected wallet and it counts as the
+          10M $YST whale threshold — unlocking the full LABS suite with no $YST required.
+          NFTs are transferable on secondary markets. Gate is checked on-chain at connection time. No staking, no lock-up.
+        </div>
+        <div style={{ marginTop: '0.75rem', fontSize: '0.72rem', color: '#666', fontFamily: 'monospace' }}>
+          Hold NFT = Whale tier · OR hold 10M $YST · Same access, two paths.
         </div>
       </div>
 
-      {/* CTA */}
+      {/* ── How to get WL ──────────────────────────────────────────────── */}
+      <div style={{ marginBottom: '2rem' }}>
+        <div style={{ fontSize: '0.7rem', color: '#888', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>
+          HOW TO GET ON THE WHITELIST
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          {[
+            {
+              icon: '🐋',
+              title: 'Hold 10M $YST',
+              desc: 'Your wallet holds 10M+ $YST at the WL snapshot date. Whale gate = guaranteed WL. No application needed.',
+              status: 'CONFIRMED',
+              color: '#f7c948',
+            },
+            {
+              icon: '🛡️',
+              title: 'Active YAKK Community Member',
+              desc: 'Regulars in the YAKK Telegram and on Twitter CT will be eligible for WL spots. Active = contributing, not lurking. Criteria will be announced by @shyfts_ before snapshot.',
+              status: 'TBC',
+              color: '#FF2E9A',
+            },
+            {
+              icon: '🎟️',
+              title: 'Raffle & Community Events',
+              desc: 'WL spots will be raffled via the YAKK Raffle Engine and awarded through community events. Participate in YAKK activities to earn entries.',
+              status: 'TBC',
+              color: '#C026FF',
+            },
+          ].map(item => (
+            <div key={item.title} style={{
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid rgba(255,255,255,0.06)',
+              borderLeft: `3px solid ${item.color}`,
+              borderRadius: 8,
+              padding: '1rem 1.25rem',
+              display: 'flex',
+              gap: '1rem',
+              alignItems: 'flex-start',
+            }}>
+              <div style={{ fontSize: '1.4rem', flexShrink: 0 }}>{item.icon}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '0.35rem' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{item.title}</span>
+                  <span style={{ fontSize: '0.62rem', padding: '1px 6px', borderRadius: 3, background: `${item.color}22`, color: item.color, fontWeight: 700 }}>
+                    {item.status}
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#999', lineHeight: 1.6 }}>{item.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop: '0.75rem', fontSize: '0.72rem', color: '#555' }}>
+          WL snapshot date TBC. Follow{' '}
+          <a href="https://x.com/YakkStudios" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--pink)', textDecoration: 'none' }}>@YakkStudios</a>
+          {' '}and join the{' '}
+          <a href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--pink)', textDecoration: 'none' }}>Telegram</a>
+          {' '}for announcements.
+        </div>
+      </div>
+
+      {/* ── Paperhands bitch tax ────────────────────────────────────────── */}
+      <div style={{
+        background: 'rgba(74,222,128,0.04)',
+        border: '1px solid rgba(74,222,128,0.2)',
+        borderRadius: 10,
+        padding: '1.5rem',
+        marginBottom: '2rem',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '0.85rem' }}>
+          <span style={{ fontSize: '1.2rem' }}>🛡️</span>
+          <div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#4ade80', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              33.3% PAPERHANDS BITCH TAX
+            </div>
+            <div style={{ fontSize: '0.65rem', color: '#555', letterSpacing: '0.05em', marginTop: 2 }}>
+              SECONDARY ROYALTIES → SAVE THE WREN INITIATIVE
+            </div>
+          </div>
+        </div>
+        <div style={{ fontSize: '0.8rem', color: '#ccc', lineHeight: 1.75, marginBottom: '1rem' }}>
+          Every secondary sale of a YAKK GEN I NFT carries a{' '}
+          <strong style={{ color: '#4ade80' }}>33.3% royalty</strong> — the <em>paperhands bitch tax</em>.
+          Flip your NFT and one third of the sale price routes directly to the{' '}
+          <strong style={{ color: '#4ade80' }}>Save The Wren initiative</strong>, funding the fight against grooming
+          gangs and sexual exploitation in the UK.
+        </div>
+        <div style={{ fontSize: '0.77rem', color: '#999', lineHeight: 1.7, marginBottom: '1rem' }}>
+          This isn&apos;t a punishment. It&apos;s architecture. Weak hands fund the mission. Every flip is a donation.
+          Hold your NFT and you have full LABS access. Sell it and you fund the cause either way.
+          The wren is small. The wren is loud. So is this.
+        </div>
+        <div style={{
+          padding: '0.75rem 1rem',
+          background: 'rgba(74,222,128,0.05)',
+          borderRadius: 6,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          flexWrap: 'wrap',
+        }}>
+          <span style={{ fontSize: '0.72rem', color: '#4ade80', fontFamily: 'monospace', flex: 1, minWidth: 200 }}>
+            Wren: 7CsMUvuHub7dVTeVij8S5baWNHnNDwS2yqyv4ZYQKV9n
+          </span>
+          <a
+            href="https://solscan.io/account/7CsMUvuHub7dVTeVij8S5baWNHnNDwS2yqyv4ZYQKV9n"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline btn-sm"
+            style={{ fontSize: '0.65rem', borderColor: '#4ade80', color: '#4ade80', flexShrink: 0 }}
+          >
+            Track On-Chain ↗
+          </a>
+        </div>
+      </div>
+
+      {/* ── CTA buttons ────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
         <button
-          className="btn btn-pink"
           disabled={!dropLive}
-          style={
-            dropLive
-              ? { fontSize: '0.9rem', padding: '0.6rem 1.5rem' }
-              : { fontSize: '0.9rem', padding: '0.6rem 1.5rem', opacity: 0.4, cursor: 'not-allowed', background: '#444', borderColor: '#444' }
-          }
+          className={dropLive ? 'btn btn-pink' : 'btn btn-outline'}
+          style={!dropLive ? { opacity: 0.4, cursor: 'not-allowed' } : {}}
         >
-          {dropLive ? '🎴 MINT NOW' : '🔒 MINT OPENS APRIL 20'}
+          🎴 MINT YAKK GEN I
         </button>
-        <a
-          href="https://x.com/YakkStudios"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-outline"
-          style={{ fontSize: '0.82rem' }}
-        >
-          Follow for Updates →
+        <a href="https://x.com/YakkStudios" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+          Follow @YakkStudios ↗
+        </a>
+        <a href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+          Join Telegram ↗
         </a>
       </div>
 
       <div style={{ marginTop: '1rem', fontSize: '0.7rem', color: '#444' }}>
-        Launchpad TBC — Magic Eden / Tensor / self-deployed Candy Machine v3. Announcement before April 15.
+        Launchpad TBC. Full mint details and exact WL snapshot date announced via @YakkStudios.
+        33.3% secondary royalties are hard-coded and routed on-chain to the Wren wallet. Non-negotiable.
       </div>
+
     </div>
   );
 }

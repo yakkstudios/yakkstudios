@@ -1,107 +1,154 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
-interface PriceData {
+// ── Types ──────────────────────────────────────────────────────────────────────
+interface TickerItem {
   symbol: string;
   price: string;
   change24h: number;
-  volume24h: number;
-  liquidity: number;
-  marketCap: number;
-  fdv: number;
 }
 
 interface TickerBarProps {
-  onConnectWallet: () => void;
+  onConnectWallet?: () => void; // kept for API compat — wallet modal handled internally
   walletConnected: boolean;
   walletLabel: string;
+  onDisconnect?: () => void;
 }
 
-function formatNum(n: number): string {
-  if (n >= 1_000_000_000) return '$' + (n / 1_000_000_000).toFixed(2) + 'B';
-  if (n >= 1_000_000)     return '$' + (n / 1_000_000).toFixed(2) + 'M';
-  if (n >= 1_000)         return '$' + (n / 1_000).toFixed(1) + 'K';
-  return '$' + n.toFixed(2);
-}
-
-function formatPrice(p: string): string {
+// ── Formatters ─────────────────────────────────────────────────────────────────
+function fmtPrice(p: string): string {
   const n = parseFloat(p);
-  if (!n) return '$0.00';
-  if (n < 0.000001) return '$' + n.toExponential(2);   // $1.23e-7
-  if (n < 0.0001)   return '$' + n.toFixed(7);          // $0.0000456
-  if (n < 0.01)     return '$' + n.toFixed(5);          // $0.00456
-  if (n < 1)        return '$' + n.toFixed(4);          // $0.4567
-  return '$' + n.toFixed(4);                             // $1.2345
+  if (!n || isNaN(n)) return '$—';
+  if (n < 0.000001) return '$' + n.toExponential(2);
+  if (n < 0.0001)   return '$' + n.toFixed(7);
+  if (n < 0.01)     return '$' + n.toFixed(5);
+  if (n < 1)        return '$' + n.toFixed(4);
+  if (n < 1000)     return '$' + n.toFixed(2);
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+// ── Single ticker chip ─────────────────────────────────────────────────────────
+function TickerChip({ item }: { item: TickerItem }) {
+  const up = item.change24h >= 0;
+  const changeColor = up ? '#4ade80' : '#f87171';
+  return (
+    <span style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 5,
+      padding: '0 18px',
+      flexShrink: 0,
+      borderRight: '1px solid rgba(255,255,255,0.06)',
+    }}>
+      <span style={{ fontWeight: 700, color: '#f5f5f7', fontSize: 10, fontFamily: 'Space Mono, monospace', letterSpacing: '0.05em' }}>
+        ${item.symbol}
+      </span>
+      <span style={{ color: '#999', fontSize: 10, fontFamily: 'Space Mono, monospace' }}>
+        {fmtPrice(item.price)}
+      </span>
+      <span style={{ color: changeColor, fontSize: 9, fontFamily: 'Space Mono, monospace' }}>
+        {up ? '▲' : '▼'}{Math.abs(item.change24h).toFixed(2)}%
+      </span>
+    </span>
+  );
+}
+
+// ── Component ──────────────────────────────────────────────────────────────────
 export default function TickerBar({
-  onConnectWallet,
   walletConnected,
   walletLabel,
+  onDisconnect,
 }: TickerBarProps) {
-  const [data, setData] = useState<PriceData | null>(null);
+  const [tickers, setTickers] = useState<TickerItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  // useWalletModal from @solana/wallet-adapter-react-ui — opens the Phantom/Solflare picker
+  const { setVisible } = useWalletModal();
 
-  const fetchPrice = useCallback(async () => {
+  const fetchTickers = useCallback(async () => {
     try {
-      const res = await fetch('/api/price');
-      if (!res.ok) throw new Error('bad response');
-      const json = await res.json();
-      setData(json);
-      setError(false);
+      const res = await fetch('/api/ticker');
+      if (!res.ok) throw new Error('bad status');
+      const data: TickerItem[] = await res.json();
+      if (Array.isArray(data) && data.length > 0) setTickers(data);
     } catch {
-      setError(true);
+      // silent — UI degrades gracefully
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchPrice();
-    const interval = setInterval(fetchPrice, 30_000);
-    return () => clearInterval(interval);
-  }, [fetchPrice]);
+    fetchTickers();
+    const id = setInterval(fetchTickers, 30_000);
+    return () => clearInterval(id);
+  }, [fetchTickers]);
 
-  const changeClass = data ? (data.change24h >= 0 ? 'up' : 'down') : '';
-  const changeSign  = data && data.change24h >= 0 ? '+' : '';
+  // Triplicate for seamless 33.333% scroll loop
+  const items = tickers.length > 0
+    ? [...tickers, ...tickers, ...tickers]
+    : [];
 
   return (
-    <div id="ticker-bar">
-      {/* Ticker 1 – price */}
-      <span className="tick-inner" id="t1">
-        <span className="tick-label">$YST</span>
-        <span className="tick-price">
-          {loading ? '...' : error ? 'N/A' : formatPrice(data?.price ?? '0')}
-        </span>
-        {data && (
-          <span className={`tick-change ${changeClass}`}>
-            {changeSign}{data.change24h.toFixed(2)}%
-          </span>
-        )}
-      </span>
+    <>
+      {/* CSS keyframe injected inline — no globals.css edit required */}
+      <style>{`
+        @keyframes yakk-ticker-scroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-33.3334%); }
+        }
+        #ticker-bar { position: relative; }
+        #ticker-bar:hover .yakk-ticker-inner { animation-play-state: paused; }
+      `}</style>
 
-      {/* Ticker 2 – market data (hidden on mobile via CSS) */}
-      <span className="tick-inner" id="t2">
-        <span className="tick-label">MCAP</span>
-        <span className="tick-mcap">
-          {loading ? '...' : error ? 'N/A' : formatNum(data?.marketCap ?? 0)}
-        </span>
-        <span className="tick-label" style={{ marginLeft: 8 }}>VOL</span>
-        <span className="tick-mcap">
-          {loading ? '...' : error ? 'N/A' : formatNum(data?.volume24h ?? 0)}
-        </span>
-      </span>
+      <div id="ticker-bar" style={{ display: 'flex', alignItems: 'stretch', overflow: 'hidden' }}>
 
-      {/* Wallet button */}
-      <div className="tick-wallet-area">
-        <button
-          className={`btn ${walletConnected ? 'btn-ghost' : 'btn-primary'} btn-sm`}
-          onClick={onConnectWallet}
-        >
-          {walletConnected ? walletLabel : 'CONNECT WALLET'}
-        </button>
+        {/* ── Scrolling section ─────────────────────────────────────────────── */}
+        <div style={{ flex: 1, overflow: 'hidden', display: 'flex', alignItems: 'center', minWidth: 0 }}>
+          {loading || tickers.length === 0 ? (
+            <span style={{ fontFamily: 'Space Mono, monospace', fontSize: 9, color: '#444', padding: '0 14px' }}>
+              {loading ? 'LOADING MARKET DATA...' : 'MARKET DATA UNAVAILABLE'}
+            </span>
+          ) : (
+            <div
+              className="yakk-ticker-inner"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                whiteSpace: 'nowrap',
+                animation: 'yakk-ticker-scroll 45s linear infinite',
+                willChange: 'transform',
+              }}
+            >
+              {items.map((t, i) => (
+                <TickerChip key={`${t.symbol}-${i}`} item={t} />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* ── Wallet button — fixed right ───────────────────────────────────── */}
+        <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', paddingLeft: 10, paddingRight: 8, borderLeft: '1px solid rgba(255,255,255,0.06)' }}>
+          {walletConnected ? (
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={onDisconnect}
+              style={{ fontSize: 10, whiteSpace: 'nowrap' }}
+            >
+              {walletLabel}
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={() => setVisible(true)}
+              style={{ fontSize: 10, whiteSpace: 'nowrap' }}
+            >
+              CONNECT WALLET
+            </button>
+          )}
+        </div>
+
       </div>
-    </div>
+    </>
   );
 }

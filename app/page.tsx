@@ -1,6 +1,7 @@
 'use client';
 import { useState, useCallback, useEffect } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { PublicKey } from '@solana/web3.js';
 import Sidebar from '@/components/Sidebar';
 import TickerBar from '@/components/TickerBar';
@@ -71,6 +72,7 @@ export default function App() {
   const [balanceLoading, setBalanceLoading] = useState(false);
   const { connected, publicKey, disconnect } = useWallet();
   const { connection } = useConnection();
+  const { setVisible: setWalletModalVisible } = useWalletModal();
   const walletConnected = connected && !!publicKey;
   const walletAddress = publicKey?.toBase58();
 
@@ -148,7 +150,13 @@ export default function App() {
             {walletLabel}{balanceLoading ? ' …' : isDevWallet ? ' · DEV' : ` · ${ystBalance.toLocaleString()} YST`}
           </button>
         ) : (
-          <w-sol-button style={{ '--wsol-border-radius': '4px', '--wsol-font-size': '11px' } as any} />
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => setWalletModalVisible(true)}
+            style={{ fontSize: 11 }}
+          >
+            CONNECT
+          </button>
         )}
       </div>
       <Sidebar
@@ -158,7 +166,7 @@ export default function App() {
         ystBalance={effectiveYstBalance}
       />
       <div id="main-wrap">
-        <TickerBar onConnectWallet={() => {}} walletConnected={walletConnected} walletLabel={walletLabel} />
+        <TickerBar walletConnected={walletConnected} walletLabel={walletLabel} onDisconnect={handleDisconnect} />
         <div id="main">
           <div className={`page-section ${section === 'home' ? 'active' : ''}`}><ErrorBoundary sectionName="Home"><Home {...sectionProps} /></ErrorBoundary></div>
           <div className={`page-section ${section === 'screener' ? 'active' : ''}`}><ErrorBoundary sectionName="Screener"><Screener {...sectionProps} /></ErrorBoundary></div>

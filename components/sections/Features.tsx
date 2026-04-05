@@ -39,6 +39,9 @@ export default function Features({ walletConnected, ystBalance, onNavigate }: Pr
   const [frTwitter, setFrTwitter] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
+  // ── Token gate: 250K $YST required ───────────────────────────────────────────
+  const hasAccess = walletConnected && ystBalance >= 250_000;
+
   const vote = (i: number) => {
     if (voted.includes(i)) return;
     setVoted(v => [...v, i]);
@@ -61,6 +64,46 @@ export default function Features({ walletConnected, ystBalance, onNavigate }: Pr
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
   };
+
+  // ── Gate wall ────────────────────────────────────────────────────────────────
+  if (!hasAccess) {
+    return (
+      <div className="sec-pad">
+        <div className="sec-eyebrow">COMMUNITY DRIVEN</div>
+        <div className="sec-title">Feature Requests</div>
+        <div className="sec-bar" />
+
+        <div style={{
+          marginTop: '2rem',
+          padding: '3rem 2rem',
+          background: 'rgba(224,96,126,0.04)',
+          border: '1px solid rgba(224,96,126,0.15)',
+          borderRadius: 12,
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🔒</div>
+          <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--pink)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
+            LABS ACCESS REQUIRED
+          </div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--dim)', marginBottom: '1.5rem', maxWidth: 400, margin: '0 auto 1.5rem' }}>
+            Hold <strong style={{ color: 'var(--text)' }}>250,000 $YST</strong> to submit and vote on Feature Requests.
+            Your ideas directly shape the YAKK roadmap — ships are reviewed every Friday.
+          </div>
+          {!walletConnected ? (
+            <button className="btn btn-pink" onClick={() => onNavigate('wallet')}>
+              Connect Wallet
+            </button>
+          ) : (
+            <div style={{ fontSize: '0.75rem', color: 'var(--dim)' }}>
+              Current balance: <span style={{ color: 'var(--text)', fontFamily: 'Space Mono,monospace' }}>{ystBalance.toLocaleString()} $YST</span>
+              <span style={{ margin: '0 8px', opacity: 0.3 }}>·</span>
+              Need: <span style={{ color: 'var(--pink)', fontFamily: 'Space Mono,monospace' }}>250,000 $YST</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="sec-pad">
