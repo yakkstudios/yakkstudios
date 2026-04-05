@@ -48,7 +48,7 @@ const LOGO_MAP: Record<string, string> = {
   YST:  '/yst-logo.jpg',
   SPT:  '/spt-logo.jpg',
   LOCK: '/lock-logo.jpg',
-  // SOL uses emoji fallback
+  SOL:  '/sol-logo.png',
 };
 
 const MOCK_RECENT = [
@@ -235,7 +235,6 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
                   src={`https://dexscreener.com/solana/${selectedToken.dex}?embed=1&theme=dark&trades=0&info=0`}
                   style={{ width: '100%', height: '100%', border: 'none' }}
                   title={`${selectedToken.ticker} Chart`}
-                  sandbox="allow-scripts allow-same-origin allow-popups"
                 />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>

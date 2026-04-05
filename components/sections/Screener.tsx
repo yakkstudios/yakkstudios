@@ -160,7 +160,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
       YST:  '/yst-logo.jpg',
       LOCK: '/lock-logo.jpg',
       SPT:  '/spt-logo.jpg',
-      // SOL uses emoji fallback (◎) — no local file needed
+      SOL:  '/sol-logo.png',
     });
   }, []);
 
@@ -303,8 +303,15 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
               {/* CHART VIEW */}
               {view === 'chart' && (
                 <div>
-                  {/* Chart header */}
-                  <div className="ch-hdr" style={{ padding: '11px 16px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', background: 'var(--bg2)' }}>
+                  {/* Chart header — with token banner background */}
+                  <div className="ch-hdr" style={{
+                    padding: '11px 16px', borderBottom: '1px solid var(--border)',
+                    display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap',
+                    background: selectedToken
+                      ? `linear-gradient(to right, rgba(5,5,9,0.92) 0%, rgba(5,5,9,0.75) 60%, rgba(5,5,9,0.3) 100%), url(/${selectedToken.ticker === 'YST' ? 'yst' : selectedToken.ticker === 'SPT' ? 'spt' : selectedToken.ticker === 'LOCK' ? 'lock' : 'sol'}-banner.${selectedToken.ticker === 'SOL' ? 'png' : 'jpg'}) center/cover no-repeat`
+                      : 'var(--bg2)',
+                    transition: 'background 0.3s ease',
+                  }}>
                     <div className="ch-img" style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--bg3)', border: '2px solid var(--border2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
                       {selectedToken
                         ? <TokenLogo logoUrl={logoUrls[selectedToken.ticker]} fallbackEmoji={selectedToken.fallbackEmoji} size={32} />
@@ -346,7 +353,6 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
                         src={`https://dexscreener.com/solana/${selectedToken.dex}?embed=1&theme=dark&trades=0&info=0`}
                         style={{ width: '100%', height: '100%', border: 'none' }}
                         title={`${selectedToken.ticker} Chart`}
-                        sandbox="allow-scripts allow-same-origin allow-popups"
                       />
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '8px' }}>
