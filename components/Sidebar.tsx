@@ -46,8 +46,8 @@ export default function Sidebar({
             <div className="sb-logo-wrap">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/kaize-logo.jpg"
-                alt="KAIZE — YAKK Studios"
+                src="/yakk-logo.jpg"
+                alt="YAKK Studios logo"
                 width="48"
                 height="48"
                 style={{ borderRadius: 8, display: 'block', objectFit: 'cover', objectPosition: 'center' }}

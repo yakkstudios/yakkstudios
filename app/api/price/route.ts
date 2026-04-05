@@ -90,11 +90,19 @@ export async function GET(req: NextRequest) {
       if (!res.ok) continue;
 
       const data = await res.json();
-      const pairs: any[] = Array.isArray(data) ? data : (data.pairs ?? []);
+
+      // ── Robust parsing: handle both direct array and {pairs:[]} wrapper ──
+      // NOTE: chainId filter intentionally removed — Solana-specific endpoints
+      // already return only Solana pairs; the filter caused false negatives
+      // when DexScreener omits the chainId field from v1 responses.
+      const pairs: any[] = Array.isArray(data)
+        ? data
+        : (Array.isArray(data.pairs) ? data.pairs : []);
+
       if (!pairs.length) continue;
 
+      // Pick highest-liquidity pair
       const pair = pairs
-        .filter((p: any) => p.chainId === 'solana')
         .sort((a: any, b: any) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))[0];
 
       if (!pair) continue;

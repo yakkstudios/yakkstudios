@@ -136,9 +136,10 @@ export default function Home({
           </div>
         </div>
         <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/kaize-logo.jpg"
-            alt="YAKK Studios / KAIZE logo"
+            src="/yakk-logo.jpg"
+            alt="YAKK Studios logo"
             style={{ width: 'clamp(140px,16vw,220px)', height: 'auto', borderRadius: 12, filter: 'drop-shadow(0 0 40px rgba(224,96,126,0.4))', animation: 'yakk-float 4s ease-in-out infinite' }}
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
@@ -179,7 +180,7 @@ export default function Home({
             ['LIQUIDITY',  bannerLiq],
             ['BUYS / SELLS', '— / —'],
             ['HOLDERS', '—'],
-          ] as [string, string][]).map(([label, val], i) => (
+          ] as [string, string][]).map(([label, val]) => (
             <div key={label} style={{ flexShrink: 0, borderLeft: '1px solid var(--border)', paddingLeft: 20 }}>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', marginBottom: 2 }}>{label}</div>
               <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>{val}</div>
