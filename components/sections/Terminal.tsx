@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Props {
   walletConnected: boolean;
@@ -7,19 +7,55 @@ interface Props {
   onNavigate: (id: string) => void;
 }
 
+/* ── YAKK trusted list + SOL bluechip only ──────────────────────────────── */
 const TOKENS = [
-  { emoji:'🩷', ticker:'YST',  name:'YAKK Studios Token', price:0.0000018, chg:1.44,  mcap:'$1.8M', vol:'$24.1K', liq:'$189K', holders:'4,281', buys:'682', sells:'522', dex:'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM', ca:'YSTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxYST' },
-  { emoji:'🟢', ticker:'SPT',  name:'StakePoint Token',   price:0.00000042, chg:0.88,  mcap:'$420K', vol:'$3.2K',  liq:'$41K',  holders:'1,120', buys:'188', sells:'124', dex:'spt', ca:'SPTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxSPT' },
-  { emoji:'◎',  ticker:'SOL',  name:'Solana',             price:142.30,     chg:2.14,  mcap:'$68.4B',vol:'$1.8B',  liq:'$4.2B', holders:'—',     buys:'7.8M',sells:'6.4M',dex:'so11111111111111111111111111111111111111112', ca:'So1111...1112' },
-  { emoji:'🟡', ticker:'BONK', name:'Bonk',               price:0.0000194,  chg:-3.22, mcap:'$1.2B', vol:'$89.4M', liq:'$31M',  holders:'680K',  buys:'19K', sells:'23K', dex:'bonk', ca:'DezX...bonk' },
-  { emoji:'🐕', ticker:'WIF',  name:'dogwifhat',          price:0.614,      chg:5.81,  mcap:'$614M', vol:'$142M',  liq:'$22M',  holders:'194K',  buys:'22K', sells:'16K', dex:'wif', ca:'EKpQ...wif' },
+  {
+    ticker: 'YST',  name: 'YAKK Studios Token',
+    price: 0.0000018, chg: 1.44,
+    mcap: '$1.8M', vol: '$24.1K', liq: '$189K', holders: '—', buys: '682', sells: '522',
+    dex: 'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM',
+    ca: 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV',
+    fallbackEmoji: '🩷',
+  },
+  {
+    ticker: 'SPT',  name: 'StakePoint Token',
+    price: 0.00000042, chg: 0.88,
+    mcap: '$420K', vol: '$3.2K', liq: '$41K', holders: '—', buys: '188', sells: '124',
+    dex: 'A1d4sAmgi4Njnodmc289HP7TaPxw54n4Ey3LRDfrBvo5',
+    ca: '6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7',
+    fallbackEmoji: '🟢',
+  },
+  {
+    ticker: 'LOCK', name: 'StreamLock',
+    price: 0.0426, chg: 2.63,
+    mcap: '$26K', vol: '$97', liq: '$12K', holders: '—', buys: '3', sells: '0',
+    dex: 'FNhcY1cwQvQqaM8CUjXSuoGKJniwC4maBRLqNRLipump',
+    ca: 'FNhcY1cwQvQqaM8CUjXSuoGKJniwC4maBRLqNRLipump',
+    fallbackEmoji: '🔒',
+  },
+  {
+    ticker: 'SOL',  name: 'Solana',
+    price: 142.30, chg: 2.14,
+    mcap: '$68.4B', vol: '$1.8B', liq: '$4.2B', holders: '—', buys: '7.8M', sells: '6.4M',
+    dex: '8sLbNZoA1cfnvMJLPfp98ZLAnFSYCFApfJKMbiXNLwxj',
+    ca: 'So11111111111111111111111111111111111111112',
+    fallbackEmoji: '◎',
+  },
 ];
 
+/* ── Local logo paths — served from /public ─────────────────────────────── */
+const LOGO_MAP: Record<string, string> = {
+  YST:  '/yst-logo.jpg',
+  SPT:  '/spt-logo.jpg',
+  LOCK: '/lock-logo.jpg',
+  // SOL uses emoji fallback
+};
+
 const MOCK_RECENT = [
-  { type:'BUY',  amt:'0.94 SOL', tok:'78.8M YST', time:'2m ago' },
-  { type:'SELL', amt:'0.59 SOL', tok:'49.4M YST', time:'5m ago' },
-  { type:'BUY',  amt:'1.40 SOL', tok:'116.6M YST', time:'8m ago' },
-  { type:'BUY',  amt:'0.37 SOL', tok:'30.5M YST', time:'14m ago' },
+  { type: 'BUY',  amt: '0.94 SOL', tok: '78.8M YST',  time: '2m ago'  },
+  { type: 'SELL', amt: '0.59 SOL', tok: '49.4M YST',  time: '5m ago'  },
+  { type: 'BUY',  amt: '1.40 SOL', tok: '116.6M YST', time: '8m ago'  },
+  { type: 'BUY',  amt: '0.37 SOL', tok: '30.5M YST',  time: '14m ago' },
 ];
 
 function fmtPrice(p: number) {
@@ -28,9 +64,32 @@ function fmtPrice(p: number) {
   return '$' + p.toFixed(10).replace(/0+$/, '');
 }
 
+/* ── Token logo — local image with emoji fallback ───────────────────────── */
+function TokenLogo({ ticker, size = 16 }: { ticker: string; size?: number }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const logoUrl = LOGO_MAP[ticker];
+  const tok = TOKENS.find(t => t.ticker === ticker);
+  const emoji = tok?.fallbackEmoji ?? '🪙';
+
+  if (logoUrl && !imgFailed) {
+    return (
+      <img
+        src={logoUrl}
+        alt=""
+        width={size}
+        height={size}
+        style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+        onError={() => setImgFailed(true)}
+      />
+    );
+  }
+  return <span style={{ fontSize: size * 0.85 }}>{emoji}</span>;
+}
+
 export default function Terminal({ walletConnected, ystBalance, onNavigate }: Props) {
   const hasAccess = walletConnected && ystBalance >= 10_000_000;
 
+  const [tokens, setTokens] = useState(TOKENS);
   const [selectedToken, setSelectedToken] = useState<typeof TOKENS[0] | null>(null);
   const [timeframe, setTimeframe] = useState('15');
   const [fromAmt, setFromAmt] = useState('');
@@ -39,6 +98,51 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
   const [portfolio, setPortfolio] = useState('');
   const [risk, setRisk] = useState('2');
   const [stopLoss, setStopLoss] = useState('20');
+
+  /* ── Live data from /api/screener — updates prices + pair addresses ─────── */
+  useEffect(() => {
+    async function fetchScreenerData() {
+      try {
+        const res = await fetch('/api/screener');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data.tokens) return;
+        setTokens(prev => prev.map(t => {
+          const live = data.tokens.find((lt: any) => lt.ticker === t.ticker);
+          if (!live || !live.live) return t;
+          return {
+            ...t,
+            price:  live.price  > 0 ? live.price  : t.price,
+            chg:    live.chg    ?? t.chg,
+            vol:    live.vol    || t.vol,
+            liq:    live.liq    || t.liq,
+            mcap:   live.mcap   || t.mcap,
+            buys:   live.buys   || t.buys,
+            sells:  live.sells  || t.sells,
+            // ← use DexScreener pair address so chart iframe works
+            dex:    live.dex    || t.dex,
+          };
+        }));
+        setSelectedToken(prev => {
+          if (!prev) return prev;
+          const live = data.tokens.find((lt: any) => lt.ticker === prev.ticker);
+          if (!live || !live.live) return prev;
+          return {
+            ...prev,
+            price:  live.price  > 0 ? live.price  : prev.price,
+            chg:    live.chg    ?? prev.chg,
+            vol:    live.vol    || prev.vol,
+            liq:    live.liq    || prev.liq,
+            mcap:   live.mcap   || prev.mcap,
+            buys:   live.buys   || prev.buys,
+            sells:  live.sells  || prev.sells,
+            dex:    live.dex    || prev.dex,
+          };
+        });
+      } catch { /* silently fall back to static data */ }
+    }
+    fetchScreenerData();
+  }, []);
 
   const toAmt = fromAmt && selectedToken
     ? (parseFloat(fromAmt) * 142.30 / selectedToken.price).toLocaleString(undefined, { maximumFractionDigits: 0 })
@@ -74,9 +178,10 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
           {/* ═══ LEFT: Chart + timeframes ═══ */}
           <div id="term-left" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRight: '1px solid var(--border)' }}>
             <div id="term-chart-hdr" style={{ padding: '10px 14px', background: 'var(--bg2)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0, flexWrap: 'wrap' }}>
-              {/* Token selector pills */}
+
+              {/* Token selector pills with logos */}
               <div className="term-tok-sel" style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', flex: 1, padding: 0, border: 'none' }}>
-                {TOKENS.map(t => (
+                {tokens.map(t => (
                   <button
                     key={t.ticker}
                     className={`term-tok-btn${selectedToken?.ticker === t.ticker ? ' active' : ''}`}
@@ -89,7 +194,8 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
                       display: 'flex', alignItems: 'center', gap: '5px',
                     }}
                   >
-                    <span>{t.emoji}</span> {t.ticker}
+                    <TokenLogo ticker={t.ticker} size={14} />
+                    {t.ticker}
                     <span className="tt-chg" style={{ fontSize: '8px', color: t.chg >= 0 ? 'var(--green)' : 'var(--red)' }}>
                       {t.chg >= 0 ? '+' : ''}{t.chg.toFixed(1)}%
                     </span>
@@ -125,15 +231,17 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
             <div id="term-chart" style={{ flex: 1, overflow: 'hidden', position: 'relative', background: 'var(--bg)' }}>
               {selectedToken ? (
                 <iframe
+                  key={selectedToken.dex}
                   src={`https://dexscreener.com/solana/${selectedToken.dex}?embed=1&theme=dark&trades=0&info=0`}
                   style={{ width: '100%', height: '100%', border: 'none' }}
                   title={`${selectedToken.ticker} Chart`}
+                  sandbox="allow-scripts allow-same-origin allow-popups"
                 />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                  <div style={{ fontSize: '28px' }}>⚡</div>
+                  <div style={{ fontSize: '28px' }}>🩷</div>
                   <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '13px', color: 'var(--muted)' }}>Select a token to trade</div>
-                  <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '9px', color: 'var(--dim)' }}>Chart powered by TradingView</div>
+                  <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '9px', color: 'var(--dim)' }}>Chart powered by DexScreener</div>
                 </div>
               )}
             </div>
@@ -208,7 +316,8 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
                   <div className="swap-box-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div style={{ flex: 1, fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '18px', color: 'var(--dim)' }}>{toAmt}</div>
                     <div className="swap-tok-badge" style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '5px 10px', background: 'var(--bg4)', border: '1px solid var(--border2)', borderRadius: '5px', flexShrink: 0, fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '11px' }}>
-                      <span>{selectedToken?.emoji || '🩷'}</span> {selectedToken?.ticker || 'YST'}
+                      {selectedToken ? <TokenLogo ticker={selectedToken.ticker} size={14} /> : <span>🩷</span>}
+                      {selectedToken?.ticker || 'YST'}
                     </div>
                   </div>
                   <div className="swap-usd-val" style={{ fontFamily: 'Space Mono,monospace', fontSize: '9px', color: 'var(--dim)', marginTop: '4px' }}>≈ ${toUsd}</div>

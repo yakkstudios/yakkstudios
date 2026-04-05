@@ -185,7 +185,7 @@ export default function Services() {
         <div style={{ fontSize: '0.7rem', color: 'var(--dim)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem', fontFamily: 'monospace' }}>ADD-ONS (ALL TIERS)</div>
         <div className="grid3" style={{ gap: '0.5rem' }}>
           {[
-            ['\ud83d\udd0d', 'Deep Cabal Investigation', '\u00a3500 per report'],
+            ['\ud83d\udd0d', 'Deep Cabal Investigation', '1 SOL per report'],
             ['\ud83d\udcca', 'Power BI / Data Dashboard', '\u00a3400 one-off'],
             ['\ud83d\udea8', 'Emergency Response', '\u00a3200/incident'],
           ].map(([icon, name, price]) => (

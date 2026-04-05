@@ -86,7 +86,7 @@ export default function Home({
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(148px,1fr))', gap: 12, marginBottom: 22 }}>
         <div className="stat-card"><div className="slbl">CLOWNS EXPOSED</div><div className="sval" style={{ color: 'var(--red)' }}>74</div><div className="ssub">&amp; counting 🤡</div></div>
         <div className="stat-card"><div className="slbl">NFT COLLECTION</div><div className="sval">3,333</div><div className="ssub">Drop: Apr 20 2026</div></div>
-        <div className="stat-card"><div className="slbl">TOKEN HOLDERS</div><div className="sval" style={{ color: 'var(--pink)' }}>4,281</div><div className="ssub">$YST · Solana</div></div>
+        <div className="stat-card"><div className="slbl">RUGS INDEXED</div><div className="sval" style={{ color: 'var(--gold)' }}>11</div><div className="ssub">database growing 📖</div></div>
         <div className="stat-card"><div className="slbl">SCREENER FEE</div><div className="sval" style={{ color: 'var(--green)' }}>$10</div><div className="ssub">vs $300+ elsewhere</div></div>
       </div>
 

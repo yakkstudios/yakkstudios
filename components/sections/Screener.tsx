@@ -105,39 +105,53 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
   const [search, setSearch] = useState('');
   const [listSearch, setListSearch] = useState('');
 
-  /* ── Live YST price from /api/price ─────────────────────────────────────── */
+  /* ── Live data from /api/screener — updates prices + pair addresses for charts ── */
   useEffect(() => {
-    async function fetchYSTPrice() {
+    async function fetchScreenerData() {
       try {
-        const res = await fetch('/api/price');
+        const res = await fetch('/api/screener');
         if (!res.ok) return;
         const data = await res.json();
-        const price = parseFloat(data.price);
-        const change24h: number = data.change24h ?? 0;
-        const volume24h: number = data.volume24h ?? 0;
-        if (!isNaN(price) && price > 0) {
-          const fmtVol = volume24h >= 1_000_000
-            ? `$${(volume24h / 1_000_000).toFixed(1)}M`
-            : volume24h >= 1_000
-            ? `$${(volume24h / 1_000).toFixed(1)}K`
-            : `$${volume24h.toFixed(2)}`;
-          setTokens(prev => prev.map(t => {
-            if (t.ticker !== 'YST') return t;
-            return { ...t, price, chg: change24h, vol: fmtVol };
-          }));
-          setSelectedToken(prev => {
-            if (!prev || prev.ticker !== 'YST') return prev;
-            const fmtVol = volume24h >= 1_000_000
-              ? `$${(volume24h / 1_000_000).toFixed(1)}M`
-              : volume24h >= 1_000
-              ? `$${(volume24h / 1_000).toFixed(1)}K`
-              : `$${volume24h.toFixed(2)}`;
-            return { ...prev, price, chg: change24h, vol: fmtVol };
-          });
-        }
-      } catch { /* silently fall back */ }
+        if (!data.tokens) return;
+        setTokens(prev => prev.map(t => {
+          const live = data.tokens.find((lt: any) => lt.ticker === t.ticker);
+          if (!live || !live.live) return t;
+          return {
+            ...t,
+            price:  live.price  > 0  ? live.price  : t.price,
+            chg:    live.chg    ?? t.chg,
+            vol:    live.vol    || t.vol,
+            liq:    live.liq    || t.liq,
+            mcap:   live.mcap   || t.mcap,
+            fdv:    live.fdv    || t.fdv,
+            txns:   live.txns   || t.txns,
+            buys:   live.buys   || t.buys,
+            sells:  live.sells  || t.sells,
+            // ← key: use DexScreener pair address for chart iframe
+            dex:    live.dex    || t.dex,
+          };
+        }));
+        setSelectedToken(prev => {
+          if (!prev) return prev;
+          const live = data.tokens.find((lt: any) => lt.ticker === prev.ticker);
+          if (!live || !live.live) return prev;
+          return {
+            ...prev,
+            price:  live.price  > 0  ? live.price  : prev.price,
+            chg:    live.chg    ?? prev.chg,
+            vol:    live.vol    || prev.vol,
+            liq:    live.liq    || prev.liq,
+            mcap:   live.mcap   || prev.mcap,
+            fdv:    live.fdv    || prev.fdv,
+            txns:   live.txns   || prev.txns,
+            buys:   live.buys   || prev.buys,
+            sells:  live.sells  || prev.sells,
+            dex:    live.dex    || prev.dex,
+          };
+        });
+      } catch { /* silently fall back to static data */ }
     }
-    fetchYSTPrice();
+    fetchScreenerData();
   }, []);
 
   /* ── Local logo map — served from /public, no external fetch needed ─────── */
