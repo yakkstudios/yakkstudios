@@ -1,7 +1,6 @@
 'use client';
 import { useState, useCallback, useEffect } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
-import { WalletMultiButton, useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { PublicKey } from '@solana/web3.js';
 import Sidebar from '@/components/Sidebar';
 import TickerBar from '@/components/TickerBar';
@@ -41,9 +40,12 @@ import News from '@/components/sections/News';
 import Services from '@/components/sections/Services';
 import Bridge from '@/components/sections/Bridge';
 import Wren from '@/components/sections/Wren';
+import NftDrop from '@/components/sections/NftDrop';
 // Legal pages
 import Terms from '@/components/sections/Terms';
 import PrivacyPolicy from '@/components/sections/PrivacyPolicy';
+// Error boundary — prevents single section crash from unmounting entire app
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 type SectionId =
   | 'home' | 'screener' | 'terminal' | 'update' | 'trusted' | 'clowns'
@@ -51,7 +53,7 @@ type SectionId =
   | 'otcdesk' | 'yieldfinder' | 'alerts' | 'privacy' | 'tokencreator'
   | 'tgbot' | 'features' | 'portfolio' | 'stakepoint' | 'artlab' | 'coach'
   | 'raids' | 'raffle' | 'wallet' | 'members' | 'whaleclub' | 'ledger' | 'whitepaper'
-  | 'news' | 'services' | 'wren' | 'bridge' | 'terms' | 'privacypolicy';
+  | 'news' | 'services' | 'wren' | 'bridge' | 'nftdrop' | 'terms' | 'privacypolicy';
 
 async function fetchYstBalance(connection: any, walletPk: PublicKey): Promise<number> {
   try {
@@ -69,7 +71,6 @@ export default function App() {
   const [balanceLoading, setBalanceLoading] = useState(false);
   const { connected, publicKey, disconnect } = useWallet();
   const { connection } = useConnection();
-  const { setVisible: openWalletModal } = useWalletModal();
   const walletConnected = connected && !!publicKey;
   const walletAddress = publicKey?.toBase58();
 
@@ -115,6 +116,7 @@ export default function App() {
       services: 'AI Services',
       wren: 'Saving The Wren',
       bridge: 'Bridge',
+      nftdrop: 'YAKK GEN I — NFT Drop',
       terms: 'Terms of Service',
       privacypolicy: 'Privacy Policy',
     };
@@ -146,7 +148,7 @@ export default function App() {
             {walletLabel}{balanceLoading ? ' …' : isDevWallet ? ' · DEV' : ` · ${ystBalance.toLocaleString()} YST`}
           </button>
         ) : (
-          <WalletMultiButton style={{ height: 28, fontSize: 11, borderRadius: 4, padding: '0 10px' }} />
+          <w-sol-button style={{ '--wsol-border-radius': '4px', '--wsol-font-size': '11px' } as any} />
         )}
       </div>
       <Sidebar
@@ -156,44 +158,45 @@ export default function App() {
         ystBalance={effectiveYstBalance}
       />
       <div id="main-wrap">
-        <TickerBar onConnectWallet={() => openWalletModal(true)} walletConnected={walletConnected} walletLabel={walletLabel} />
+        <TickerBar onConnectWallet={() => {}} walletConnected={walletConnected} walletLabel={walletLabel} />
         <div id="main">
-          <div className={`page-section ${section === 'home' ? 'active' : ''}`}><Home {...sectionProps} /></div>
-          <div className={`page-section ${section === 'screener' ? 'active' : ''}`}><Screener {...sectionProps} /></div>
-          <div className={`page-section ${section === 'terminal' ? 'active' : ''}`}><Terminal {...sectionProps} /></div>
-          <div className={`page-section ${section === 'update' ? 'active' : ''}`}><Update {...sectionProps} /></div>
-          <div className={`page-section ${section === 'trusted' ? 'active' : ''}`}><Trusted {...sectionProps} /></div>
-          <div className={`page-section ${section === 'clowns' ? 'active' : ''}`}><Clowns {...sectionProps} /></div>
-          <div className={`page-section ${section === 'yakktrader' ? 'active' : ''}`}><YakkTrader {...sectionProps} /></div>
-          <div className={`page-section ${section === 'predictions' ? 'active' : ''}`}><Predictions {...sectionProps} /></div>
-          <div className={`page-section ${section === 'cabal' ? 'active' : ''}`}><Cabal {...sectionProps} /></div>
-          <div className={`page-section ${section === 'nftmarket' ? 'active' : ''}`}><NftMarket {...sectionProps} /></div>
-          <div className={`page-section ${section === 'launchpad' ? 'active' : ''}`}><Launchpad {...sectionProps} /></div>
-          <div className={`page-section ${section === 'otcdesk' ? 'active' : ''}`}><OtcDesk {...sectionProps} /></div>
-          <div className={`page-section ${section === 'yieldfinder' ? 'active' : ''}`}><YieldFinder {...sectionProps} /></div>
-          <div className={`page-section ${section === 'alerts' ? 'active' : ''}`}><Alerts {...sectionProps} /></div>
-          <div className={`page-section ${section === 'privacy' ? 'active' : ''}`}><Privacy {...sectionProps} /></div>
-          <div className={`page-section ${section === 'tokencreator' ? 'active' : ''}`}><TokenCreator {...sectionProps} /></div>
-          <div className={`page-section ${section === 'tgbot' ? 'active' : ''}`}><TgBot {...sectionProps} /></div>
-          <div className={`page-section ${section === 'features' ? 'active' : ''}`}><Features {...sectionProps} /></div>
-          <div className={`page-section ${section === 'portfolio' ? 'active' : ''}`}><Portfolio {...sectionProps} /></div>
-          <div className={`page-section ${section === 'stakepoint' ? 'active' : ''}`}><Stakepoint {...sectionProps} /></div>
-          <div className={`page-section ${section === 'artlab' ? 'active' : ''}`}><ArtLab {...sectionProps} /></div>
-          <div className={`page-section ${section === 'coach' ? 'active' : ''}`}><Coach {...sectionProps} /></div>
-          <div className={`page-section ${section === 'raids' ? 'active' : ''}`}><Raids {...sectionProps} /></div>
-          <div className={`page-section ${section === 'raffle' ? 'active' : ''}`}><Raffle {...sectionProps} /></div>
-          <div className={`page-section ${section === 'wallet' ? 'active' : ''}`}><Wallet {...sectionProps} /></div>
-          <div className={`page-section ${section === 'members' ? 'active' : ''}`}><Members {...sectionProps} /></div>
-          <div className={`page-section ${section === 'whaleclub' ? 'active' : ''}`}><WhaleClub {...sectionProps} /></div>
-          <div className={`page-section ${section === 'ledger' ? 'active' : ''}`}><Ledger {...sectionProps} /></div>
-          <div className={`page-section ${section === 'whitepaper' ? 'active' : ''}`}><Whitepaper {...sectionProps} /></div>
-          <div className={`page-section ${section === 'news' ? 'active' : ''}`}><News {...sectionProps} /></div>
-          <div className={`page-section ${section === 'bridge' ? 'active' : ''}`}><Bridge {...sectionProps} /></div>
-          <div className={`page-section ${section === 'services' ? 'active' : ''}`}><Services /></div>
-          <div className={`page-section ${section === 'wren' ? 'active' : ''}`}><Wren /></div>
+          <div className={`page-section ${section === 'home' ? 'active' : ''}`}><ErrorBoundary sectionName="Home"><Home {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'screener' ? 'active' : ''}`}><ErrorBoundary sectionName="Screener"><Screener {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'terminal' ? 'active' : ''}`}><ErrorBoundary sectionName="Terminal"><Terminal {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'update' ? 'active' : ''}`}><ErrorBoundary sectionName="Update"><Update {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'trusted' ? 'active' : ''}`}><ErrorBoundary sectionName="Trusted"><Trusted {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'clowns' ? 'active' : ''}`}><ErrorBoundary sectionName="Clowns"><Clowns {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'yakktrader' ? 'active' : ''}`}><ErrorBoundary sectionName="AI Trader"><YakkTrader {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'predictions' ? 'active' : ''}`}><ErrorBoundary sectionName="Predictions"><Predictions {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'cabal' ? 'active' : ''}`}><ErrorBoundary sectionName="Cabal"><Cabal {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'nftmarket' ? 'active' : ''}`}><ErrorBoundary sectionName="NFT Market"><NftMarket {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'launchpad' ? 'active' : ''}`}><ErrorBoundary sectionName="Launchpad"><Launchpad {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'otcdesk' ? 'active' : ''}`}><ErrorBoundary sectionName="OTC Desk"><OtcDesk {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'yieldfinder' ? 'active' : ''}`}><ErrorBoundary sectionName="Yield Finder"><YieldFinder {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'alerts' ? 'active' : ''}`}><ErrorBoundary sectionName="Alerts"><Alerts {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'privacy' ? 'active' : ''}`}><ErrorBoundary sectionName="Privacy"><Privacy {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'tokencreator' ? 'active' : ''}`}><ErrorBoundary sectionName="Token Creator"><TokenCreator {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'tgbot' ? 'active' : ''}`}><ErrorBoundary sectionName="TG Bot"><TgBot {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'features' ? 'active' : ''}`}><ErrorBoundary sectionName="Requests"><Features {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'portfolio' ? 'active' : ''}`}><ErrorBoundary sectionName="Portfolio"><Portfolio {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'stakepoint' ? 'active' : ''}`}><ErrorBoundary sectionName="StakePoint"><Stakepoint {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'artlab' ? 'active' : ''}`}><ErrorBoundary sectionName="Art Lab"><ArtLab {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'coach' ? 'active' : ''}`}><ErrorBoundary sectionName="Coach"><Coach {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'raids' ? 'active' : ''}`}><ErrorBoundary sectionName="Raids"><Raids {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'raffle' ? 'active' : ''}`}><ErrorBoundary sectionName="Raffle"><Raffle {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'wallet' ? 'active' : ''}`}><ErrorBoundary sectionName="Profile"><Wallet {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'members' ? 'active' : ''}`}><ErrorBoundary sectionName="Members"><Members {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'whaleclub' ? 'active' : ''}`}><ErrorBoundary sectionName="Whale Club"><WhaleClub {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'ledger' ? 'active' : ''}`}><ErrorBoundary sectionName="Rug Ledger"><Ledger {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'whitepaper' ? 'active' : ''}`}><ErrorBoundary sectionName="Whitepaper"><Whitepaper {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'news' ? 'active' : ''}`}><ErrorBoundary sectionName="News"><News {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'bridge' ? 'active' : ''}`}><ErrorBoundary sectionName="Bridge"><Bridge {...sectionProps} /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'services' ? 'active' : ''}`}><ErrorBoundary sectionName="AI Services"><Services /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'wren' ? 'active' : ''}`}><ErrorBoundary sectionName="Wren"><Wren /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'nftdrop' ? 'active' : ''}`}><ErrorBoundary sectionName="NFT Drop"><NftDrop /></ErrorBoundary></div>
           {/* Legal pages */}
-          <div className={`page-section ${section === 'terms' ? 'active' : ''}`}><Terms /></div>
-          <div className={`page-section ${section === 'privacypolicy' ? 'active' : ''}`}><PrivacyPolicy /></div>
+          <div className={`page-section ${section === 'terms' ? 'active' : ''}`}><ErrorBoundary sectionName="Terms"><Terms /></ErrorBoundary></div>
+          <div className={`page-section ${section === 'privacypolicy' ? 'active' : ''}`}><ErrorBoundary sectionName="Privacy Policy"><PrivacyPolicy /></ErrorBoundary></div>
         </div>
       </div>
     </div>

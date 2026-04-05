@@ -61,12 +61,12 @@ export default function Home({
     return null;
   });
 
-  // Fetch live $YST stats (buys/sells/volume/mcap/liquidity)
+  // Fetch live $YST stats from /api/price
   useEffect(() => {
-    const load = () => fetch('/api/stats')
+    const load = () => fetch('/api/price')
       .then(r => r.ok ? r.json() : null)
       .then(d => {
-        if (d && d.price) {
+        if (d) {
           setStats(d);
           try { localStorage.setItem('yst-stats', JSON.stringify(d)); } catch {}
         }
@@ -99,6 +99,17 @@ export default function Home({
     setPep(next);
   };
 
+  // ── Derived banner values ─────────────────────────────────────────────────
+  const bannerPrice    = stats?.price      ? fmtPrice(stats.price)       : '—';
+  const bannerVol      = stats?.volume24h  ? fmtNum(stats.volume24h)     : '—';
+  const bannerMcap     = stats?.marketCap  ? fmtNum(stats.marketCap)     : '—';
+  const bannerLiq      = stats?.liquidity  ? fmtNum(stats.liquidity)     : '—';
+  const bannerChg      = stats?.change24h  ?? null;
+  const chgPositive    = bannerChg !== null && Number(bannerChg) >= 0;
+  const chgLabel       = bannerChg !== null
+    ? `${chgPositive ? '+' : ''}${Number(bannerChg).toFixed(2)}%`
+    : '—';
+
   return (
     <div className="sec-pad">
       {/* HERO */}
@@ -126,15 +137,15 @@ export default function Home({
         </div>
         <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <img
-            src="/icons/icon-512.png"
-            alt="YAKK mascot"
-            style={{ width: 'clamp(120px,14vw,200px)', height: 'auto', filter: 'drop-shadow(0 0 32px rgba(224,96,126,0.4))', animation: 'yakk-float 4s ease-in-out infinite' }}
+            src="/yakk-logo-icon.svg"
+            alt="YAKK Studios / KAIZE logo"
+            style={{ width: 'clamp(120px,14vw,200px)', height: 'auto', filter: 'drop-shadow(0 0 32px rgba(255,46,154,0.5))', animation: 'yakk-float 4s ease-in-out infinite' }}
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
         </div>
       </div>
 
-      {/* LIVE DEX BANNER */}
+      {/* LIVE DEX BANNER — wired to /api/price */}
       <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 16px', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 0, overflowX: 'auto', flexWrap: 'nowrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingRight: 20, borderRight: '1px solid var(--border)', flexShrink: 0 }}>
           <div style={{ fontSize: 20 }}>🩷</div>
@@ -144,17 +155,32 @@ export default function Home({
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, padding: '0 20px', flexWrap: 'nowrap' }}>
+          {/* PRICE — with 24h change colour */}
+          <div style={{ flexShrink: 0 }}>
+            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', marginBottom: 2 }}>PRICE USD</div>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>
+              {bannerPrice}
+              {bannerChg !== null && (
+                <span style={{
+                  fontSize: 9,
+                  marginLeft: 5,
+                  color: chgPositive ? 'var(--green)' : 'var(--red)',
+                  fontFamily: 'Space Mono,monospace',
+                }}>
+                  {chgLabel}
+                </span>
+              )}
+            </div>
+          </div>
+          {/* Remaining banner stats */}
           {([
-            ['PRICE USD',   stats?.price     ? fmtPrice(stats.price) : '—'],
-            ['24H VOLUME',  stats?.volume24h  ? fmtNum(stats.volume24h)  : '—'],
-            ['MARKET CAP',  stats?.mcap       ? fmtNum(stats.mcap)       : '—'],
-            ['LIQUIDITY',   stats?.liquidity  ? fmtNum(stats.liquidity)  : '—'],
-            ['BUYS / SELLS',stats?.buys24h != null
-              ? `${Number(stats.buys24h).toLocaleString()} / ${Number(stats.sells24h ?? 0).toLocaleString()}`
-              : '— / —'],
+            ['24H VOLUME', bannerVol],
+            ['MARKET CAP', bannerMcap],
+            ['LIQUIDITY',  bannerLiq],
+            ['BUYS / SELLS', '— / —'],
             ['HOLDERS', '—'],
           ] as [string, string][]).map(([label, val], i) => (
-            <div key={label} style={{ flexShrink: 0, borderLeft: i > 0 ? '1px solid var(--border)' : 'none', paddingLeft: i > 0 ? 20 : 0 }}>
+            <div key={label} style={{ flexShrink: 0, borderLeft: '1px solid var(--border)', paddingLeft: 20 }}>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', marginBottom: 2 }}>{label}</div>
               <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>{val}</div>
             </div>
@@ -192,7 +218,8 @@ export default function Home({
           </div>
           <div className="prog-bar"><div className="prog-fill" style={{ width: '38%' }} /></div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)' }}><span>PROGRESS</span><span>38%</span></div>
-          <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 9 }}>Drops 1+2 rebooted + 2,333 additional. 33% Paper Hands Tax funds Save the Wren 🌱</p>
+          <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 9 }}>Drops 1+2 rebooted + 2,333 additional. 33.3% paperhands tax mechanic incoming.</p>
+          <button className="btn btn-outline" style={{ marginTop: 10, fontSize: 10 }} onClick={() => onNavigate?.('nftdrop')}>VIEW NFT DROP →</button>
         </div>
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 11 }}>

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 320" width="500" height="320">
+  <defs>
+    <linearGradient id="infGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%"   stop-color="#FF2E9A"/>
+      <stop offset="48%"  stop-color="#FFCC00" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#C026FF"/>
+    </linearGradient>
+    <filter id="outerGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="textGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="500" height="320" fill="#0A0A0F"/>
+
+  <!-- Outer glow layer -->
+  <path d="M 250,142 C 232,72 92,56 76,138 C 60,220 232,204 250,142 C 268,80 408,56 424,138 C 440,220 268,204 250,142 Z"
+    fill="none"
+    stroke="url(#infGrad)"
+    stroke-width="38"
+    stroke-linecap="round"
+    opacity="0.35"
+    filter="url(#outerGlow)"/>
+
+  <!-- Mid glow layer -->
+  <path d="M 250,142 C 232,72 92,56 76,138 C 60,220 232,204 250,142 C 268,80 408,56 424,138 C 440,220 268,204 250,142 Z"
+    fill="none"
+    stroke="url(#infGrad)"
+    stroke-width="26"
+    stroke-linecap="round"
+    opacity="0.55"
+    filter="url(#softGlow)"/>
+
+  <!-- Main crisp stroke -->
+  <path d="M 250,142 C 232,72 92,56 76,138 C 60,220 232,204 250,142 C 268,80 408,56 424,138 C 440,220 268,204 250,142 Z"
+    fill="none"
+    stroke="url(#infGrad)"
+    stroke-width="20"
+    stroke-linecap="round"/>
+
+  <!-- Yellow inner highlight (signature glow) -->
+  <path d="M 250,142 C 232,72 92,56 76,138 C 60,220 232,204 250,142 C 268,80 408,56 424,138 C 440,220 268,204 250,142 Z"
+    fill="none"
+    stroke="#FFCC00"
+    stroke-width="4"
+    stroke-linecap="round"
+    opacity="0.35"/>
+
+  <!-- 改善 kanji -->
+  <text x="250" y="278"
+    text-anchor="middle"
+    font-size="44"
+    fill="#FF2E9A"
+    font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'MS Mincho', serif"
+    letter-spacing="0.1em"
+    opacity="0.92"
+    filter="url(#textGlow)">改善</text>
+</svg>

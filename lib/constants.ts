@@ -34,7 +34,7 @@ export const GATED_SECTIONS = new Set([
   'bridge','alerts',
 ]);
 
-// ── Focused nav: 8 core items + legal + collapsed Labs (whale-only) ──────────
+// ── Focused nav: core items + NFT drop + legal + collapsed Labs (whale-only) ──
 export const NAV: NavSection[] = [
   {
     title: 'CORE',
@@ -59,11 +59,12 @@ export const NAV: NavSection[] = [
   {
     title: 'COMMUNITY',
     items: [
-      { id: 'wallet',    label: 'PROFILE',       icon: '👤' },
-      { id: 'members',   label: 'MEMBERS',       icon: '👾', gated: true },
-      { id: 'whaleclub', label: 'WHALE CLUB',    icon: '🐋', whaleOnly: true },
-      { id: 'features',  label: 'REQUESTS',      icon: '💡' },
-      { id: 'wren',      label: 'SAVE THE WREN', icon: '🛡️' },
+      { id: 'nftdrop',   label: 'NFT DROP — APR 20', icon: '🎴' },
+      { id: 'wallet',    label: 'PROFILE',            icon: '👤' },
+      { id: 'members',   label: 'MEMBERS',            icon: '👾', gated: true },
+      { id: 'whaleclub', label: 'WHALE CLUB',         icon: '🐋', whaleOnly: true },
+      { id: 'features',  label: 'REQUESTS',           icon: '💡' },
+      { id: 'wren',      label: 'SAVE THE WREN',      icon: '🛡️' },
     ],
   },
   {

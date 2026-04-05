@@ -9,7 +9,9 @@ const DEX_ENDPOINTS = [
   `https://api.dexscreener.com/latest/dex/tokens/${YST_MINT}`,
 ];
 
-export const revalidate = 30;
+// NOTE: export const revalidate is intentionally removed.
+// It is invalid inside App Router route handlers and causes 500 errors on Vercel.
+// In-memory caching with TTL is used instead.
 
 // ── IP-based rate limiter ──────────────────────────────────────────────────
 const RATE_MAP   = new Map<string, { count: number; resetAt: number }>();

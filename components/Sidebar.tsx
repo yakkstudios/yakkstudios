@@ -44,13 +44,19 @@ export default function Sidebar({
           {/* Brand */}
           <div className="sb-brand">
             <div className="sb-logo-wrap">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/yakk-logo.png" alt="YAKK Studios logo" width="48" height="48" style={{ borderRadius: 6, display: 'block' }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/yakk-logo-icon.svg"
+                alt="KAIZE — YAKK Studios"
+                width="48"
+                height="48"
+                style={{ borderRadius: 6, display: 'block' }}
+              />
             </div>
             <div className="sb-brand-name">
               $YAKK <span>STUDIOS</span>
             </div>
-            <div className="sb-brand-sub">On-Chain Intelligence + AI</div>
+            <div className="sb-brand-sub">改善 · On-Chain Intelligence</div>
           </div>
 
           {/* Wallet status */}
@@ -140,7 +146,7 @@ export default function Sidebar({
               <a className="sb-link" href="https://t.me/yakkstudios" target="_blank" rel="noopener noreferrer">Telegram</a>
               <a className="sb-link" href="https://app.meteora.ag/pools/FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM" target="_blank" rel="noopener noreferrer">Buy $YST</a>
             </div>
-            <div className="sb-version">v2.2.0 · Next.js</div>
+            <div className="sb-version">v2.3.0 · Next.js</div>
           </div>
 
         </div>

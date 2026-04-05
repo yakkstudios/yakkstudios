@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const revalidate = 30;
+// NOTE: export const revalidate is intentionally removed.
+// It is invalid inside App Router route handlers and causes 500 errors on Vercel.
 
 // ── Known Solana token mints ──────────────────────────────────────────────
 const TOKENS: Record<string, { ticker: string; name: string; cat: string; emoji: string }> = {
-  'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV': { ticker: 'YST',  name: 'YAKK Studios Token', cat: 'yakk',     emoji: '🩷' },
-  'So11111111111111111111111111111111111111112':   { ticker: 'SOL',  name: 'Solana',              cat: 'bluechip', emoji: '◎'  },
-  'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm':{ ticker: 'WIF',  name: 'dogwifhat',           cat: 'bluechip', emoji: '🐕' },
+  'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV': { ticker: 'YST',   name: 'YAKK Studios Token', cat: 'yakk',     emoji: '🩷' },
+  'So11111111111111111111111111111111111111112':   { ticker: 'SOL',   name: 'Solana',              cat: 'bluechip', emoji: '◎'  },
+  'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm':{ ticker: 'WIF',   name: 'dogwifhat',           cat: 'bluechip', emoji: '🐕' },
   'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263': { ticker: 'BONK', name: 'Bonk',               cat: 'bluechip', emoji: '🐶' },
   'HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC': { ticker: 'AI16Z', name: 'ai16z',             cat: 'bluechip', emoji: '🤖' },
+  // SPT_MINT_ADDRESS_TODO: replace address below with real StakePoint mint once confirmed by Grok
+  // 'SPT_MINT_ADDRESS_TODO': { ticker: 'SPT', name: 'StakePoint', cat: 'yakk', emoji: '🏆' },
 };
 
 const DEX_BASE = 'https://api.dexscreener.com/tokens/v1/solana';
@@ -63,7 +66,6 @@ function bestPair(pairs: any[], mintAddress: string) {
     (p.baseToken?.address?.toLowerCase() === mintAddress.toLowerCase() ||
      p.quoteToken?.address?.toLowerCase() === mintAddress.toLowerCase())
   );
-  // Prefer highest liquidity pair
   return solPairs.sort((a: any, b: any) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))[0] ?? pairs[0];
 }
 
@@ -73,7 +75,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
   }
 
-  // Fetch all tokens in one request (comma-separated mints)
   const mints = Object.keys(TOKENS).join(',');
 
   let pairs: any[] = [];
@@ -85,15 +86,12 @@ export async function GET(req: NextRequest) {
     }
   } catch (err: unknown) {
     console.warn('[screener] DexScreener fetch failed:', err instanceof Error ? err.message : err);
-    // Don't return 502 — fall through to build empty tokens below
   }
 
-  // Group pairs by base token mint
   const pairsByMint: Record<string, any[]> = {};
   for (const pair of pairs) {
-    const baseAddr = pair.baseToken?.address ?? '';
+    const baseAddr  = pair.baseToken?.address ?? '';
     const quoteAddr = pair.quoteToken?.address ?? '';
-    // Assign to whichever tracked mint is in the pair
     for (const mint of Object.keys(TOKENS)) {
       const m = mint.toLowerCase();
       if (baseAddr.toLowerCase() === m || quoteAddr.toLowerCase() === m) {
@@ -103,7 +101,6 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // Build response tokens
   const tokens = Object.entries(TOKENS).map(([mint, meta], idx) => {
     const mintPairs = pairsByMint[mint] ?? [];
     const pair = bestPair(mintPairs, mint);
@@ -132,15 +129,15 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const price    = parseFloat(pair.priceUsd ?? '0') || 0;
-    const chg      = pair.priceChange?.h24 ?? 0;
-    const vol24    = pair.volume?.h24 ?? 0;
-    const liq      = pair.liquidity?.usd ?? 0;
-    const mcap     = pair.marketCap ?? 0;
-    const fdv      = pair.fdv ?? 0;
-    const buys     = pair.txns?.h24?.buys ?? 0;
-    const sells    = pair.txns?.h24?.sells ?? 0;
-    const txns     = buys + sells;
+    const price  = parseFloat(pair.priceUsd ?? '0') || 0;
+    const chg    = pair.priceChange?.h24 ?? 0;
+    const vol24  = pair.volume?.h24 ?? 0;
+    const liq    = pair.liquidity?.usd ?? 0;
+    const mcap   = pair.marketCap ?? 0;
+    const fdv    = pair.fdv ?? 0;
+    const buys   = pair.txns?.h24?.buys ?? 0;
+    const sells  = pair.txns?.h24?.sells ?? 0;
+    const txns   = buys + sells;
     const pairAddr = pair.pairAddress ?? mint;
 
     return {
