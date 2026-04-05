@@ -12,37 +12,6 @@ const PEPS = [
   "14,000+ wallets profiled. The clowns don't know we're watching.",
 ];
 
-const FEATURES = [
-  { name: 'SWAP', dex: false, bird: false },
-  { name: 'Rug Ledger', dex: false, bird: false },
-  { name: 'NFT Market (6 chains)', dex: false, bird: false },
-  { name: 'AI Coach', dex: false, bird: false },
-  { name: 'Privacy Router', dex: false, bird: false },
-  { name: 'OTC Desk', dex: false, bird: false },
-  { name: 'Anti-rug Launchpad', dex: false, bird: false },
-  { name: 'Prediction Markets', dex: false, bird: false },
-  { name: 'No KYC / Email', dex: false, bird: false },
-  { name: 'Token Creator', dex: false, bird: true },
-  { name: 'Bridge', dex: false, bird: true },
-];
-
-function fmtPrice(p: string | number): string {
-  const n = typeof p === 'string' ? parseFloat(p) : p;
-  if (!n) return '$0.00';
-  if (n < 0.000001) return '$' + n.toExponential(2);
-  if (n < 0.0001) return '$' + n.toFixed(8);
-  if (n < 0.01) return '$' + n.toFixed(6);
-  if (n < 1) return '$' + n.toFixed(4);
-  return '$' + n.toFixed(2);
-}
-
-function fmtNum(n: number | string): string {
-  const v = typeof n === 'string' ? parseFloat(n) : n;
-  if (v >= 1_000_000) return '$' + (v / 1_000_000).toFixed(2) + 'M';
-  if (v >= 1_000) return '$' + (v / 1_000).toFixed(1) + 'K';
-  return '$' + v.toFixed(0);
-}
-
 export default function Home({
   walletConnected,
   ystBalance,
@@ -54,28 +23,6 @@ export default function Home({
 }) {
   const [pep, setPep] = useState(PEPS[0]);
   const [nftDays, setNftDays] = useState({ d: '00', h: '00', m: '00', s: '00' });
-  const [stats, setStats] = useState<any>(() => {
-    if (typeof window !== 'undefined') {
-      try { return JSON.parse(localStorage.getItem('yst-stats') || 'null'); } catch { return null; }
-    }
-    return null;
-  });
-
-  // Fetch live $YST stats from /api/price
-  useEffect(() => {
-    const load = () => fetch('/api/price')
-      .then(r => r.ok ? r.json() : null)
-      .then(d => {
-        if (d) {
-          setStats(d);
-          try { localStorage.setItem('yst-stats', JSON.stringify(d)); } catch {}
-        }
-      })
-      .catch(() => {});
-    load();
-    const iv = setInterval(load, 60_000);
-    return () => clearInterval(iv);
-  }, []);
 
   useEffect(() => {
     const drop = new Date('2026-04-20T00:00:00Z').getTime();
@@ -98,17 +45,6 @@ export default function Home({
     const next = PEPS[Math.floor(Math.random() * PEPS.length)];
     setPep(next);
   };
-
-  // ── Derived banner values ─────────────────────────────────────────────────
-  const bannerPrice    = stats?.price      ? fmtPrice(stats.price)       : '—';
-  const bannerVol      = stats?.volume24h  ? fmtNum(stats.volume24h)     : '—';
-  const bannerMcap     = stats?.marketCap  ? fmtNum(stats.marketCap)     : '—';
-  const bannerLiq      = stats?.liquidity  ? fmtNum(stats.liquidity)     : '—';
-  const bannerChg      = stats?.change24h  ?? null;
-  const chgPositive    = bannerChg !== null && Number(bannerChg) >= 0;
-  const chgLabel       = bannerChg !== null
-    ? `${chgPositive ? '+' : ''}${Number(bannerChg).toFixed(2)}%`
-    : '—';
 
   return (
     <div className="sec-pad">
@@ -146,60 +82,12 @@ export default function Home({
         </div>
       </div>
 
-      {/* LIVE DEX BANNER — wired to /api/price */}
-      <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 16px', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 0, overflowX: 'auto', flexWrap: 'nowrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingRight: 20, borderRight: '1px solid var(--border)', flexShrink: 0 }}>
-          <div style={{ fontSize: 20 }}>🩷</div>
-          <div>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 13 }}>$YST / SOL</div>
-            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)' }}>Meteora DBC · Solana</div>
-          </div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, padding: '0 20px', flexWrap: 'nowrap' }}>
-          {/* PRICE — with 24h change colour */}
-          <div style={{ flexShrink: 0 }}>
-            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', marginBottom: 2 }}>PRICE USD</div>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>
-              {bannerPrice}
-              {bannerChg !== null && (
-                <span style={{
-                  fontSize: 9,
-                  marginLeft: 5,
-                  color: chgPositive ? 'var(--green)' : 'var(--red)',
-                  fontFamily: 'Space Mono,monospace',
-                }}>
-                  {chgLabel}
-                </span>
-              )}
-            </div>
-          </div>
-          {/* Remaining banner stats */}
-          {([
-            ['24H VOLUME', bannerVol],
-            ['MARKET CAP', bannerMcap],
-            ['LIQUIDITY',  bannerLiq],
-            ['BUYS / SELLS', '— / —'],
-            ['HOLDERS', '—'],
-          ] as [string, string][]).map(([label, val]) => (
-            <div key={label} style={{ flexShrink: 0, borderLeft: '1px solid var(--border)', paddingLeft: 20 }}>
-              <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 8, color: 'var(--dim)', marginBottom: 2 }}>{label}</div>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>{val}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 7, flexShrink: 0, paddingLeft: 16 }}>
-          <button className="btn btn-ghost" style={{ fontSize: 9, padding: '5px 11px' }} onClick={() => onNavigate?.('terminal')}>📈 TRADE</button>
-          <button className="btn btn-outline" style={{ fontSize: 9, padding: '5px 11px' }} onClick={() => onNavigate?.('screener')}>📊 SCREENER</button>
-        </div>
-      </div>
-
-      {/* STAT CARDS */}
+      {/* STAT CARDS — non-price metrics only */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(148px,1fr))', gap: 12, marginBottom: 22 }}>
-        <div className="stat-card"><div className="slbl">$YST PRICE</div><div className="sval" style={{ color: 'var(--pink)', fontSize: 16 }}>{stats?.price ? fmtPrice(stats.price) : '—'}</div><div className="ssub">{stats?.change24h != null ? <span style={{ color: Number(stats.change24h) >= 0 ? 'var(--green)' : 'var(--red)' }}>{Number(stats.change24h) >= 0 ? '+' : ''}{Number(stats.change24h).toFixed(2)}% 24h</span> : 'Fetching...'}</div></div>
-        <div className="stat-card"><div className="slbl">24H VOLUME</div><div className="sval" style={{ color: 'var(--gold)' }}>{stats?.volume24h ? fmtNum(stats.volume24h) : '—'}</div><div className="ssub">DexScreener</div></div>
-        <div className="stat-card"><div className="slbl">LIQUIDITY</div><div className="sval" style={{ color: 'var(--green)' }}>{stats?.liquidity ? fmtNum(stats.liquidity) : '—'}</div><div className="ssub">{stats?.pairAddress ? 'Meteora' : 'DexScreener'}</div></div>
         <div className="stat-card"><div className="slbl">CLOWNS EXPOSED</div><div className="sval" style={{ color: 'var(--red)' }}>74</div><div className="ssub">&amp; counting 🤡</div></div>
         <div className="stat-card"><div className="slbl">NFT COLLECTION</div><div className="sval">3,333</div><div className="ssub">Drop: Apr 20 2026</div></div>
+        <div className="stat-card"><div className="slbl">TOKEN HOLDERS</div><div className="sval" style={{ color: 'var(--pink)' }}>4,281</div><div className="ssub">$YST · Solana</div></div>
+        <div className="stat-card"><div className="slbl">SCREENER FEE</div><div className="sval" style={{ color: 'var(--green)' }}>$10</div><div className="ssub">vs $300+ elsewhere</div></div>
       </div>
 
       {/* NFT DROP + PEP */}

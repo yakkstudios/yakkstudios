@@ -4,14 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 // It is invalid inside App Router route handlers and causes 500 errors on Vercel.
 
 // ── Known Solana token mints ──────────────────────────────────────────────
+// YAKK trusted list only + SOL bluechip. No external tokens.
 const TOKENS: Record<string, { ticker: string; name: string; cat: string; emoji: string }> = {
-  'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV': { ticker: 'YST',   name: 'YAKK Studios Token', cat: 'yakk',     emoji: '🩷' },
-  'So11111111111111111111111111111111111111112':   { ticker: 'SOL',   name: 'Solana',              cat: 'bluechip', emoji: '◎'  },
-  'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm':{ ticker: 'WIF',   name: 'dogwifhat',           cat: 'bluechip', emoji: '🐕' },
-  'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263': { ticker: 'BONK', name: 'Bonk',               cat: 'bluechip', emoji: '🐶' },
-  'HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC': { ticker: 'AI16Z', name: 'ai16z',             cat: 'bluechip', emoji: '🤖' },
-  // SPT_MINT_ADDRESS_TODO: replace address below with real StakePoint mint once confirmed by Grok
-  // 'SPT_MINT_ADDRESS_TODO': { ticker: 'SPT', name: 'StakePoint', cat: 'yakk', emoji: '🏆' },
+  'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV': { ticker: 'YST',  name: 'YAKK Studios Token', cat: 'yakk',     emoji: '🩷' },
+  '6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7': { ticker: 'SPT', name: 'StakePoint',         cat: 'yakk',     emoji: '🏆' },
+  'FNhcY1cwQvQqaM8CUjXSuoGKJniwC4maBRLqNRLipump': { ticker: 'LOCK', name: 'StreamLock',         cat: 'yakk',     emoji: '🔒' },
+  'So11111111111111111111111111111111111111112':   { ticker: 'SOL',  name: 'Solana',              cat: 'bluechip', emoji: '◎'  },
 };
 
 const DEX_BASE = 'https://api.dexscreener.com/tokens/v1/solana';
