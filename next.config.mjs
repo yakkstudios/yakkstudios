@@ -40,7 +40,11 @@ const nextConfig = {
   // Treat livekit-server-sdk as an external package (ESM-only, cannot be bundled by Next.js).
   // Without this, Next.js strips the import and voice-token/route.ts compiles to an
   // identical bundle as stats/route.ts, causing Vercel's EEXIST symlink error.
-  serverExternalPackages: ['livekit-server-sdk'],
+  // NOTE: Next.js 14.2.x uses experimental.serverComponentsExternalPackages
+  // (serverExternalPackages is Next.js 15+ syntax and is silently ignored in 14.x)
+  experimental: {
+    serverComponentsExternalPackages: ['livekit-server-sdk'],
+  },
 
   // Re-enable TypeScript checking — hiding errors masks security bugs
   typescript: {
