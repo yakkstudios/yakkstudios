@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-// ââ Security Headers âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Security Headers ──────────────────────────────────────────────────────────
 const CSP = [
   "default-src 'self'",
   // Next.js requires unsafe-inline for styles; tighten with nonce in future
@@ -8,11 +8,9 @@ const CSP = [
   // unsafe-eval needed by Next.js dev mode; webpack chunks in prod
   "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
   // Images: self + CDNs used by token metadata
-  "img-src 'self' data: blob: https://unavatar.io https://pbs.twimg.com https://cdn.pump.fun https://arweave.net https://nftstorage.link https://cdn.geckoterminal.com",
-  // Iframes: GeckoTerminal charts (no DexScreener dependency)
-  "frame-src https://www.geckoterminal.com",
+  "img-src 'self' data: blob: https://unavatar.io https://pbs.twimg.com https://cdn.pump.fun https://arweave.net https://nftstorage.link",
   // API calls + LiveKit WebSocket (wildcard covers cloud.livekit.io and custom servers)
-  "connect-src 'self' https://api.dexscreener.com https://api.coingecko.com https://api.geckoterminal.com wss://*.livekit.cloud wss://*.livekit.io wss://signal.livekit.io",
+  "connect-src 'self' https://api.dexscreener.com https://api.coingecko.com wss://*.livekit.cloud wss://*.livekit.io wss://signal.livekit.io",
   // Microphone for voice lounge only; block camera, geolocation, etc.
   "media-src 'self' blob:",
   "font-src 'self'",
@@ -39,7 +37,12 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig = {
-  // Re-enable TypeScript checking â hiding errors masks security bugs
+  // Treat livekit-server-sdk as an external package (ESM-only, cannot be bundled by Next.js).
+  // Without this, Next.js strips the import and voice-token/route.ts compiles to an
+  // identical bundle as stats/route.ts, causing Vercel's EEXIST symlink error.
+  serverExternalPackages: ['livekit-server-sdk'],
+
+  // Re-enable TypeScript checking — hiding errors masks security bugs
   typescript: {
     ignoreBuildErrors: false,
   },
