@@ -43,7 +43,7 @@ const nextConfig = {
   // NOTE: Next.js 14.2.x uses experimental.serverComponentsExternalPackages
   // (serverExternalPackages is Next.js 15+ syntax and is silently ignored in 14.x)
   experimental: {
-    serverComponentsExternalPackages: ['livekit-server-sdk'],
+    serverComponentsExternalPackages: ['livekit-server-sdk', 'tweetnacl'],
   },
 
   // Re-enable TypeScript checking — hiding errors masks security bugs
