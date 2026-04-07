@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // Also ensures this route's bundle is unique (prevents Vercel EEXIST symlink dedup).
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const _ROUTE = 'voice-token' as const; // unique bundle id
 
 // ── In-memory rate limiter (resets per serverless instance cold-start) ─────
 // For production scale, replace with Upstash Redis or Vercel KV.
