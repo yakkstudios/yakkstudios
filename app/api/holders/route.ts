@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const _ROUTE = 'holders' as const; // unique bundle id
 
 export const revalidate = 300; // 5 min ISR
 
