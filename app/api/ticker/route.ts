@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // NOTE: export const revalidate is intentionally absent — invalid in App Router route handlers.
 // In-memory TTL caching used instead.
 
