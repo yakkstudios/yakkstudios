@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export const revalidate = 300; // 5 min ISR
 
 let cache: { holders: number; ts: number } | null = null;
