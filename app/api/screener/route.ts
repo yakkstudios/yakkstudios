@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const _ROUTE = 'screener' as const; // unique bundle id
 
 // NOTE: export const revalidate is intentionally removed.
 // It is invalid inside App Router route handlers and causes 500 errors on Vercel.
