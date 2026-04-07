@@ -1,6 +1,11 @@
 import { AccessToken } from 'livekit-server-sdk';
 import { NextRequest, NextResponse } from 'next/server';
 
+// Route segment config — forces Node.js runtime and prevents static optimisation.
+// Also ensures this route's bundle is unique (prevents Vercel EEXIST symlink dedup).
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // ── In-memory rate limiter (resets per serverless instance cold-start) ─────
 // For production scale, replace with Upstash Redis or Vercel KV.
 const RATE_MAP = new Map<string, { count: number; resetAt: number }>();
