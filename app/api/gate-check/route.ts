@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import nacl from 'tweetnacl';
 import { PublicKey } from '@solana/web3.js';
 
+// Route segment config — forces Node.js runtime and prevents static optimisation.
+// Also ensures this route's bundle is unique (prevents Vercel EEXIST symlink dedup).
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // ── Config ────────────────────────────────────────────────────────────────────
 const HELIUS_RPC = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`;
 const YST_MINT  = process.env.YST_MINT ?? 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
