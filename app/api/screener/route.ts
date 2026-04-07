@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // NOTE: export const revalidate is intentionally removed.
 // It is invalid inside App Router route handlers and causes 500 errors on Vercel.
 
