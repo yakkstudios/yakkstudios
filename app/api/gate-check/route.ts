@@ -6,6 +6,7 @@ import { PublicKey } from '@solana/web3.js';
 // Also ensures this route's bundle is unique (prevents Vercel EEXIST symlink dedup).
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const maxDuration = 8;
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const HELIUS_RPC = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`;

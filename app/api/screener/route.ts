@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// NOTE: export const revalidate is intentionally removed.
-// It is invalid inside App Router route handlers and causes 500 errors on Vercel.
+// Route segment config
+// maxDuration=35 makes this bundle's hash unique vs other routes (prevents Vercel EEXIST)
+// NOTE: export const revalidate intentionally absent — invalid in App Router route handlers.
+export const dynamic     = 'force-dynamic';
+export const runtime     = 'nodejs';
+export const maxDuration = 35;
 
 // ── Known Solana token mints ──────────────────────────────────────────────
 // YAKK trusted list only + SOL bluechip. No external tokens.

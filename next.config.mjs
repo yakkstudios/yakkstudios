@@ -46,6 +46,21 @@ const nextConfig = {
     serverComponentsExternalPackages: ['livekit-server-sdk', 'tweetnacl'],
   },
 
+  // ── Force unique chunk identity per API route ──────────────────────────────
+  // Disables webpack scope hoisting (module concatenation) for server bundles.
+  // Without this, Next.js merges small route modules into identical output chunks
+  // causing Vercel's output adapter to EEXIST when it tries to symlink duplicate
+  // .func bundles. Belt-and-suspenders alongside the maxDuration exports.
+  webpack(config: any, { isServer }: { isServer: boolean }) {
+    if (isServer) {
+      config.optimization = {
+        ...config.optimization,
+        concatenateModules: false,
+      };
+    }
+    return config;
+  },
+
   // Re-enable TypeScript checking — hiding errors masks security bugs
   typescript: {
     ignoreBuildErrors: false,

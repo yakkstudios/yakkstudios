@@ -1,97 +1,80 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
-
-// ── $YST token mint ───────────────────────────────────────────────────────────
-const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
-
-// ── Ring buffer — max 50 entries, oldest dropped when full ────────────────────
-const RING_SIZE = 50;
-const ringBuffer: WhaleEvent[] = [];
-
-interface WhaleEvent {
-  wallet: string;
-  amount: number;
-  direction: 'buy' | 'sell';
-  token: string;
-  timestamp: string;
-  receivedAt: number;
-}
+// Route segment config
+// maxDuration=30 makes this bundle's hash unique vs other routes (prevents Vercel EEXIST)
+// NOTE: export const revalidate intentionally absent — invalid in App Router route handlers.
+export const dynamic     = 'force-dynamic';
+export const runtime     = 'nodejs';
+export const maxDuration = 30;
 
 const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Origin':  '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Content-Type': 'application/json',
 };
 
-// ── Solana address validation (base58, 32–44 chars) ───────────────────────────
-function isValidSolanaAddress(addr: string): boolean {
-  return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(addr);
-}
+// ── Whale threshold ──────────────────────────────────────────────────────────
+const WHALE_USD_THRESHOLD = 10_000; // trades ≥ $10k shown
 
-// ── POST: receive n8n webhook events ─────────────────────────────────────────
-export async function POST(req: NextRequest) {
-  if (req.method === 'OPTIONS') {
-    return new NextResponse(null, { status: 204, headers: CORS });
-  }
+// ── In-memory cache ──────────────────────────────────────────────────────────
+let cache: { trades: any[]; ts: number } | null = null;
+const CACHE_TTL = 30_000; // 30s
 
-  let body: any;
+// Pair addresses to monitor for whale activity
+const WATCHED_PAIRS = [
+  { symbol: 'YST',  pair: '' },   // YST pair addr — filled from /api/price if needed
+  { symbol: 'SOL',  pair: '8sLbNZoA1cfnvMJLPfp98ZLAnFSYCFApfJKMbiXNLwxj' },
+];
+
+async function fetchTrades(pairAddr: string): Promise<any[]> {
+  if (!pairAddr) return [];
   try {
-    body = await req.json();
-  } catch {
-    // Always return 200 to the webhook so n8n doesn't retry indefinitely
-    return NextResponse.json({ received: true, error: 'invalid_json' }, { status: 200, headers: CORS });
-  }
-
-  const { wallet, amount, direction, token, timestamp } = body ?? {};
-
-  // Validate fields — log errors but always return 200
-  const errors: string[] = [];
-  if (!wallet || !isValidSolanaAddress(wallet))      errors.push('invalid_wallet');
-  if (!amount || typeof amount !== 'number' || amount <= 0) errors.push('invalid_amount');
-  if (direction !== 'buy' && direction !== 'sell')   errors.push('invalid_direction');
-  if (token !== YST_MINT)                            errors.push('wrong_token');
-
-  if (errors.length) {
-    console.warn('[whale-feed] Validation failed:', errors, body);
-    return NextResponse.json({ received: true, errors }, { status: 200, headers: CORS });
-  }
-
-  const event: WhaleEvent = {
-    wallet,
-    amount,
-    direction,
-    token,
-    timestamp: timestamp ?? new Date().toISOString(),
-    receivedAt: Date.now(),
-  };
-
-  // Push to ring buffer — drop oldest entry if full
-  if (ringBuffer.length >= RING_SIZE) {
-    ringBuffer.shift();
-  }
-  ringBuffer.push(event);
-
-  return NextResponse.json({ received: true }, { status: 200, headers: CORS });
+    const r = await fetch(
+      `https://api.dexscreener.com/latest/dex/pairs/solana/${pairAddr}`,
+      { signal: AbortSignal.timeout(5000), headers: { Accept: 'application/json' } }
+    );
+    if (!r.ok) return [];
+    const j  = await r.json();
+    const tx = j?.pair?.txns?.h24 ?? {};
+    // DexScreener aggregate data — return a summary trade object
+    return [{
+      pair:   pairAddr,
+      buys:   tx.buys  ?? 0,
+      sells:  tx.sells ?? 0,
+      vol24h: j?.pair?.volume?.h24 ?? 0,
+      price:  j?.pair?.priceUsd   ?? '0',
+      liq:    j?.pair?.liquidity?.usd ?? 0,
+    }];
+  } catch { return []; }
 }
 
-// ── GET: return current buffer contents ──────────────────────────────────────
 export async function GET(req: NextRequest) {
   if (req.method === 'OPTIONS') {
     return new NextResponse(null, { status: 204, headers: CORS });
   }
 
-  // Return newest events first
-  const events = [...ringBuffer].reverse();
+  if (cache && Date.now() - cache.ts < CACHE_TTL) {
+    return NextResponse.json({ trades: cache.trades, cached: true, ts: cache.ts }, { headers: CORS });
+  }
 
-  return NextResponse.json(
-    {
-      events,
-      count: events.length,
-      maxSize: RING_SIZE,
-      ts: Date.now(),
-    },
-    { headers: CORS }
-  );
+  try {
+    const results = await Promise.allSettled(
+      WATCHED_PAIRS
+        .filter(p => p.pair)
+        .map(p => fetchTrades(p.pair))
+    );
+
+    const trades = results
+      .flatMap(r => (r.status === 'fulfilled' ? r.value : []))
+      .filter(t => (t.vol24h ?? 0) >= WHALE_USD_THRESHOLD);
+
+    cache = { trades, ts: Date.now() };
+    return NextResponse.json({ trades, ts: Date.now() }, { headers: CORS });
+  } catch (err: unknown) {
+    console.error('[whale-feed] fetch error:', err instanceof Error ? err.message : err);
+    return NextResponse.json(
+      { trades: cache?.trades ?? [], ts: Date.now(), stale: true },
+      { headers: CORS }
+    );
+  }
 }

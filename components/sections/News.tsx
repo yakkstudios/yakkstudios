@@ -1,11 +1,5 @@
 'use client';
 
-interface NewsProps {
-  walletConnected?: boolean;
-  ystBalance?: number;
-  onNavigate?: (s: string) => void;
-}
-
 interface Article {
   slug: string;
   label: string;
@@ -51,7 +45,7 @@ const ARTICLES: Article[] = [
   },
 ];
 
-export default function News(_props: NewsProps) {
+export default function News() {
   return (
     <div className="sec-pad">
 
