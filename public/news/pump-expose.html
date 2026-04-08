@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$PUMP: The $4B Extraction Machine | $YST Cabal</title>
+<meta name="description" content="1.23 million on-chain transfers. 2 hub wallets. $4B+ distributed before retail ever touched the bonding curve. The $YST Cabal traces every transaction.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f0e8;
+    --pink: #ff2d78;
+    --pink-dim: #c4184f;
+    --pink-muted: #3a0f1f;
+    --pink-glow: rgba(255,45,120,0.12);
+    --amber: #f5a623;
+    --amber-dim: #b8741a;
+    --green: #00c896;
+    --green-dim: #008f69;
+    --red: #ff3b3b;
+    --gray-1: #1a1a1a;
+    --gray-2: #242424;
+    --gray-3: #2e2e2e;
+    --gray-4: #3a3a3a;
+    --gray-5: #5a5a5a;
+    --gray-6: #888;
+    --gray-7: #aaa;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    border-bottom: 1px solid var(--gray-3);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  .site-header .brand {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: var(--pink);
+    text-decoration: none;
+  }
+  .site-header nav a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-6);
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: 2rem;
+    transition: color 0.2s;
+  }
+  .site-header nav a:hover { color: var(--white); }
+
+  /* ── HERO ── */
+  .hero {
+    border-bottom: 1px solid var(--gray-3);
+    padding: 4rem 2rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-eyebrow::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--pink);
+    opacity: 0.5;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .hero-title span { color: var(--pink); }
+  .hero-sub {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--gray-7);
+    max-width: 680px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-6);
+    letter-spacing: 0.5px;
+  }
+  .hero-meta .pill {
+    background: var(--gray-2);
+    border: 1px solid var(--gray-3);
+    padding: 4px 12px;
+    border-radius: 2px;
+    color: var(--gray-7);
+  }
+  .hero-meta .live-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-right: 6px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 4rem;
+    align-items: start;
+  }
+  .main-col { min-width: 0; }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--gray-3);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--pink);
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+  }
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin: 2rem 0 0.75rem;
+  }
+
+  p {
+    color: var(--gray-7);
+    margin-bottom: 1.25rem;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  p strong { color: var(--white); font-weight: 500; }
+  p .red { color: var(--red); font-weight: 500; }
+  p .pink { color: var(--pink); font-weight: 500; }
+  p .green { color: var(--green); font-weight: 500; }
+  p .amber { color: var(--amber); font-weight: 500; }
+
+  /* ── STAT GRID ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--gray-3);
+    border: 1px solid var(--gray-3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+  .stat-cell {
+    background: var(--gray-1);
+    padding: 1.25rem 1rem;
+  }
+  .stat-cell .val {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    letter-spacing: 1px;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-cell .val.red { color: var(--red); }
+  .stat-cell .val.pink { color: var(--pink); }
+  .stat-cell .val.green { color: var(--green); }
+  .stat-cell .val.amber { color: var(--amber); }
+  .stat-cell .lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gray-5);
+  }
+  .stat-cell .sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-5);
+    margin-top: 3px;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 2px solid var(--pink);
+    padding: 1rem 1.25rem;
+    background: var(--pink-glow);
+    border-radius: 0 4px 4px 0;
+    margin: 1.5rem 0;
+  }
+  .callout.amber { border-color: var(--amber); background: rgba(245,166,35,0.08); }
+  .callout.green { border-color: var(--green); background: rgba(0,200,150,0.07); }
+  .callout p { margin: 0; font-size: 14px; color: var(--gray-7); }
+  .callout p strong { color: var(--white); }
+
+  /* ── WALLET TABLE ── */
+  .wallet-table-wrap {
+    border: 1px solid var(--gray-3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .wallet-table-header {
+    background: var(--gray-2);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-5);
+    border-bottom: 1px solid var(--gray-3);
+    display: grid;
+    grid-template-columns: var(--col-template, 1fr 1fr 1fr);
+    gap: 0.5rem;
+  }
+  .wallet-table-row {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--gray-3);
+    display: grid;
+    grid-template-columns: var(--col-template, 1fr 1fr 1fr);
+    gap: 0.5rem;
+    align-items: center;
+    transition: background 0.15s;
+  }
+  .wallet-table-row:last-child { border-bottom: none; }
+  .wallet-table-row:hover { background: var(--gray-2); }
+  .addr-cell {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-6);
+  }
+  .addr-cell a {
+    color: var(--gray-6);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .addr-cell a:hover { color: var(--pink); }
+  .val-cell {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white);
+  }
+  .val-cell.red { color: var(--red); }
+  .val-cell.green { color: var(--green); }
+  .val-cell.amber { color: var(--amber); }
+  .label-cell {
+    font-size: 12px;
+    color: var(--gray-7);
+  }
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+  .badge-red { border-color: var(--red); color: var(--red); }
+  .badge-amber { border-color: var(--amber); color: var(--amber); }
+  .badge-green { border-color: var(--green); color: var(--green); }
+  .badge-pink { border-color: var(--pink); color: var(--pink); }
+  .badge-gray { border-color: var(--gray-4); color: var(--gray-6); }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 1.5rem 0; }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: 117px;
+    top: 22px;
+    bottom: -4px;
+    width: 1px;
+    background: var(--gray-3);
+  }
+  .tl-item:last-child::before { display: none; }
+  .tl-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-5);
+    padding-top: 14px;
+    text-align: right;
+    padding-right: 1.5rem;
+    line-height: 1.4;
+  }
+  .tl-content {
+    border-left: 2px solid var(--gray-3);
+    padding: 0.75rem 0 1.25rem 1.25rem;
+    position: relative;
+  }
+  .tl-content::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 15px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gray-4);
+    border: 1px solid var(--gray-3);
+  }
+  .tl-item.highlight .tl-content { border-color: var(--pink); }
+  .tl-item.highlight .tl-content::before { background: var(--pink); border-color: var(--pink); }
+  .tl-item.warn .tl-content { border-color: var(--amber); }
+  .tl-item.warn .tl-content::before { background: var(--amber); border-color: var(--amber); }
+  .tl-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .tl-body {
+    font-size: 13px;
+    color: var(--gray-6);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .tl-body strong { color: var(--white); }
+  .tl-body .red { color: var(--red); font-weight: 500; }
+  .tl-body .amber { color: var(--amber); }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-diagram {
+    background: var(--gray-1);
+    border: 1px solid var(--gray-3);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .flow-diagram .flow-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-5);
+    margin-bottom: 1rem;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .flow-step:last-child { margin-bottom: 0; }
+  .flow-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .flow-icon.red { background: rgba(255,59,59,0.15); color: var(--red); border: 1px solid rgba(255,59,59,0.3); }
+  .flow-icon.amber { background: rgba(245,166,35,0.15); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+  .flow-icon.pink { background: var(--pink-glow); color: var(--pink); border: 1px solid rgba(255,45,120,0.3); }
+  .flow-icon.gray { background: var(--gray-2); color: var(--gray-6); border: 1px solid var(--gray-3); }
+  .flow-text { color: var(--gray-6); line-height: 1.5; }
+  .flow-text strong { color: var(--white); }
+  .flow-arrow {
+    color: var(--gray-4);
+    font-size: 16px;
+    line-height: 1;
+    margin: 0 0 0.25rem 0.5rem;
+    display: block;
+  }
+
+  /* ── CROSS-REF BOX ── */
+  .cross-ref {
+    background: var(--gray-1);
+    border: 1px solid var(--pink);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .cross-ref-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: var(--pink);
+    margin-bottom: 0.75rem;
+  }
+  .cross-ref-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-5);
+    margin-bottom: 1rem;
+  }
+  .cross-ref-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-3);
+    font-size: 12px;
+  }
+  .cross-ref-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .cross-ref-row .cr-label { color: var(--gray-6); min-width: 160px; font-family: var(--font-mono); font-size: 10px; padding-top: 2px; }
+  .cross-ref-row .cr-val { color: var(--white); font-family: var(--font-mono); font-size: 11px; }
+  .cross-ref-row .cr-val .dim { color: var(--gray-5); font-size: 10px; }
+
+  /* ── MONTHLY CHART ── */
+  .month-chart { margin: 1.5rem 0; }
+  .month-bar-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 110px;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .month-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-5);
+    text-align: right;
+  }
+  .month-bar-bg {
+    height: 20px;
+    background: var(--gray-2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .month-bar-fill {
+    height: 100%;
+    background: var(--pink);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+  .month-bar-fill.dim { background: var(--gray-4); }
+  .month-val {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-6);
+    text-align: right;
+  }
+
+  /* ── LEDGER ── */
+  .ledger {
+    background: var(--gray-1);
+    border: 1px solid var(--gray-3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .ledger-head {
+    background: var(--gray-2);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: var(--red);
+    border-bottom: 1px solid var(--gray-3);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .ledger-head::before {
+    content: '◆';
+    font-size: 8px;
+    color: var(--red);
+  }
+  .ledger-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--gray-3);
+    font-size: 13px;
+  }
+  .ledger-row:last-child { border-bottom: none; }
+  .ledger-row .lbl { color: var(--gray-6); font-weight: 300; }
+  .ledger-row .amt { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--white); }
+  .ledger-row .amt.red { color: var(--red); }
+  .ledger-row .amt.amber { color: var(--amber); }
+  .ledger-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--gray-2);
+    border-top: 1px solid var(--gray-3);
+  }
+  .ledger-total .lbl { font-family: var(--font-display); font-size: 1rem; letter-spacing: 1px; color: var(--gray-7); }
+  .ledger-total .amt { font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 1px; color: var(--red); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    border: 1px solid var(--gray-3);
+    border-left: 2px solid var(--amber);
+    border-radius: 0 4px 4px 0;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+    background: rgba(245,166,35,0.04);
+  }
+  .disclaimer p {
+    font-size: 12px;
+    color: var(--gray-5);
+    margin: 0;
+    line-height: 1.7;
+  }
+  .disclaimer strong { color: var(--gray-6); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: sticky;
+    top: 80px;
+    padding-top: 3rem;
+  }
+  .sidebar-card {
+    background: var(--gray-1);
+    border: 1px solid var(--gray-3);
+    border-radius: 4px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .sidebar-card-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-5);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-3);
+  }
+  .sidebar-stat {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-3);
+  }
+  .sidebar-stat:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .sidebar-stat .s-val {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .sidebar-stat .s-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray-5);
+  }
+  .sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--gray-3);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-6);
+    transition: color 0.2s;
+  }
+  .sidebar-nav-item:last-child { border-bottom: none; }
+  .sidebar-nav-item:hover { color: var(--pink); }
+  .sidebar-nav-item .num {
+    color: var(--gray-4);
+    font-size: 10px;
+    min-width: 18px;
+  }
+  .cta-card {
+    background: var(--pink-glow);
+    border: 1px solid rgba(255,45,120,0.3);
+    border-radius: 4px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .cta-card .cta-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: var(--pink);
+    margin-bottom: 0.5rem;
+  }
+  .cta-card p { font-size: 12px; color: var(--gray-6); margin-bottom: 1rem; }
+  .cta-btn {
+    display: block;
+    background: var(--pink);
+    color: var(--black);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 10px 1rem;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .cta-btn:hover { background: var(--pink-dim); transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 1px solid var(--gray-3);
+    padding: 2rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-5);
+    letter-spacing: 0.5px;
+    margin-top: 4rem;
+  }
+  .site-footer a { color: var(--pink); text-decoration: none; }
+
+  /* ── ANIMATION ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-title, .hero-sub, .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  .hero-sub { animation-delay: 0.1s; }
+  .hero-meta { animation: fadeUp 0.6s ease 0.2s both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; gap: 0; }
+    .sidebar { display: none; }
+    .hero { padding: 2.5rem 1.25rem 2rem; }
+    .layout { padding: 0 1.25rem; }
+    .tl-item { grid-template-columns: 80px 1fr; }
+    .wallet-table-header, .wallet-table-row { font-size: 10px; }
+  }
+  @media (max-width: 480px) {
+    .hero-title { font-size: 3rem; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="site-header">
+  <a href="/" class="brand">$YST CABAL</a>
+  <nav>
+    <a href="/news">Investigations</a>
+    <a href="https://t.me/yakkcult" target="_blank">Telegram</a>
+    <a href="https://yakkstudios.xyz">Studio</a>
+  </nav>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-eyebrow">Investigation #12 &nbsp;·&nbsp; $PUMP Token &nbsp;·&nbsp; Solana</div>
+  <h1 class="hero-title">The <span>$4 Billion</span><br>Extraction<br>Machine</h1>
+  <p class="hero-sub">
+    1.23 million on-chain transfers. 2 hub wallets. $4B+ distributed to 928 pre-seeded addresses before most retail ever touched the bonding curve. 15,724 bidirectional ping-pong pairs. A "buyback" narrative traced in 75 seconds to a relay chain. We read every transaction.
+  </p>
+  <div class="hero-meta">
+    <span>By $YST Cabal</span>
+    <span class="pill">CA: pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn</span>
+    <span class="pill">Chain: Solana</span>
+    <span><span class="live-dot"></span>Status: Active investigation</span>
+    <span>Apr 2026</span>
+  </div>
+</section>
+
+<!-- ── MAIN LAYOUT ── -->
+<div class="layout">
+<main class="main-col">
+
+  <!-- ── OVERVIEW ── -->
+  <div class="section" id="overview">
+    <div class="section-label">Overview</div>
+    <h2>The Largest Single-Token Investigation in Cabal History</h2>
+    <p>
+      The $YST Cabal has now completed <strong>12 investigations</strong> across the Solana memecoin ecosystem, tracking over $87 billion in cumulative transfer volume. $PUMP is our largest yet — not because the token was unique, but because the scale of pre-launch coordination, hub-and-spoke distribution, and ongoing volume farming was executed at an institutional level rarely documented in public research.
+    </p>
+    <p>
+      Our dataset: <strong>1,252 Solscan CSV exports</strong>, each containing up to 1,000 high-value transfers (&gt;$1,000 USD), spanning <strong>July 12, 2025 to April 8, 2026</strong>. Total transfers analysed: <strong class="pink">1,230,222</strong>. Total USD volume tracked: <strong class="red">$25,546,223,576</strong>.
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="val red">$25.5B</div>
+        <div class="lbl">Total tracked volume</div>
+        <div class="sub">1.23M transfers &gt;$1K</div>
+      </div>
+      <div class="stat-cell">
+        <div class="val red">$4.02B</div>
+        <div class="lbl">Combined hub distribution</div>
+        <div class="sub">Hub 1 + Hub 2</div>
+      </div>
+      <div class="stat-cell">
+        <div class="val amber">$1.63B</div>
+        <div class="lbl">Silent holdings</div>
+        <div class="sub">12 wallets, zero outflow</div>
+      </div>
+      <div class="stat-cell">
+        <div class="val">60,037</div>
+        <div class="lbl">Unique wallets</div>
+        <div class="sub">In dataset</div>
+      </div>
+      <div class="stat-cell">
+        <div class="val">15,724</div>
+        <div class="lbl">Bidirectional pairs</div>
+        <div class="sub">Ping-pong detected</div>
+      </div>
+      <div class="stat-cell">
+        <div class="val">224,247</div>
+        <div class="lbl">Top farmer txs</div>
+        <div class="sub">Single wallet</div>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <p><strong>Cross-investigation confirmation:</strong> Two wallets previously flagged in the $YST Cabal's prior 11 investigations — the serial router (<code>ARu4n5mF…</code>, present in all 11 tokens) and the multi-token hub router (<code>AgmLJBMD…</code>, linked to the @daumenxyz cross-investigation case) — are both confirmed active in $PUMP with $24.4M and $1.11M in tracked volume respectively. This is the 12th consecutive appearance of these addresses.</p>
+    </div>
+  </div>
+
+  <!-- ── PRE-LAUNCH ── -->
+  <div class="section" id="pre-launch">
+    <div class="section-label">Pre-launch intelligence</div>
+    <h2>48 Hours Before Retail — The Bundle Setup</h2>
+
+    <p>
+      The $PUMP token launched publicly on <strong>July 14, 2025</strong>. But the chain shows activity beginning <strong>48 hours earlier</strong>, on July 12, with just <strong>4 unique wallets</strong> moving $936 million worth of tokens to 857 pre-seeded addresses.
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="val red">$936M</div>
+        <div class="lbl">Pre-launch volume</div>
+        <div class="sub">Jul 12–13 only</div>
+      </div>
+      <div class="stat-cell">
+        <div class="val">4</div>
+        <div class="lbl">Unique senders</div>
+        <div class="sub">Pre-launch</div>
+      </div>
+      <div class="stat-cell">
+        <div class="val">857</div>
+        <div class="lbl">Pre-seeded wallets</div>
+        <div class="sub">Received before launch</div>
+      </div>
+    </div>
+
+    <h3>Hub 2: The Atomic Spray</h3>
+    <p>
+      <strong>Hub 2</strong> (<code>5D95TQGUmg71zrM7CJZiTYBVCPxrjCrrahEHegEPL2oj</code>) distributed <span class="red">$670,057,757</span> to <strong>851 unique wallet addresses</strong> across just <strong>851 transactions in a 44-minute window</strong> on July 12. One transaction per wallet. Each wallet receiving a different allocation. Zero inflows — this wallet never received tokens in our dataset.
+    </p>
+    <p>
+      This is the defining signature of a bundle spray: a single coordinated source atomically distributing supply to a pre-computed set of addresses before public trading begins. Each spoke wallet subsequently appears independent on-chain.
+    </p>
+
+    <h3>Hub 1: The Pre-Seeding Begins</h3>
+    <p>
+      <strong>Hub 1</strong> (<code>Cfq1ts1iFr1eUWWBm8eFxUzm5R3YA3UvMZznwiShbgZt</code>) began seeding on July 13, distributing to 12 wallets including some of the largest singular transfers in the entire dataset. The $57.2M transfer at 11:51 UTC on July 13 to <code>FVQjoG8V…jNbZ</code> — the day before public launch — represents a position built before retail had any access.
+    </p>
+
+    <div class="callout">
+      <p>Traits commonly seen in pre-coordinated supply distribution: one origin wallet, many simultaneous destinations, timing window before public trading, zero inflows to source wallet across entire tracked history.</p>
+    </div>
+  </div>
+
+  <!-- ── LAUNCH DAY ── -->
+  <div class="section" id="launch-day">
+    <div class="section-label">Launch day · July 14, 2025</div>
+    <h2>The $3.95B Burst — 90 Seconds, 8 Wallets</h2>
+
+    <p>
+      July 14 produced <span class="red">$3,952,423,485</span> in a single day — the largest single-day figure in our dataset. The majority was concentrated into a <strong>90-second window between 12:18 and 12:20 UTC</strong>, when Hub 1 executed a rapid succession of massive transfers.
+    </p>
+
+    <div class="timeline">
+      <div class="tl-item highlight">
+        <div class="tl-time">Jul 14<br>12:18:23</div>
+        <div class="tl-content">
+          <div class="tl-title">Largest single transfer in dataset</div>
+          <p class="tl-body">Hub 1 → <code>8UhbNoBX…TogC</code> · <span class="red">$578,761,043</span> · This wallet has never sent outward. Still holding.</p>
+        </div>
+      </div>
+      <div class="tl-item highlight">
+        <div class="tl-time">12:19:00</div>
+        <div class="tl-content">
+          <div class="tl-title">Second mega-transfer — 37 seconds later</div>
+          <p class="tl-body">Hub 1 → <code>9pkFKCR1…cXzv</code> · <span class="red">$253,207,956</span> · Also zero outflow. Still holding.</p>
+        </div>
+      </div>
+      <div class="tl-item highlight">
+        <div class="tl-time">12:19:19</div>
+        <div class="tl-content">
+          <div class="tl-title">Third transfer — 19 seconds later</div>
+          <p class="tl-body">Hub 1 → <code>BBvQteua…vCfT</code> · <span class="red">$180,862,826</span> · Zero outflow. Still holding.</p>
+        </div>
+      </div>
+      <div class="tl-item highlight">
+        <div class="tl-time">12:19:35</div>
+        <div class="tl-content">
+          <div class="tl-title">Fourth transfer — 16 seconds later</div>
+          <p class="tl-body">Hub 1 → <code>9Ucygiam…C2dN</code> · <span class="red">$144,690,261</span> · Zero outflow. Still holding.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">13:13–13:14</div>
+        <div class="tl-content">
+          <div class="tl-title">Second burst — 4 transfers in 58 seconds</div>
+          <p class="tl-body">$359M across 4 wallets including $159.9M to <code>AvqFxKNr…TdT6</code> (zero outflow) and $133.2M to <code>8UHpWBnh…LC42</code>. Total in this window: <span class="red">$379.8M</span>.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">15:23–16:07</div>
+        <div class="tl-content">
+          <div class="tl-title">Third wave — Hub 1 sprays 50+ wallets</div>
+          <p class="tl-body">Hub 1 distributes to 50+ additional addresses in rapid succession. Includes $174.3M to <code>GTeSSwov…3MhB</code> (zero outflow, still holding) and $130.7M to <code>5v7ZZg1D…CVKE</code>.</p>
+        </div>
+      </div>
+      <div class="tl-item warn">
+        <div class="tl-time">Jul 14–Jul 18</div>
+        <div class="tl-content">
+          <div class="tl-title">Retail enters. Volume peaks. Spokes begin exiting.</div>
+          <p class="tl-body">Days 2–5 produce $678M, $596M, $414M, $343M respectively. Hub-seeded wallets with active outflows begin clearing positions as retail demand provides exit liquidity. <span class="amber">$44P5Ct5J…Dyra</span> (received $92.5M from Hub 1) processes 7,100 outbound transactions totalling $1.05B during this window.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SILENT HOLDERS ── -->
+  <div class="section" id="silent-holders">
+    <div class="section-label">Unrealised overhang</div>
+    <h2>$1.63B Still Sitting — The Silent Wallets</h2>
+
+    <p>
+      12 wallets received supply directly from Hub 1 and have <strong>never sent a single outbound transfer</strong> in our entire 1.23M-row dataset spanning nine months. At the tracked transfer values, these wallets hold a combined <span class="red">$1,631,584,995</span> in unrealised positions. This constitutes <strong>persistent supply overhang</strong> at any price level.
+    </p>
+
+    <div class="wallet-table-wrap">
+      <div class="wallet-table-header" style="--col-template: 1fr 140px 80px 80px;">
+        <span>Wallet</span>
+        <span>Value Received</span>
+        <span>Outflow</span>
+        <span>Status</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/8UhbNoBXmGoxJr2TeWW8wmSMoWmjS2rTT2tVJxzuTogC" target="_blank">8UhbNoBX…TogC</a></span>
+        <span class="val-cell red">$578,761,043</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/9pkFKCR1mdS31JxjKdtmWg2awZUg6vJUYVY722DAcXzv" target="_blank">9pkFKCR1…cXzv</a></span>
+        <span class="val-cell red">$253,207,956</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/BBvQteuawKB2UtExfevL8HYLjWWsgmWXsp922vFbvCfT" target="_blank">BBvQteua…vCfT</a></span>
+        <span class="val-cell red">$180,862,826</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/GTeSSwovPiVirpvWJpThUWiLDSLsuApmJw621Yom3MhB" target="_blank">GTeSSwov…3MhB</a></span>
+        <span class="val-cell red">$174,264,468</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/AvqFxKNrYZNvxsj2oWhLW8det68HzCXBqswshoD2TdT6" target="_blank">AvqFxKNr…TdT6</a></span>
+        <span class="val-cell red">$159,891,036</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS" target="_blank">85WTujfJ…5ERS</a></span>
+        <span class="val-cell red">$86,630,735</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/2WHL4XiNGKW9NgSwsJeG7WG2kD35Bi44rZoLrXHEz3dw" target="_blank">2WHL4XiN…z3dw</a></span>
+        <span class="val-cell amber">$66,621,265</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9" target="_blank">96HiV4cG…VWM9</a></span>
+        <span class="val-cell amber">$66,461,738</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/ERRGqu3dh6zYBg7MNAHKL33TyVb7efMmaKxnmdukdNYa" target="_blank">ERRGqu3d…dNYa</a></span>
+        <span class="val-cell amber">$49,275,870</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-red">HOLDING</span></span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 140px 80px 80px;">
+        <span class="addr-cell">3 further wallets</span>
+        <span class="val-cell">$15,607,057</span>
+        <span class="val-cell">$0</span>
+        <span><span class="badge badge-gray">HOLDING</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOP EXTRACTORS ── -->
+  <div class="section" id="extractors">
+    <div class="section-label">Net flow analysis</div>
+    <h2>Top Extractors — Who Left With the Most</h2>
+
+    <p>
+      Wallets where total outflows significantly exceed total inflows within our dataset represent net extraction from the ecosystem. The two hub wallets dominate this list, having distributed billions while receiving zero tracked inflows — classic one-way supply release traits.
+    </p>
+
+    <div class="wallet-table-wrap">
+      <div class="wallet-table-header" style="--col-template: 1fr 160px 130px 80px;">
+        <span>Wallet</span>
+        <span>Net Extracted</span>
+        <span>Total Sent</span>
+        <span>Txs Out</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/Cfq1ts1iFr1eUWWBm8eFxUzm5R3YA3UvMZznwiShbgZt" target="_blank">Cfq1ts1i…bgZt</a></div>
+          <div style="margin-top:3px;"><span class="badge badge-red">HUB 1</span></div>
+        </div>
+        <span class="val-cell red">$3,351,517,962</span>
+        <span class="val-cell">$3,351,517,962</span>
+        <span class="val-cell">85</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/5D95TQGUmg71zrM7CJZiTYBVCPxrjCrrahEHegEPL2oj" target="_blank">5D95TQGU…L2oj</a></div>
+          <div style="margin-top:3px;"><span class="badge badge-red">HUB 2</span></div>
+        </div>
+        <span class="val-cell red">$670,057,757</span>
+        <span class="val-cell">$670,057,757</span>
+        <span class="val-cell">851</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/88uq8JNLRkB4Vhbi9tTBsFqEWQmKgX1PY9aJBZcKF6iE" target="_blank">88uq8JNL…F6iE</a></div>
+          <div style="margin-top:3px;"><span class="badge badge-pink">SPOKE</span></div>
+        </div>
+        <span class="val-cell red">$28,479,970</span>
+        <span class="val-cell">$28,479,970</span>
+        <span class="val-cell">6</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/5uB6r9hXGnJW2bMEmpNQXLbFLdCfTXpibRDMLYCTGFS5" target="_blank">5uB6r9hX…GFS5</a></div>
+        </div>
+        <span class="val-cell red">$24,849,584</span>
+        <span class="val-cell">$79,538,348</span>
+        <span class="val-cell">424</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/77DXFZnMm5FrJiLfJGLVRVhqHjMfBKvbnJ5jCNfzwdjB" target="_blank">77DXFZnM…wdjB</a></div>
+        </div>
+        <span class="val-cell red">$22,691,439</span>
+        <span class="val-cell">$58,281,519</span>
+        <span class="val-cell">187</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/4DTTpRo9BtATsVgxtiLtnFRLxiYGhCtuXrJ2njs2tgJC" target="_blank">4DTTpRo9…tgJC</a></div>
+        </div>
+        <span class="val-cell red">$16,032,128</span>
+        <span class="val-cell">$187,187,625</span>
+        <span class="val-cell">2,533</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/Hg9Hpsk5UagjNKy3uaMdcLvSTKNuHBkQ5b1xfvnoJoD" target="_blank">Hg9Hpsk5…oJoD</a></div>
+          <div style="margin-top:3px;"><span class="badge badge-amber">1 TX</span></div>
+        </div>
+        <span class="val-cell red">$11,493,860</span>
+        <span class="val-cell">$12,130,576</span>
+        <span class="val-cell">1</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/9CKnC2kmqG9ZBtQXDfxR5H7Av7X878geV367DdYtybT4" target="_blank">9CKnC2km…ybT4</a></div>
+        </div>
+        <span class="val-cell red">$10,800,807</span>
+        <span class="val-cell">$242,308,225</span>
+        <span class="val-cell">158</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 160px 130px 80px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/7iDsYhdsJZRU5prKanQgWbNJLNaY3SfR5GZr2aJhL4C3" target="_blank">7iDsYhds…L4C3</a></div>
+          <div style="margin-top:3px;"><span class="badge badge-amber">1 TX</span></div>
+        </div>
+        <span class="val-cell red">$9,650,100</span>
+        <span class="val-cell">$13,489,273</span>
+        <span class="val-cell">1</span>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <p><strong>The "1 TX" wallets:</strong> <code>Hg9Hpsk5…oJoD</code> and <code>7iDsYhds…L4C3</code> each executed a single outbound transfer totalling $12.1M and $13.5M respectively. Both wallets had near-zero tracked inflows before these exits. Single-transaction, high-value exits are a common trait in coordinated position unwinding.</p>
+    </div>
+  </div>
+
+  <!-- ── VOLUME FARMING ── -->
+  <div class="section" id="farming">
+    <div class="section-label">Volume farming · Ongoing extraction</div>
+    <h2>Industrial-Scale Farming — 224,247 Transactions, One Wallet</h2>
+
+    <p>
+      After the July launch burst subsided, the $PUMP dataset shows a transition from large-scale distribution to sustained volume farming. The signature: high transaction counts, near-balanced in/out flows, small average transaction sizes — all hallmarks of wallets cycling tokens to generate artificial volume signals.
+    </p>
+
+    <div class="wallet-table-wrap">
+      <div class="wallet-table-header" style="--col-template: 1fr 90px 90px 90px 100px;">
+        <span>Wallet</span>
+        <span>Total Txs</span>
+        <span>Txs Out</span>
+        <span>Txs In</span>
+        <span>USD Out</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 90px 90px 90px 100px;">
+        <div>
+          <div class="addr-cell"><a href="https://solscan.io/account/2kfQuYG2FVZL2RqqKEttcdadbPWP4c7b6AFQztNcBWyV" target="_blank">2kfQuYG2…BWyV</a></div>
+          <div style="margin-top:3px;"><span class="badge badge-red">TOP FARMER</span></div>
+        </div>
+        <span class="val-cell red">224,247</span>
+        <span class="val-cell">117,695</span>
+        <span class="val-cell">106,552</span>
+        <span class="val-cell amber">$206.8M</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 90px 90px 90px 100px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/HyKbc1vUxNL9xJC2Q44qdGiuKC1Ey95KNdokfHivrFnZ" target="_blank">HyKbc1vU…rFnZ</a></span>
+        <span class="val-cell">116,981</span>
+        <span class="val-cell">59,826</span>
+        <span class="val-cell">57,155</span>
+        <span class="val-cell">$42.6M</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 90px 90px 90px 100px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/BofA2ViUSudPBTUms2KRuG6AHNeMawjNfwqTJDgx5BKW" target="_blank">BofA2ViU…5BKW</a></span>
+        <span class="val-cell">103,220</span>
+        <span class="val-cell">54,169</span>
+        <span class="val-cell">49,051</span>
+        <span class="val-cell">$88.4M</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 90px 90px 90px 100px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/99mRw3EzZBZ5ZguCDnhyAJsDYXSXXoq9Pm5m1XFb4F3c" target="_blank">99mRw3Ez…4F3c</a></span>
+        <span class="val-cell">94,746</span>
+        <span class="val-cell">45,767</span>
+        <span class="val-cell">48,979</span>
+        <span class="val-cell">$61.6M</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 90px 90px 90px 100px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa" target="_blank">MfDuWeqS…GVWa</a></span>
+        <span class="val-cell">83,885</span>
+        <span class="val-cell">52,215</span>
+        <span class="val-cell">31,670</span>
+        <span class="val-cell amber">$548M</span>
+      </div>
+      <div class="wallet-table-row" style="--col-template: 1fr 90px 90px 90px 100px;">
+        <span class="addr-cell"><a href="https://solscan.io/account/2uF4Xh61rDwxnG9woyxsVQP7zuA6kLFpb3NvnRQeoiSd" target="_blank">2uF4Xh61…oiSd</a></span>
+        <span class="val-cell">76,088</span>
+        <span class="val-cell">37,588</span>
+        <span class="val-cell">38,500</span>
+        <span class="val-cell">$67.3M</span>
+      </div>
+    </div>
+
+    <h3>15,724 Bidirectional Ping-Pong Pairs</h3>
+    <p>
+      Our dataset contains <strong>15,724 bidirectional wallet pairs</strong> — wallets that both sent tokens to and received tokens from each other within the tracked history. While some bidirectional activity is normal DEX routing, this volume of mutual transfer pairs is a commonly flagged trait in artificial volume generation strategies.
+    </p>
+    <p>
+      The top bidirectional pair — <code>2DhVZjHb…nrBn</code> ↔ <code>9obNtb5G…WQkE</code> — moved a combined <span class="amber">$6,393,771</span> between each other. The second-largest pair <code>9obNtb5G…WQkE</code> ↔ <code>CMa16YSo…NxRH</code> adds another $2.45M — all flowing through the same central wallet.
+    </p>
+
+    <h3>Volume by Month — The Full Picture</h3>
+    <div class="month-chart">
+      <div class="month-bar-row">
+        <span class="month-label">Jul 25</span>
+        <div class="month-bar-bg"><div class="month-bar-fill" style="width:100%"></div></div>
+        <span class="month-val">$8.43B · 16,622 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Aug 25</span>
+        <div class="month-bar-bg"><div class="month-bar-fill" style="width:20%"></div></div>
+        <span class="month-val">$1.66B · 8,482 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Sep 25</span>
+        <div class="month-bar-bg"><div class="month-bar-fill" style="width:63%"></div></div>
+        <span class="month-val">$5.28B · 65,657 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Oct 25</span>
+        <div class="month-bar-bg"><div class="month-bar-fill" style="width:40%"></div></div>
+        <span class="month-val">$3.34B · 56,493 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Nov 25</span>
+        <div class="month-bar-bg"><div class="month-bar-fill" style="width:24%"></div></div>
+        <span class="month-val">$2.00B · 72,518 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Dec 25</span>
+        <div class="month-bar-bg"><div class="month-bar-fill dim" style="width:11%"></div></div>
+        <span class="month-val">$937M · 37,591 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Jan 26</span>
+        <div class="month-bar-bg"><div class="month-bar-fill dim" style="width:17%"></div></div>
+        <span class="month-val">$1.41B · 105,608 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Feb 26</span>
+        <div class="month-bar-bg"><div class="month-bar-fill dim" style="width:13%"></div></div>
+        <span class="month-val">$1.12B · 204,883 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Mar 26</span>
+        <div class="month-bar-bg"><div class="month-bar-fill dim" style="width:14%"></div></div>
+        <span class="month-val">$1.17B · 481,531 txs</span>
+      </div>
+      <div class="month-bar-row">
+        <span class="month-label">Apr 26</span>
+        <div class="month-bar-bg"><div class="month-bar-fill dim" style="width:2%"></div></div>
+        <span class="month-val">$202M · 180,837 txs</span>
+      </div>
+    </div>
+
+    <p style="font-size:13px; color: var(--gray-5);">
+      Note: While dollar volume declines post-launch, <em>transaction counts increase dramatically</em> — from 16K in July to 481K in March. This inversion (falling USD value, rising tx count) is a classic volume farming signature: wallets cycling smaller amounts at higher frequency.
+    </p>
+  </div>
+
+  <!-- ── BUYBACK GAMBIT ── -->
+  <div class="section" id="buyback">
+    <div class="section-label">The narrative gambit</div>
+    <h2>The "Buyback" — Traced to a 75-Second Relay</h2>
+
+    <p>
+      September 11, 2025 produced the second-largest single-day volume event in the dataset: <span class="red">$489,372,123</span>. The event coincided with a buyback narrative circulating in community channels.
+    </p>
+
+    <div class="flow-diagram">
+      <div class="flow-title">September 11 relay chain — traced in full</div>
+      <div class="flow-step">
+        <div class="flow-icon pink">H1</div>
+        <div class="flow-text"><strong>Hub 1</strong> (Cfq1ts1i…bgZt)<br>Sends $73,210,318 → <code>EaR9UPcF…eREu</code> at 12:00:27 UTC</div>
+      </div>
+      <div class="flow-arrow" style="margin-left:44px;">↓</div>
+      <div class="flow-step">
+        <div class="flow-icon amber">R1</div>
+        <div class="flow-text"><strong>Relay 1</strong> (EaR9UPcF…eREu)<br>Forwards $72,844,408 → <code>FWznbcNX…ouN5</code> at 12:01:42 UTC<br><span style="color: var(--red);">Elapsed: 75 seconds</span></div>
+      </div>
+      <div class="flow-arrow" style="margin-left:44px;">↓</div>
+      <div class="flow-step">
+        <div class="flow-icon gray">D</div>
+        <div class="flow-text"><strong>Destination</strong> (FWznbcNX…ouN5)<br>Previously received $54,749,070 from Hub 1 on Jul 13.<br>Net extracted from ecosystem across dataset: <span style="color:var(--red);">$235,754,511</span></div>
+      </div>
+    </div>
+
+    <p>
+      A genuine buyback routes capital <em>into the market</em> to purchase tokens at open market prices, supporting the price floor. What we see here is pre-existing supply being routed between coordinated wallets through a single intermediary in 75 seconds — all within the token's own transfer history. <strong>No open market purchase was required.</strong>
+    </p>
+
+    <div class="callout">
+      <p>Traits commonly associated with coordinated narrative events: large single-day volume spike concurrent with positive narrative deployment, transfer chain completing in under 120 seconds, all wallets in chain previously connected to primary hub, destination wallet holding pre-existing unrealised position.</p>
+    </div>
+  </div>
+
+  <!-- ── CROSS-INVESTIGATION ── -->
+  <div class="section" id="cross-ref">
+    <div class="section-label">Cross-investigation · Recurring infrastructure</div>
+    <h2>The Wallets That Never Leave — Investigation #12 Confirms the Pattern</h2>
+
+    <p>
+      Two wallets previously documented across the $YST Cabal's prior 11 investigations are <strong>confirmed active in $PUMP</strong>. Their presence in a 12th consecutive token is the strongest cross-investigation signal in our research to date.
+    </p>
+
+    <div class="cross-ref">
+      <div class="cross-ref-title">CONFIRMED: Serial Router — 12th Token</div>
+      <div class="cross-ref-sub">Present in all 11 prior investigations + confirmed in $PUMP</div>
+      <div class="cross-ref-row">
+        <span class="cr-label">Full address</span>
+        <span class="cr-val"><a href="https://solscan.io/account/ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn" target="_blank" style="color:var(--pink); text-decoration:none;">ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn</a></span>
+      </div>
+      <div class="cross-ref-row">
+        <span class="cr-label">$PUMP activity</span>
+        <span class="cr-val">$23,989,593 sent (4,915 txs) · $24,441,696 received (4,682 txs) <div class="dim">Active Oct 2025 → Apr 2026</div></span>
+      </div>
+      <div class="cross-ref-row">
+        <span class="cr-label">Top $PUMP recipients</span>
+        <span class="cr-val">2kfQuYG2…BWyV ($7.01M) · EHcege7d…urJP ($2.85M) · HyKbc1vU…rFnZ ($1.64M)</span>
+      </div>
+      <div class="cross-ref-row">
+        <span class="cr-label">Significance</span>
+        <span class="cr-val">Routes tokens into top volume farming wallets. Presence in 12 consecutive tokens confirms it as persistent ecosystem infrastructure.</span>
+      </div>
+    </div>
+
+    <div class="cross-ref" style="border-color: var(--amber);">
+      <div class="cross-ref-title" style="color:var(--amber);">CONFIRMED: Multi-Token Hub Router (AgmLJBMD…)</div>
+      <div class="cross-ref-sub">Cross-referenced in KOL Exposé via @daumenxyz investigation + confirmed in $PUMP</div>
+      <div class="cross-ref-row">
+        <span class="cr-label">Full address</span>
+        <span class="cr-val"><a href="https://solscan.io/account/AgmLJBMDCqWynYnQiPCuj9ewsNNsBJXyzoUhD9LJzN51" target="_blank" style="color:var(--amber); text-decoration:none;">AgmLJBMDCqWynYnQiPCuj9ewsNNsBJXyzoUhD9LJzN51</a></span>
+      </div>
+      <div class="cross-ref-row">
+        <span class="cr-label">$PUMP activity</span>
+        <span class="cr-val">$1,112,214 sent (88 txs) · $935,093 received (89 txs) <div class="dim">Active Dec 2025 → Feb 2026</div></span>
+      </div>
+      <div class="cross-ref-row">
+        <span class="cr-label">Prior flagging</span>
+        <span class="cr-val">Flagged in KOL Exposé investigation as confirmed multi-token hub router. The @daumenxyz cross-reference case (FfyLxGLJ… wallet → AgmLJBMD…, $241,191) documented in Investigation #11 context.</span>
+      </div>
+    </div>
+
+    <div class="cross-ref" style="border-color: var(--gray-4);">
+      <div class="cross-ref-title" style="color:var(--gray-6);">WEAK HIT: @risk100x / @Cented7 Dev Wallet</div>
+      <div class="cross-ref-sub">From KOL Exposé — minor presence confirmed in $PUMP on launch day</div>
+      <div class="cross-ref-row">
+        <span class="cr-label">Address</span>
+        <span class="cr-val">EaVboaPxFCYanjoNWdkxTbPvt57nhXGu5i6m9m6ZS2kK</span>
+      </div>
+      <div class="cross-ref-row">
+        <span class="cr-label">$PUMP activity</span>
+        <span class="cr-val">$469 sent · 1 transaction · Jul 14, 2025 (launch day) <div class="dim">Minor presence — flagged for completeness</div></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EDUCATION ── -->
+  <div class="section" id="education">
+    <div class="section-label">How it works</div>
+    <h2>The Full Extraction Stack — A Field Guide</h2>
+
+    <p>
+      For every investigation the Cabal has published, the same architecture repeats. Understanding the mechanics protects you.
+    </p>
+
+    <h3>1. Hub-and-Spoke Bundling</h3>
+    <p>
+      One or two origin wallets distribute supply to hundreds of addresses before public trading begins. On-chain, each spoke address looks like an independent market participant. Together, they represent a coordinated supply block that was positioned before retail entered. In $PUMP: Hub 1 (77 wallets) + Hub 2 (851 wallets) = <strong>928 pre-seeded addresses</strong>, $4.02B distributed.
+    </p>
+
+    <h3>2. Volume Farming</h3>
+    <p>
+      After the initial price discovery window, certain wallets begin cycling tokens in high-frequency, near-balanced patterns. The goal is to maintain volume metrics on aggregator platforms (DEXScreener, Birdeye) that retail traders use to assess activity. In $PUMP, March 2026 had 481,531 transactions at $1.17B — more transactions than July's launch month at a fraction of the USD volume. The farming machinery was still running 9 months post-launch.
+    </p>
+
+    <h3>3. Relay Routing ("The Chain")</h3>
+    <p>
+      Large transfers pass through one or more intermediate wallets in rapid succession — typically within 30–120 seconds. This creates the on-chain appearance of multiple independent actors while keeping the ultimate destination within the same coordinated cluster. Used for "buyback" narratives, coordinated selling into pumped price action, and obfuscating the source of large exits.
+    </p>
+
+    <h3>4. Silent Accumulation + Overhang</h3>
+    <p>
+      Some wallets receive large allocations and then go completely silent — no outbound transfers at all. These wallets represent <em>potential future supply</em> that can enter the market at any time. In $PUMP, 12 such wallets hold a combined $1.63B. Retail holding at current prices has this overhang above them regardless of any price action.
+    </p>
+
+    <h3>5. Narrative Deployment</h3>
+    <p>
+      Coordinated on-chain events — relay chains completing in seconds — are timed to coincide with publicly deployed narratives. When the chart goes green and Telegram channels announce "the team is buying back," tracing the actual transfer chain may reveal supply that was already in the ecosystem being moved between coordinated wallets. The narrative is the retail hook. The chain is the mechanism.
+    </p>
+  </div>
+
+  <!-- ── LEDGER ── -->
+  <div class="section" id="ledger">
+    <div class="section-label">$YST Rug Ledger — updated</div>
+    <h2>Running Total: 11 Tokens + $PUMP</h2>
+
+    <p>
+      The $YST Cabal maintains a public extraction ledger tracking documented hub distributions, confirmed net extractions, and unrealised supply overhangs across all investigated tokens. $PUMP is now added.
+    </p>
+
+    <div class="ledger">
+      <div class="ledger-head">YST Rug Ledger — Investigation #12 Update</div>
+      <div class="ledger-row">
+        <span class="lbl">Previous 11-token total (floor)</span>
+        <span class="amt">$1,048,000,000</span>
+      </div>
+      <div class="ledger-row">
+        <span class="lbl">Previous 11-token total (ceiling)</span>
+        <span class="amt">$3,980,000,000+</span>
+      </div>
+      <div class="ledger-row" style="background: rgba(255,59,59,0.04);">
+        <span class="lbl">$PUMP — Hub 1 distribution</span>
+        <span class="amt red">$3,351,517,962</span>
+      </div>
+      <div class="ledger-row" style="background: rgba(255,59,59,0.04);">
+        <span class="lbl">$PUMP — Hub 2 distribution</span>
+        <span class="amt red">$670,057,757</span>
+      </div>
+      <div class="ledger-row" style="background: rgba(255,59,59,0.04);">
+        <span class="lbl">$PUMP — Confirmed net extractors (top wallets)</span>
+        <span class="amt red">$4,176,939,665</span>
+      </div>
+      <div class="ledger-row">
+        <span class="lbl">$PUMP — Silent holdings (unrealised overhang)</span>
+        <span class="amt amber">$1,631,584,995</span>
+      </div>
+      <div class="ledger-row">
+        <span class="lbl">Total tracked transfer volume ($PUMP alone)</span>
+        <span class="amt">$25,546,223,576</span>
+      </div>
+      <div class="ledger-total">
+        <span class="lbl">Updated floor (11 tokens + $PUMP)</span>
+        <span class="amt">$5.22B+</span>
+      </div>
+      <div class="ledger-total" style="border-top: 1px solid var(--gray-3);">
+        <span class="lbl">Updated ceiling (incl. overhang)</span>
+        <span class="amt">$9.79B+</span>
+      </div>
+    </div>
+
+    <p style="font-size:12px; color: var(--gray-5);">
+      Ledger methodology: floor figure represents conservatively confirmed net extractions (sent &gt;&gt; received). Ceiling includes documented unrealised positions in silent wallets, which represent potential future supply. All figures derived from Solscan transfer data &gt;$1,000 USD. Full methodology at t.me/yakkcult.
+    </p>
+  </div>
+
+  <!-- ── DISCLAIMER ── -->
+  <div class="disclaimer">
+    <p>
+      <strong>MANDATORY DISCLAIMER:</strong> This article is for educational purposes only and is NOT financial advice. All data referenced is publicly available on the Solana blockchain and is independently verifiable via Solscan.io. Patterns and on-chain connections documented herein do not constitute proof of wrongdoing. Not all transfers between wallets indicate intentional coordination — on-chain transfer patterns may have innocent explanations. No individual or project is formally accused of illegal activity. The $YST Cabal makes no guarantees of accuracy. Figures represent tracked transfers above the $1,000 USD threshold and do not capture all on-chain activity. Cross-token wallet appearances are factual on-chain observations that require further context to establish legal or ethical conclusions. Never invest more than you can afford to lose. DYOR.
+    </p>
+  </div>
+
+</main>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Key numbers</div>
+    <div class="sidebar-stat">
+      <div class="s-val" style="color:var(--red);">$25.5B</div>
+      <div class="s-lbl">Total tracked volume</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="s-val">1.23M</div>
+      <div class="s-lbl">Transfers analysed</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="s-val" style="color:var(--red);">$4.02B</div>
+      <div class="s-lbl">Hub distributions</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="s-val" style="color:var(--amber);">$1.63B</div>
+      <div class="s-lbl">Silent holdings</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="s-val">60,037</div>
+      <div class="s-lbl">Unique wallets</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="s-val">928</div>
+      <div class="s-lbl">Pre-seeded wallets</div>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">In this article</div>
+    <a href="#overview" class="sidebar-nav-item"><span class="num">01</span> Overview</a>
+    <a href="#pre-launch" class="sidebar-nav-item"><span class="num">02</span> Pre-launch setup</a>
+    <a href="#launch-day" class="sidebar-nav-item"><span class="num">03</span> Launch day burst</a>
+    <a href="#silent-holders" class="sidebar-nav-item"><span class="num">04</span> Silent holders</a>
+    <a href="#extractors" class="sidebar-nav-item"><span class="num">05</span> Top extractors</a>
+    <a href="#farming" class="sidebar-nav-item"><span class="num">06</span> Volume farming</a>
+    <a href="#buyback" class="sidebar-nav-item"><span class="num">07</span> Buyback traced</a>
+    <a href="#cross-ref" class="sidebar-nav-item"><span class="num">08</span> Cross-investigation</a>
+    <a href="#education" class="sidebar-nav-item"><span class="num">09</span> How it works</a>
+    <a href="#ledger" class="sidebar-nav-item"><span class="num">10</span> Rug Ledger</a>
+  </div>
+
+  <div class="cta-card">
+    <div class="cta-title">Join the Cabal</div>
+    <p>Anti-greed. On-chain or nothing. Pink yakk supremacy.</p>
+    <a href="https://t.me/yakkcult" target="_blank" class="cta-btn">t.me/yakkcult ↗</a>
+  </div>
+
+  <div class="sidebar-card" style="margin-top:1rem;">
+    <div class="sidebar-card-title">Previous investigations</div>
+    <div style="font-family: var(--font-mono); font-size: 10px; color: var(--gray-5); line-height: 2;">
+      $BER · $PUNCH · $JELLYBEAN · $URANUS<br>
+      $PIGEON · $HOOD · $M3M3 · $TRUMP<br>
+      $WATDOG · $WAR · $BUTTCOIN
+    </div>
+    <div style="margin-top:0.75rem; font-family: var(--font-mono); font-size: 10px; color: var(--gray-4);">
+      $87B+ combined tracked volume
+    </div>
+  </div>
+</aside>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <p>$YST CABAL · Anti-Greed · On-Chain or Nothing · <a href="https://t.me/yakkcult">t.me/yakkcult</a> · <a href="https://yakkstudios.xyz">yakkstudios.xyz</a></p>
+  <p style="margin-top:0.5rem; font-size:10px; color: var(--gray-4);">Educational research only · NOT financial advice · DYOR · Patterns ≠ proof of wrongdoing</p>
+</footer>
+
+</body>
+</html>

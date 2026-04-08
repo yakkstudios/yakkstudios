@@ -1,138 +1,202 @@
 'use client';
 
-
-interface SectionProps {
-  walletConnected: boolean;
-  walletAddress?: string;
-  ystBalance?: number;
-  onNavigate?: (id: string) => void;
-}
-
 interface Article {
-  id: string;
   slug: string;
-  dateLabel: string;
-  category: string;
+  label: string;
   title: string;
   subtitle: string;
-  author: string;
-  sources?: string;
+  date: string;
   tags: string[];
-  readTime: string;
-  image?: string;
-  featured?: boolean;
+  stats: { val: string; lbl: string; color?: string }[];
+  isNew?: boolean;
 }
 
 const ARTICLES: Article[] = [
   {
-    id: 'kol-expose',
-    slug: '/news/kol-expose.html',
-    dateLabel: 'March 2025',
-    category: 'INVESTIGATION',
-    title: 'The Dev Wallets. The KOLs. The Receipts.',
-    subtitle: 'We mapped the extraction layer. Now we map the promotional layer. 113+ blacklisted dev wallets. 39 KOL wallets connected on-chain. Same ecosystem. Different floor. All on-chain.',
-    author: '$YAKK Cabal',
-    sources: '@degengamblah � @postmodernism',
-    tags: ['KOL EXPOSE', 'ON-CHAIN', 'SOLANA', 'INVESTIGATION'],
-    readTime: '8 min',
-    image: '/news/kol-expose-banner.svg',
-    featured: true,
+    slug: 'pump-expose',
+    label: 'ON-CHAIN FORENSICS',
+    title: '$PUMP: The $4B Extraction Machine',
+    subtitle:
+      '1.23 million on-chain transfers. 2 hub wallets. $4B+ distributed before retail ever touched the bonding curve. The $YST Cabal traces every transaction.',
+    date: 'APR 2026',
+    isNew: true,
+    tags: ['$PUMP', 'HUB WALLETS', 'EXTRACTION', 'DEEP DIVE'],
+    stats: [
+      { val: '$4B+',   lbl: 'TOTAL EXTRACTED',   color: '#ff3a5c' },
+      { val: '1.23M',  lbl: 'ON-CHAIN TRANSFERS', color: '#f7c948' },
+      { val: '$1.63B', lbl: 'SILENT OVERHANG',    color: '#ff9900' },
+      { val: '2',      lbl: 'HUB WALLETS',         color: '#e0607e' },
+    ],
+  },
+  {
+    slug: 'kol-expose',
+    label: 'KOL INVESTIGATION',
+    title: 'KOL Exposé: 39 Influencers, $3.98B+ Extraction Floor',
+    subtitle:
+      '39 KOL wallets. 113+ dev wallets blacklisted. 11 tokens investigated. The full on-chain breakdown of who got paid and how.',
+    date: 'MAR 2026',
+    tags: ['KOL', 'SHILL WALLETS', 'DEV WALLETS', 'TIER LIST'],
+    stats: [
+      { val: '39',      lbl: 'KOL WALLETS',         color: '#ff3a5c' },
+      { val: '$3.98B+', lbl: 'EXTRACTION FLOOR',    color: '#ff3a5c' },
+      { val: '113+',    lbl: 'DEV WALLETS FLAGGED', color: '#ff9900' },
+      { val: '11',      lbl: 'TOKENS INVESTIGATED', color: '#f7c948' },
+    ],
   },
 ];
 
-function ArticleViewer({ article, onBack }: { article: Article; onBack: () => void }) {
-  return (
-    <div className="news-viewer" style={{ height: 'calc(100vh - var(--ticker-h))' }}>
-      <div className="news-viewer-bar">
-        <button className="btn btn-ghost btn-sm" onClick={onBack}>
-          � Back to News
-        </button>
-        <a
-          className="btn btn-ghost btn-sm"
-          href={article.slug}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Open Full �
-        </a>
-      </div>
-      <iframe
-        src={article.slug}
-        className="news-iframe"
-        title={article.title}
-        sandbox="allow-same-origin allow-scripts allow-popups"
-      />
-    </div>
-  );
-}
-
-export default function News({ }: SectionProps) {
+export default function News() {
   return (
     <div className="sec-pad">
+
+      {/* ── Header ─────────────────────────────────────────────────── */}
       <div className="sec-header">
         <div className="sec-bar" />
-        <h1 className="sec-title">YAKK NEWS</h1>
-        <p className="sec-sub">
-          Investigations, on-chain research &amp; company updates from $YAKK Studios.
-        </p>
+        <div className="sec-title">📰 YAKK NEWS</div>
+        <div className="sec-sub">
+          Investigations, forensics and intel drops from the $YST Cabal.
+          All data publicly verifiable on-chain at{' '}
+          <a href="https://solscan.io" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--pink)' }}>
+            Solscan
+          </a>.
+        </div>
       </div>
 
-      <div className="news-list">
-        {ARTICLES.map((article) => (
-          <div
-            key={article.id}
-            className={`news-card ${article.featured ? 'news-card-featured' : ''}`}
-            onClick={() => window.open(article.slug, '_blank', 'noopener,noreferrer')}
-            role="button"
-            tabIndex={0}
+      {/* ── Article list ────────────────────────────────────────────── */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {ARTICLES.map((a) => (
+          <a
+            key={a.slug}
+            href={`/news/${a.slug}.html`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'none' }}
           >
-            {article.image && (
-          <img
-            src={article.image}
-            alt={article.title}
-            className="news-card-banner"
-            style={{width:'100%',display:'block',borderRadius:'6px 6px 0 0',marginBottom:'12px'}}
-          />
-        )}
-        <div className="news-card-top">
-              <span className="news-cat-badge">{article.category}</span>
-              {article.tags.slice(0, 2).map((tag) => (
-                <span key={tag} className="news-tag">{tag}</span>
-              ))}
-              <span className="news-meta-right">
-                {article.dateLabel} � {article.readTime}
-              </span>
-            </div>
-            <h2 className="news-card-title">{article.title}</h2>
-            <p className="news-card-sub">{article.subtitle}</p>
-            <div className="news-card-footer">
-              <div>
-                <span className="news-author">{article.author}</span>
-                {article.sources && (
-                  <span className="news-sources"> � Source: {article.sources}</span>
-                )}
+            <div
+              style={{
+                background: '#0d0d0d',
+                border: '1px solid #1e1e1e',
+                borderLeft: '3px solid var(--pink)',
+                borderRadius: 8,
+                padding: '18px 20px',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'background 0.15s',
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLDivElement).style.background = '#111';
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLDivElement).style.background = '#0d0d0d';
+              }}
+            >
+              {/* NEW badge */}
+              {a.isNew && (
+                <div style={{
+                  position: 'absolute', top: 12, right: 14,
+                  fontSize: 9, fontWeight: 700, letterSpacing: 1,
+                  color: '#00c896', background: 'rgba(0,200,150,0.1)',
+                  border: '1px solid rgba(0,200,150,0.3)', borderRadius: 3,
+                  padding: '2px 7px',
+                }}>
+                  NEW
+                </div>
+              )}
+
+              {/* Eyebrow row */}
+              <div style={{
+                fontSize: 9, fontWeight: 700, letterSpacing: 2,
+                color: 'var(--pink)', textTransform: 'uppercase',
+                fontFamily: 'monospace', marginBottom: 8,
+                display: 'flex', alignItems: 'center', gap: 8,
+              }}>
+                <span style={{
+                  width: 14, height: 1,
+                  background: 'var(--pink)', display: 'inline-block',
+                }} />
+                {a.label}
+                <span style={{ marginLeft: 'auto', color: '#444', fontWeight: 400 }}>
+                  {a.date}
+                </span>
               </div>
-              <span className="news-read-cta">READ ARTICLE �</span>
-            </div>
-            {article.featured && (
-              <div className="news-featured-strip">
-                <span>11 Tokens � $87B+ tracked � 113+ dev wallets � 39 KOL connections</span>
+
+              {/* Title */}
+              <div style={{
+                fontSize: 16, fontWeight: 700,
+                color: '#f5f5f7', marginBottom: 6, lineHeight: 1.3,
+              }}>
+                {a.title}
               </div>
-            )}
-          </div>
+
+              {/* Subtitle */}
+              <div style={{ fontSize: 12, color: '#666', lineHeight: 1.6, marginBottom: 14 }}>
+                {a.subtitle}
+              </div>
+
+              {/* Stats row */}
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
+                {a.stats.map((s) => (
+                  <div key={s.lbl} style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid #1a1a1a',
+                    borderRadius: 4,
+                    padding: '6px 10px',
+                  }}>
+                    <div style={{
+                      fontSize: 13, fontWeight: 700,
+                      color: s.color ?? 'var(--pink)',
+                      fontFamily: 'monospace',
+                    }}>
+                      {s.val}
+                    </div>
+                    <div style={{
+                      fontSize: 9, color: '#444',
+                      letterSpacing: 1, textTransform: 'uppercase', marginTop: 2,
+                    }}>
+                      {s.lbl}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Tags + CTA */}
+              <div style={{
+                display: 'flex', alignItems: 'center',
+                justifyContent: 'space-between', flexWrap: 'wrap', gap: 8,
+              }}>
+                <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                  {a.tags.map((t) => (
+                    <span key={t} style={{
+                      fontSize: 9, color: '#444', background: '#111',
+                      border: '1px solid #1e1e1e', borderRadius: 3,
+                      padding: '2px 7px', fontFamily: 'monospace', letterSpacing: 0.5,
+                    }}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <span style={{
+                  fontSize: 10, color: 'var(--pink)',
+                  fontWeight: 700, letterSpacing: 0.5,
+                }}>
+                  READ FULL REPORT ↗
+                </span>
+              </div>
+            </div>
+          </a>
         ))}
       </div>
 
-      <div className="news-footer-note">
-        More investigations and updates coming soon. Follow{" "}
-        <a href="https://x.com/YakkStudios" target="_blank" rel="noopener noreferrer" className="news-link">
-          @YakkStudios
-        </a>{" "}
-        and join{" "}
-        <a href="https://t.me/yakkcult" target="_blank" rel="noopener noreferrer" className="news-link">
-          t.me/yakkcult
-        </a>{" "}
-        for live updates.
+      {/* ── Disclaimer ──────────────────────────────────────────────── */}
+      <div style={{
+        marginTop: 20, padding: '10px 14px',
+        background: 'rgba(255,153,0,0.04)',
+        border: '1px solid rgba(255,153,0,0.12)',
+        borderRadius: 6, fontSize: 10, color: '#555', lineHeight: 1.7,
+      }}>
+        All on-chain data publicly verifiable at Solscan.io. Patterns do not constitute proof of wrongdoing.
+        Reports are for community awareness only. Not financial or legal advice.
       </div>
     </div>
   );

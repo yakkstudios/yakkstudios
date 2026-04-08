@@ -153,7 +153,7 @@ export default function TermsPage() {
 }
 
 // Fluid font-size helper (avoids Tailwind)
-function clamp(_min: number, max: number): number {
+function clamp(min: number, max: number): number {
   // Returns max for server render; media queries handle responsive sizing via CSS if needed
   return max;
 }
