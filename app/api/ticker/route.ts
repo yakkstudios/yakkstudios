@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
-export const _ROUTE = 'ticker' as const; // unique bundle id
 
 // NOTE: export const revalidate is intentionally absent — invalid in App Router route handlers.
 // In-memory TTL caching used instead.
