@@ -51,7 +51,7 @@ const nextConfig = {
   // Without this, Next.js merges small route modules into identical output chunks
   // causing Vercel's output adapter to EEXIST when it tries to symlink duplicate
   // .func bundles. Belt-and-suspenders alongside the maxDuration exports.
-  webpack(config: any, { isServer }: { isServer: boolean }) {
+  webpack(config, { isServer }) {
     if (isServer) {
       config.optimization = {
         ...config.optimization,
