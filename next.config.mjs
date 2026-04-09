@@ -43,7 +43,7 @@ const nextConfig = {
   // NOTE: Next.js 14.2.x uses experimental.serverComponentsExternalPackages
   // (serverExternalPackages is Next.js 15+ syntax and is silently ignored in 14.x)
   experimental: {
-    serverComponentsExternalPackages: ['livekit-server-sdk', 'tweetnacl'],
+    serverComponentsExternalPackages: ['tweetnacl'],
   },
 
   // ── Force unique chunk identity per API route ──────────────────────────────
