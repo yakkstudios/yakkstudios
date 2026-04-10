@@ -1,194 +1,30 @@
 'use client';
-
 const SECTIONS = [
-  {
-    title: '1. Introduction',
-    body: `YAKK Studios ("we", "us", "our") operates the platform at yakkstudios.xyz. This Privacy Policy explains what information we collect, how we use it, and your rights in relation to that information. We are committed to protecting the privacy of our users and operating a low-data, non-custodial platform.`,
-  },
-  {
-    title: '2. What We Collect',
-    items: [
-      { label: 'Wallet addresses', desc: 'When you connect your Solana wallet, we read your public wallet address. This is a publicly visible on-chain identifier and does not constitute personal data in isolation.' },
-      { label: 'On-chain data', desc: 'We may read publicly available blockchain data associated with your wallet address, such as token balances and transaction history, to provide platform features.' },
-      { label: 'Usage analytics', desc: 'We collect anonymous usage data (page views, feature interactions, session duration) via Vercel Analytics to understand how the platform is used and to improve it.' },
-      { label: 'Voluntary contact', desc: 'If you contact us by email at hello@yakkstudios.xyz, we will retain that correspondence for the purpose of responding to your enquiry.' },
-    ],
-  },
-  {
-    title: '3. What We Do NOT Collect',
-    body: `We do not collect your name, date of birth, national ID, passport, or any government-issued identity document. We do not perform KYC (Know Your Customer) checks. We do not require or store email addresses unless you choose to contact us directly. We do not collect payment card details or bank account information. Your wallet is your identity on this platform — no personal account is created.`,
-    isNegative: true,
-  },
-  {
-    title: '4. Cookies & Analytics',
-    body: `We use minimal, privacy-respecting analytics provided by Vercel Analytics. This collects anonymised, aggregated data about platform usage and does not use tracking cookies or fingerprinting techniques to identify individual users. We do not use Google Analytics or any third-party advertising cookies. You may use a browser-level content blocker to opt out of analytics collection entirely.`,
-  },
-  {
-    title: '5. Third-Party Services',
-    items: [
-      { label: 'Solana RPC providers', desc: 'On-chain data is fetched via Solana RPC nodes (including public and private RPC endpoints). Your wallet address may be transmitted to these services as part of normal blockchain queries.' },
-      { label: 'DexScreener API', desc: 'Token price and market data is retrieved from DexScreener. Queries may include token addresses. DexScreener\'s own privacy policy governs their data handling.' },
-      { label: 'Anthropic AI', desc: 'AI features (YAKK Coach, YAKK Trader) use the Anthropic Claude API. Prompts submitted to AI features may be processed by Anthropic\'s servers. Do not submit personally identifiable information in AI prompts.' },
-      { label: 'Vercel', desc: 'The platform is hosted on Vercel. Server logs and analytics are subject to Vercel\'s privacy policy.' },
-    ],
-  },
-  {
-    title: '6. Data Retention',
-    body: `We retain usage analytics data in aggregated, anonymised form indefinitely for platform improvement purposes. Email correspondence is retained for as long as necessary to resolve your enquiry and for a reasonable period thereafter. We do not retain wallet addresses beyond the active session. On-chain data is public and permanent by nature of the Solana blockchain — we have no ability to modify or delete it.`,
-  },
-  {
-    title: '7. No Data Selling',
-    body: `We do not sell, rent, trade, or otherwise transfer your data to third parties for commercial purposes. We do not share your data with advertisers. Any data shared with third-party services (listed above) is solely for the purpose of providing platform functionality.`,
-    isPositive: true,
-  },
-  {
-    title: '8. GDPR Compliance (UK & EU Users)',
-    body: `If you are located in the United Kingdom or European Union, you have rights under the UK GDPR and EU GDPR respectively. Our lawful basis for processing usage analytics is our legitimate interest in improving the platform. Our lawful basis for processing wallet addresses and on-chain data is the performance of the service you have requested. Where we process any personal data (such as voluntary email contact), you have the right to access, rectify, restrict, or request deletion of that data. We do not transfer personal data outside the UK/EEA without appropriate safeguards.`,
-  },
-  {
-    title: '9. Your Rights',
-    items: [
-      { label: 'Right to access', desc: 'You may request a copy of any personal data we hold about you.' },
-      { label: 'Right to erasure', desc: 'You may request deletion of any personal data we hold. Note that on-chain data is public and cannot be deleted by us.' },
-      { label: 'Right to restrict processing', desc: 'You may request that we limit how we use your data.' },
-      { label: 'Right to object', desc: 'You may object to processing based on legitimate interests.' },
-      { label: 'Right to complain', desc: 'UK users may lodge a complaint with the Information Commissioner\'s Office (ICO) at ico.org.uk.' },
-    ],
-  },
-  {
-    title: '10. Contact',
-    body: `For any privacy-related enquiries, data deletion requests, or to exercise your rights, please contact us at hello@yakkstudios.xyz. We will respond within 30 days.`,
-    isContact: true,
-  },
+  { title:'1. Introduction', body:'YAKK Studios operates the platform at yakkstudios.xyz. This Privacy Policy explains what information we collect, how we use it, and your rights. We are committed to protecting the privacy of our users and operating a low-data, non-custodial platform.' },
+  { title:'2. What We Collect', items:[{ label:'Wallet addresses', desc:'When you connect your Solana wallet, we read your public wallet address. This is a publicly visible on-chain identifier.' },{ label:'On-chain data', desc:'We may read publicly available blockchain data associated with your wallet address, such as token balances and transaction history, to provide platform features.' },{ label:'Usage analytics', desc:'We collect anonymous usage data via Vercel Analytics to understand how the platform is used and to improve it.' },{ label:'Voluntary contact', desc:'If you contact us by email, we will retain that correspondence for the purpose of responding to your enquiry.' }] },
+  { title:'3. What We Do NOT Collect', body:'We do not collect your name, date of birth, national ID, or any government-issued identity document. We do not perform KYC checks. We do not require or store email addresses unless you choose to contact us. We do not collect payment card details or bank account information.', isNegative:true },
+  { title:'4. Cookies & Analytics', body:'We use minimal, privacy-respecting analytics provided by Vercel Analytics. This collects anonymised, aggregated data and does not use tracking cookies or fingerprinting techniques. We do not use Google Analytics or any third-party advertising cookies.' },
+  { title:'5. Third-Party Services', items:[{ label:'Solana RPC providers', desc:'On-chain data is fetched via Solana RPC nodes. Your wallet address may be transmitted to these services as part of normal blockchain queries.' },{ label:'DexScreener API', desc:'Token price and market data is retrieved from DexScreener. Queries may include token addresses.' },{ label:'Anthropic AI', desc:'AI features use the Anthropic Claude API. Prompts submitted to AI features may be processed by Anthropic\'s servers. Do not submit personally identifiable information in AI prompts.' },{ label:'Vercel', desc:'The platform is hosted on Vercel. Server logs and analytics are subject to Vercel\'s privacy policy.' }] },
+  { title:'6. Data Retention', body:'We retain usage analytics data in aggregated, anonymised form for platform improvement. Email correspondence is retained for as long as necessary to resolve your enquiry. We do not retain wallet addresses beyond the active session.' },
+  { title:'7. No Data Selling', body:'We do not sell, rent, trade, or otherwise transfer your data to third parties for commercial purposes. We do not share your data with advertisers.', isPositive:true },
+  { title:'8. GDPR Compliance (UK & EU Users)', body:'If you are located in the UK or EU, you have rights under the UK GDPR and EU GDPR respectively. Our lawful basis for processing usage analytics is our legitimate interest in improving the platform. You have the right to access, rectify, restrict, or request deletion of your data.' },
+  { title:'9. Your Rights', items:[{ label:'Right to access', desc:'You may request a copy of any personal data we hold about you.' },{ label:'Right to erasure', desc:'You may request deletion of any personal data we hold. Note that on-chain data is public and cannot be deleted by us.' },{ label:'Right to restrict processing', desc:'You may request that we limit how we use your data.' },{ label:'Right to complain', desc:'UK users may lodge a complaint with the Information Commissioner\'s Office (ICO) at ico.org.uk.' }] },
+  { title:'10. Contact', body:'', isContact:true },
 ];
-
 export default function PrivacyPolicy() {
   return (
-    <div className="sec-pad" style={{ maxWidth: 800 }}>
+    <div className="sec-pad" style={{maxWidth:800}}>
       <div className="sec-eyebrow">LEGAL</div>
       <h2 className="sec-title">Privacy Policy</h2>
       <div className="sec-bar" />
-
-      <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 32, lineHeight: 1.7 }}>
-        YAKK Studios is committed to protecting your privacy. This policy explains what data we collect, why we collect it, and how you can control it. We are a non-custodial, low-data platform — your wallet is your identity.
-      </p>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        {SECTIONS.map((sec, i) => (
-          <div
-            key={i}
-            className="card"
-            style={{
-              marginBottom: 8,
-              borderLeft: `3px solid ${sec.isNegative ? 'var(--red)' : sec.isPositive ? 'var(--green)' : 'var(--pink)'}`,
-            }}
-          >
-            <h3 style={{
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 700,
-              fontSize: 13,
-              color: 'var(--text)',
-              marginBottom: 10,
-              letterSpacing: 0.3,
-            }}>
-              {sec.title}
-            </h3>
-
-            {sec.items ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {sec.items.map((item, j) => (
-                  <div
-                    key={j}
-                    style={{
-                      paddingLeft: 12,
-                      borderLeft: '2px solid var(--border2)',
-                    }}
-                  >
-                    <div style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 10,
-                      color: 'var(--pink)',
-                      letterSpacing: '0.08em',
-                      marginBottom: 3,
-                      textTransform: 'uppercase',
-                    }}>
-                      {item.label}
-                    </div>
-                    <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.7, margin: 0 }}>
-                      {item.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p style={{
-                fontSize: 12,
-                color: 'var(--muted)',
-                lineHeight: 1.75,
-                margin: 0,
-              }}>
-                {sec.isContact ? (
-                  <>
-                    For any privacy-related enquiries, data deletion requests, or to exercise your rights, please contact us at{' '}
-                    <a
-                      href="mailto:hello@yakkstudios.xyz"
-                      style={{ color: 'var(--pink)', textDecoration: 'underline' }}
-                    >
-                      hello@yakkstudios.xyz
-                    </a>
-                    . We will respond within 30 days.
-                  </>
-                ) : (
-                  sec.body
-                )}
-              </p>
-            )}
-          </div>
-        ))}
+      <p style={{fontSize:12,color:'var(--muted)',marginBottom:32,lineHeight:1.7}}>YAKK Studios is committed to protecting your privacy. We are a non-custodial, low-data platform — your wallet is your identity.</p>
+      <div style={{display:'flex',flexDirection:'column',gap:4}}>
+        {SECTIONS.map((sec,i)=>(<div key={i} className="card" style={{marginBottom:8,borderLeft:`3px solid ${(sec as any).isNegative?'var(--red)':(sec as any).isPositive?'var(--green)':'var(--pink)'}`}}><h3 style={{fontFamily:'var(--font-heading)',fontWeight:700,fontSize:13,color:'var(--text)',marginBottom:10}}>{sec.title}</h3>{(sec as any).items?(<div style={{display:'flex',flexDirection:'column',gap:10}}>{(sec as any).items.map((item: any,j: number)=>(<div key={j} style={{paddingLeft:12,borderLeft:'2px solid var(--border2)'}}><div style={{fontFamily:'var(--font-mono)',fontSize:10,color:'var(--pink)',letterSpacing:'0.08em',marginBottom:3,textTransform:'uppercase'}}>{item.label}</div><p style={{fontSize:12,color:'var(--muted)',lineHeight:1.7,margin:0}}>{item.desc}</p></div>))}</div>):(<p style={{fontSize:12,color:'var(--muted)',lineHeight:1.75,margin:0}}>{(sec as any).isContact?(<>For any privacy-related enquiries, contact us at <a href="mailto:hello@yakkstudios.xyz" style={{color:'var(--pink)',textDecoration:'underline'}}>hello@yakkstudios.xyz</a>. We will respond within 30 days.</>):sec.body}</p>)}</div>))}
       </div>
-
-      {/* GDPR / compliance badge row */}
-      <div style={{
-        marginTop: 24,
-        display: 'flex',
-        gap: 10,
-        flexWrap: 'wrap',
-      }}>
-        {[
-          { label: 'No KYC', color: 'var(--green)' },
-          { label: 'No Data Selling', color: 'var(--green)' },
-          { label: 'UK GDPR Compliant', color: 'var(--blue)' },
-          { label: 'Non-Custodial', color: 'var(--gold)' },
-          { label: 'Anonymous Analytics', color: 'var(--muted)' },
-        ].map(badge => (
-          <span
-            key={badge.label}
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 9,
-              letterSpacing: '0.12em',
-              color: badge.color,
-              border: `1px solid ${badge.color}`,
-              borderRadius: 4,
-              padding: '4px 8px',
-              textTransform: 'uppercase',
-              opacity: 0.85,
-            }}
-          >
-            {badge.label}
-          </span>
-        ))}
+      <div style={{marginTop:24,display:'flex',gap:10,flexWrap:'wrap'}}>
+        {[{ label:'No KYC', color:'var(--green)' },{ label:'No Data Selling', color:'var(--green)' },{ label:'UK GDPR Compliant', color:'var(--blue)' },{ label:'Non-Custodial', color:'var(--gold)' },{ label:'Anonymous Analytics', color:'var(--muted)' }].map(badge=>(<span key={badge.label} style={{fontFamily:'var(--font-mono)',fontSize:9,letterSpacing:'0.12em',color:badge.color,border:`1px solid ${badge.color}`,borderRadius:4,padding:'4px 8px',textTransform:'uppercase'}}>{badge.label}</span>))}
       </div>
-
-      <p style={{
-        marginTop: 20,
-        fontSize: 10,
-        color: 'var(--dim)',
-        fontFamily: 'var(--font-mono)',
-        letterSpacing: '0.08em',
-      }}>
-        LAST UPDATED: MARCH 2026 · YAKK STUDIOS LTD · ENGLAND &amp; WALES
-      </p>
+      <p style={{marginTop:20,fontSize:10,color:'var(--dim)',fontFamily:'var(--font-mono)',letterSpacing:'0.08em'}}>LAST UPDATED: APRIL 2026 · YAKK STUDIOS · SCOTLAND, UK &amp; PORTUGAL</p>
     </div>
   );
 }

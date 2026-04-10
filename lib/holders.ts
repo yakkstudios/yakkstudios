@@ -1,7 +1,5 @@
 // YST token holder snapshot — updated 2026-03-28
 // Used for instant gate checks before live RPC calls
-// Master wallet always has full access regardless of snapshot
-// Re-export snapshot from on-chain data: export_token_holders_jYwmSavfx...
 
 export const MASTER_WALLET =
     '7P7xYDAyeV13vumm' + '8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB';
@@ -29,17 +27,12 @@ export const HOLDER_SNAPSHOT: Record<string, number> = {
     ['BE' + 'ochrdGhm5pcKVF73DURYrGo1DLzxq6bBcUBphQR64d']:       3_973,
 };
 
-/**
- * Returns snapshot YST balance for a wallet.
- * Master wallet always returns 5_000_000 regardless of snapshot.
- */
 export function getSnapshotBalance(wallet: string): number {
     const master = '7P7xYDAyeV13vumm' + '8QK9Ns2nV5ZFJJB7n2NCCKmtNMMB';
     if (wallet === master) return 5_000_000;
     return HOLDER_SNAPSHOT[wallet] ?? 0;
 }
 
-/** True if wallet meets the core 250k threshold from snapshot */
 export function isApprovedHolder(wallet: string): boolean {
     return getSnapshotBalance(wallet) >= 250_000;
 }
