@@ -7,7 +7,7 @@ const strategyLabels: Record<string, string> = { dip:'Dip Buyer', trend:'Trend F
 export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props) {
   const access = walletConnected && ystBalance >= 10_000_000;
   const [botName,setBotName]=useState(''); const [strategy,setStrategy]=useState('dip'); const [maxTrade,setMaxTrade]=useState(''); const [confirmAbove,setConfirmAbove]=useState(''); const [lossLimit,setLossLimit]=useState(''); const [tokens,setTokens]=useState(''); const [instructions,setInstructions]=useState(''); const [preview,setPreview]=useState('');
-  const buildBot = () => { if (!walletConnected) return; const name=botName||'YAKKBot'; const strat=strategyLabels[strategy]||strategy; const text=`🤖 ${name}\nStrategy: ${strat}\nTokens: ${tokens||'$YST, SOL'}\nMax trade: ${maxTrade?`$${maxTrade}`:'not set'}\nConfirm above: ${confirmAbove?`$${confirmAbove}`:'not set'}\nDaily loss limit: ${lossLimit?`$${lossLimit}`:'not set'}${instructions?`\n\nCustom rules:\n${instructions}`:'`}`; setPreview(text); };
+  const buildBot = () => { if (!walletConnected) return; const name=botName||'YAKKBot'; const strat=strategyLabels[strategy]||strategy; const text=`🤖 ${name}\nStrategy: ${strat}\nTokens: ${tokens||'$YST, SOL'}\nMax trade: ${maxTrade?`$${maxTrade}`:'not set'}\nConfirm above: ${confirmAbove?`$${confirmAbove}`:'not set'}\nDaily loss limit: ${lossLimit?`$${lossLimit}`:'not set'}${instructions?`\n\nCustom rules:\n${instructions}`:''}`; setPreview(text); };
   return (
     <div className="sec-pad">
       <div className="sec-eyebrow">AI-POWERED</div><div className="sec-title">Telegram Trade Bot</div><div className="sec-bar" />
