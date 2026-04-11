@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import ForensicView from '../ForensicView';
 
 interface Props {
@@ -89,6 +90,15 @@ function TokenLogo({ ticker, size = 16 }: { ticker: string; size?: number }) {
 
 export default function Terminal({ walletConnected, ystBalance, onNavigate }: Props) {
   const hasAccess = walletConnected && ystBalance >= 10_000_000;
+  const { publicKey } = useWallet();
+  const { connection } = useConnection();
+  const [solBalance, setSolBalance] = useState<number | null>(null);
+  useEffect(() => {
+    if (!publicKey || !connection) { setSolBalance(null); return; }
+    connection.getBalance(publicKey)
+      .then(lamports => setSolBalance(lamports / 1_000_000_000))
+      .catch(() => setSolBalance(null));
+  }, [publicKey, connection]);
 
   const [tokens, setTokens] = useState(TOKENS);
   const [selectedToken, setSelectedToken] = useState<typeof TOKENS[0] | null>(null);
@@ -280,7 +290,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
                 <div className="swap-box" style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: '7px', padding: '10px 12px' }}>
                   <div className="swap-box-lbl" style={{ fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--dim)', marginBottom: '5px', display: 'flex', justifyContent: 'space-between' }}>
                     <span>FROM</span>
-                    <span>Balance: — SOL</span>
+                    <span>Balance: {solBalance !== null ? solBalance.toFixed(3) : '—'} SOL</span>
                   </div>
                   <div className="swap-box-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <input
@@ -400,7 +410,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
                   <div key={lbl as string} className="ts-cell" style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: '5px', padding: '8px 10px' }}>
                     <div className="ts-lbl" style={{ fontFamily: 'Space Mono,monospace', fontSize: '7px', letterSpacing: '0.12em', color: 'var(--dim)', marginBottom: '3px' }}>{lbl}</div>
                     <div className={`ts-val${cls ? ' ' + cls : ''}`} style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '13px', color: cls === 'up' ? 'var(--green)' : cls === 'dn' ? 'var(--red)' : undefined }}>
-                      {(val as string) || '—'}
+                      {(val as string) && (val as string) !== '$0' ? (val as string) : '—'}
                     </div>
                   </div>
                 ))}
