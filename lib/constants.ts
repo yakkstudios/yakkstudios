@@ -6,6 +6,7 @@ export const WHALE_GATE = 10_000_000;
 // ── Dev wallet bypass (always full access, regardless of YST balance) ────────
 export const DEV_WALLETS = new Set([
   '7CsMUvuHub7dVTeVij8S5baWNHnNDwS2yqyv4ZYQKV9n',
+  'AAeRSGf8nXi9LPQNd2xPdXE88BpSMmCV2btjiHzmLs9C', // test wallet added 2026-04-11
 ]);
 
 // ── DexScreener endpoints ────────────────────────────────────────────────────
