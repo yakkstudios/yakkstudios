@@ -548,7 +548,11 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
     </div>
   );
 
-  const listGridCols = isMobile ? '36px 1fr auto' : '32px 2fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr auto';
+  // Desktop list is always in a narrow split-panel (~40% width) so use a
+  // condensed 5-col layout to prevent price from overflowing onto token logos.
+  const listGridCols = isMobile
+    ? '36px 1fr auto'
+    : '32px minmax(110px,2fr) auto auto auto';
 
   const listPanel = (
     <div style={{
@@ -576,11 +580,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
         <div>#</div>
         <div>TOKEN</div>
         <div style={{ textAlign: 'right' }}>PRICE</div>
-        {!isMobile && <div style={{ textAlign: 'right' }}>1H</div>}
         <div style={{ textAlign: 'right' }}>24H</div>
-        {!isMobile && <div style={{ textAlign: 'right' }}>LIQ</div>}
-        {!isMobile && <div style={{ textAlign: 'right' }}>VOL</div>}
-        {!isMobile && <div style={{ textAlign: 'right' }}>MCAP</div>}
         {!isMobile && <div style={{ textAlign: 'right' }}>RISK</div>}
       </div>
 
@@ -649,29 +649,9 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
                 {fmtPrice(t.price)}
               </div>
 
-              {!isMobile && (
-                <div style={{ textAlign: 'right', fontSize: 11, fontWeight: 700, color: pctColor(t.priceChanges?.h1 ?? 0), fontVariantNumeric: 'tabular-nums' }}>
-                  {fmtPct(t.priceChanges?.h1 ?? 0)}
-                </div>
-              )}
               <div style={{ textAlign: 'right', fontSize: 11, fontWeight: 700, color: pctColor(t.chg), fontVariantNumeric: 'tabular-nums' }}>
                 {fmtPct(t.chg)}
               </div>
-              {!isMobile && (
-                <div style={{ textAlign: 'right', fontSize: 11, color: '#c9c9d1', fontVariantNumeric: 'tabular-nums' }}>
-                  {t.liq}
-                </div>
-              )}
-              {!isMobile && (
-                <div style={{ textAlign: 'right', fontSize: 11, color: '#c9c9d1', fontVariantNumeric: 'tabular-nums' }}>
-                  {t.vol}
-                </div>
-              )}
-              {!isMobile && (
-                <div style={{ textAlign: 'right', fontSize: 11, color: '#c9c9d1', fontVariantNumeric: 'tabular-nums' }}>
-                  {t.mcap}
-                </div>
-              )}
               {!isMobile && (
                 <div style={{ textAlign: 'right' }}>
                   {t.risk && t.risk.grade !== '—' ? <RiskBadge risk={t.risk} /> : <span style={{ fontSize: 11, color: '#666' }}>—</span>}
