@@ -1,15 +1,18 @@
 {
-  "name": "$YAKK Studios",
-  "short_name": "YAKK",
-  "description": "Professional on-chain trading tools for Solana. Screen tokens, investigate wallets, trade with AI, earn yield. No KYC, no custody.",
+  "name": "$YAKK Studios — The Solana Intelligence Terminal",
+  "short_name": "YAKK Studios",
+  "description": "Professional on-chain trading, screening, and forensics tools for Solana. Screen tokens, expose cabals, investigate wallets, trade with AI, earn yield. Powered by $YST. No KYC, no custody, community-built.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0d0d0d",
-  "theme_color": "#e8206a",
+  "background_color": "#050509",
+  "theme_color": "#e0607e",
   "orientation": "portrait-primary",
   "lang": "en",
+  "dir": "ltr",
   "categories": [
     "finance",
+    "productivity",
     "utilities"
   ],
   "icons": [
@@ -17,7 +20,7 @@
       "src": "/yakk-logo.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/yakk-logo.png",
@@ -26,17 +29,19 @@
       "purpose": "any"
     },
     {
-      "src": "/favicon.ico",
-      "sizes": "48x48",
-      "type": "image/x-icon"
+      "src": "/yakk-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
     {
-      "src": "/og-image.svg",
+      "src": "/og-image.png",
       "sizes": "1200x630",
-      "type": "image/svg+xml",
-      "label": "$YAKK Studios - On-Chain Trading Platform"
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "$YAKK Studios — The Solana Intelligence Terminal"
     }
   ],
   "related_applications": [],
