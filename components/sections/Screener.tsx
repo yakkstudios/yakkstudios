@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
+import ForensicView from '../ForensicView';
 
 interface Props {
   walletConnected: boolean;
@@ -783,20 +784,8 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
           })}
         </div>
 
-        {/* Chart iframe — NO sandbox (TradingView web workers) */}
-        <div style={{
-          height: isMobile ? 280 : 380,
-          borderRadius: 10, overflow: 'hidden',
-          border: '1px solid rgba(255,255,255,0.06)',
-          background: '#0a0a10',
-        }}>
-          <iframe
-            key={selected.dex}
-            src={`https://dexscreener.com/solana/${selected.dex}?embed=1&theme=dark&trades=0&info=0`}
-            style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-            title={`${selected.ticker} chart`}
-          />
-        </div>
+        {/* YAKK Forensic View — replaces DexScreener iframe. SOL uses TradingView. */}
+        <ForensicView token={selected} isMobile={isMobile} />
 
         {/* 4-stat grid */}
         <div style={{

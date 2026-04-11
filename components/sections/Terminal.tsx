@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import ForensicView from '../ForensicView';
 
 interface Props {
   walletConnected: boolean;
@@ -227,20 +228,15 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
               </div>
             </div>
 
-            {/* Chart area */}
-            <div id="term-chart" style={{ flex: 1, overflow: 'hidden', position: 'relative', background: 'var(--bg)' }}>
+            {/* Chart area — YAKK Forensic View (SOL branch uses TradingView) */}
+            <div id="term-chart" style={{ flex: 1, overflow: 'auto', position: 'relative', background: 'var(--bg)', padding: 10 }}>
               {selectedToken ? (
-                <iframe
-                  key={selectedToken.dex}
-                  src={`https://dexscreener.com/solana/${selectedToken.dex}?embed=1&theme=dark&trades=0&info=0`}
-                  style={{ width: '100%', height: '100%', border: 'none' }}
-                  title={`${selectedToken.ticker} Chart`}
-                />
+                <ForensicView token={selectedToken} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                   <div style={{ fontSize: '28px' }}>🩷</div>
                   <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '13px', color: 'var(--muted)' }}>Select a token to trade</div>
-                  <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '9px', color: 'var(--dim)' }}>Chart powered by DexScreener</div>
+                  <div style={{ fontFamily: 'Space Mono,monospace', fontSize: '9px', color: 'var(--dim)' }}>Forensic View powered by YAKK</div>
                 </div>
               )}
             </div>
