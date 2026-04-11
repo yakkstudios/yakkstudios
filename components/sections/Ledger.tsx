@@ -12,6 +12,7 @@ const ENTRIES = [
   { num:'09', token:'$WATDOG', extraction:'~$300K–500K+', pattern:'Wallet convergence, relay exits', status:'EXPOSED', detail:'Wallet convergence analysis confirmed relay exit patterns. Community-reported and verified through on-chain forensics.' },
   { num:'10', token:'$WAR', extraction:'~$8–15M+', pattern:'DSKtmLoz $7.98M silent hold, 44-day live infrastructure', status:'EXPOSED', detail:'DSKtmLoz wallet held $7.98M silently for 44 days before executing through live infrastructure.' },
   { num:'11', token:'$BUTTCOIN', extraction:'~$5–8M+ net', pattern:'57-day investigation · $186M tracked · Highest ghost ratio', status:'EXPOSED', detail:'57-day investigation. FFcYgSSg hub $3.01M net. 7abmyox relay $1.53M. 9GVJockJ convergence $2.38M+. 6 ghost exits in top 13. $186,427,275 tracked. Highest ghost ratio documented.' },
+  { num:'12', token:'$PUMP', extraction:'~$467K+ (15-day window · ongoing)', pattern:'3-tier hub-and-spoke farming · Gini 0.9571 · Genesis bundled buy', status:'EXPOSED', detail:'15-day deep dive across 24,222 transactions and 1,701 wallets. Mint: pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn. Gini 0.9571 (far above 0.85 HIGH_RISK threshold). Top 2 wallets hold 78.35% of net tokens, top 5 hold 88.6%. 20-wallet genesis cluster bundled buy within the first 6 hours — identical ~$142.50 legs to primary accumulator 2kfQuYG2 in the same block. Hub-and-spoke architecture confirmed: distributor 8ekCy2j → ~18 farming sub-wallets → primary extractor 2kfQuYG2 (+$340,416) · secondary HyKbc1vU (+$90,920) · silent accumulator G8CcfRff (+$36,447, pure-receiver cold wallet). $350M buyback narrative deployed as cover. Volume accelerated +156% on Apr 7, still climbing Apr 8. Operation was live at export. Confidence 0.93. Classification: CABAL/FARMED — Tier 1.' },
 ];
 export default function Ledger({ walletConnected = false, ystBalance = 0, onNavigate }: { walletConnected?: boolean; ystBalance?: number; onNavigate?: (s: string) => void }) {
   const [selected, setSelected] = useState<string | null>(null);
@@ -53,7 +54,7 @@ export default function Ledger({ walletConnected = false, ystBalance = 0, onNavi
               <tr style={{background:'rgba(247,201,72,0.04)',borderTop:'1px solid rgba(247,201,72,0.15)'}}>
                 <td colSpan={2} style={{padding:'10px',fontFamily:'Syne,sans-serif',fontWeight:800,color:'var(--gold)',fontSize:12,borderTop:'2px solid rgba(247,201,72,0.3)'}}>RUNNING TOTAL</td>
                 <td style={{padding:'10px',fontFamily:'Space Mono,monospace',fontSize:17,fontWeight:700,color:'var(--red)',borderTop:'2px solid rgba(247,201,72,0.3)'}}>~$1.048B–$3.98B+</td>
-                <td colSpan={2} style={{padding:'10px',fontSize:11,color:'var(--red)',fontStyle:'italic',borderTop:'2px solid rgba(247,201,72,0.3)'}}>Eleven tokens. The ledger never closes.</td>
+                <td colSpan={2} style={{padding:'10px',fontSize:11,color:'var(--red)',fontStyle:'italic',borderTop:'2px solid rgba(247,201,72,0.3)'}}>Twelve tokens. The ledger never closes.</td>
               </tr>
             </tbody>
           </table>
