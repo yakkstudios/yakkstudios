@@ -374,7 +374,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
                 className="swap-btn swap-btn-connect"
                 style={{ width: '100%', padding: '11px', borderRadius: '7px', fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: '13px', letterSpacing: '0.06em', cursor: 'pointer', border: 'none', background: 'var(--pink)', color: '#fff' }}
               >
-                CONNECT WALLET TO TRADE
+                {walletConnected ? 'EXECUTE SWAP' : 'CONNECT WALLET TO TRADE'}
               </button>
 
               {/* Zero-fee notice */}
