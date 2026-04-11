@@ -1,6 +1,5 @@
 'use client';
-import { useState } from 'react';
-import { NAV, GATED_SECTIONS } from '@/lib/constants';
+import { NAV, GATED_SECTIONS, HUB_IDS, TOOL_TO_HUB } from '@/lib/constants';
 
 interface SidebarProps {
   activeSection: string;
@@ -21,8 +20,6 @@ export default function Sidebar({
   walletAddress,
   ystBalance = 0,
 }: SidebarProps) {
-  const [labsOpen, setLabsOpen] = useState(false);
-
   const shortAddr = walletAddress
     ? walletAddress.slice(0, 4) + '…' + walletAddress.slice(-4)
     : '';
@@ -31,6 +28,13 @@ export default function Sidebar({
     if (!GATED_SECTIONS.has(id)) return true;
     if (id === 'whaleclub') return ystBalance >= 10_000_000;
     return ystBalance >= 250_000;
+  };
+
+  // A hub entry is "active" if either the hub itself or any of its tools is showing
+  const hubActive = (id: string) => {
+    if (!HUB_IDS.has(id)) return activeSection === id;
+    if (activeSection === id) return true;
+    return TOOL_TO_HUB[activeSection] === id;
   };
 
   return (
@@ -69,74 +73,75 @@ export default function Sidebar({
 
           {/* Nav */}
           <div className="sb-nav-scroll">
-            {NAV.map((section) => {
-              const isLabs = section.collapsed;
-              return (
-                <div key={section.title}>
-                  {isLabs ? (
+            {NAV.map((section) => (
+              <div key={section.title}>
+                <div className="nav-section">{section.title}</div>
+                {section.items.map((item) => {
+                  const isHub = HUB_IDS.has(item.id);
+                  const gated = GATED_SECTIONS.has(item.id);
+                  const accessible = hasAccess(item.id);
+                  const isWhale = item.whaleOnly;
+                  const isSoon = item.comingSoon;
+                  const isActive = hubActive(item.id);
+                  return (
                     <div
-                      className="nav-section nav-section-toggle"
-                      onClick={() => setLabsOpen(!labsOpen)}
-                      style={{ cursor: 'pointer', userSelect: 'none', display: 'flex', alignItems: 'center', gap: 6 }}
+                      key={item.id}
+                      className={`nav-item ${isWhale ? 'whale-item' : ''} ${isActive ? 'active' : ''} ${isSoon ? 'nav-item-soon' : ''}`}
+                      onClick={() => { onNavigate(item.id); onClose(); }}
+                      title={
+                        isSoon
+                          ? `${item.label} — Coming Soon`
+                          : gated && !accessible
+                          ? isWhale
+                            ? 'Requires 10M $YST held'
+                            : 'Requires 250K $YST held'
+                          : item.label
+                      }
+                      style={isSoon ? { opacity: 0.5 } : undefined}
                     >
-                      <span style={{ fontSize: 10, transition: 'transform 0.2s', transform: labsOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}>▶</span>
-                      {section.title}
-                      <span style={{ fontSize: 9, color: 'var(--dim)', fontFamily: 'var(--font-mono)', marginLeft: 'auto' }}>
-                        {section.items.length}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="nav-section">{section.title}</div>
-                  )}
-
-                  {/* Collapsed Labs: only show if toggled open */}
-                  {(!isLabs || labsOpen) && section.items.map((item) => {
-                    const gated = GATED_SECTIONS.has(item.id);
-                    const accessible = hasAccess(item.id);
-                    const isWhale = item.whaleOnly;
-                    const isSoon = item.comingSoon;
-                    return (
-                      <div
-                        key={item.id}
-                        className={`nav-item ${isWhale ? 'whale-item' : ''} ${activeSection === item.id ? 'active' : ''} ${isSoon ? 'nav-item-soon' : ''}`}
-                        onClick={() => { onNavigate(item.id); onClose(); }}
-                        title={
-                          isSoon
-                            ? `${item.label} — Coming Soon`
-                            : gated && !accessible
-                            ? isWhale
-                              ? 'Requires 10M $YST held'
-                              : 'Requires 250K $YST held'
-                            : item.label
-                        }
-                        style={isSoon ? { opacity: 0.5 } : undefined}
-                      >
-                        <span className="nav-icon">{item.icon}</span>
-                        {item.label}
-                        {isSoon && (
-                          <span className="nav-badge soon" style={{
-                            background: 'rgba(255,255,255,0.08)',
-                            color: 'var(--dim)',
+                      <span className="nav-icon">{item.icon}</span>
+                      {item.label}
+                      {isHub && (
+                        <span
+                          className="nav-badge hub"
+                          style={{
+                            background: 'rgba(224,96,126,0.12)',
+                            color: 'var(--pink)',
                             fontSize: 8,
                             padding: '1px 5px',
                             borderRadius: 3,
                             marginLeft: 'auto',
                             fontFamily: 'var(--font-mono)',
                             letterSpacing: '0.5px',
-                          }}>SOON</span>
-                        )}
-                        {!isSoon && isWhale && (
-                          <span className="nav-badge whale">WHALE</span>
-                        )}
-                        {!isSoon && gated && !isWhale && !accessible && (
-                          <span className="nav-badge locked">YST</span>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
+                            border: '1px solid rgba(224,96,126,0.25)',
+                          }}
+                        >
+                          HUB
+                        </span>
+                      )}
+                      {isSoon && (
+                        <span className="nav-badge soon" style={{
+                          background: 'rgba(255,255,255,0.08)',
+                          color: 'var(--dim)',
+                          fontSize: 8,
+                          padding: '1px 5px',
+                          borderRadius: 3,
+                          marginLeft: 'auto',
+                          fontFamily: 'var(--font-mono)',
+                          letterSpacing: '0.5px',
+                        }}>SOON</span>
+                      )}
+                      {!isHub && !isSoon && isWhale && (
+                        <span className="nav-badge whale">WHALE</span>
+                      )}
+                      {!isHub && !isSoon && gated && !isWhale && !accessible && (
+                        <span className="nav-badge locked">YST</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
 
           {/* Footer */}
