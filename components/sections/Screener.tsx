@@ -683,7 +683,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
       {/* Banner hero */}
       <div style={{
         position: 'relative',
-        height: isMobile ? 120 : 150,
+        height: isMobile ? 120 : 200,
         backgroundImage: `linear-gradient(180deg, rgba(5,5,9,0.2), rgba(5,5,9,0.9)), url(${bannerMap[selected.ticker] ?? ''})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
