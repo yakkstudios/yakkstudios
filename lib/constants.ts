@@ -28,66 +28,116 @@ export interface NavSection {
 }
 
 export const GATED_SECTIONS = new Set([
-  'screener','terminal','cabal','yakktrader','predictions','coach',
+  'screener','terminal','cabal','yakktrader','predictions',
   'tgbot','update','artlab','raids','launchpad','otcdesk','yieldfinder',
   'portfolio','privacy','tokencreator','ledger','members','whaleclub',
-  'bridge','alerts',
+  'bridge','alerts','trusted',
 ]);
 
-// ── Nav ───────────────────────────────────────────────────────────────────────
+// ── Hub definitions (4 mega-sections with horizontal tabs) ───────────────────
+// Each hub is a category in the sidebar. Clicking it routes to the first tool,
+// and a HubTabBar at the top of every tool page shows sibling tools as tabs.
+export interface HubDef {
+  id: string;
+  label: string;
+  icon: string;
+  blurb: string;
+  tools: NavItem[];
+}
+
+export const HUBS: HubDef[] = [
+  {
+    id: 'trade',
+    label: 'TRADE',
+    icon: '📈',
+    blurb: 'Screen, chart, and execute on Solana.',
+    tools: [
+      { id: 'screener',    label: 'SCREENER',    icon: '🔍', gated: true },
+      { id: 'terminal',    label: 'TERMINAL',    icon: '⚡', whaleOnly: true },
+      { id: 'yakktrader',  label: 'AI TRADER',    icon: '🤖', whaleOnly: true },
+      { id: 'predictions', label: 'PREDICTIONS', icon: '🎯', whaleOnly: true },
+      { id: 'alerts',      label: 'ALERTS',       icon: '🔔', whaleOnly: true },
+      { id: 'otcdesk',     label: 'OTC DESK',     icon: '🤝', whaleOnly: true },
+      { id: 'bridge',      label: 'BRIDGE',       icon: '🌉', whaleOnly: true },
+      { id: 'tgbot',       label: 'TG BOT',       icon: '📱', whaleOnly: true },
+    ],
+  },
+  {
+    id: 'investigate',
+    label: 'INVESTIGATE',
+    icon: '🕵️',
+    blurb: 'On-chain forensics. Cabal intel. Rug archive.',
+    tools: [
+      { id: 'cabal',   label: 'CABAL',         icon: '🕵️', gated: true },
+      { id: 'clowns',  label: 'CLOWNS',        icon: '🤡' },
+      { id: 'ledger',  label: 'RUG LEDGER',    icon: '📒', gated: true },
+      { id: 'trusted', label: 'TRUSTED LIST',  icon: '🛡️', whaleOnly: true },
+      { id: 'raids',   label: 'RAID HUB',      icon: '⚔️', whaleOnly: true },
+    ],
+  },
+  {
+    id: 'earn',
+    label: 'EARN',
+    icon: '💰',
+    blurb: 'Stake, farm, and compound $YST yield.',
+    tools: [
+      { id: 'stakepoint',  label: 'STAKEPOINT',    icon: '🏆' },
+      { id: 'yieldfinder', label: 'YIELD FINDER',  icon: '💰', whaleOnly: true },
+      { id: 'launchpad',   label: 'VENTURES',      icon: '🦅', whaleOnly: true },
+      { id: 'portfolio',   label: 'PORTFOLIO',     icon: '📊', whaleOnly: true },
+    ],
+  },
+  {
+    id: 'whalelabs',
+    label: 'WHALE LABS',
+    icon: '🐋',
+    blurb: 'Premium playground for 10M+ holders.',
+    tools: [
+      { id: 'nftmarket', label: 'NFT MARKET',    icon: '🖼️', whaleOnly: true },
+      { id: 'raffle',    label: 'NFT RAFFLE',    icon: '🎟️', whaleOnly: true },
+      { id: 'artlab',    label: 'ART LAB',       icon: '🎨', whaleOnly: true },
+      { id: 'privacy',   label: 'PRIVACY',       icon: '🕵️', whaleOnly: true },
+      { id: 'update',    label: 'CHANGELOG',     icon: '📋', whaleOnly: true },
+    ],
+  },
+  {
+    id: 'community',
+    label: 'COMMUNITY',
+    icon: '👥',
+    blurb: 'News, members, causes, and your voice.',
+    tools: [
+      { id: 'news',       label: 'NEWS',           icon: '📰' },
+      { id: 'members',    label: 'MEMBERS',        icon: '👾', gated: true },
+      { id: 'whaleclub',  label: 'WHALE CLUB',     icon: '🐋', whaleOnly: true },
+      { id: 'wren',       label: 'SAVE THE WREN',  icon: '🛡️' },
+      { id: 'features',   label: 'REQUESTS',       icon: '💡' },
+      { id: 'nftdrop',    label: 'NFT DROP',       icon: '🎟️' },
+      { id: 'whitepaper', label: 'WHITEPAPER',     icon: '📄' },
+    ],
+  },
+];
+
+export const HUB_IDS = new Set(HUBS.map(h => h.id));
+
+// Reverse map: tool id → parent hub id. Used by HubTabBar to know which tabs
+// to render above any given tool page.
+export const TOOL_TO_HUB: Record<string, string> = (() => {
+  const m: Record<string, string> = {};
+  for (const hub of HUBS) {
+    for (const tool of hub.tools) m[tool.id] = hub.id;
+  }
+  return m;
+})();
+
+// ── Flat sidebar (hub-collapsed — 9 items total, zero visible tools) ─────────
 export const NAV: NavSection[] = [
   {
-    title: 'CORE',
+    title: 'MAIN',
     items: [
-      { id: 'home',     label: 'HOME',               icon: '🏠' },
-      { id: 'screener', label: 'YAKK SCREENER',      icon: '🔍', gated: true },
-      { id: 'cabal',    label: 'CABAL INVESTIGATOR',  icon: '🕵️', gated: true },
-      { id: 'coach',    label: 'YAKKAI COACH',        icon: '🧠', gated: true },
-      { id: 'clowns',   label: 'CERTIFIED CLOWNS',   icon: '🤡' },
-      { id: 'services', label: 'AI SERVICES',         icon: '💼' },
-    ],
-  },
-  {
-    title: 'INFO',
-    items: [
-      { id: 'news',       label: 'YAKK NEWS',   icon: '📰' },
-      { id: 'whitepaper', label: 'WHITEPAPER',   icon: '📄' },
-      { id: 'ledger',     label: 'RUG LEDGER',   icon: '📒', gated: true },
-      { id: 'stakepoint', label: 'STAKEPOINT',   icon: '🏆' },
-    ],
-  },
-  {
-    title: 'COMMUNITY',
-    items: [
-      { id: 'wallet',   label: 'PROFILE',           icon: '👤' },
-      { id: 'members',  label: 'MEMBERS',           icon: '👾', gated: true },
-      { id: 'whaleclub',label: 'WHALE CLUB',        icon: '🐋', whaleOnly: true },
-      { id: 'features', label: 'REQUESTS',          icon: '💡' },
-      { id: 'nftdrop',  label: 'NFT DROP — APR 20', icon: '🎟️' },
-      { id: 'wren',     label: 'SAVE THE WREN',     icon: '🛡️' },
-    ],
-  },
-  {
-    title: 'LABS',
-    collapsed: true,
-    items: [
-      { id: 'terminal',    label: 'YAKK TERMINAL',  icon: '⚡',  whaleOnly: true },
-      { id: 'yakktrader',  label: 'AI TRADER',       icon: '🤖',  whaleOnly: true },
-      { id: 'predictions', label: 'PREDICTIONS',     icon: '🎯',  whaleOnly: true },
-      { id: 'otcdesk',     label: 'OTC DESK',        icon: '🤝',  whaleOnly: true },
-      { id: 'alerts',      label: 'PRICE ALERTS',    icon: '🔔',  whaleOnly: true },
-      { id: 'bridge',      label: 'BRIDGE',          icon: '🌉',  whaleOnly: true },
-      { id: 'yieldfinder', label: 'YIELD FINDER',    icon: '💰',  whaleOnly: true },
-      { id: 'launchpad',   label: 'YAKK VENTURES',   icon: '🦅',  whaleOnly: true },
-      { id: 'portfolio',   label: 'PORTFOLIO',        icon: '📊',  whaleOnly: true },
-      { id: 'nftmarket',   label: 'NFT MARKET',      icon: '🖼️',  whaleOnly: true },
-      { id: 'raffle',      label: 'NFT RAFFLE',      icon: '🎟️',  whaleOnly: true },
-      { id: 'artlab',      label: 'ART LAB',         icon: '🎨',  whaleOnly: true },
-      { id: 'tgbot',       label: 'TG TRADE BOT',    icon: '📱',  whaleOnly: true },
-      { id: 'privacy',     label: 'PRIVACY ROUTER',  icon: '🕵️',  whaleOnly: true },
-      { id: 'update',      label: 'CHANGELOG',       icon: '📋',  whaleOnly: true },
-      { id: 'raids',       label: 'RAID HUB',        icon: '⚔️',  whaleOnly: true },
-      { id: 'trusted',     label: 'TRUSTED LIST',    icon: '🛡️',  whaleOnly: true },
+      { id: 'home',     label: 'HOME',         icon: '🏠' },
+      ...HUBS.map<NavItem>(h => ({ id: h.id, label: h.label, icon: h.icon })),
+      { id: 'wallet',   label: 'PROFILE',      icon: '👤' },
+      { id: 'services', label: 'AI SERVICES',  icon: '💼' },
     ],
   },
   {
@@ -109,12 +159,10 @@ export interface HomeCard {
 }
 
 export const HOME_CARDS: HomeCard[] = [
-  { id: 'screener',   emoji: '🔍', title: 'YAKK SCREENER',      desc: 'Real-time Solana token screening. Filter by volume, liquidity & momentum.',    accent: 'var(--pink)'  },
-  { id: 'cabal',      emoji: '🕵️', title: 'CABAL INVESTIGATOR', desc: 'On-chain wallet analysis. Track influencers, whales & insider wallets.',       accent: 'var(--pink)'  },
-  { id: 'coach',      emoji: '🧠', title: 'YAKKAI COACH',       desc: 'AI-powered trading assistant. Get insights and analysis on any Solana token.', accent: 'var(--blue)'  },
-  { id: 'clowns',     emoji: '🤡', title: 'CERTIFIED CLOWNS',   desc: 'On-chain forensics. Anti-rug scoring and wallet investigation reports.',       accent: 'var(--pink)'  },
-  { id: 'services',   emoji: '💼', title: 'AI SERVICES',         desc: 'Professional AI services for Web3 projects. Strategy, automation, agents.',   accent: 'var(--green)' },
-  { id: 'stakepoint', emoji: '🏆', title: 'STAKEPOINT',         desc: 'Stake your $YST to earn rewards and unlock all platform tools.',               accent: 'var(--gold)'  },
-  { id: 'ledger',     emoji: '📒', title: 'RUG LEDGER',         desc: 'Community-sourced database of known rugs, scams, and suspicious projects.',    accent: 'var(--pink)'  },
-  { id: 'news',       emoji: '📰', title: 'YAKK NEWS',          desc: 'Curated crypto news feed. Stay ahead of the market.',                          accent: 'var(--blue)'  },
+  { id: 'trade',       emoji: '📈', title: 'TRADE',        desc: 'Screener, Terminal, AI Trader, Predictions & more — everything you need to trade Solana.',   accent: 'var(--pink)'  },
+  { id: 'investigate', emoji: '🕵️', title: 'INVESTIGATE', desc: 'Cabal intel, certified clowns, rug ledger and the trusted list. Full on-chain forensics.',    accent: 'var(--pink)'  },
+  { id: 'earn',        emoji: '💰', title: 'EARN',         desc: 'StakePoint, Yield Finder, Ventures and Portfolio. Compound your $YST position.',              accent: 'var(--gold)'  },
+  { id: 'whalelabs',   emoji: '🐋', title: 'WHALE LABS',   desc: 'NFT Market, Raffle, Art Lab, Privacy Router. The premium playground for 10M+ holders.',       accent: 'var(--blue)'  },
+  { id: 'community',   emoji: '👥', title: 'COMMUNITY',    desc: 'News, members, the Wren campaign, feature requests and the whitepaper.',                     accent: 'var(--green)' },
+  { id: 'services',    emoji: '💼', title: 'AI SERVICES',  desc: 'Professional AI services for Web3 projects. Strategy, automation, agents.',                  accent: 'var(--green)' },
 ];
