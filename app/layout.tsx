@@ -75,32 +75,53 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/favicon.ico', sizes: '48x48', type: 'image/x-icon' },
       { url: '/icon.svg', type: 'image/svg+xml', sizes: 'any' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
-    apple: { url: '/apple-icon.svg', type: 'image/svg+xml' },
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
     shortcut: '/favicon.ico',
+    other: [
+      { rel: 'mask-icon', url: '/icon.svg', color: '#e0607e' },
+    ],
   },
   manifest: '/manifest.json',
   alternates: {
     canonical: SITE_URL,
   },
   category: 'finance',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#FF2E9A" />
-        <meta name="msapplication-TileColor" content="#0A0A0F" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#e0607e" />
+        <meta name="msapplication-TileColor" content="#050509" />
+        <meta name="msapplication-TileImage" content="/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="YAKK Studios" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <meta name="application-name" content="$YAKK Studios" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon.png" />
+        <link rel="mask-icon" href="/icon.svg" color="#e0607e" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="preconnect" href="https://api.dexscreener.com" />
+        <link rel="preconnect" href="https://mainnet.helius-rpc.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

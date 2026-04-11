@@ -5,7 +5,8 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { PublicKey } from '@solana/web3.js';
 import Sidebar from '@/components/Sidebar';
 import TickerBar from '@/components/TickerBar';
-import { YST_MINT, YST_GATE, WHALE_GATE, DEV_WALLETS } from '@/lib/constants';
+import HubTabBar from '@/components/HubTabBar';
+import { YST_MINT, DEV_WALLETS, HUBS, HUB_IDS } from '@/lib/constants';
 import { HOLDER_SNAPSHOT } from '@/lib/holders';
 // Sections
 import Home from '@/components/sections/Home';
@@ -29,7 +30,8 @@ import Features from '@/components/sections/Features';
 import Portfolio from '@/components/sections/Portfolio';
 import Stakepoint from '@/components/sections/Stakepoint';
 import ArtLab from '@/components/sections/ArtLab';
-import Coach from '@/components/sections/Coach';
+// Coach (YAKKAI) is intentionally unmounted — functionality lives in the Telegram bot.
+// Source file components/sections/Coach.tsx is kept on disk for future reuse.
 import Raids from '@/components/sections/Raids';
 import Raffle from '@/components/sections/Raffle';
 import Wallet from '@/components/sections/Wallet';
@@ -49,10 +51,13 @@ import PrivacyPolicy from '@/components/sections/PrivacyPolicy';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 type SectionId =
+  // Hub landings (redirect on arrival to their first tool)
+  | 'trade' | 'investigate' | 'earn' | 'whalelabs' | 'community'
+  // Tool pages
   | 'home' | 'screener' | 'terminal' | 'update' | 'trusted' | 'clowns'
   | 'yakktrader' | 'predictions' | 'cabal' | 'nftmarket' | 'launchpad'
   | 'otcdesk' | 'yieldfinder' | 'alerts' | 'privacy' | 'tokencreator'
-  | 'tgbot' | 'features' | 'portfolio' | 'stakepoint' | 'artlab' | 'coach'
+  | 'tgbot' | 'features' | 'portfolio' | 'stakepoint' | 'artlab'
   | 'raids' | 'raffle' | 'wallet' | 'members' | 'whaleclub' | 'ledger'
   | 'whitepaper' | 'news' | 'services' | 'wren' | 'nftdrop' | 'bridge'
   | 'terms' | 'privacypolicy';
@@ -89,7 +94,14 @@ export default function App() {
   }, [walletConnected, publicKey, connection]);
 
   const navigate = useCallback((id: string) => {
-    setSection(id as SectionId);
+    // If a hub id is navigated to, immediately redirect to its first tool so
+    // the user lands on a real page with the HubTabBar already showing.
+    let target = id;
+    if (HUB_IDS.has(id)) {
+      const hub = HUBS.find((h) => h.id === id);
+      if (hub && hub.tools.length > 0) target = hub.tools[0].id;
+    }
+    setSection(target as SectionId);
     setSidebarOpen(false);
     const mainEl = document.getElementById('main');
     if (mainEl) mainEl.scrollTop = 0;
@@ -109,7 +121,7 @@ export default function App() {
       otcdesk: 'OTC Desk', yieldfinder: 'Yield Finder', alerts: 'Price Alerts',
       privacy: 'Privacy Router', tokencreator: 'Token Creator', tgbot: 'TG Trade Bot',
       features: 'Requests', portfolio: 'Portfolio', stakepoint: 'StakePoint',
-      artlab: 'Art Lab', coach: 'YAKKAI Coach', raids: 'Raid Hub', raffle: 'NFT Raffle',
+      artlab: 'Art Lab', raids: 'Raid Hub', raffle: 'NFT Raffle',
       wallet: 'Profile', members: 'Members', whaleclub: 'Whale Club',
       ledger: 'Rug Ledger', whitepaper: 'Whitepaper', news: 'YAKK News',
       services: 'AI Services', wren: 'Saving The Wren', nftdrop: 'YAKK GEN I — NFT Drop',
@@ -150,6 +162,13 @@ export default function App() {
       <div id="main-wrap">
         <TickerBar walletConnected={walletConnected} walletLabel={walletLabel} onDisconnect={handleDisconnect} />
         <div id="main">
+          <HubTabBar
+            activeSection={section}
+            walletConnected={walletConnected}
+            ystBalance={effectiveYstBalance}
+            onNavigate={navigate}
+          />
+
 
           <div className={`page-section ${section === 'home'         ? 'active' : ''}`}><ErrorBoundary sectionName="Home">         <Home         {...sectionProps} /></ErrorBoundary></div>
           <div className={`page-section ${section === 'screener'     ? 'active' : ''}`}><ErrorBoundary sectionName="Screener">     <Screener     {...sectionProps} /></ErrorBoundary></div>
@@ -172,7 +191,6 @@ export default function App() {
           <div className={`page-section ${section === 'portfolio'    ? 'active' : ''}`}><ErrorBoundary sectionName="Portfolio">    <Portfolio    {...sectionProps} /></ErrorBoundary></div>
           <div className={`page-section ${section === 'stakepoint'   ? 'active' : ''}`}><ErrorBoundary sectionName="StakePoint">  <Stakepoint   {...sectionProps} /></ErrorBoundary></div>
           <div className={`page-section ${section === 'artlab'       ? 'active' : ''}`}><ErrorBoundary sectionName="Art Lab">      <ArtLab       {...sectionProps} /></ErrorBoundary></div>
-          <div className={`page-section ${section === 'coach'        ? 'active' : ''}`}><ErrorBoundary sectionName="Coach">        <Coach        {...sectionProps} /></ErrorBoundary></div>
           <div className={`page-section ${section === 'raids'        ? 'active' : ''}`}><ErrorBoundary sectionName="Raids">        <Raids        {...sectionProps} /></ErrorBoundary></div>
           <div className={`page-section ${section === 'raffle'       ? 'active' : ''}`}><ErrorBoundary sectionName="Raffle">       <Raffle       {...sectionProps} /></ErrorBoundary></div>
           <div className={`page-section ${section === 'wallet'       ? 'active' : ''}`}><ErrorBoundary sectionName="Profile">      <Wallet       {...sectionProps} /></ErrorBoundary></div>
