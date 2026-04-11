@@ -63,12 +63,42 @@ type SectionId =
   | 'terms' | 'privacypolicy';
 
 async function fetchYstBalance(connection: any, walletPk: PublicKey): Promise<number> {
+  const addr = walletPk.toBase58();
+
+  // Path 1: server-side Helius via /api/balance
+  try {
+    const res = await fetch(`/api/balance?wallet=${addr}`, { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (!data?.stale && typeof data?.balance === 'number' && data.balance > 0) {
+        return Math.floor(data.balance);
+      }
+    }
+  } catch { /* fall through */ }
+
+  // Path 2: browser-side wallet-adapter RPC
   try {
     const mint = new PublicKey(YST_MINT);
     const accounts = await connection.getParsedTokenAccountsByOwner(walletPk, { mint });
-    const bal = accounts.value[0]?.account?.data?.parsed?.info?.tokenAmount?.uiAmount ?? 0;
-    return Math.floor(bal);
-  } catch { return 0; }
+    let total = 0;
+    for (const acc of accounts.value ?? []) {
+      const ui = acc?.account?.data?.parsed?.info?.tokenAmount?.uiAmount;
+      if (typeof ui === 'number' && Number.isFinite(ui)) total += ui;
+    }
+    return Math.floor(total);
+  } catch { /* fall through */ }
+
+  // Last resort: one retry of the server route after a short delay
+  try {
+    await new Promise((r) => setTimeout(r, 800));
+    const res = await fetch(`/api/balance?wallet=${addr}`, { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (typeof data?.balance === 'number') return Math.floor(data.balance);
+    }
+  } catch { /* give up */ }
+
+  return 0;
 }
 
 export default function App() {
