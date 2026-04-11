@@ -1,7 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-const PEPS = [
+// Rotating manifesto lines shown on the home page dispatch card.
+const MANIFESTO = [
   "The den is open. No paper hands. No excuses.",
   "Anti-greed infrastructure. Your wallet is your account.",
   "The empire is building. The mountain delivers.",
@@ -21,7 +22,7 @@ export default function Home({
   ystBalance?: number;
   onNavigate?: (s: string) => void;
 }) {
-  const [pep, setPep] = useState(PEPS[0]);
+  const [dispatch, setDispatch] = useState(MANIFESTO[0]);
   const [nftDays, setNftDays] = useState({ d: '00', h: '00', m: '00', s: '00' });
 
   useEffect(() => {
@@ -41,9 +42,9 @@ export default function Home({
     return () => clearInterval(id);
   }, []);
 
-  const newPep = () => {
-    const next = PEPS[Math.floor(Math.random() * PEPS.length)];
-    setPep(next);
+  const newDispatch = () => {
+    const next = MANIFESTO[Math.floor(Math.random() * MANIFESTO.length)];
+    setDispatch(next);
   };
 
   return (
@@ -90,7 +91,7 @@ export default function Home({
         <div className="stat-card"><div className="slbl">SCREENER FEE</div><div className="sval" style={{ color: 'var(--green)' }}>$10</div><div className="ssub">vs $300+ elsewhere</div></div>
       </div>
 
-      {/* NFT DROP + PEP */}
+      {/* NFT DROP + YAKK DISPATCH */}
       <div className="grid2" style={{ marginBottom: 20 }}>
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
@@ -112,13 +113,21 @@ export default function Home({
         </div>
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 11 }}>
-            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>DAILY YAKKAI PEP</div>
-            <span className="badge b-yakk">AI</span>
+            <div style={{ fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: 13 }}>YAKK DISPATCH</div>
+            <span className="badge b-pink">MANIFESTO</span>
           </div>
-          <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.8, minHeight: 68, fontStyle: 'italic' }}>&quot;{pep}&quot;</div>
+          <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.8, minHeight: 68, fontStyle: 'italic' }}>&quot;{dispatch}&quot;</div>
           <div style={{ marginTop: 12, display: 'flex', gap: 7 }}>
-            <button className="btn btn-ghost" style={{ fontSize: 10, padding: '5px 11px' }} onClick={newPep}>↻ NEW PEP</button>
-            <button className="btn btn-outline" style={{ fontSize: 10, padding: '5px 11px' }} onClick={() => onNavigate?.('coach')}>YAKKAI →</button>
+            <button className="btn btn-ghost" style={{ fontSize: 10, padding: '5px 11px' }} onClick={newDispatch}>↻ NEW LINE</button>
+            <a
+              className="btn btn-outline"
+              style={{ fontSize: 10, padding: '5px 11px', textDecoration: 'none' }}
+              href="https://t.me/yakkstudios"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              TG BOT →
+            </a>
           </div>
         </div>
       </div>
@@ -128,7 +137,7 @@ export default function Home({
         {[
           { icon: '📊', title: 'YAKK SCREENER', desc: '$10 SOL to update your token on-chain. Supports Metaplex MPL + Token-2022 (pump.fun). Trusted projects featured.', badge: '$10 vs $300+', badgeClass: 'b-green', section: 'screener' },
           { icon: '📖', title: 'RUG LEDGER', desc: '$3.9B+ documented. 12 investigations. The same 15 wallets every time.', badge: '$3.9B+ TRACKED', badgeClass: 'b-red', section: 'ledger' },
-          { icon: '🧠', title: 'YAKKAI COACH', desc: 'Discipline. Raid strategy. Risk management. Your mafia consigliere.', section: 'coach' },
+          { icon: '🕵️', title: 'CABAL INVESTIGATOR', desc: 'On-chain forensics. Map wallet clusters, track insiders, expose coordinated pump rings.', section: 'cabal' },
           { icon: '⚔️', title: 'RAID HUB', desc: 'Daily targets. Earn XP. Climb the leaderboard. GET YAKKED.', section: 'raids' },
           { icon: '🛒', title: 'NFT MARKET', desc: 'SOL, ETH, BTC Ordinals, BNB, Tron. 6 chains, 1 interface. Only 1.5% fee.', badge: '6 CHAINS', badgeClass: 'b-gold', section: 'nftmarket' },
           { icon: '🌉', title: 'BRIDGE & SWAP', desc: 'deBridge · Wormhole · Mayan · Allbridge. Cross-chain without leaving YAKK.', badge: '0.1% FEE', badgeClass: 'b-green', section: 'terminal' },

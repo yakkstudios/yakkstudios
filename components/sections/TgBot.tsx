@@ -27,7 +27,7 @@ export default function TgBot({ walletConnected, ystBalance, onNavigate }: Props
             <div><div style={{fontSize:9,color:'var(--dim)',marginBottom:5}}>DAILY LOSS LIMIT ($)</div><input type="number" placeholder="Bot pauses if this is hit" value={lossLimit} onChange={e=>setLossLimit(e.target.value)} style={{...inp,fontSize:12}} /></div>
             <div><div style={{fontSize:9,color:'var(--dim)',marginBottom:5}}>TOKENS TO TRADE</div><input type="text" placeholder="$YST, $SPT, SOL..." value={tokens} onChange={e=>setTokens(e.target.value)} style={inp} /></div>
             <div><div style={{fontSize:9,color:'var(--dim)',marginBottom:5}}>CUSTOM INSTRUCTIONS</div><textarea placeholder="e.g. Never buy if wallet drops below 2 SOL..." rows={3} value={instructions} onChange={e=>setInstructions(e.target.value)} style={{...inp,resize:'vertical' as const}} /></div>
-            <button className="btn btn-pink" onClick={buildBot} style={{width:'100%'}} disabled={!walletConnected}>🤖 BUILD MY BOT WITH YAKKAI</button>
+            <button className="btn btn-pink" onClick={buildBot} style={{width:'100%'}} disabled={!walletConnected}>🤖 BUILD MY BOT WITH YAKK AI</button>
           </div>
         </div>
         <div style={{display:'flex',flexDirection:'column',gap:14}}>

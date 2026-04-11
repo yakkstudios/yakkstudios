@@ -38,7 +38,7 @@ const REQUIREMENTS = [
   { icon: '✓', color: '#64dc64', text: 'Minimum 100-word project description — no vapourware' },
   { icon: '✓', color: '#64dc64', text: 'Applicant wallet must not be flagged in our Clowns database' },
   { icon: '★', color: 'var(--gold)', text: 'Optional: KYC (increases trust score, shown on listing)' },
-  { icon: '★', color: 'var(--gold)', text: 'Optional: Smart contract audit (YAKKAI automated + partner firms)' },
+  { icon: '★', color: 'var(--gold)', text: 'Optional: Smart contract audit (YAKK AI automated + partner firms)' },
 ];
 
 const fieldStyle: React.CSSProperties = {
@@ -114,7 +114,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
       <div className="sec-bar" />
 
       <p style={{ fontSize: 12, color: 'var(--dim)', marginBottom: 8 }}>
-        Launch a token the right way. Real projects. Locked liquidity. Verified teams. YAKKAI due diligence. We're building what pump.fun should have been.
+        Launch a token the right way. Real projects. Locked liquidity. Verified teams. YAKK AI due diligence. We're building what pump.fun should have been.
       </p>
 
       {/* Tokenised IPO banner */}
@@ -160,9 +160,9 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
             {
               icon: '🤖',
               color: '#64dc64',
-              pct: 'YAKKAI',
+              pct: 'YAKK AI',
               label: 'Automated Due Diligence',
-              desc: 'Every application reviewed by YAKKAI. On-chain history checked. Clown-database wallets blocked automatically.',
+              desc: 'Every application reviewed by YAKK AI. On-chain history checked. Clown-database wallets blocked automatically.',
             },
           ].map(item => (
             <div key={item.label} style={{ background: 'var(--bg3)', borderRadius: 8, padding: '12px 14px', borderLeft: `3px solid ${item.color}` }}>
@@ -351,7 +351,7 @@ export default function Launchpad({ walletConnected, ystBalance, onNavigate }: P
               <div style={{ fontWeight: 700, color: 'var(--dim)', paddingBottom: 6, borderBottom: '1px solid var(--border)' }}>Pump.fun 🎰</div>
               {([
                 ['1 SOL barrier to entry',    '~0.02 SOL, anyone'],
-                ['YAKKAI review',              'No review'],
+                ['YAKK AI review',              'No review'],
                 ['80% supply in escrow',       'Dev dumps freely'],
                 ['Mandatory liq lock',         'No lock required'],
                 ['Team vesting enforced',      'No vesting'],
