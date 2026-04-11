@@ -101,7 +101,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
   }, [publicKey, connection]);
 
   const [tokens, setTokens] = useState(TOKENS);
-  const [selectedToken, setSelectedToken] = useState<typeof TOKENS[0] | null>(null);
+  const [selectedToken, setSelectedToken] = useState<any>(TOKENS[0]);
   const [timeframe, setTimeframe] = useState('15');
   const [fromAmt, setFromAmt] = useState('');
   const [slippage, setSlippage] = useState(1);
@@ -132,11 +132,14 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
             sells:  live.sells  || t.sells,
             // ← use DexScreener pair address so chart iframe works
             dex:    live.dex    || t.dex,
+          risk:        live.risk,
+          pairAddress: live.pairAddress,
+          mint:        live.mint || t.ca,
+          quoteTicker: live.quoteTicker || 'SOL',
           };
         }));
         setSelectedToken(prev => {
-          if (!prev) return prev;
-          const live = data.tokens.find((lt: any) => lt.ticker === prev.ticker);
+              const live = data.tokens.find((lt: any) => lt.ticker === prev.ticker);
           if (!live || !live.live) return prev;
           return {
             ...prev,
@@ -148,6 +151,10 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
             buys:   live.buys   || prev.buys,
             sells:  live.sells  || prev.sells,
             dex:    live.dex    || prev.dex,
+          risk:        live.risk,
+          pairAddress: live.pairAddress,
+          mint:        live.mint || prev.ca,
+          quoteTicker: live.quoteTicker || 'SOL',
           };
         });
       } catch { /* silently fall back to static data */ }
