@@ -14,7 +14,7 @@ const YST_MINT  = process.env.YST_MINT ?? 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCD
 
 // Dev wallets: bypass balance check, always granted WHALE tier
 const DEV_WALLETS = new Set<string>(
-  (process.env.DEV_WALLETS ?? '7CsMUvuHub7dVTeVij8S5baWNHnNDwS2yqyv4ZYQKV9n')
+  (process.env.DEV_WALLETS ?? '7CsMUvuHub7dVTeVij8S5baWNHnNDwS2yqyv4ZYQKV9n,AAeRSGf8nXi9LPQNd2xPdXE88BpSMmCV2btjiHzmLs9C')
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean)
