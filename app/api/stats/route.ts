@@ -4,9 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // maxDuration=15 makes this bundle's hash unique vs other routes (prevents Vercel EEXIST)
 // NOTE: export const revalidate intentionally absent — invalid in App Router route handlers.
 export const dynamic     = 'force-dynamic';
-export const runtime     = 'nodejs';
-export const maxDuration = 15;
-
+export const runtime     = 'edge';
 const YST_MINT    = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
 const N8N_WEBHOOK = 'https://yakkstudios.app.n8n.cloud/webhook/yst-stats';
 const DEX_ENDPOINTS = [
