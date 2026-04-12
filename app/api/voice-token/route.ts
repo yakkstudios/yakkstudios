@@ -4,9 +4,7 @@ import { NextResponse } from 'next/server';
 // Route kept as a stub so any lingering client calls get a clean 410 Gone
 // rather than a 404 that might be misread as a config error.
 export const dynamic     = 'force-dynamic';
-export const runtime     = 'nodejs';
-export const maxDuration = 45;
-
+export const runtime     = 'edge';
 export async function POST() {
   return NextResponse.json(
     { error: 'Voice feature is not available. Use Discord or Telegram for voice chat.' },
