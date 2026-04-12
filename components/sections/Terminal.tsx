@@ -53,6 +53,8 @@ const LOGO_MAP: Record<string, string> = {
   SOL:  '/sol-logo.png',
 };
 
+const DECIMALS_MAP: Record<string,number> = { YST:6, SPT:6, LOCK:6, SOL:9 };
+
 const MOCK_RECENT = [
   { type: 'BUY',  amt: '0.94 SOL', tok: '78.8M YST',  time: '2m ago'  },
   { type: 'SELL', amt: '0.59 SOL', tok: '49.4M YST',  time: '5m ago'  },
@@ -90,7 +92,7 @@ function TokenLogo({ ticker, size = 16 }: { ticker: string; size?: number }) {
 
 export default function Terminal({ walletConnected, ystBalance, onNavigate }: Props) {
   const hasAccess = walletConnected && ystBalance >= 10_000_000;
-  const { publicKey } = useWallet();
+  const { publicKey, signTransaction } = useWallet();
   const { connection } = useConnection();
   const [solBalance, setSolBalance] = useState<number | null>(null);
   useEffect(() => {
@@ -106,6 +108,10 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
   const [fromAmt, setFromAmt] = useState('');
   const [slippage, setSlippage] = useState(1);
   const [customSlip, setCustomSlip] = useState('');
+  const [swapStatus, setSwapStatus] = useState<'idle'|'quoting'|'signing'|'sending'|'success'|'error'>('idle');
+  const [txSig, setTxSig] = useState<string|null>(null);
+  const [swapError, setSwapError] = useState<string|null>(null);
+  const [liveQuote, setLiveQuote] = useState<{out:string,impact:string,minOut:string}|null>(null);
   const [portfolio, setPortfolio] = useState('');
   const [risk, setRisk] = useState('2');
   const [stopLoss, setStopLoss] = useState('20');
@@ -161,6 +167,57 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
     }
     fetchScreenerData();
   }, []);
+
+  // Live Jupiter quote (debounced 600ms)
+  useEffect(() => {
+    if (!fromAmt || !selectedToken || selectedToken.ticker === 'SOL') { setLiveQuote(null); return; }
+    const t = setTimeout(async () => {
+      try {
+        const lam = Math.floor(parseFloat(fromAmt) * 1e9);
+        const mint = selectedToken.mint || selectedToken.ca;
+        const bps = Math.floor(slippage * 100);
+        const r = await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${mint}&amount=${lam}&slippageBps=${bps}`);
+        const q = await r.json();
+        if (q.outAmount) {
+          const dec = DECIMALS_MAP[selectedToken.ticker] ?? 6;
+          setLiveQuote({
+            out: (parseInt(q.outAmount)/10**dec).toLocaleString(undefined,{maximumFractionDigits:0}),
+            impact: parseFloat(q.priceImpactPct).toFixed(3)+'%',
+            minOut: (parseInt(q.otherAmountThreshold)/10**dec).toLocaleString(undefined,{maximumFractionDigits:0}),
+          });
+        } else { setLiveQuote(null); }
+      } catch { setLiveQuote(null); }
+    }, 600);
+    return () => clearTimeout(t);
+  }, [fromAmt, selectedToken, slippage]);
+
+  async function executeSwap() {
+    if (!publicKey || !signTransaction || !fromAmt || !selectedToken || selectedToken.ticker === 'SOL') return;
+    try {
+      setSwapStatus('quoting'); setSwapError(null); setTxSig(null);
+      const lam = Math.floor(parseFloat(fromAmt) * 1e9);
+      const mint = selectedToken.mint || selectedToken.ca;
+      const bps = Math.floor(slippage * 100);
+      const qr = await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${mint}&amount=${lam}&slippageBps=${bps}`);
+      const qd = await qr.json();
+      if (qd.error) throw new Error(qd.error);
+      setSwapStatus('signing');
+      const sr = await fetch('https://quote-api.jup.ag/v6/swap', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ quoteResponse: qd, userPublicKey: publicKey.toString(), wrapAndUnwrapSol: true }),
+      });
+      const { swapTransaction } = await sr.json();
+      const { VersionedTransaction } = await import('@solana/web3.js');
+      const tx = VersionedTransaction.deserialize(Buffer.from(swapTransaction, 'base64'));
+      const signed = await signTransaction(tx as any);
+      setSwapStatus('sending');
+      const sig = await connection.sendRawTransaction((signed as any).serialize(), { skipPreflight: true, maxRetries: 3 });
+      const lb = await connection.getLatestBlockhash();
+      await connection.confirmTransaction({ signature: sig, ...lb }, 'confirmed');
+      setTxSig(sig); setSwapStatus('success');
+      setTimeout(() => connection.getBalance(publicKey).then(l => setSolBalance(l/1e9)).catch(()=>{}), 2000);
+    } catch (e: any) { setSwapError(e.message || 'Swap failed'); setSwapStatus('error'); }
+  }
 
   const toAmt = fromAmt && selectedToken
     ? (parseFloat(fromAmt) * 142.30 / selectedToken.price).toLocaleString(undefined, { maximumFractionDigits: 0 })
@@ -326,7 +383,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
                     <span>Balance: —</span>
                   </div>
                   <div className="swap-box-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ flex: 1, fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '18px', color: 'var(--dim)' }}>{toAmt}</div>
+                    <div style={{ flex: 1, fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '18px', color: liveQuote ? 'var(--text)' : 'var(--dim)' }}>{liveQuote?.out ?? toAmt ?? '—'}</div>
                     <div className="swap-tok-badge" style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '5px 10px', background: 'var(--bg4)', border: '1px solid var(--border2)', borderRadius: '5px', flexShrink: 0, fontFamily: 'Syne,sans-serif', fontWeight: 700, fontSize: '11px' }}>
                       {selectedToken ? <TokenLogo ticker={selectedToken.ticker} size={14} /> : <span>🩷</span>}
                       {selectedToken?.ticker || 'YST'}
@@ -374,26 +431,40 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
               <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: '5px', padding: '7px 10px', marginBottom: '8px', fontSize: '10px', color: 'var(--muted)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
                   <span style={{ color: 'var(--dim)' }}>Route</span>
-                  <span>YAKK best route</span>
+                  <span>{liveQuote ? 'Jupiter (best route)' : 'YAKK best route'}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
                   <span style={{ color: 'var(--dim)' }}>Price impact</span>
-                  <span style={{ color: 'var(--green)' }}>&lt; 0.1%</span>
+                  <span style={{ color: liveQuote && parseFloat(liveQuote.impact) > 1 ? 'var(--red)' : 'var(--green)' }}>{liveQuote?.impact ?? '< 0.1%'}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--dim)' }}>Min received</span>
-                  <span>—</span>
+                  <span>{liveQuote?.minOut ?? '—'}</span>
                 </div>
               </div>
 
               {/* Swap button */}
               <button
                 className="swap-btn swap-btn-connect"
+                onClick={walletConnected && selectedToken?.ticker !== 'SOL' && !!fromAmt && !(['quoting','signing','sending'].includes(swapStatus)) ? executeSwap : undefined}
+                disabled={['quoting','signing','sending'].includes(swapStatus)}
                 style={{ width: '100%', padding: '11px', borderRadius: '7px', fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: '13px', letterSpacing: '0.06em', cursor: 'pointer', border: 'none', background: 'var(--pink)', color: '#fff' }}
               >
-                {walletConnected ? 'EXECUTE SWAP' : 'CONNECT WALLET TO TRADE'}
+                {!walletConnected ? 'CONNECT WALLET TO TRADE' : swapStatus === 'quoting' ? 'FETCHING QUOTE...' : swapStatus === 'signing' ? 'SIGN IN WALLET...' : swapStatus === 'sending' ? 'BROADCASTING TX...' : swapStatus === 'success' ? '✓ SWAP COMPLETE' : selectedToken?.ticker === 'SOL' ? 'SELECT A TOKEN' : !fromAmt ? 'ENTER AMOUNT' : 'EXECUTE SWAP'}
               </button>
 
+              {/* TX status banners */}
+              {swapStatus === 'success' && txSig && (
+                <div style={{ marginTop:'6px', padding:'5px 8px', background:'rgba(34,197,94,0.08)', border:'1px solid rgba(34,197,94,0.25)', borderRadius:'4px', fontFamily:'Space Mono,monospace', fontSize:'8px', color:'var(--green)' }}>
+                  ✓ Swap confirmed!{' '}
+                  <a href={`https://solscan.io/tx/${txSig}`} target="_blank" rel="noopener noreferrer" style={{ color:'var(--gold)', textDecoration:'underline' }}>View on Solscan ↗</a>
+                </div>
+              )}
+              {swapStatus === 'error' && swapError && (
+                <div style={{ marginTop:'6px', padding:'5px 8px', background:'rgba(239,68,68,0.08)', border:'1px solid rgba(239,68,68,0.25)', borderRadius:'4px', fontFamily:'Space Mono,monospace', fontSize:'8px', color:'var(--red)' }}>
+                  ✗ {swapError}
+                </div>
+              )}
               {/* Zero-fee notice */}
               <div className="fee-notice" style={{ marginTop: '8px', padding: '6px 9px', background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: '4px', fontFamily: 'Space Mono,monospace', fontSize: '8px', color: 'var(--green)', lineHeight: 1.5 }}>
                 ✓ YAKK TERMINAL charges 0% extra fees<br/>
