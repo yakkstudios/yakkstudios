@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Route segment config — Node runtime, unique bundle to prevent Vercel EEXIST symlink dedup.
 export const dynamic     = 'force-dynamic';
-export const runtime     = 'nodejs';
-export const maxDuration = 8;
-
+export const runtime     = 'edge';
 const YST_MINT   = process.env.YST_MINT ?? 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
 const HELIUS_KEY = process.env.HELIUS_API_KEY ?? '';
 const HELIUS_RPC = HELIUS_KEY
