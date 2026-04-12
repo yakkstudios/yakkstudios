@@ -4,9 +4,7 @@ import { NextResponse } from 'next/server';
 // maxDuration=25 makes this bundle's hash unique vs other routes (prevents Vercel EEXIST)
 // NOTE: export const revalidate intentionally absent — invalid in App Router route handlers.
 export const dynamic     = 'force-dynamic';
-export const runtime     = 'nodejs';
-export const maxDuration = 25;
-
+export const runtime     = 'edge';
 export interface TickerItem {
   symbol:   string;
   price:    string;
