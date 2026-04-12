@@ -111,6 +111,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
   const [swapStatus, setSwapStatus] = useState<'idle'|'quoting'|'signing'|'sending'|'success'|'error'>('idle');
   const [txSig, setTxSig] = useState<string|null>(null);
   const [swapError, setSwapError] = useState<string|null>(null);
+  const [whaleMoves, setWhaleMoves] = useState<any[]>([]);
   const [liveQuote, setLiveQuote] = useState<{out:string,impact:string,minOut:string}|null>(null);
   const [portfolio, setPortfolio] = useState('');
   const [risk, setRisk] = useState('2');
@@ -190,6 +191,21 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
     }, 600);
     return () => clearTimeout(t);
   }, [fromAmt, selectedToken, slippage]);
+
+  // Whale feed — poll /api/whale-feed every 30s
+  useEffect(() => {
+    let alive = true;
+    async function load() {
+      try {
+        const r = await fetch('/api/whale-feed');
+        const d = await r.json();
+        if (alive) setWhaleMoves(d);
+      } catch {}
+    }
+    load();
+    const id = setInterval(load, 30_000);
+    return () => { alive = false; clearInterval(id); };
+  }, []);
 
   async function executeSwap() {
     if (!publicKey || !signTransaction || !fromAmt || !selectedToken || selectedToken.ticker === 'SOL') return;
@@ -305,7 +321,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
             {/* Chart area — YAKK Forensic View (SOL branch uses TradingView) */}
             <div id="term-chart" style={{ flex: 1, overflow: 'auto', position: 'relative', background: 'var(--bg)', padding: 10 }}>
               {selectedToken ? (
-                <ForensicView token={selectedToken} />
+                <ForensicView token={selectedToken} whaleFeed={whaleMoves} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                   <div style={{ fontSize: '28px' }}>🩷</div>
