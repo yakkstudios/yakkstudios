@@ -684,9 +684,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
       {bannerMap[selected.ticker] && (
         <div style={{
           width: '100%',
-          overflow: 'hidden',
-          maxHeight: isMobile ? 160 : 280,
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+                              borderBottom: '1px solid rgba(255,255,255,0.06)',
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -694,8 +692,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
             alt={`${selected.ticker} banner`}
             style={{
               width: '100%',
-              height: isMobile ? 160 : 280,
-              objectFit: 'cover',
+              height: 'auto',
               display: 'block',
             }}
           />
