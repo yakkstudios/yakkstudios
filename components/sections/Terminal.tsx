@@ -118,7 +118,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
         if (!res.ok) return;
         const data = await res.json();
         if (!data.tokens) return;
-        setTokens(prev => prev.map(t => {
+        setTokens((prev: any[]) => prev.map((t: any) => {
           const live = data.tokens.find((lt: any) => lt.ticker === t.ticker);
           if (!live || !live.live) return t;
           return {
@@ -138,7 +138,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
           quoteTicker: live.quoteTicker || 'SOL',
           };
         }));
-        setSelectedToken(prev => {
+        setSelectedToken((prev: any) => {
               const live = data.tokens.find((lt: any) => lt.ticker === prev.ticker);
           if (!live || !live.live) return prev;
           return {
