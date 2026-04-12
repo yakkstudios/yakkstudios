@@ -5,9 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // NOTE: export const revalidate is intentionally absent — invalid in App Router route
 // handlers and causes 500 errors on Vercel. In-memory caching used instead.
 export const dynamic     = 'force-dynamic';
-export const runtime     = 'nodejs';
-export const maxDuration = 20;
-
+export const runtime     = 'edge';
 const YST_MINT = 'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV';
 
 const DEX_ENDPOINTS = [
