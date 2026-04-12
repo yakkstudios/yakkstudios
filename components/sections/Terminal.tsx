@@ -100,7 +100,7 @@ export default function Terminal({ walletConnected, ystBalance, onNavigate }: Pr
       .catch(() => setSolBalance(null));
   }, [publicKey, connection]);
 
-  const [tokens, setTokens] = useState(TOKENS);
+  const [tokens, setTokens] = useState<any[]>(TOKENS);
   const [selectedToken, setSelectedToken] = useState<any>(TOKENS[0]);
   const [timeframe, setTimeframe] = useState('15');
   const [fromAmt, setFromAmt] = useState('');
