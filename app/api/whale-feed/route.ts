@@ -4,9 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // maxDuration=30 makes this bundle's hash unique vs other routes (prevents Vercel EEXIST)
 // NOTE: export const revalidate intentionally absent — invalid in App Router route handlers.
 export const dynamic     = 'force-dynamic';
-export const runtime     = 'nodejs';
-export const maxDuration = 30;
-
+export const runtime     = 'edge';
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
