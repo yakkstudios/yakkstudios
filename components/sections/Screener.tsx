@@ -683,10 +683,10 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
       {/* Banner hero */}
       <div style={{
         position: 'relative',
-        height: isMobile ? 120 : 200,
-        backgroundImage: `linear-gradient(180deg, rgba(5,5,9,0.2), rgba(5,5,9,0.9)), url(${bannerMap[selected.ticker] ?? ''})`,
+        height: isMobile ? 140 : 240,
+        backgroundImage: `linear-gradient(180deg, rgba(5,5,9,0.05) 0%, rgba(5,5,9,0.15) 30%, rgba(5,5,9,0.65) 60%, rgba(5,5,9,0.97) 100%), url(${bannerMap[selected.ticker] ?? ''})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: 'center top',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
       }}>
         {isMobile && (
@@ -705,13 +705,14 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
           </button>
         )}
         <div style={{
-          position: 'absolute', left: 16, right: 16, bottom: 12,
+          position: 'absolute', left: 0, right: 0, bottom: 0, padding: '20px 16px 14px',
           display: 'flex', alignItems: 'flex-end', gap: 12,
+          background: 'linear-gradient(0deg, rgba(5,5,9,0.9) 0%, rgba(5,5,9,0.5) 60%, transparent 100%)',
         }}>
           <TokenLogo token={selected} logoMap={logoMap} size={isMobile ? 48 : 60} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: isMobile ? 20 : 26, fontWeight: 800, color: '#f5f5f7' }}>
+              <span style={{ fontSize: isMobile ? 20 : 26, fontWeight: 800, color: '#f5f5f7', textShadow: '0 2px 12px rgba(0,0,0,0.9)' }}>
                 {selected.ticker}
               </span>
               <span style={{ fontSize: 12, color: '#9a9aa8' }}>/ {selected.quoteTicker ?? 'SOL'}</span>
@@ -722,7 +723,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
             </div>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: isMobile ? 16 : 22, fontWeight: 800, color: '#f5f5f7', fontVariantNumeric: 'tabular-nums' }}>
+            <div style={{ fontSize: isMobile ? 16 : 22, fontWeight: 800, color: '#f5f5f7', fontVariantNumeric: 'tabular-nums', textShadow: '0 2px 12px rgba(0,0,0,0.9)' }}>
               {fmtPrice(selected.price)}
             </div>
             <div style={{ fontSize: 12, fontWeight: 700, color: pctColor(selected.chg) }}>
