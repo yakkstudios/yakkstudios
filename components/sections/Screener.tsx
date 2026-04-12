@@ -680,55 +680,72 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
       display: 'flex', flexDirection: 'column',
       minHeight: 0,
     }}>
-      {/* Banner hero */}
+      {/* Banner image — full width, no overlay */}
+      {bannerMap[selected.ticker] && (
+        <div style={{
+          width: '100%',
+          overflow: 'hidden',
+          maxHeight: isMobile ? 160 : 280,
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+        }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={bannerMap[selected.ticker]}
+            alt={`${selected.ticker} banner`}
+            style={{
+              width: '100%',
+              height: isMobile ? 160 : 280,
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+        </div>
+      )}
+
+      {/* Token details bar */}
       <div style={{
-        position: 'relative',
-        height: isMobile ? 140 : 240,
-        backgroundImage: `linear-gradient(180deg, rgba(5,5,9,0.05) 0%, rgba(5,5,9,0.15) 30%, rgba(5,5,9,0.65) 60%, rgba(5,5,9,0.97) 100%), url(${bannerMap[selected.ticker] ?? ''})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center top',
+        padding: '14px 16px',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
       }}>
         {isMobile && (
           <button
             onClick={() => setSelectedId(-1)}
             style={{
-              position: 'absolute', top: 10, left: 10,
               padding: '6px 10px', borderRadius: 8,
               background: 'rgba(0,0,0,0.6)',
               border: '1px solid rgba(255,255,255,0.1)',
               color: '#f5f5f7', fontSize: 11, fontWeight: 700,
-              cursor: 'pointer',
+              cursor: 'pointer', marginRight: 4,
             }}
           >
             ← BACK
           </button>
         )}
-        <div style={{
-          position: 'absolute', left: 0, right: 0, bottom: 0, padding: '20px 16px 14px',
-          display: 'flex', alignItems: 'flex-end', gap: 12,
-          background: 'linear-gradient(0deg, rgba(5,5,9,0.9) 0%, rgba(5,5,9,0.5) 60%, transparent 100%)',
-        }}>
-          <TokenLogo token={selected} logoMap={logoMap} size={isMobile ? 48 : 60} />
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: isMobile ? 20 : 26, fontWeight: 800, color: '#f5f5f7', textShadow: '0 2px 12px rgba(0,0,0,0.9)' }}>
-                {selected.ticker}
-              </span>
-              <span style={{ fontSize: 12, color: '#9a9aa8' }}>/ {selected.quoteTicker ?? 'SOL'}</span>
-              {selected.risk && selected.risk.grade !== '—' && <RiskBadge risk={selected.risk} />}
-            </div>
-            <div style={{ fontSize: 11, color: '#9a9aa8', marginTop: 2 }}>
-              {selected.name}{selected.ageDays ? ` · Age ${fmtAge(selected.ageDays)}` : ''}
-            </div>
+        <TokenLogo token={selected} logoMap={logoMap} size={isMobile ? 44 : 56} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: isMobile ? 18 : 24, fontWeight: 800, color: '#f5f5f7' }}>
+              {selected.ticker}
+            </span>
+            <span style={{ fontSize: 12, color: '#9a9aa8' }}>/ {selected.quoteTicker ?? 'SOL'}</span>
+            {selected.risk && selected.risk.grade !== '—' && <RiskBadge risk={selected.risk} />}
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: isMobile ? 16 : 22, fontWeight: 800, color: '#f5f5f7', fontVariantNumeric: 'tabular-nums', textShadow: '0 2px 12px rgba(0,0,0,0.9)' }}>
-              {fmtPrice(selected.price)}
-            </div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: pctColor(selected.chg) }}>
-              {fmtPct(selected.chg)}
-            </div>
+          <div style={{ fontSize: 11, color: '#9a9aa8', marginTop: 2 }}>
+            {selected.name}{selected.ageDays ? ` · Age ${fmtAge(selected.ageDays)}` : ''}
+          </div>
+        </div>
+        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+          <div style={{
+            fontSize: isMobile ? 16 : 22, fontWeight: 800, color: '#f5f5f7',
+            fontVariantNumeric: 'tabular-nums',
+          }}>
+            {fmtPrice(selected.price)}
+          </div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: pctColor(selected.chg) }}>
+            {fmtPct(selected.chg)}
           </div>
         </div>
       </div>
