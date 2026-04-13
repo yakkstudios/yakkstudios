@@ -666,7 +666,7 @@ export default function Screener({ walletConnected, ystBalance, onNavigate }: Pr
 
   /* ── Detail panel ──────────────────────────────────────────────────────── */
   const bannerMap: Record<string, string> = {
-    YST: '/yst-banner.jpg',
+    YST: '/yst-banner.png',
     SPT: '/spt-banner.jpg',
     LOCK: '/lock-banner.jpg',
     SOL: '/sol-banner.png',
