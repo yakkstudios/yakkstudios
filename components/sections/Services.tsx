@@ -7,7 +7,7 @@ const TIERS = [
     period: '/month',
     tag: 'FOUNDATION',
     color: '#888',
-    features: [
+    features: [h
       'Community AI Bot (Telegram/Discord)',
       'Daily market intelligence briefings',
       'Basic trading signal feed',
@@ -103,9 +103,9 @@ export default function Services() {
           <strong style={{ color: 'var(--gold)' }}>YAKK Studios is the proof of concept.</strong>{' '}
           Everything we sell, we use. The platform you are looking at runs on the same AI stack we offer
           to clients &mdash; FinBERT sentiment feeds, Polymarket signal intelligence, automated investigation
-          pipelines, community bots, and n8n automation backbones. Our first external client generated{' '}
-          <strong style={{ color: '#fff' }}>&pound;8,374 MRR by day 13</strong>. One Polymarket trade returned{' '}
-          <strong style={{ color: '#fff' }}>&pound;3,000 from &pound;200 in 10 hours</strong>.
+          pipelines, community bots, and n8n automation backbones. We have tracked{' '}
+          <strong style={{ color: '#fff' }}>$3.9B+ in on-chain extraction patterns</strong> across{' '}
+          <strong style={{ color: '#fff' }}>11 forensic investigations</strong>.
         </div>
       </div>
 
