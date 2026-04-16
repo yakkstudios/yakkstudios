@@ -7,7 +7,7 @@ const TIERS = [
     period: '/month',
     tag: 'FOUNDATION',
     color: '#888',
-    features: [h
+    features: [
       'Community AI Bot (Telegram/Discord)',
       'Daily market intelligence briefings',
       'Basic trading signal feed',
