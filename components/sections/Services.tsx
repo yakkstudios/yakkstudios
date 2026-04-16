@@ -53,14 +53,14 @@ const TIERS = [
 const SERVICES = [
   { icon: '\ud83e\udd16', title: 'Community AI Bots', desc: 'Automated Telegram and Discord bots for market updates, holder queries, and community engagement.' },
   { icon: '\ud83d\udce1', title: 'Trading Signal Pipelines', desc: 'Real-time AI-generated signals via FinBERT sentiment + on-chain whale tracking.' },
-  { icon: '\ud83d\udd75\ufe0f', title: 'Cabal Investigations', desc: 'Deep on-chain forensic analysis. We have tracked $3.9B+ in extraction patterns.' },
+  { icon: '\ud83d\udd75\ufe0f', title: 'Cabal Investigations', desc: 'Deep on-chain forensic analysis. We have tracked $9.8B+ in extraction patterns.' },
   { icon: '\ud83d\udcf0', title: 'Content Automation', desc: 'Daily AI-written briefings, Twitter/X posts, and market commentary \u2014 automated.' },
   { icon: '\ud83c\udfaf', title: 'Polymarket Intelligence', desc: 'Latency arbitrage signals and news-driven probability analysis for prediction markets.' },
   { icon: '\u2699\ufe0f', title: 'n8n Automation Stack', desc: 'Full workflow automation connecting AI agents, APIs, and your community channels.' },
 ];
 
 const PROOF = [
-  { stat: '$3.9B+', label: 'On-chain tracked' },
+  { stat: '$9.8B+', label: 'On-chain tracked' },
   { stat: '12+', label: 'Investigations published' },
   { stat: '30+', label: 'Live platform tools' },
   { stat: '85\u201398%', label: 'Polymarket win rate' },
@@ -104,8 +104,8 @@ export default function Services() {
           Everything we sell, we use. The platform you are looking at runs on the same AI stack we offer
           to clients &mdash; FinBERT sentiment feeds, Polymarket signal intelligence, automated investigation
           pipelines, community bots, and n8n automation backbones. We have tracked{' '}
-          <strong style={{ color: '#fff' }}>$3.9B+ in on-chain extraction patterns</strong> across{' '}
-          <strong style={{ color: '#fff' }}>11 forensic investigations</strong>.
+          <strong style={{ color: '#fff' }}>$9.8B+ in on-chain extraction patterns</strong> across{' '}
+          <strong style={{ color: '#fff' }}>12 forensic investigations</strong>.
         </div>
       </div>
 
