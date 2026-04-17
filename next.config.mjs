@@ -10,7 +10,7 @@ const CSP = [
   // Images: self + CDNs used by token metadata
   "img-src 'self' data: blob: https://unavatar.io https://pbs.twimg.com https://cdn.pump.fun https://arweave.net https://nftstorage.link",
   // API calls + LiveKit WebSocket (wildcard covers cloud.livekit.io and custom servers)
-  "connect-src 'self' https://api.dexscreener.com https://api.coingecko.com wss://*.livekit.cloud wss://*.livekit.io wss://signal.livekit.io",
+  "connect-src 'self' https://api.dexscreener.com https://api.geckoterminal.com https://api.coingecko.com wss://*.livekit.cloud wss://*.livekit.io wss://signal.livekit.io",
   // Microphone for voice lounge only; block camera, geolocation, etc.
   "media-src 'self' blob:",
   "font-src 'self'",
