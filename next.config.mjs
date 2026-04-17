@@ -10,7 +10,7 @@ const CSP = [
   // Images: self + CDNs used by token metadata
   "img-src 'self' data: blob: https://unavatar.io https://pbs.twimg.com https://cdn.pump.fun https://arweave.net https://nftstorage.link",
   // API calls + LiveKit WebSocket (wildcard covers cloud.livekit.io and custom servers)
-  "connect-src 'self' https://api.dexscreener.com https://api.geckoterminal.com https://api.coingecko.com wss://*.livekit.cloud wss://*.livekit.io wss://signal.livekit.io",
+  "connect-src 'self' https://api.geckoterminal.com https://api.coingecko.com wss://*.livekit.cloud wss://*.livekit.io wss://signal.livekit.io",
   // Microphone for voice lounge only; block camera, geolocation, etc.
   "media-src 'self' blob:",
   "font-src 'self'",
@@ -85,8 +85,19 @@ const nextConfig = {
         headers: SECURITY_HEADERS,
       },
       {
-        // CORS for API routes: only allow same origin in production
-        source: '/api/(.*)',
+        // CORS for read-only API routes (screener, price, stats, whale-feed):
+        // allow whale portal + main app + any future YAKK subdomain
+        source: '/api/(screener|price|stats|whale-feed|balance|holders)(.*)',
+        headers: [
+          { key: 'Access-Control-Allow-Origin',  value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET, OPTIONS' },
+          { key: 'Access-Control-Allow-Headers', value: 'Content-Type' },
+          { key: 'Access-Control-Max-Age',        value: '86400' },
+        ],
+      },
+      {
+        // CORS for sensitive API routes (gate-check, voice-token): same-origin only
+        source: '/api/(gate-check|voice-token)(.*)',
         headers: [
           { key: 'Access-Control-Allow-Origin',  value: process.env.NEXT_PUBLIC_APP_URL ?? 'https://yakkstudios.vercel.app' },
           { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS' },
