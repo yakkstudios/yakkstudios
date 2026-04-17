@@ -10,15 +10,33 @@ export const maxDuration = 35;
 // ── Known Solana token mints ──────────────────────────────────────────────
 // YAKK trusted list only + SOL bluechip. No external tokens.
 const TOKENS: Record<string, { ticker: string; name: string; cat: string; emoji: string }> = {
-  'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV': { ticker: 'YST',  name: 'YAKK Studios Token', cat: 'yakk',     emoji: '🩷' },
+  'jYwmSavfx69a35JEkpyrxu9JUjvswEvfnhLCDV9vREV':  { ticker: 'YST',  name: 'YAKK Studios Token', cat: 'yakk',     emoji: '🩷' },
   '6uUU2z5GBasaxnkcqiQVHa2SXL68mAXDsq1zYN5Qxrm7': { ticker: 'SPT',  name: 'StakePoint',         cat: 'yakk',     emoji: '🏆' },
   'FNhcY1cwQvQqaM8CUjXSuoGKJniwC4maBRLqNRLipump': { ticker: 'LOCK', name: 'StreamLock',         cat: 'yakk',     emoji: '🔒' },
-  'So11111111111111111111111111111111111111112':   { ticker: 'SOL',  name: 'Solana',              cat: 'bluechip', emoji: '◎'  },
+  'So11111111111111111111111111111111111111112':    { ticker: 'SOL',  name: 'Solana',              cat: 'bluechip', emoji: '◎'  },
 };
 
-const DEX_BASE = 'https://api.dexscreener.com/tokens/v1/solana';
+// ── GeckoTerminal API ────────────────────────────────────────────────────
+// Free, no API key. 30 req/min rate limit. We fetch 4 tokens = 4 reqs per call.
+const GECKO_BASE = 'https://api.geckoterminal.com/api/v2/networks/solana/tokens';
 
-// ── Rate limit ────────────────────────────────────────────────────────────
+// ── In-memory cache (30s TTL per YAKK rules — never use next: { revalidate }) ─
+interface CacheEntry { data: any; ts: number }
+const CACHE = new Map<string, CacheEntry>();
+const CACHE_TTL = 30_000; // 30 seconds
+
+function getCached(key: string): any | null {
+  const entry = CACHE.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > CACHE_TTL) { CACHE.delete(key); return null; }
+  return entry.data;
+}
+
+function setCache(key: string, data: any): void {
+  CACHE.set(key, { data, ts: Date.now() });
+}
+
+// ── Rate limit (per-IP, client-facing) ───────────────────────────────────
 const RATE_MAP   = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT  = 20;
 const RATE_WINDOW = 60_000;
@@ -35,7 +53,9 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
-async function fetchWithTimeout(url: string, ms = 6000): Promise<Response> {
+// ── Helpers ──────────────────────────────────────────────────────────────
+
+async function fetchWithTimeout(url: string, ms = 8000): Promise<Response> {
   const ctrl  = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), ms);
   try {
@@ -64,25 +84,46 @@ function fmtMcap(n: number): string {
   return '$' + n.toFixed(0);
 }
 
-function bestPair(pairs: any[], mintAddress: string) {
-  const solPairs = pairs.filter((p: any) =>
-    p.chainId === 'solana' &&
-    (p.baseToken?.address?.toLowerCase() === mintAddress.toLowerCase() ||
-     p.quoteToken?.address?.toLowerCase() === mintAddress.toLowerCase())
-  );
-  return solPairs.sort((a: any, b: any) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))[0] ?? pairs[0];
+function num(v: any): number {
+  const n = parseFloat(v);
+  return Number.isFinite(n) ? n : 0;
+}
+
+// ── Fetch pool data from GeckoTerminal ───────────────────────────────────
+// Returns the best (highest liquidity) pool for a given mint address.
+async function fetchGeckoPool(mint: string): Promise<any | null> {
+  // Check cache first
+  const cached = getCached(`gecko_${mint}`);
+  if (cached) return cached;
+
+  try {
+    const res = await fetchWithTimeout(`${GECKO_BASE}/${mint}/pools?page=1`);
+    if (!res.ok) {
+      console.warn(`[screener] GeckoTerminal ${res.status} for ${mint}`);
+      return null;
+    }
+    const json = await res.json();
+    const pools = json.data ?? [];
+    if (pools.length === 0) return null;
+
+    // Pick the pool with deepest liquidity (reserve_in_usd)
+    const best = pools.sort(
+      (a: any, b: any) => num(b.attributes?.reserve_in_usd) - num(a.attributes?.reserve_in_usd)
+    )[0];
+
+    setCache(`gecko_${mint}`, best);
+    return best;
+  } catch (err: unknown) {
+    console.warn('[screener] GeckoTerminal fetch failed:', err instanceof Error ? err.message : err);
+    return null;
+  }
 }
 
 // ── YAKK Rug Risk Score ───────────────────────────────────────────────────
 // Deterministic 0–100 score from available pair metrics. Higher = safer.
 // No probabilistic logic — pure thresholds per the YAKK constitution.
-function computeRisk(pair: any, ageDays: number) {
-  if (!pair) return { score: 0, grade: '—', factors: ['no-data'] };
-  const liq     = pair.liquidity?.usd ?? 0;
-  const mcap    = pair.marketCap ?? 0;
-  const vol24   = pair.volume?.h24 ?? 0;
-  const buys24  = pair.txns?.h24?.buys ?? 0;
-  const sells24 = pair.txns?.h24?.sells ?? 0;
+function computeRisk(metrics: { liq: number; mcap: number; vol24: number; buys24: number; sells24: number }, ageDays: number) {
+  const { liq, mcap, buys24, sells24 } = metrics;
   const total24 = buys24 + sells24;
 
   let score = 0;
@@ -135,122 +176,129 @@ function computeRisk(pair: any, ageDays: number) {
   return { score, grade, factors };
 }
 
+// ── Null-safe default token (when pool fetch fails) ──────────────────────
+function emptyToken(idx: number, mint: string, meta: { ticker: string; name: string; cat: string; emoji: string }) {
+  return {
+    id: idx + 1,
+    ticker: meta.ticker,
+    name: meta.name,
+    emoji: meta.emoji,
+    cat: meta.cat,
+    price: 0,
+    chg: 0,
+    vol: '$0',
+    liq: '$0',
+    mcap: '$0',
+    fdv: '$0',
+    txns: '0',
+    buys: '0',
+    sells: '0',
+    holders: '—',
+    dex: mint,
+    isNew: false,
+    updated: meta.cat === 'yakk',
+    live: false,
+    priceChanges: { m5: 0, h1: 0, h6: 0, h24: 0 },
+    volumes:      { m5: 0, h1: 0, h6: 0, h24: 0 },
+    txnBreakdown: {
+      m5:  { buys: 0, sells: 0 },
+      h1:  { buys: 0, sells: 0 },
+      h6:  { buys: 0, sells: 0 },
+      h24: { buys: 0, sells: 0 },
+    },
+    raw: { liq: 0, mcap: 0, fdv: 0, vol24: 0, buys24: 0, sells24: 0 },
+    pairAddress: mint,
+    pairCreatedAt: 0,
+    ageDays: 0,
+    quoteTicker: 'SOL',
+    info: { imageUrl: '', header: '', openGraph: '', websites: [], socials: [] },
+    risk: { score: 0, grade: '—', factors: ['no-pair'] },
+  };
+}
+
+// ── GET handler ──────────────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown';
   if (isRateLimited(ip)) {
     return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
   }
 
-  const mints = Object.keys(TOKENS).join(',');
-
-  let pairs: any[] = [];
-  try {
-    const res = await fetchWithTimeout(`${DEX_BASE}/${mints}`);
-    if (res.ok) {
-      const data = await res.json();
-      pairs = Array.isArray(data) ? data : (data.pairs ?? []);
-    }
-  } catch (err: unknown) {
-    console.warn('[screener] DexScreener fetch failed:', err instanceof Error ? err.message : err);
+  // Check if entire response is cached
+  const cachedResponse = getCached('screener_full');
+  if (cachedResponse) {
+    return NextResponse.json(cachedResponse);
   }
 
-  const pairsByMint: Record<string, any[]> = {};
-  for (const pair of pairs) {
-    const baseAddr  = pair.baseToken?.address ?? '';
-    const quoteAddr = pair.quoteToken?.address ?? '';
-    for (const mint of Object.keys(TOKENS)) {
-      const m = mint.toLowerCase();
-      if (baseAddr.toLowerCase() === m || quoteAddr.toLowerCase() === m) {
-        if (!pairsByMint[mint]) pairsByMint[mint] = [];
-        pairsByMint[mint].push(pair);
-      }
-    }
-  }
+  // Fetch all tokens in parallel (4 concurrent requests, well within 30/min)
+  const entries = Object.entries(TOKENS);
+  const poolResults = await Promise.allSettled(
+    entries.map(([mint]) => fetchGeckoPool(mint))
+  );
 
-  const tokens = Object.entries(TOKENS).map(([mint, meta], idx) => {
-    const mintPairs = pairsByMint[mint] ?? [];
-    const pair = bestPair(mintPairs, mint);
+  const tokens = entries.map(([mint, meta], idx) => {
+    const result = poolResults[idx];
+    const pool = result.status === 'fulfilled' ? result.value : null;
 
-    if (!pair) {
-      return {
-        id: idx + 1,
-        ticker: meta.ticker,
-        name: meta.name,
-        emoji: meta.emoji,
-        cat: meta.cat,
-        price: 0,
-        chg: 0,
-        vol: '$0',
-        liq: '$0',
-        mcap: '$0',
-        fdv: '$0',
-        txns: '0',
-        buys: '0',
-        sells: '0',
-        holders: '—',
-        dex: mint,
-        isNew: false,
-        updated: meta.cat === 'yakk',
-        live: false,
-        // Extended fields (null-safe defaults)
-        priceChanges: { m5: 0, h1: 0, h6: 0, h24: 0 },
-        volumes:      { m5: 0, h1: 0, h6: 0, h24: 0 },
-        txnBreakdown: {
-          m5:  { buys: 0, sells: 0 },
-          h1:  { buys: 0, sells: 0 },
-          h6:  { buys: 0, sells: 0 },
-          h24: { buys: 0, sells: 0 },
-        },
-        raw: { liq: 0, mcap: 0, fdv: 0, vol24: 0, buys24: 0, sells24: 0 },
-        pairAddress: mint,
-        pairCreatedAt: 0,
-        ageDays: 0,
-        quoteTicker: 'SOL',
-        info: { imageUrl: '', header: '', openGraph: '', websites: [], socials: [] },
-        risk: { score: 0, grade: '—', factors: ['no-pair'] },
-      };
-    }
+    if (!pool) return emptyToken(idx, mint, meta);
 
-    const price   = parseFloat(pair.priceUsd ?? '0') || 0;
-    const chg     = pair.priceChange?.h24 ?? 0;
-    const vol24   = pair.volume?.h24 ?? 0;
-    const liq     = pair.liquidity?.usd ?? 0;
-    const mcap    = pair.marketCap ?? 0;
-    const fdv     = pair.fdv ?? 0;
-    const buys    = pair.txns?.h24?.buys ?? 0;
-    const sells   = pair.txns?.h24?.sells ?? 0;
-    const txns    = buys + sells;
-    const pairAddr    = pair.pairAddress ?? mint;
-    const pairCreated = pair.pairCreatedAt ?? 0;
-    const ageDays     = pairCreated > 0 ? (Date.now() - pairCreated) / 86_400_000 : 0;
-    const quoteTicker = pair.quoteToken?.symbol ?? 'SOL';
+    const attr = pool.attributes ?? {};
 
+    // ── Extract pair address from GeckoTerminal pool ID ──
+    // Format: "solana_{pair_address}"
+    const poolId: string = pool.id ?? '';
+    const pairAddr = poolId.includes('_') ? poolId.split('_').slice(1).join('_') : mint;
+
+    // ── Core metrics ──
+    const price = num(attr.base_token_price_usd);
+    const liq   = num(attr.reserve_in_usd);
+    const mcap  = num(attr.market_cap_usd);
+    const fdv   = num(attr.fdv_usd);
+
+    // ── Price changes (%) ──
+    const pc = attr.price_change_percentage ?? {};
     const priceChanges = {
-      m5:  pair.priceChange?.m5  ?? 0,
-      h1:  pair.priceChange?.h1  ?? 0,
-      h6:  pair.priceChange?.h6  ?? 0,
-      h24: pair.priceChange?.h24 ?? 0,
+      m5:  num(pc.m5),
+      h1:  num(pc.h1),
+      h6:  num(pc.h6),
+      h24: num(pc.h24),
     };
+    const chg = priceChanges.h24;
+
+    // ── Volumes ──
+    const vol = attr.volume_usd ?? {};
     const volumes = {
-      m5:  pair.volume?.m5  ?? 0,
-      h1:  pair.volume?.h1  ?? 0,
-      h6:  pair.volume?.h6  ?? 0,
-      h24: pair.volume?.h24 ?? 0,
+      m5:  num(vol.m5),
+      h1:  num(vol.h1),
+      h6:  num(vol.h6),
+      h24: num(vol.h24),
     };
+    const vol24 = volumes.h24;
+
+    // ── Transactions ──
+    const txn = attr.transactions ?? {};
     const txnBreakdown = {
-      m5:  { buys: pair.txns?.m5?.buys  ?? 0, sells: pair.txns?.m5?.sells  ?? 0 },
-      h1:  { buys: pair.txns?.h1?.buys  ?? 0, sells: pair.txns?.h1?.sells  ?? 0 },
-      h6:  { buys: pair.txns?.h6?.buys  ?? 0, sells: pair.txns?.h6?.sells  ?? 0 },
-      h24: { buys, sells },
+      m5:  { buys: txn.m5?.buys  ?? 0, sells: txn.m5?.sells  ?? 0 },
+      h1:  { buys: txn.h1?.buys  ?? 0, sells: txn.h1?.sells  ?? 0 },
+      h6:  { buys: txn.h6?.buys  ?? 0, sells: txn.h6?.sells  ?? 0 },
+      h24: { buys: txn.h24?.buys ?? 0, sells: txn.h24?.sells ?? 0 },
     };
-    const info = {
-      imageUrl:  pair.info?.imageUrl  ?? '',
-      header:    pair.info?.header    ?? '',
-      openGraph: pair.info?.openGraph ?? '',
-      websites:  pair.info?.websites  ?? [],
-      socials:   pair.info?.socials   ?? [],
-    };
-    const risk = computeRisk(pair, ageDays);
+    const buys24  = txnBreakdown.h24.buys;
+    const sells24 = txnBreakdown.h24.sells;
+    const total24 = buys24 + sells24;
+
+    // ── Pool age ──
+    const poolCreated = attr.pool_created_at ? new Date(attr.pool_created_at).getTime() : 0;
+    const ageDays     = poolCreated > 0 ? (Date.now() - poolCreated) / 86_400_000 : 0;
+
+    // ── Quote token ticker (extract from pool name, e.g. "LOCK / SOL") ──
+    const poolName: string = attr.name ?? '';
+    const quoteTicker = poolName.includes('/') ? poolName.split('/').pop()?.trim() ?? 'SOL' : 'SOL';
+
+    // ── Risk score ──
+    const risk = computeRisk({ liq, mcap, vol24, buys24, sells24 }, ageDays);
+
+    // ── Info (local static files per YAKK rule — never fetch from API) ──
+    const info = { imageUrl: '', header: '', openGraph: '', websites: [], socials: [] };
 
     return {
       id: idx + 1,
@@ -264,21 +312,20 @@ export async function GET(req: NextRequest) {
       liq: fmtMcap(liq),
       mcap: fmtMcap(mcap),
       fdv: fmtMcap(fdv),
-      txns: txns.toLocaleString(),
-      buys: buys.toLocaleString(),
-      sells: sells.toLocaleString(),
+      txns: total24.toLocaleString(),
+      buys: buys24.toLocaleString(),
+      sells: sells24.toLocaleString(),
       holders: '—',
       dex: pairAddr,
       isNew: ageDays > 0 && ageDays < 2,
       updated: meta.cat === 'yakk',
       live: true,
-      // Extended
       priceChanges,
       volumes,
       txnBreakdown,
-      raw: { liq, mcap, fdv, vol24, buys24: buys, sells24: sells },
+      raw: { liq, mcap, fdv, vol24, buys24, sells24 },
       pairAddress: pairAddr,
-      pairCreatedAt: pairCreated,
+      pairCreatedAt: poolCreated,
       ageDays,
       quoteTicker,
       info,
@@ -297,5 +344,10 @@ export async function GET(req: NextRequest) {
     { totalVol24: 0, totalLiq: 0, totalTxns24: 0, pairsTracked: tokens.filter(t => t.live).length }
   );
 
-  return NextResponse.json({ tokens, summary, ts: Date.now() });
+  const response = { tokens, summary, ts: Date.now() };
+
+  // Cache the full response for 30s
+  setCache('screener_full', response);
+
+  return NextResponse.json(response);
 }
