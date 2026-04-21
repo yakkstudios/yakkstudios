@@ -105,3 +105,5 @@ export const config = {
           '/((?!_next/static|_next/image|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|woff|woff2|ttf|otf|mp4|webm)$).*)',
         ],
 };
+
+// rebuild-trigger: SITE_PAUSED pickup
